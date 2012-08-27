@@ -2,7 +2,7 @@
 ## Project Specific
 #################
 
-artifacts/*.nupkg
+NuGet/artifacts/*.nupkg
 
 
 #################
