@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Substrate</id>
+    <version>$version$</version>
+    <authors>Justin Aquadro</authors>
+    <owners>Justin Aquadro</owners>
+    <projectUrl>https://github.com/jaquadro/Substrate</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SDK for loading and modifying Minecraft worlds</description>
+    <copyright>Copyright 2011-2012 Justin Aquadro</copyright>
+    <tags>Minecraft</tags>
+  </metadata>
+  <files>
+    <file src="..\..\SubstrateCS\bin\$Configuration$\**" target="lib" />
+  </files>
+</package>

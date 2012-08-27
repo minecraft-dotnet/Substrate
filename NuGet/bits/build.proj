@@ -1,0 +1,49 @@
+<Project DefaultTargets="NuGet" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BasePath>$(MSBuildProjectDirectory)\..\..\</BasePath>
+    <Configuration>Release</Configuration>
+    
+    
+  </PropertyGroup>
+
+  <Target Name="Clean">
+    <ItemGroup>
+      <OldArtifacts Include="$(BasePath)NuGet\artifacts\*.nupkg" />
+      <OldDirectories Include="$(BasePath)NuGet\artifacts" />
+    </ItemGroup>
+
+    <Delete Files="@(OldArtifacts)" />
+    <RemoveDir Directories="@(OldDirectories)" />
+  </Target>
+  
+  <Target Name="Compile" DependsOnTargets="Clean">
+    <ItemGroup>
+      <Projects Include="$(BasePath)SubstrateCS\Substrate.sln" />
+    </ItemGroup>
+
+    <MSBuild Projects="@(Projects)" Targets="Rebuild" Properties="Configuration=$(Configuration)" />
+  </Target>
+
+  <Target Name="NuGet" DependsOnTargets="Compile">
+    <GetAssemblyIdentity AssemblyFiles="$(BasePath)SubstrateCS\bin\$(Configuration)\net20\Substrate.dll">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyInfo" />
+    </GetAssemblyIdentity>
+    
+    <PropertyGroup>
+      <NuGet>nuget.exe</NuGet>
+      <OutputDirectory>-OutputDirectory "$(BasePath)NuGet\artifacts"</OutputDirectory>
+      <ConfigArg>-Prop Configuration=$(Configuration)</ConfigArg>
+      <VersionArg>-Version %(AssemblyInfo.Version)</VersionArg>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <NuSpec Include="*.nuspec" />
+    </ItemGroup>
+
+    <MakeDir Directories="$(BasePath)NuGet\artifacts" />
+
+    <Exec Command='$(NuGet) pack "%(NuSpec.Identity)" $(OutputDirectory) $(VersionArg) $(ConfigArg) -Symbols' />
+
+  </Target>
+  
+</Project>
