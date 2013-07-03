@@ -31,6 +31,11 @@ namespace Substrate.Core
         EntityCollection Entities { get; }
 
         /// <summary>
+        /// Gets access to an <see cref="AnvilBiomeCollection"/> representing all biome data of a chunk.
+        /// </summary>
+        AnvilBiomeCollection Biomes { get; }
+
+        /// <summary>
         /// Gets or sets the flag indicating that the terrain generator has created terrain features.
         /// </summary>
         /// <remarks>Terrain features include ores, water and lava sources, dungeons, trees, flowers, etc.</remarks>
