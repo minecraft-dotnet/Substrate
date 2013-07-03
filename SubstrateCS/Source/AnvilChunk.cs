@@ -58,6 +58,7 @@ namespace Substrate
 
         private AlphaBlockCollection _blockManager;
         private EntityCollection _entityManager;
+        private AnvilBiomeCollection _biomeManager;
 
 
         private AnvilChunk ()
@@ -78,6 +79,11 @@ namespace Substrate
         public AlphaBlockCollection Blocks
         {
             get { return _blockManager; }
+        }
+
+        public AnvilBiomeCollection Biomes
+        {
+            get { return _biomeManager; }
         }
 
         public EntityCollection Entities
@@ -291,6 +297,7 @@ namespace Substrate
 
             _blockManager = new AlphaBlockCollection(_blocks, _data, _blockLight, _skyLight, _heightMap, _tileEntities, _tileTicks);
             _entityManager = new EntityCollection(_entities);
+            _biomeManager = new AnvilBiomeCollection(_biomes);
 
             return this;
         }

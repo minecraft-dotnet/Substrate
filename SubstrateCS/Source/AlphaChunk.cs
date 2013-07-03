@@ -82,6 +82,11 @@ namespace Substrate
             get { return _blockManager; }
         }
 
+        public AnvilBiomeCollection Biomes
+        {
+            get { return null; }
+        }
+
         /// <summary>
         /// Gets the collection of all entities stored in the chunk.
         /// </summary>
