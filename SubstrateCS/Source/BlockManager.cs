@@ -214,6 +214,11 @@ namespace Substrate
         /// <inheritdoc/>
         public void SetBlock (int x, int y, int z, IBlock block)
         {
+            cache = GetChunk(x, y, z);
+            if (cache == null || !Check(x, y, z)) {
+                return;
+            }
+
             cache.Blocks.SetBlock(x, y, z, block);
         }
 
@@ -280,6 +285,11 @@ namespace Substrate
         /// <inheritdoc/>
         public void SetBlock (int x, int y, int z, IDataBlock block)
         {
+            cache = GetChunk(x, y, z);
+            if (cache == null || !Check(x, y, z)) {
+                return;
+            }
+
             cache.Blocks.SetBlock(x, y, z, block);
         }
 
@@ -323,6 +333,11 @@ namespace Substrate
         /// <inheritdoc/>
         public void SetBlock (int x, int y, int z, ILitBlock block)
         {
+            cache = GetChunk(x, y, z);
+            if (cache == null || !Check(x, y, z)) {
+                return;
+            }
+
             cache.Blocks.SetBlock(x, y, z, block);
         }
 
@@ -432,6 +447,11 @@ namespace Substrate
         /// <inheritdoc/>
         public void SetBlock (int x, int y, int z, IPropertyBlock block)
         {
+            cache = GetChunk(x, y, z);
+            if (cache == null || !Check(x, y, z)) {
+                return;
+            }
+
             cache.Blocks.SetBlock(x, y, z, block);
         }
 
@@ -497,6 +517,11 @@ namespace Substrate
         /// <inheritdoc/>
         public void SetBlock (int x, int y, int z, IActiveBlock block)
         {
+            cache = GetChunk(x, y, z);
+            if (cache == null || !Check(x, y, z)) {
+                return;
+            }
+
             cache.Blocks.SetBlock(x, y, z, block);
         }
 
