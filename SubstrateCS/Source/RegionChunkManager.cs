@@ -260,26 +260,38 @@ namespace Substrate
             foreach (ChunkRef chunk in dirty.Values) {  
                 if (!dirty.ContainsKey(new ChunkKey(chunk.X, chunk.Z - 1))) {
                     ChunkRef east = chunk.GetEastNeighbor();
-                    chunk.Blocks.StitchBlockLight(east.Blocks, BlockCollectionEdge.EAST);
-                    chunk.Blocks.StitchSkyLight(east.Blocks, BlockCollectionEdge.EAST);
+                    if (east != null)
+                    {
+                        chunk.Blocks.StitchBlockLight(east.Blocks, BlockCollectionEdge.EAST);
+                        chunk.Blocks.StitchSkyLight(east.Blocks, BlockCollectionEdge.EAST);
+                    }
                 }
 
                 if (!dirty.ContainsKey(new ChunkKey(chunk.X, chunk.Z + 1))) {
                     ChunkRef west = chunk.GetWestNeighbor();
-                    chunk.Blocks.StitchBlockLight(west.Blocks, BlockCollectionEdge.WEST);
-                    chunk.Blocks.StitchSkyLight(west.Blocks, BlockCollectionEdge.WEST);
+                    if (west != null)
+                    {
+                        chunk.Blocks.StitchBlockLight(west.Blocks, BlockCollectionEdge.WEST);
+                        chunk.Blocks.StitchSkyLight(west.Blocks, BlockCollectionEdge.WEST);
+                    }
                 }
 
                 if (!dirty.ContainsKey(new ChunkKey(chunk.X - 1, chunk.Z))) {
                     ChunkRef north = chunk.GetNorthNeighbor();
-                    chunk.Blocks.StitchBlockLight(north.Blocks, BlockCollectionEdge.NORTH);
-                    chunk.Blocks.StitchSkyLight(north.Blocks, BlockCollectionEdge.NORTH);
+                    if (north != null)
+                    {
+                        chunk.Blocks.StitchBlockLight(north.Blocks, BlockCollectionEdge.NORTH);
+                        chunk.Blocks.StitchSkyLight(north.Blocks, BlockCollectionEdge.NORTH);
+                    }
                 }
 
                 if (!dirty.ContainsKey(new ChunkKey(chunk.X + 1, chunk.Z))) {
                     ChunkRef south = chunk.GetSouthNeighbor();
-                    chunk.Blocks.StitchBlockLight(south.Blocks, BlockCollectionEdge.SOUTH);
-                    chunk.Blocks.StitchSkyLight(south.Blocks, BlockCollectionEdge.SOUTH);
+                    if (south != null)
+                    {
+                        chunk.Blocks.StitchBlockLight(south.Blocks, BlockCollectionEdge.SOUTH);
+                        chunk.Blocks.StitchSkyLight(south.Blocks, BlockCollectionEdge.SOUTH);
+                    }
                 }
             }
         }
