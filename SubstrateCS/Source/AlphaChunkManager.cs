@@ -47,24 +47,29 @@ namespace Substrate
         private NbtTree GetChunkTree (int cx, int cz)
         {
             ChunkFile cf = GetChunkFile(cx, cz);
-            Stream nbtstr = cf.GetDataInputStream();
-            if (nbtstr == null) {
-                return null;
-            }
+            using (Stream nbtstr = cf.GetDataInputStream())
+            {
+                if (nbtstr == null)
+                {
+                    return null;
+                }
 
-            return new NbtTree(nbtstr);
+                return new NbtTree(nbtstr);
+            }
         }
 
         private bool SaveChunkTree (int cx, int cz, NbtTree tree)
         {
             ChunkFile cf = GetChunkFile(cx, cz);
-            Stream zipstr = cf.GetDataOutputStream();
-            if (zipstr == null) {
-                return false;
-            }
+            using (Stream zipstr = cf.GetDataOutputStream())
+            {
+                if (zipstr == null)
+                {
+                    return false;
+                }
 
-            tree.WriteTo(zipstr);
-            zipstr.Close();
+                tree.WriteTo(zipstr);
+            }
 
             return true;
         }
@@ -134,8 +139,12 @@ namespace Substrate
         public ChunkRef CreateChunk (int cx, int cz)
         {
             DeleteChunk(cx, cz);
-            AlphaChunk c = AlphaChunk.Create(cx, cz);
-            c.Save(GetChunkOutStream(cx, cz));
+            AlphaChunk chunk = AlphaChunk.Create(cx, cz);
+            
+            using (Stream chunkOutStream = GetChunkOutStream(cx, cz))
+            {
+                chunk.Save(chunkOutStream);
+            }
 
             ChunkRef cr = ChunkRef.Create(this, cx, cz);
             ChunkKey k = new ChunkKey(cx, cz);
@@ -167,7 +176,10 @@ namespace Substrate
         {
             DeleteChunk(cx, cz);
             chunk.SetLocation(cx, cz);
-            chunk.Save(GetChunkOutStream(cx, cz));
+            using (Stream chunkOutStream = GetChunkOutStream(cx, cz))
+            {
+                chunk.Save(chunkOutStream);
+            }
 
             ChunkRef cr = ChunkRef.Create(this, cx, cz);
             ChunkKey k = new ChunkKey(cx, cz);
@@ -186,13 +198,17 @@ namespace Substrate
             }
 
             int saved = 0;
-            foreach (ChunkRef c in _dirty.Values) {
-                int cx = ChunkGlobalX(c.X);
-                int cz = ChunkGlobalZ(c.Z);
+            foreach (ChunkRef chunkRef in _dirty.Values) {
+                int cx = ChunkGlobalX(chunkRef.X);
+                int cz = ChunkGlobalZ(chunkRef.Z);
 
-                if (c.Save(GetChunkOutStream(cx, cz))) {
-                    saved++;
-                }
+                using (Stream chunkOutStream = GetChunkOutStream(cx, cz))
+                {
+                    if (chunkRef.Save(chunkOutStream))
+                    {
+                        saved++;
+                    }
+                }                
             }
 
             _dirty.Clear();
@@ -202,9 +218,13 @@ namespace Substrate
         /// <inheritdoc/>
         public bool SaveChunk (IChunk chunk)
         {
-            if (chunk.Save(GetChunkOutStream(ChunkGlobalX(chunk.X), ChunkGlobalZ(chunk.Z)))) {
-                _dirty.Remove(new ChunkKey(chunk.X, chunk.Z));
-                return true;
+            using (Stream chunkOutStream = GetChunkOutStream(ChunkGlobalX(chunk.X), ChunkGlobalZ(chunk.Z)))
+            {
+                if (chunk.Save(chunkOutStream))
+                {
+                    _dirty.Remove(new ChunkKey(chunk.X, chunk.Z));
+                    return true;
+                }
             }
 
             return false;

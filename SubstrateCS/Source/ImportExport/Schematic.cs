@@ -104,13 +104,17 @@ namespace Substrate.ImportExport
             if (!schematicFile.Exists()) {
                 return null;
             }
+            NbtTree tree;
 
-            Stream nbtStream = schematicFile.GetDataInputStream();
-            if (nbtStream == null) {
-                return null;
+            using (Stream nbtStream = schematicFile.GetDataInputStream())
+            {
+                if (nbtStream == null)
+                {
+                    return null;
+                }
+
+                tree = new NbtTree(nbtStream);
             }
-
-            NbtTree tree = new NbtTree(nbtStream);
 
             NbtVerifier v = new NbtVerifier(tree.Root, _schema);
             if (!v.Verify()) {
@@ -210,15 +214,16 @@ namespace Substrate.ImportExport
 
             NBTFile schematicFile = new NBTFile(path);
 
-            Stream nbtStream = schematicFile.GetDataOutputStream();
-            if (nbtStream == null) {
-                return;
+            using (Stream nbtStream = schematicFile.GetDataOutputStream())
+            {
+                if (nbtStream == null)
+                {
+                    return;
+                }
+
+                NbtTree tree = new NbtTree(schematic, "Schematic");
+                tree.WriteTo(nbtStream);
             }
-
-            NbtTree tree = new NbtTree(schematic, "Schematic");
-            tree.WriteTo(nbtStream);
-
-            nbtStream.Close();
         }
     }
 }

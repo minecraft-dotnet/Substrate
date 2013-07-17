@@ -215,15 +215,17 @@ namespace Substrate.Data
                 string path = Path.Combine(_world.Path, _world.DataDirectory);
                 NBTFile nf = new NBTFile(Path.Combine(path, "map_" + _id + ".dat"));
 
-                Stream zipstr = nf.GetDataOutputStream();
-                if (zipstr == null) {
-                    NbtIOException nex = new NbtIOException("Failed to initialize compressed NBT stream for output");
-                    nex.Data["Map"] = this;
-                    throw nex;
-                }
+                using (Stream zipstr = nf.GetDataOutputStream())
+                {
+                    if (zipstr == null)
+                    {
+                        NbtIOException nex = new NbtIOException("Failed to initialize compressed NBT stream for output");
+                        nex.Data["Map"] = this;
+                        throw nex;
+                    }
 
-                new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
-                zipstr.Close();
+                    new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
+                }
 
                 return true;
             }
