@@ -67,13 +67,13 @@ namespace Substrate.Core
                             return new MemoryStream(data);
                         }
                     case CompressionType.GZip:
-                        Stream stream1 = new BufferedStream(new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                        Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                         return new GZipStream(stream1, CompressionMode.Decompress);
                     case CompressionType.Zlib:
-                        Stream stream2 = new BufferedStream(new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                        Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                         return new ZlibStream(stream2, CompressionMode.Decompress);
                     case CompressionType.Deflate:
-                        Stream stream3 = new BufferedStream(new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                        Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                         return new DeflateStream(stream3, CompressionMode.Decompress);
                     default:
                         throw new ArgumentException("Invalid CompressionType specified", "compression");
@@ -124,7 +124,7 @@ namespace Substrate.Core
             {
                 try
                 {
-                    using (Stream fstr = new BufferedStream(new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite)))
+                    using (Stream fstr = new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                     {
                         try
                         {
@@ -136,7 +136,7 @@ namespace Substrate.Core
                         }
                     }
                 }
-                catch (NbtIOException nbtioex)
+                catch (NbtIOException)
                 {
                     throw;
                 }
