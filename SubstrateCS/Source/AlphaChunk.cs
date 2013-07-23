@@ -243,7 +243,6 @@ namespace Substrate
             BuildConditional();
 
             _tree.WriteTo(outStream);
-            outStream.Close();
 
             return true;
         }

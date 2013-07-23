@@ -552,15 +552,17 @@ namespace Substrate
 
             try {
                 NBTFile nf = new NBTFile(Path.Combine(_world.Path, "level.dat"));
-                Stream zipstr = nf.GetDataOutputStream();
-                if (zipstr == null) {
-                    NbtIOException nex = new NbtIOException("Failed to initialize compressed NBT stream for output");
-                    nex.Data["Level"] = this;
-                    throw nex;
-                }
+                using (Stream zipstr = nf.GetDataOutputStream())
+                {
+                    if (zipstr == null)
+                    {
+                        NbtIOException nex = new NbtIOException("Failed to initialize compressed NBT stream for output");
+                        nex.Data["Level"] = this;
+                        throw nex;
+                    }
 
-                new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
-                zipstr.Close();
+                    new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
+                }
 
                 return true;
             }

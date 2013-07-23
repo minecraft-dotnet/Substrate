@@ -54,15 +54,17 @@ namespace Substrate.Data
                 string path = Path.Combine(_world.Path, _world.DataDirectory);
                 NBTFile nf = new NBTFile(Path.Combine(path, "idcounts.dat"));
 
-                Stream zipstr = nf.GetDataOutputStream(CompressionType.None);
-                if (zipstr == null) {
-                    NbtIOException nex = new NbtIOException("Failed to initialize uncompressed NBT stream for output");
-                    nex.Data["DataManager"] = this;
-                    throw nex;
-                }
+                using (Stream zipstr = nf.GetDataOutputStream(CompressionType.None))
+                {
+                    if (zipstr == null)
+                    {
+                        NbtIOException nex = new NbtIOException("Failed to initialize uncompressed NBT stream for output");
+                        nex.Data["DataManager"] = this;
+                        throw nex;
+                    }
 
-                new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
-                zipstr.Close();
+                    new NbtTree(BuildTree() as TagNodeCompound).WriteTo(zipstr);
+                }
 
                 return true;
             }

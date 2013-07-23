@@ -45,12 +45,15 @@ namespace Substrate
         public NbtTree GetPlayerTree (string name)
         {
             PlayerFile pf = GetPlayerFile(name);
-            Stream nbtstr = pf.GetDataInputStream();
-            if (nbtstr == null) {
-                throw new NbtIOException("Failed to initialize NBT data stream for input.");
-            }
+            using (Stream nbtstr = pf.GetDataInputStream())
+            {
+                if (nbtstr == null)
+                {
+                    throw new NbtIOException("Failed to initialize NBT data stream for input.");
+                }
 
-            return new NbtTree(nbtstr);
+                return new NbtTree(nbtstr);
+            }
         }
 
         /// <summary>
@@ -62,13 +65,15 @@ namespace Substrate
         public void SetPlayerTree (string name, NbtTree tree)
         {
             PlayerFile pf = GetPlayerFile(name);
-            Stream zipstr = pf.GetDataOutputStream();
-            if (zipstr == null) {
-                throw new NbtIOException("Failed to initialize NBT data stream for output.");
-            }
+            using (Stream zipstr = pf.GetDataOutputStream())
+            {
+                if (zipstr == null)
+                {
+                    throw new NbtIOException("Failed to initialize NBT data stream for output.");
+                }
 
-            tree.WriteTo(zipstr);
-            zipstr.Close();
+                tree.WriteTo(zipstr);
+            }
         }
 
         /// <summary>

@@ -389,12 +389,17 @@ namespace Substrate
         private bool LoadLevel ()
         {
             NBTFile nf = new NBTFile(IO.Path.Combine(Path, _levelFile));
-            Stream nbtstr = nf.GetDataInputStream();
-            if (nbtstr == null) {
-                return false;
-            }
+            NbtTree tree;
 
-            NbtTree tree = new NbtTree(nbtstr);
+            using (Stream nbtstr = nf.GetDataInputStream())
+            {
+                if (nbtstr == null)
+                {
+                    return false;
+                }
+
+                tree = new NbtTree(nbtstr);
+            }
 
             _level = new Level(this);
             _level = _level.LoadTreeSafe(tree.Root);

@@ -43,12 +43,15 @@ namespace Substrate.Data
         public NbtTree GetMapTree (int id)
         {
             MapFile mf = GetMapFile(id);
-            Stream nbtstr = mf.GetDataInputStream();
-            if (nbtstr == null) {
-                throw new NbtIOException("Failed to initialize NBT data stream for input.");
-            }
+            using (Stream nbtstr = mf.GetDataInputStream())
+            {
+                if (nbtstr == null)
+                {
+                    throw new NbtIOException("Failed to initialize NBT data stream for input.");
+                }
 
-            return new NbtTree(nbtstr);
+                return new NbtTree(nbtstr);
+            }
         }
 
         /// <summary>
@@ -60,13 +63,15 @@ namespace Substrate.Data
         public void SetMapTree (int id, NbtTree tree)
         {
             MapFile mf = GetMapFile(id);
-            Stream zipstr = mf.GetDataOutputStream();
-            if (zipstr == null) {
-                throw new NbtIOException("Failed to initialize NBT data stream for output.");
-            }
+            using (Stream zipstr = mf.GetDataOutputStream())
+            {
+                if (zipstr == null)
+                {
+                    throw new NbtIOException("Failed to initialize NBT data stream for output.");
+                }
 
-            tree.WriteTo(zipstr);
-            zipstr.Close();
+                tree.WriteTo(zipstr);
+            }
         }
 
         #region IMapManager Members
