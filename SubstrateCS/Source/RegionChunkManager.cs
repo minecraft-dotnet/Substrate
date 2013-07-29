@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Substrate.Core;
+using System.IO;
 
 namespace Substrate
 {
@@ -154,9 +155,11 @@ namespace Substrate
                 if (r == null) {
                     continue;
                 }
-
-                chunk.Save(r.GetChunkOutStream(chunk.LocalX, chunk.LocalZ));
-                saved++;
+                using (Stream chunkOutStream = r.GetChunkOutStream(chunk.LocalX, chunk.LocalZ))
+                {
+                    chunk.Save(chunkOutStream);
+                    saved++;
+                }
             }
 
             _cache.ClearDirty();

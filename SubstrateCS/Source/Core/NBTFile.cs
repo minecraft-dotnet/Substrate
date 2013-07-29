@@ -53,25 +53,28 @@ namespace Substrate.Core
         public virtual Stream GetDataInputStream (CompressionType compression)
         {
             try {
-                FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-                long length = fstr.Seek(0, SeekOrigin.End);
-                fstr.Seek(0, SeekOrigin.Begin);
-
-                byte[] data = new byte[length];
-                fstr.Read(data, 0, data.Length);
-
-                fstr.Close();
-
-                switch (compression) {
+                switch (compression)
+                {
                     case CompressionType.None:
-                        return new MemoryStream(data);
+                        using (FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            long length = fstr.Seek(0, SeekOrigin.End);
+                            fstr.Seek(0, SeekOrigin.Begin);
+
+                            byte[] data = new byte[length];
+                            fstr.Read(data, 0, data.Length);
+
+                            return new MemoryStream(data);
+                        }
                     case CompressionType.GZip:
-                        return new GZipStream(new MemoryStream(data), CompressionMode.Decompress);
+                        Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new GZipStream(stream1, CompressionMode.Decompress);
                     case CompressionType.Zlib:
-                        return new ZlibStream(new MemoryStream(data), CompressionMode.Decompress);
+                        Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new ZlibStream(stream2, CompressionMode.Decompress);
                     case CompressionType.Deflate:
-                        return new DeflateStream(new MemoryStream(data), CompressionMode.Decompress);
+                        Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new DeflateStream(stream3, CompressionMode.Decompress);
                     default:
                         throw new ArgumentException("Invalid CompressionType specified", "compression");
                 }
@@ -119,20 +122,27 @@ namespace Substrate.Core
 
             public override void Close ()
             {
-                FileStream fstr;
-                try {
-                    fstr = new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                try
+                {
+                    using (Stream fstr = new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        try
+                        {
+                            fstr.Write(this.GetBuffer(), 0, (int)this.Length);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new NbtIOException("Failed to write out NBT data stream.", ex);
+                        }
+                    }
                 }
-                catch (Exception ex) {
+                catch (NbtIOException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
                     throw new NbtIOException("Failed to open NBT data stream for output.", ex);
-                }
-
-                try {
-                    fstr.Write(this.GetBuffer(), 0, (int)this.Length);
-                    fstr.Close();
-                }
-                catch (Exception ex) {
-                    throw new NbtIOException("Failed to write out NBT data stream.", ex);
                 }
             }
         }

@@ -179,14 +179,18 @@ namespace Substrate.Core
             }
 
             RegionFile rf = GetRegionFile();
-            Stream nbtstr = rf.GetChunkDataInputStream(lcx, lcz);
-            if (nbtstr == null) {
-                return null;
+            NbtTree tree;
+
+            using (Stream nbtstr = rf.GetChunkDataInputStream(lcx, lcz))
+            {
+                if (nbtstr == null)
+                {
+                    return null;
+                }
+
+                tree = new NbtTree(nbtstr);
             }
 
-            NbtTree tree = new NbtTree(nbtstr);
-
-            nbtstr.Close();
             return tree;
         }
 
@@ -211,16 +215,17 @@ namespace Substrate.Core
             }
 
             RegionFile rf = GetRegionFile();
-            Stream zipstr = (timestamp == null)
+            using (Stream zipstr = (timestamp == null)
                 ? rf.GetChunkDataOutputStream(lcx, lcz)
-                : rf.GetChunkDataOutputStream(lcx, lcz, (int)timestamp);
+                : rf.GetChunkDataOutputStream(lcx, lcz, (int)timestamp))
+            {
+                if (zipstr == null)
+                {
+                    return false;
+                }
 
-            if (zipstr == null) {
-                return false;
+                tree.WriteTo(zipstr);
             }
-
-            tree.WriteTo(zipstr);
-            zipstr.Close();
 
             return true;
         }
@@ -294,7 +299,10 @@ namespace Substrate.Core
             int cz = lcz + _rz * ZDIM;
 
             IChunk c = CreateChunkCore(cx, cz);
-            c.Save(GetChunkOutStream(lcx, lcz));
+            using (Stream chunkOutStream = GetChunkOutStream(lcx, lcz))
+            {
+                c.Save(chunkOutStream);
+            }
 
             ChunkRef cr = ChunkRef.Create(this, lcx, lcz);
             _cache.Insert(cr);
@@ -442,7 +450,10 @@ namespace Substrate.Core
             int cz = lcz + _rz * ZDIM;
 
             chunk.SetLocation(cx, cz);
-            chunk.Save(GetChunkOutStream(lcx, lcz));
+            using (Stream chunkOutStream = GetChunkOutStream(lcx, lcz))
+            {
+                chunk.Save(chunkOutStream);
+            }
 
             ChunkRef cr = ChunkRef.Create(this, lcx, lcz);
             _cache.Insert(cr);
@@ -466,9 +477,12 @@ namespace Substrate.Core
                 if (!ChunkExists(chunk.LocalX, chunk.LocalZ)) {
                     throw new MissingChunkException();
                 }
-
-                if (chunk.Save(GetChunkOutStream(chunk.LocalX, chunk.LocalZ))) {
-                    saved++;
+                using (Stream chunkOutStream = GetChunkOutStream(chunk.LocalX, chunk.LocalZ))
+                {
+                    if (chunk.Save(chunkOutStream))
+                    {
+                        saved++;
+                    }
                 }
             }
 
@@ -480,8 +494,11 @@ namespace Substrate.Core
         /// <exclude/>
         public bool SaveChunk (IChunk chunk)
         {
-            //Console.WriteLine("Region[{0}, {1}].Save({2}, {3})", _rx, _rz, ForeignX(chunk.X),ForeignZ(chunk.Z));
-            return chunk.Save(GetChunkOutStream(ForeignX(chunk.X), ForeignZ(chunk.Z)));
+            using (Stream chunkOutStream = GetChunkOutStream(ForeignX(chunk.X), ForeignZ(chunk.Z)))
+            {
+                //Console.WriteLine("Region[{0}, {1}].Save({2}, {3})", _rx, _rz, ForeignX(chunk.X),ForeignZ(chunk.Z));
+                return chunk.Save(chunkOutStream);
+            }
         }
 
         /// <summary>
