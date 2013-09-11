@@ -18,6 +18,7 @@ namespace Substrate
         public const int PROJECTILE_PROTECTION = 4;
         public const int RESPIRATION = 5;
         public const int AQUA_AFFINITY = 6;
+        public const int THORNS = 7;
         public const int SHARPNESS = 16;
         public const int SMITE = 17;
         public const int BANE_OF_ARTHROPODS = 18;
@@ -28,6 +29,10 @@ namespace Substrate
         public const int SILK_TOUCH = 33;
         public const int UNBREAKING = 34;
         public const int FORTUNE = 35;
+        public const int POWER = 48;
+        public const int PUNCH = 49;
+        public const int FLAME = 50;
+        public const int INFINITY = 51;
     }
 
     /// <summary>
@@ -164,6 +169,7 @@ namespace Substrate
         public static EnchantmentInfo ProjectileProtection;
         public static EnchantmentInfo Respiration;
         public static EnchantmentInfo AquaAffinity;
+        public static EnchantmentInfo Thorns;
         public static EnchantmentInfo Sharpness;
         public static EnchantmentInfo Smite;
         public static EnchantmentInfo BaneOfArthropods;
@@ -174,6 +180,10 @@ namespace Substrate
         public static EnchantmentInfo SilkTouch;
         public static EnchantmentInfo Unbreaking;
         public static EnchantmentInfo Fortune;
+        public static EnchantmentInfo Power;
+        public static EnchantmentInfo Punch;
+        public static EnchantmentInfo Flame;
+        public static EnchantmentInfo Infinity;
 
         static EnchantmentInfo ()
         {
@@ -187,6 +197,7 @@ namespace Substrate
             ProjectileProtection = new EnchantmentInfo(EnchantmentType.PROJECTILE_PROTECTION, "Projectile Protection").SetMaxLevel(4);
             Respiration = new EnchantmentInfo(EnchantmentType.RESPIRATION, "Respiration").SetMaxLevel(3);
             AquaAffinity = new EnchantmentInfo(EnchantmentType.AQUA_AFFINITY, "Aqua Affinity").SetMaxLevel(1);
+            Thorns = new EnchantmentInfo(EnchantmentType.THORNS, "Thorns").SetMaxLevel(3);
             Sharpness = new EnchantmentInfo(EnchantmentType.SHARPNESS, "Sharpness").SetMaxLevel(5);
             Smite = new EnchantmentInfo(EnchantmentType.SMITE, "Smite").SetMaxLevel(5);
             BaneOfArthropods = new EnchantmentInfo(EnchantmentType.BANE_OF_ARTHROPODS, "Bane of Arthropods").SetMaxLevel(5);
@@ -195,8 +206,12 @@ namespace Substrate
             Looting = new EnchantmentInfo(EnchantmentType.LOOTING, "Looting").SetMaxLevel(3);
             Efficiency = new EnchantmentInfo(EnchantmentType.EFFICIENCY, "Efficiency").SetMaxLevel(5);
             SilkTouch = new EnchantmentInfo(EnchantmentType.SILK_TOUCH, "Silk Touch").SetMaxLevel(1);
-            Unbreaking = new EnchantmentInfo(EnchantmentType.UNBREAKING, "Unbreaking").SetMaxLevel(4);
+            Unbreaking = new EnchantmentInfo(EnchantmentType.UNBREAKING, "Unbreaking").SetMaxLevel(3);
             Fortune = new EnchantmentInfo(EnchantmentType.FORTUNE, "Fortune").SetMaxLevel(3);
+            Power = new EnchantmentInfo(EnchantmentType.POWER, "Power").SetMaxLevel(5);
+            Punch = new EnchantmentInfo(EnchantmentType.PUNCH, "Punch").SetMaxLevel(2);
+            Flame = new EnchantmentInfo(EnchantmentType.FLAME, "Flame").SetMaxLevel(1);
+            Infinity = new EnchantmentInfo(EnchantmentType.INFINITY, "Infinity").SetMaxLevel(1);
         }
     }
 }
