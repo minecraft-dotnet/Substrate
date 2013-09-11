@@ -7,7 +7,7 @@ namespace Substrate
     /// Provides read-only indexed access to an underlying resource.
     /// </summary>
     /// <typeparam name="T">The type of the underlying resource.</typeparam>
-    public interface ICacheTable<T>
+    public interface ICacheTable<T> : IEnumerable<T>
     {
         /// <summary>
         /// Gets the value at the given index.

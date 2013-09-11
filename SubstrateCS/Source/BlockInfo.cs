@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Substrate.Nbt;
+using System.Collections;
 
 namespace Substrate
 {
@@ -254,6 +255,19 @@ namespace Substrate
             public CacheTableArray (T[] cache)
             {
                 _cache = cache;
+            }
+
+            public IEnumerator<T> GetEnumerator ()
+            {
+                for (int i = 0; i < _cache.Length; i++) {
+                    if (_cache[i] != null)
+                        yield return _cache[i];
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator ()
+            {
+                return GetEnumerator();
             }
         }
 

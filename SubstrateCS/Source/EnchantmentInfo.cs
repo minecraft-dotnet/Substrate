@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 namespace Substrate
 {
@@ -59,6 +60,17 @@ namespace Substrate
             public CacheTableDict (Dictionary<int, T> cache)
             {
                 _cache = cache;
+            }
+
+            public IEnumerator<T> GetEnumerator ()
+            {
+                foreach (T val in _cache.Values)
+                    yield return val;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator ()
+            {
+                return GetEnumerator();
             }
         }
 
