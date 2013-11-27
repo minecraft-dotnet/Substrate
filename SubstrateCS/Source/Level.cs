@@ -398,8 +398,8 @@ namespace Substrate
         /// </summary>
         public bool Initialized
         {
-            get { return (_generatorVersion ?? 0) == 1; }
-            set { _generatorVersion = value ? (byte)1 : (byte)0; }
+            get { return (_initialized ?? 0) == 1; }
+            set { _initialized = value ? (byte)1 : (byte)0; }
         }
 
         /// <summary>
