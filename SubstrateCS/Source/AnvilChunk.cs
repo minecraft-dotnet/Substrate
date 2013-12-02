@@ -75,6 +75,11 @@ namespace Substrate
         {
             get { return _cz; }
         }
+        
+        public AnvilSection[] Sections
+        {
+            get { return _sections; }
+        }
 
         public AlphaBlockCollection Blocks
         {
