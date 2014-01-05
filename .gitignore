@@ -1,0 +1,7 @@
+**/Debug/*
+**/bin/*
+**/obj/*
+*.suo
+SubstrateCS/Release/
+*.sdf
+*.user

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlockReplace", "BlockReplace\BlockReplace.vcxproj", "{17FC8A42-7A3B-412F-882D-7D0B60D64959}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17FC8A42-7A3B-412F-882D-7D0B60D64959}.Debug|Win32.ActiveCfg = Debug|Win32
+		{17FC8A42-7A3B-412F-882D-7D0B60D64959}.Debug|Win32.Build.0 = Debug|Win32
+		{17FC8A42-7A3B-412F-882D-7D0B60D64959}.Release|Win32.ActiveCfg = Release|Win32
+		{17FC8A42-7A3B-412F-882D-7D0B60D64959}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
