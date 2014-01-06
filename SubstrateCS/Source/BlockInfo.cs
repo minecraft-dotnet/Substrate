@@ -114,6 +114,7 @@ namespace Substrate
         public const int REDSTONE_REPEATER_ON = 93;
         public const int REDSTONE_REPEATER_OFF = 94;
         public const int LOCKED_CHEST = 95;
+        public const int STAINED_GLASS = 95;
         public const int TRAPDOOR = 96;
         public const int SILVERFISH_STONE = 97;
         public const int STONE_BRICK = 98;
@@ -178,6 +179,7 @@ namespace Substrate
         public const int ACTIVATOR_RAIL = 157;
         public const int DROPPER = 158;
         public const int STAINED_CLAY = 159;
+        public const int STAINED_GLASS_PANE = 160;
         public const int HAY_BLOCK = 170;
         public const int CARPET = 171;
         public const int HARDENED_CLAY = 172;
@@ -661,6 +663,7 @@ namespace Substrate
         public static BlockInfo RedstoneRepeater;
         public static BlockInfo RedstoneRepeaterOn;
         public static BlockInfoEx LockedChest;
+        public static BlockInfo StainedGlass;
         public static BlockInfo Trapdoor;
         public static BlockInfo SilverfishStone;
         public static BlockInfo StoneBrick;
@@ -725,6 +728,7 @@ namespace Substrate
         public static BlockInfo ActivatorRail;
         public static BlockInfoEx Dropper;
         public static BlockInfo StainedClay;
+        public static BlockInfo StainedGlassPane;
         public static BlockInfo HayBlock;
         public static BlockInfo Carpet;
         public static BlockInfo HardenedClay;
@@ -836,6 +840,7 @@ namespace Substrate
             RedstoneRepeater = new BlockInfo(93, "Redstone Repeater (Off)").SetOpacity(0).SetTick(10);
             RedstoneRepeaterOn = new BlockInfo(94, "Redstone Repeater (On)").SetOpacity(0).SetLuminance(7).SetTick(10);
             LockedChest = (BlockInfoEx)new BlockInfoEx(95, "Locked Chest").SetLuminance(MAX_LUMINANCE).SetTick(10);
+            StainedGlass = new BlockInfo(95, "Stained Glass").SetOpacity(0);
             Trapdoor = new BlockInfo(96, "Trapdoor").SetOpacity(0);
             SilverfishStone = new BlockInfo(97, "Stone with Silverfish");
             StoneBrick = new BlockInfo(98, "Stone Brick");
@@ -900,6 +905,7 @@ namespace Substrate
             ActivatorRail = new BlockInfo(157, "Activator Rail").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             Dropper = (BlockInfoEx)new BlockInfoEx(158, "Dropper").SetTick(10);
             StainedClay = new BlockInfo(159, "Stained Clay");
+            StainedGlassPane = new BlockInfo(160, "Stained Glass Pane").SetOpacity(0);
             HayBlock = new BlockInfo(170, "Hay Block");
             Carpet = new BlockInfo(171, "Carpet").SetOpacity(0);
             HardenedClay = new BlockInfo(172, "Hardened Clay");
