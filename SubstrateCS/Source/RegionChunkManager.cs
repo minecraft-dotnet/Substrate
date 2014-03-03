@@ -377,12 +377,15 @@ namespace Substrate
             {
                 _cm = cm;
                 _enum = _cm.RegionManager.GetEnumerator();
-                _enum.MoveNext();
-                _region = _enum.Current;
+                if (_enum.MoveNext())
+                    _region = _enum.Current;
             }
 
             public virtual bool MoveNext ()
             {
+                if (_region == null)
+                    return false;
+
                 if (_enum == null) {
                     return MoveNextInRegion();
                 }
