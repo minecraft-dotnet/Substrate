@@ -120,7 +120,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = Entity.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("AttackTime", TagType.TAG_SHORT),
+            new SchemaNodeScaler("AttackTime", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScaler("DeathTime", TagType.TAG_SHORT),
             new SchemaNodeScaler("Health", TagType.TAG_SHORT),
             new SchemaNodeScaler("HurtTime", TagType.TAG_SHORT),
