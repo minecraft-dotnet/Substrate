@@ -570,7 +570,7 @@ namespace Substrate
             Paper = new ItemInfo(339, "Paper").SetStackSize(64);
             Book = new ItemInfo(340, "Book").SetStackSize(64);
             Slimeball = new ItemInfo(341, "Slimeball").SetStackSize(64);
-            StorageMinecart = new ItemInfo(342, "Storage Miencart");
+            StorageMinecart = new ItemInfo(342, "Storage Minecart");
             PoweredMinecart = new ItemInfo(343, "Powered Minecart");
             Egg = new ItemInfo(344, "Egg").SetStackSize(16);
             Compass = new ItemInfo(345, "Compass");
