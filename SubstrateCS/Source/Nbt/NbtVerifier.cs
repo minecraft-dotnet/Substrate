@@ -132,8 +132,6 @@ namespace Substrate.Nbt
         /// </summary>
         public static event VerifierEventHandler InvalidTagValue;
 
-        private Dictionary<string, TagNode> _scratch = new Dictionary<string,TagNode>();
-
         /// <summary>
         /// Constructs a new <see cref="NbtVerifier"/> object for a given NBT tree and schema.
         /// </summary>
@@ -309,6 +307,8 @@ namespace Substrate.Nbt
 
             bool pass = true;
 
+            Dictionary<string, TagNode> _scratch = new Dictionary<string,TagNode>();
+  
             foreach (SchemaNode node in schema) {
                 TagNode value;
                 ctag.TryGetValue(node.Name, out value);
