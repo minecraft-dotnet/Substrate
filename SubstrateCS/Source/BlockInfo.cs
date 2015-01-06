@@ -111,8 +111,8 @@ namespace Substrate
         public const int PORTAL = 90;
         public const int JACK_O_LANTERN = 91;
         public const int CAKE_BLOCK = 92;
-        public const int REDSTONE_REPEATER_ON = 93;
-        public const int REDSTONE_REPEATER_OFF = 94;
+        public const int REDSTONE_REPEATER_OFF = 93;
+        public const int REDSTONE_REPEATER_ON = 94;
         public const int LOCKED_CHEST = 95;
         public const int STAINED_GLASS = 95;
         public const int TRAPDOOR = 96;
