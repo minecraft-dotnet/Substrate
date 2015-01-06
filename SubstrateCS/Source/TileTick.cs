@@ -13,7 +13,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("i", TagType.TAG_INT),
+            new SchemaNodeScaler("i", TagType.TAG_INT, SchemaOptions.CAN_BE_STRING),
             new SchemaNodeScaler("t", TagType.TAG_INT),
             new SchemaNodeScaler("x", TagType.TAG_INT),
             new SchemaNodeScaler("y", TagType.TAG_INT),
@@ -164,7 +164,32 @@ namespace Substrate
                 return null;
             }
 
-            _blockId = ctree["i"].ToTagInt();
+            _blockId = 0;
+            if (ctree["i"] is TagNodeString)
+            {
+              TagNodeString str = ctree["i"].ToTagString();
+              ItemInfo info = ItemInfo.GetItemInfoByInternalName(str);
+              if (info != null)
+              {
+                _blockId = (short)info.ID;
+              }
+              else
+              {
+                BlockInfo blockInfo = BlockInfo.GetBlockInfoByInternalName(str);
+                if (blockInfo != null)
+                {
+                  _blockId = (short)blockInfo.ID;
+                }
+                else
+                {
+                  throw new Exception("Item not found!");
+                }
+              }
+            }
+            else
+            {
+              _blockId = ctree["i"].ToTagInt();
+            }
             _ticks = ctree["t"].ToTagInt();
             _x = ctree["x"].ToTagInt();
             _y = ctree["y"].ToTagInt();

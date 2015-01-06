@@ -194,6 +194,11 @@ namespace Substrate.Nbt
         private bool VerifyScaler (TagNode tag, SchemaNodeScaler schema)
         {
             if (!tag.IsCastableTo(schema.Type)) {
+                if (tag is TagNodeString && (schema.Options & SchemaOptions.CAN_BE_STRING) == SchemaOptions.CAN_BE_STRING)
+                {
+                    return true;
+                }
+
                 if (!OnInvalidTagType(new TagEventArgs(schema.Name, tag))) {
                     return false;
                 }

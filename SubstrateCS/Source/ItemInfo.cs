@@ -230,6 +230,7 @@ namespace Substrate
 
         private int _id = 0;
         private string _name = "";
+        private string _internal_name = "";
         private int _stack = 1;
 
         private static readonly CacheTableDict<ItemInfo> _itemTableCache;
@@ -239,7 +240,19 @@ namespace Substrate
         /// </summary>
         public static ICacheTable<ItemInfo> ItemTable
         {
-            get { return _itemTableCache; }
+          get { return _itemTableCache; }
+        }
+
+        public static ItemInfo GetItemInfoByInternalName( string internalName )
+        {
+          foreach(KeyValuePair<int,ItemInfo> kvp in _itemTable)
+          {
+            if (kvp.Value._internal_name == internalName)
+            {
+              return kvp.Value;
+            }
+          }
+          return null;
         }
 
         /// <summary>
@@ -285,7 +298,14 @@ namespace Substrate
         {
             _id = id;
             _name = name;
+            _internal_name = "minecraft:" + name.ToLower().Replace(' ','_');
             _itemTable[_id] = this;
+        }
+
+        public ItemInfo SetInternalName (string name)
+        {
+            _internal_name = "minecraft:" + name;
+            return this;
         }
 
         /// <summary>
@@ -511,10 +531,10 @@ namespace Substrate
             Stick = new ItemInfo(280, "Stick").SetStackSize(64);
             Bowl = new ItemInfo(281, "Bowl").SetStackSize(64);
             MushroomSoup = new ItemInfo(282, "Mushroom Soup");
-            GoldSword = new ItemInfo(283, "Gold Sword");
-            GoldShovel = new ItemInfo(284, "Gold Shovel");
-            GoldPickaxe = new ItemInfo(285, "Gold Pickaxe");
-            GoldAxe = new ItemInfo(286, "Gold Axe");
+            GoldSword = new ItemInfo(283, "Gold Sword").SetInternalName("golden_sword");
+            GoldShovel = new ItemInfo(284, "Gold Shovel").SetInternalName("golden_shovel");
+            GoldPickaxe = new ItemInfo(285, "Gold Pickaxe").SetInternalName("golden_pickaxe");
+            GoldAxe = new ItemInfo(286, "Gold Axe").SetInternalName("golden_axe");
             String = new ItemInfo(287, "String").SetStackSize(64);
             Feather = new ItemInfo(288, "Feather").SetStackSize(64);
             Gunpowder = new ItemInfo(289, "Gunpowder").SetStackSize(64);
@@ -523,17 +543,17 @@ namespace Substrate
             IronHoe = new ItemInfo(292, "Iron Hoe");
             DiamondHoe = new ItemInfo(293, "Diamond Hoe");
             GoldHoe = new ItemInfo(294, "Gold Hoe");
-            Seeds = new ItemInfo(295, "Seeds").SetStackSize(64);
+            Seeds = new ItemInfo(295, "Seeds").SetStackSize(64).SetInternalName("wheat_seeds");
             Wheat = new ItemInfo(296, "Wheat").SetStackSize(64);
             Bread = new ItemInfo(297, "Bread").SetStackSize(64);
-            LeatherCap = new ItemInfo(298, "Leather Cap");
-            LeatherTunic = new ItemInfo(299, "Leather Tunic");
-            LeatherPants = new ItemInfo(300, "Leather Pants");
+            LeatherCap = new ItemInfo(298, "Leather Cap").SetInternalName("leather_helmet");
+            LeatherTunic = new ItemInfo(299, "Leather Tunic").SetInternalName("leather_chestplate");
+            LeatherPants = new ItemInfo(300, "Leather Pants").SetInternalName("leather_leggings");
             LeatherBoots = new ItemInfo(301, "Leather Boots");
-            ChainHelmet = new ItemInfo(302, "Chain Helmet");
-            ChainChestplate = new ItemInfo(303, "Chain Chestplate");
-            ChainLeggings = new ItemInfo(304, "Chain Leggings");
-            ChainBoots = new ItemInfo(305, "Chain Boots");
+            ChainHelmet = new ItemInfo(302, "Chain Helmet").SetInternalName("chainmail_helmet");
+            ChainChestplate = new ItemInfo(303, "Chain Chestplate").SetInternalName("chainmail_chestplate");
+            ChainLeggings = new ItemInfo(304, "Chain Leggings").SetInternalName("chainmail_leggings");
+            ChainBoots = new ItemInfo(305, "Chain Boots").SetInternalName("chainmail_boots");
             IronHelmet = new ItemInfo(306, "Iron Helmet");
             IronChestplate = new ItemInfo(307, "Iron Chestplate");
             IronLeggings = new ItemInfo(308, "Iron Leggings");
@@ -542,12 +562,12 @@ namespace Substrate
             DiamondChestplate = new ItemInfo(311, "Diamond Chestplate");
             DiamondLeggings = new ItemInfo(312, "Diamond Leggings");
             DiamondBoots = new ItemInfo(313, "Diamond Boots");
-            GoldHelmet = new ItemInfo(314, "Gold Helmet");
-            GoldChestplate = new ItemInfo(315, "Gold Chestplate");
-            GoldLeggings = new ItemInfo(316, "Gold Leggings");
-            GoldBoots = new ItemInfo(317, "Gold Boots");
+            GoldHelmet = new ItemInfo(314, "Gold Helmet").SetInternalName("golden_helmet");
+            GoldChestplate = new ItemInfo(315, "Gold Chestplate").SetInternalName("golden_chestplate");
+            GoldLeggings = new ItemInfo(316, "Gold Leggings").SetInternalName("golden_leggings");
+            GoldBoots = new ItemInfo(317, "Gold Boots").SetInternalName("golden_boots");
             Flint = new ItemInfo(318, "Flint").SetStackSize(64);
-            RawPorkchop = new ItemInfo(319, "Raw Porkchop").SetStackSize(64);
+            RawPorkchop = new ItemInfo(319, "Raw Porkchop").SetStackSize(64).SetInternalName("porkchop");
             CookedPorkchop = new ItemInfo(320, "Cooked Porkchop").SetStackSize(64);
             Painting = new ItemInfo(321, "Painting").SetStackSize(64);
             GoldenApple = new ItemInfo(322, "Golden Apple").SetStackSize(64);
@@ -559,41 +579,41 @@ namespace Substrate
             Minecart = new ItemInfo(328, "Minecart");
             Saddle = new ItemInfo(329, "Saddle");
             IronDoor = new ItemInfo(330, "Iron Door");
-            RedstoneDust = new ItemInfo(331, "Redstone Dust").SetStackSize(64);
+            RedstoneDust = new ItemInfo(331, "Redstone Dust").SetStackSize(64).SetInternalName("redstone");
             Snowball = new ItemInfo(332, "Snowball").SetStackSize(16);
             Boat = new ItemInfo(333, "Boat");
             Leather = new ItemInfo(334, "Leather").SetStackSize(64);
-            Milk = new ItemInfo(335, "Milk");
-            ClayBrick = new ItemInfo(336, "Clay Brick").SetStackSize(64);
-            Clay = new ItemInfo(337, "Clay").SetStackSize(64);
-            SugarCane = new ItemInfo(338, "Sugar Cane").SetStackSize(64);
+            Milk = new ItemInfo(335, "Milk").SetInternalName("milk_bucket");
+            ClayBrick = new ItemInfo(336, "Clay Brick").SetStackSize(64).SetInternalName("brick");
+            Clay = new ItemInfo(337, "Clay").SetStackSize(64).SetInternalName("clay_ball");
+            SugarCane = new ItemInfo(338, "Sugar Cane").SetStackSize(64).SetInternalName("reeds");
             Paper = new ItemInfo(339, "Paper").SetStackSize(64);
             Book = new ItemInfo(340, "Book").SetStackSize(64);
-            Slimeball = new ItemInfo(341, "Slimeball").SetStackSize(64);
-            StorageMinecart = new ItemInfo(342, "Storage Miencart");
+            Slimeball = new ItemInfo(341, "Slimeball").SetStackSize(64).SetInternalName("slime_ball");
+            StorageMinecart = new ItemInfo(342, "Storage Minecart").SetInternalName("chest_minecart");
             PoweredMinecart = new ItemInfo(343, "Powered Minecart");
             Egg = new ItemInfo(344, "Egg").SetStackSize(16);
             Compass = new ItemInfo(345, "Compass");
             FishingRod = new ItemInfo(346, "Fishing Rod");
             Clock = new ItemInfo(347, "Clock");
             GlowstoneDust = new ItemInfo(348, "Glowstone Dust").SetStackSize(64);
-            RawFish = new ItemInfo(349, "Raw Fish").SetStackSize(64);
+            RawFish = new ItemInfo(349, "Raw Fish").SetStackSize(64).SetInternalName("fish");
             CookedFish = new ItemInfo(350, "Cooked Fish").SetStackSize(64);
             Dye = new ItemInfo(351, "Dye").SetStackSize(64);
             Bone = new ItemInfo(352, "Bone").SetStackSize(64);
             Sugar = new ItemInfo(353, "Sugar").SetStackSize(64);
             Cake = new ItemInfo(354, "Cake");
             Bed = new ItemInfo(355, "Bed");
-            RedstoneRepeater = new ItemInfo(356, "Redstone Repeater").SetStackSize(64);
+            RedstoneRepeater = new ItemInfo(356, "Redstone Repeater").SetStackSize(64).SetInternalName("repeater");
             Cookie = new ItemInfo(357, "Cookie").SetStackSize(8);
-            Map = new ItemInfo(358, "Map");
+            Map = new ItemInfo(358, "Map").SetInternalName("filled_map");
             Shears = new ItemInfo(359, "Shears");
             MelonSlice = new ItemInfo(360, "Melon Slice").SetStackSize(64);
             PumpkinSeeds = new ItemInfo(361, "Pumpkin Seeds").SetStackSize(64);
             MelonSeeds = new ItemInfo(362, "Melon Seeds").SetStackSize(64);
-            RawBeef = new ItemInfo(363, "Raw Beef").SetStackSize(64);
-            Steak = new ItemInfo(364, "Steak").SetStackSize(64);
-            RawChicken = new ItemInfo(365, "Raw Chicken").SetStackSize(64);
+            RawBeef = new ItemInfo(363, "Raw Beef").SetStackSize(64).SetInternalName("beef");
+            Steak = new ItemInfo(364, "Steak").SetStackSize(64).SetInternalName("cooked_beef");
+            RawChicken = new ItemInfo(365, "Raw Chicken").SetStackSize(64).SetInternalName("chicken");
             CookedChicken = new ItemInfo(366, "Cooked Chicken").SetStackSize(64);
             RottenFlesh = new ItemInfo(367, "Rotten Flesh").SetStackSize(64);
             EnderPearl = new ItemInfo(368, "Ender Pearl").SetStackSize(64);
@@ -609,12 +629,12 @@ namespace Substrate
             MagmaCream = new ItemInfo(378, "Magma Cream").SetStackSize(64);
             BrewingStand = new ItemInfo(379, "Brewing Stand").SetStackSize(64);
             Cauldron = new ItemInfo(380, "Cauldron");
-            EyeOfEnder = new ItemInfo(381, "Eye of Ender").SetStackSize(64);
-            GlisteringMelon = new ItemInfo(382, "Glistering Melon").SetStackSize(64);
+            EyeOfEnder = new ItemInfo(381, "Eye of Ender").SetStackSize(64).SetInternalName("ender_eye");
+            GlisteringMelon = new ItemInfo(382, "Glistering Melon").SetStackSize(64).SetInternalName("speckled_melon");
             SpawnEgg = new ItemInfo(383, "Spawn Egg").SetStackSize(64);
-            BottleOEnchanting = new ItemInfo(384, "Bottle O' Enchanting").SetStackSize(64);
+            BottleOEnchanting = new ItemInfo(384, "Bottle O' Enchanting").SetStackSize(64).SetInternalName("experience_bottle");
             FireCharge = new ItemInfo(385, "Fire Charge").SetStackSize(64);
-            BookAndQuill = new ItemInfo(386, "Book and Quill");
+            BookAndQuill = new ItemInfo(386, "Book and Quill").SetInternalName("writable_book");
             WrittenBook = new ItemInfo(387, "Written Book");
             Emerald = new ItemInfo(388, "Emerald").SetStackSize(64);
             ItemFrame = new ItemInfo(389, "Item Frame").SetStackSize(64);
@@ -625,34 +645,34 @@ namespace Substrate
             PoisonPotato = new ItemInfo(394, "Poisonous Potato").SetStackSize(64);
             EmptyMap = new ItemInfo(395, "Empty Map").SetStackSize(64);
             GoldenCarrot = new ItemInfo(396, "Golden Carrot").SetStackSize(64);
-            MobHead = new ItemInfo(397, "Mob Head").SetStackSize(64);
+            MobHead = new ItemInfo(397, "Mob Head").SetStackSize(64).SetInternalName("skull");
             CarrotOnStick = new ItemInfo(398, "Carrot on a Stick");
             NetherStar = new ItemInfo(399, "Nether Star").SetStackSize(64);
             PumpkinPie = new ItemInfo(400, "Pumpkin Pie").SetStackSize(64);
-            FireworkRocket = new ItemInfo(401, "Firework Rocket");
-            FireworkStar = new ItemInfo(402, "Firework Star").SetStackSize(64);
+            FireworkRocket = new ItemInfo(401, "Firework Rocket").SetInternalName("fireworks");
+            FireworkStar = new ItemInfo(402, "Firework Star").SetStackSize(64).SetInternalName("firework_charge");
             EnchantedBook = new ItemInfo(403, "Enchanted Book");
-            RedstoneComparator = new ItemInfo(404, "Redstone Comparator").SetStackSize(64);
-            NetherBrick = new ItemInfo(405, "Nether Brick").SetStackSize(64);
-            NetherQuartz = new ItemInfo(406, "Nether Quartz").SetStackSize(64);
+            RedstoneComparator = new ItemInfo(404, "Redstone Comparator").SetStackSize(64).SetInternalName("comparator");
+            NetherBrick = new ItemInfo(405, "Nether Brick").SetStackSize(64).SetInternalName("netherbrick");
+            NetherQuartz = new ItemInfo(406, "Nether Quartz").SetStackSize(64).SetInternalName("quartz");
             TntMinecart = new ItemInfo(407, "Minecart with TNT");
             HopperMinecart = new ItemInfo(408, "Minecart with Hopper");
             IronHorseArmor = new ItemInfo(417, "Iron Horse Armor");
-            GoldHorseArmor = new ItemInfo(418, "Gold Horse Armor");
+            GoldHorseArmor = new ItemInfo(418, "Gold Horse Armor").SetInternalName("golden_horse_armor");
             DiamondHorseArmor = new ItemInfo(419, "Diamond Horse Armor");
             Lead = new ItemInfo(420, "Lead").SetStackSize(64);
             NameTag = new ItemInfo(421, "Name Tag").SetStackSize(64);
-            MusicDisc13 = new ItemInfo(2256, "13 Disc");
-            MusicDiscCat = new ItemInfo(2257, "Cat Disc");
-            MusicDiscBlocks = new ItemInfo(2258, "Blocks Disc");
-            MusicDiscChirp = new ItemInfo(2259, "Chirp Disc");
-            MusicDiscFar = new ItemInfo(2260, "Far Disc");
-            MusicDiscMall = new ItemInfo(2261, "Mall Disc");
-            MusicDiscMellohi = new ItemInfo(2262, "Mellohi Disc");
-            MusicDiscStal = new ItemInfo(2263, "Stal Disc");
-            MusicDiscStrad = new ItemInfo(2264, "Strad Disc");
-            MusicDiscWard = new ItemInfo(2265, "Ward Disc");
-            MusicDisc11 = new ItemInfo(2266, "11 Disc");
+            MusicDisc13 = new ItemInfo(2256, "13 Disc").SetInternalName("record_13");
+            MusicDiscCat = new ItemInfo(2257, "Cat Disc").SetInternalName("record_cat");
+            MusicDiscBlocks = new ItemInfo(2258, "Blocks Disc").SetInternalName("record_blocks");
+            MusicDiscChirp = new ItemInfo(2259, "Chirp Disc").SetInternalName("record_chirp");
+            MusicDiscFar = new ItemInfo(2260, "Far Disc").SetInternalName("record_far");
+            MusicDiscMall = new ItemInfo(2261, "Mall Disc").SetInternalName("record_mall");
+            MusicDiscMellohi = new ItemInfo(2262, "Mellohi Disc").SetInternalName("record_mellohi");
+            MusicDiscStal = new ItemInfo(2263, "Stal Disc").SetInternalName("record_stal");
+            MusicDiscStrad = new ItemInfo(2264, "Strad Disc").SetInternalName("record_strad");
+            MusicDiscWard = new ItemInfo(2265, "Ward Disc").SetInternalName("record_ward");
+            MusicDisc11 = new ItemInfo(2266, "11 Disc").SetInternalName("record_11");
         }
     }
 }
