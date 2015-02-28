@@ -11,6 +11,16 @@ namespace Substrate.Core
         readonly int rx;
         readonly int rz;
 
+        public int X
+        {
+            get { return rx; }
+        }
+
+        public int Z
+        {
+            get { return rz; }
+        }
+
         public RegionKey (int _rx, int _rz)
         {
             rx = _rx;

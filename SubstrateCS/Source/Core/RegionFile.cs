@@ -21,7 +21,7 @@ namespace Substrate.Core
 
         private static byte[] emptySector = new byte[4096];
 
-        private string fileName;
+        protected string fileName;
         private FileStream file;
 
         /// <summary>
