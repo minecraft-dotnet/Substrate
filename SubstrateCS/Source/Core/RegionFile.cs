@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Ionic.Zlib;
 
 namespace Substrate.Core
 {
     public class RegionFile : IDisposable
     {
+        private static Regex _namePattern = new Regex("r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mc[ar]$");
 
         private const int VERSION_GZIP = 1;
         private const int VERSION_DEFLATE = 2;
@@ -550,6 +552,22 @@ namespace Substrate.Core
             lock (this.fileLock) {
                 file.Close();
             }
+        }
+
+        public virtual RegionKey parseCoordinatesFromName ()
+        {
+            int x = 0;
+            int z = 0;
+
+            Match match = _namePattern.Match(fileName);
+            if (!match.Success) {
+                return RegionKey.InvalidRegion;
+            }
+
+            x = Convert.ToInt32(match.Groups[1].Value);
+            z = Convert.ToInt32(match.Groups[2].Value);
+
+            return new RegionKey(x, z);
         }
 
         protected virtual int SectorBytes
