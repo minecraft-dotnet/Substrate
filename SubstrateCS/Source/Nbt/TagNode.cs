@@ -119,6 +119,15 @@ namespace Substrate.Nbt
         }
 
         /// <summary>
+        /// Conver this node to a short array tag type if supported.
+        /// </summary>
+        /// <returns>A new short array node.</returns>
+        public virtual TagNodeShortArray ToTagShortArray ()
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
         /// Gets the underlying tag type of the node.
         /// </summary>
         /// <returns>An NBT tag type.</returns>

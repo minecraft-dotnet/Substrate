@@ -145,6 +145,9 @@ namespace Substrate.Nbt
 
                 case TagType.TAG_INT_ARRAY:
                     return ReadIntArray();
+
+                case TagType.TAG_SHORT_ARRAY:
+                    return ReadShortArray();
             }
 
             throw new Exception();
@@ -350,6 +353,35 @@ namespace Substrate.Nbt
             return val;
         }
 
+        private TagNode ReadShortArray ()
+        {
+            byte[] lenBytes = new byte[4];
+            _stream.Read(lenBytes, 0, 4);
+
+            if (BitConverter.IsLittleEndian) {
+                Array.Reverse(lenBytes);
+            }
+
+            int length = BitConverter.ToInt32(lenBytes, 0);
+            if (length < 0) {
+                throw new NBTException(NBTException.MSG_READ_NEG);
+            }
+
+            short[] data = new short[length];
+            byte[] buffer = new byte[2];
+            for (int i = 0; i < length; i++) {
+                _stream.Read(buffer, 0, 2);
+                if (BitConverter.IsLittleEndian) {
+                    Array.Reverse(buffer);
+                }
+                data[i] = BitConverter.ToInt16(buffer, 0);
+            }
+
+            TagNodeShortArray val = new TagNodeShortArray(data);
+
+            return val;
+        }
+
         private TagNodeCompound ReadRoot ()
         {
             TagType type = (TagType)_stream.ReadByte();
@@ -421,6 +453,10 @@ namespace Substrate.Nbt
 
                 case TagType.TAG_INT_ARRAY:
                     WriteIntArray(val.ToTagIntArray());
+                    break;
+
+                case TagType.TAG_SHORT_ARRAY:
+                    WriteShortArray(val.ToTagShortArray());
                     break;
             }
         }
@@ -555,6 +591,28 @@ namespace Substrate.Nbt
                     Array.Reverse(buffer);
                 }
                 Array.Copy(buffer, 0, data, i * 4, 4);
+            }
+
+            _stream.Write(data, 0, data.Length);
+        }
+
+        private void WriteShortArray (TagNodeShortArray val)
+        {
+            byte[] lenBytes = BitConverter.GetBytes(val.Length);
+
+            if (BitConverter.IsLittleEndian) {
+                Array.Reverse(lenBytes);
+            }
+
+            _stream.Write(lenBytes, 0, 4);
+
+            byte[] data = new byte[val.Length * 2];
+            for (int i = 0; i < val.Length; i++) {
+                byte[] buffer = BitConverter.GetBytes(val.Data[i]);
+                if (BitConverter.IsLittleEndian) {
+                    Array.Reverse(buffer);
+                }
+                Array.Copy(buffer, 0, data, i * 2, 2);
             }
 
             _stream.Write(data, 0, data.Length);

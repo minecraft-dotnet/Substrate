@@ -69,6 +69,8 @@
     <Compile Include="Source\BetaRegionManager.cs" />
     <Compile Include="Source\Core\CompositeDataArray.cs" />
     <Compile Include="Source\Core\FusedDataArray.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
+    <Compile Include="Source\Nbt\TagNodeShortArray.cs" />
     <Compile Include="Source\RegionChunkManager.cs" />
     <Compile Include="Source\BetaRegion.cs" />
     <Compile Include="Source\BetaWorld.cs" />
@@ -279,6 +281,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Source\Experimental\" />
+    <Folder Include="Source\Util\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Vendor\DotNetZip\Zlib\LICENSE.txt" />
