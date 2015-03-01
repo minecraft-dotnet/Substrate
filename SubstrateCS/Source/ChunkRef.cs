@@ -233,15 +233,6 @@ namespace Substrate
         }
 
         /// <summary>
-        /// Returns a deep copy of the physical chunk underlying the ChunkRef.
-        /// </summary>
-        /// <returns>A copy of the physical Chunk object.</returns>
-        /*public Chunk GetChunkCopy ()
-        {
-            return GetChunk().Copy();
-        }*/
-
-        /// <summary>
         /// Returns the reference of the physical chunk underlying the ChunkRef, and releases the reference from itself.
         /// </summary>
         /// <remarks>
