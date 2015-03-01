@@ -127,10 +127,11 @@ namespace Substrate.Core
         bool RegionExists (int rx, int rz);
 
         /// <summary>
-        /// Gets an <see cref="IRegion"/> for the given region filename.
+        /// Gets the region at the given coordinates.
         /// </summary>
-        /// <param name="filename">The filename of the region to get.</param>
-        /// <returns>A <see cref="IRegion"/> corresponding to the coordinates encoded in the filename.</returns>
+        /// <param name="rx">The global X-coordinate of a region.</param>
+        /// <param name="rz">The global Z-coordinate of a region.</param>
+        /// <returns>The <see cref="IRegion"/> object for the given coordinates, or null if none exists.</returns>
         IRegion GetRegion (int rx, int rz);
 
         /// <summary>
