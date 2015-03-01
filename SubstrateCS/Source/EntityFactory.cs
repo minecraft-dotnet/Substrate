@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Substrate.Entities;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -105,49 +104,6 @@ namespace Substrate
                     yield return kvp;
                 }
             }
-        }
-
-        static EntityFactory ()
-        {
-            _registry[EntityArrow.TypeId] = typeof(EntityArrow);
-            _registry[EntityBlaze.TypeId] = typeof(EntityBlaze);
-            _registry[EntityBoat.TypeId] = typeof(EntityBoat);
-            _registry[EntityCaveSpider.TypeId] = typeof(EntityCaveSpider);
-            _registry[EntityChicken.TypeId] = typeof(EntityChicken);
-            _registry[EntityCow.TypeId] = typeof(EntityCow);
-            _registry[EntityCreeper.TypeId] = typeof(EntityCreeper);
-            _registry[EntityEgg.TypeId] = typeof(EntityEgg);
-            _registry[EntityEnderDragon.TypeId] = typeof(EntityEnderDragon);
-            _registry[EntityEnderman.TypeId] = typeof(EntityEnderman);
-            _registry[EntityEnderEye.TypeId] = typeof(EntityEnderEye);
-            _registry[EntityFallingSand.TypeId] = typeof(EntityFallingSand);
-            _registry[EntityFireball.TypeId] = typeof(EntityFireball);
-            _registry[EntityGhast.TypeId] = typeof(EntityGhast);
-            _registry[EntityGiant.TypeId] = typeof(EntityGiant);
-            _registry[EntityItem.TypeId] = typeof(EntityItem);
-            _registry[EntityMagmaCube.TypeId] = typeof(EntityMagmaCube);
-            _registry[EntityMinecart.TypeId] = typeof(EntityMinecart);
-            _registry[EntityMob.TypeId] = typeof(EntityMob);
-            _registry[EntityMonster.TypeId] = typeof(EntityMonster);
-            _registry[EntityMooshroom.TypeId] = typeof(EntityMooshroom);
-            _registry[EntityPainting.TypeId] = typeof(EntityPainting);
-            _registry[EntityPig.TypeId] = typeof(EntityPig);
-            _registry[EntityPigZombie.TypeId] = typeof(EntityPigZombie);
-            _registry[EntityPrimedTnt.TypeId] = typeof(EntityPrimedTnt);
-            _registry[EntitySheep.TypeId] = typeof(EntitySheep);
-            _registry[EntitySilverfish.TypeId] = typeof(EntitySilverfish);
-            _registry[EntitySkeleton.TypeId] = typeof(EntitySkeleton);
-            _registry[EntitySlime.TypeId] = typeof(EntitySlime);
-            _registry[EntitySmallFireball.TypeId] = typeof(EntitySmallFireball);
-            _registry[EntitySnowball.TypeId] = typeof(EntitySnowball);
-            _registry[EntitySnowman.TypeId] = typeof(EntitySnowman);
-            _registry[EntitySpider.TypeId] = typeof(EntitySpider);
-            _registry[EntitySquid.TypeId] = typeof(EntitySquid);
-            _registry[EntityEnderPearl.TypeId] = typeof(EntityEnderPearl);
-            _registry[EntityVillager.TypeId] = typeof(EntityVillager);
-            _registry[EntityWolf.TypeId] = typeof(EntityWolf);
-            _registry[EntityXPOrb.TypeId] = typeof(EntityXPOrb);
-            _registry[EntityZombie.TypeId] = typeof(EntityZombie);
         }
     }
 }

@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Substrate</RootNamespace>
-    <AssemblyName>Substrate</AssemblyName>
+    <AssemblyName>Substrate.net40-client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -43,7 +43,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Substrate.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Substrate.net40-client.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -91,21 +92,6 @@
     <Compile Include="Source\Data\MapManagerInterface.cs" />
     <Compile Include="Source\Enchantment.cs" />
     <Compile Include="Source\EnchantmentInfo.cs" />
-    <Compile Include="Source\Entities\EntityAnimal.cs" />
-    <Compile Include="Source\Entities\EntityBlaze.cs" />
-    <Compile Include="Source\Entities\EntityCaveSpider.cs" />
-    <Compile Include="Source\Entities\EntityEnderDragon.cs" />
-    <Compile Include="Source\Entities\EntityEnderEye.cs" />
-    <Compile Include="Source\Entities\EntityEnderman.cs" />
-    <Compile Include="Source\Entities\EntityEnderPearl.cs" />
-    <Compile Include="Source\Entities\EntityFireball.cs" />
-    <Compile Include="Source\Entities\EntityMagmaCube.cs" />
-    <Compile Include="Source\Entities\EntityMooshroom.cs" />
-    <Compile Include="Source\Entities\EntitySilverfish.cs" />
-    <Compile Include="Source\Entities\EntitySmallFireball.cs" />
-    <Compile Include="Source\Entities\EntitySnowman.cs" />
-    <Compile Include="Source\Entities\EntityVillager.cs" />
-    <Compile Include="Source\Entities\EntityXPOrb.cs" />
     <Compile Include="Source\ImportExport\Schematic.cs" />
     <Compile Include="Source\ItemCollection.cs" />
     <Compile Include="Source\LevelIOException.cs" />
@@ -117,7 +103,6 @@
     <Compile Include="Source\Data.cs" />
     <Compile Include="Source\ItemInfo.cs" />
     <Compile Include="Source\Core\ChunkCache.cs" />
-    <Compile Include="Source\Entities\EntitySquid.cs" />
     <Compile Include="Source\EntityCollection.cs" />
     <Compile Include="Source\AlphaBlockCollection.cs" />
     <Compile Include="Source\Core\BlockLight.cs" />
@@ -171,33 +156,6 @@
     <Compile Include="Source\Core\ChunkInterface.cs" />
     <Compile Include="Source\Core\ChunkKey.cs" />
     <Compile Include="Source\ChunkRef.cs" />
-    <Compile Include="Source\Entities\EntityArrow.cs" />
-    <Compile Include="Source\Entities\EntityBoat.cs" />
-    <Compile Include="Source\Entities\EntityChicken.cs" />
-    <Compile Include="Source\Entities\EntityCow.cs" />
-    <Compile Include="Source\Entities\EntityCreeper.cs" />
-    <Compile Include="Source\Entities\EntityEgg.cs" />
-    <Compile Include="Source\Entities\EntityFallingSand.cs" />
-    <Compile Include="Source\Entities\EntityGhast.cs" />
-    <Compile Include="Source\Entities\EntityGiant.cs" />
-    <Compile Include="Source\Entities\EntityItem.cs" />
-    <Compile Include="Source\Entities\EntityMinecart.cs" />
-    <Compile Include="Source\Entities\EntityMinecartChest.cs" />
-    <Compile Include="Source\Entities\EntityMinecartFurnace.cs" />
-    <Compile Include="Source\Entities\EntityMob.cs" />
-    <Compile Include="Source\Entities\EntityMonster.cs" />
-    <Compile Include="Source\Entities\EntityPainting.cs" />
-    <Compile Include="Source\Entities\EntityPig.cs" />
-    <Compile Include="Source\Entities\EntityPigZombie.cs" />
-    <Compile Include="Source\Entities\EntityPrimedTnt.cs" />
-    <Compile Include="Source\Entities\EntitySheep.cs" />
-    <Compile Include="Source\Entities\EntitySkeleton.cs" />
-    <Compile Include="Source\Entities\EntitySlime.cs" />
-    <Compile Include="Source\Entities\EntitySnowball.cs" />
-    <Compile Include="Source\Entities\EntitySpider.cs" />
-    <Compile Include="Source\Entities\EntityThrowable.cs" />
-    <Compile Include="Source\Entities\EntityWolf.cs" />
-    <Compile Include="Source\Entities\EntityZombie.cs" />
     <Compile Include="Source\Entity.cs" />
     <Compile Include="Source\EntityFactory.cs" />
     <Compile Include="Source\Item.cs" />
@@ -209,19 +167,6 @@
     <Compile Include="Source\RegionChunkManager.cs" />
     <Compile Include="Source\SpawnPoint.cs" />
     <Compile Include="Source\SubstrateException.cs" />
-    <Compile Include="Source\TileEntities\TileEntityBeacon.cs" />
-    <Compile Include="Source\TileEntities\TileEntityBrewingStand.cs" />
-    <Compile Include="Source\TileEntities\TileEntityChest.cs" />
-    <Compile Include="Source\TileEntities\TileEntityControl.cs" />
-    <Compile Include="Source\TileEntities\TileEntityEnchantmentTable.cs" />
-    <Compile Include="Source\TileEntities\TileEntityEndPortal.cs" />
-    <Compile Include="Source\TileEntities\TileEntityFurnace.cs" />
-    <Compile Include="Source\TileEntities\TileEntityMobSpawner.cs" />
-    <Compile Include="Source\TileEntities\TileEntityPiston.cs" />
-    <Compile Include="Source\TileEntities\TileEntityMusic.cs" />
-    <Compile Include="Source\TileEntities\TileEntityRecordPlayer.cs" />
-    <Compile Include="Source\TileEntities\TileEntitySign.cs" />
-    <Compile Include="Source\TileEntities\TileEntityTrap.cs" />
     <Compile Include="Source\TileEntity.cs" />
     <Compile Include="Source\TileEntityFactory.cs" />
     <Compile Include="Source\Core\Base.cs" />
