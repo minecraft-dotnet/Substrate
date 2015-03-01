@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace Substrate
 {
     using Nbt;
-    using TileEntities;
 
     /// <summary>
     /// Creates new instances of concrete <see cref="TileEntity"/> types from a dynamic registry.
@@ -108,23 +107,6 @@ namespace Substrate
                     yield return kvp;
                 }
             }
-        }
-
-        static TileEntityFactory ()
-        {
-            _registry[TileEntityEndPortal.TypeId] = typeof(TileEntityEndPortal);
-            _registry[TileEntityBeacon.TypeId] = typeof(TileEntityBeacon);
-            _registry[TileEntityBrewingStand.TypeId] = typeof(TileEntityBrewingStand);
-            _registry[TileEntityChest.TypeId] = typeof(TileEntityChest);
-            _registry[TileEntityControl.TypeId] = typeof(TileEntityControl);
-            _registry[TileEntityEnchantmentTable.TypeId] = typeof(TileEntityEnchantmentTable);
-            _registry[TileEntityFurnace.TypeId] = typeof(TileEntityFurnace);
-            _registry[TileEntityMobSpawner.TypeId] = typeof(TileEntityMobSpawner);
-            _registry[TileEntityMusic.TypeId] = typeof(TileEntityMusic);
-            _registry[TileEntityPiston.TypeId] = typeof(TileEntityPiston);
-            _registry[TileEntityRecordPlayer.TypeId] = typeof(TileEntityRecordPlayer);
-            _registry[TileEntitySign.TypeId] = typeof(TileEntitySign);
-            _registry[TileEntityTrap.TypeId] = typeof(TileEntityTrap);
         }
     }
 
