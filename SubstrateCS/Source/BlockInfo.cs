@@ -310,6 +310,7 @@ namespace Substrate
 
         private int _id = 0;
         private string _name = "";
+        private string _internal_name = "";
         private int _tick = 0;
         private int _opacity = MAX_OPACITY;
         private int _luminance = MIN_LUMINANCE;
@@ -332,6 +333,19 @@ namespace Substrate
         {
             get { return _blockTableCache; }
         }
+
+        public static BlockInfo GetBlockInfoByInternalName(string internalName)
+        {
+          foreach (BlockInfo info in _blockTable)
+          {
+            if (info._internal_name == internalName)
+            {
+              return info;
+            }
+          }
+          return null;
+        }
+
 
         /// <summary>
         /// Gets the lookup table for id-to-opacity values.
@@ -434,6 +448,8 @@ namespace Substrate
             _id = id;
             _name = "Unknown Block";
             _blockTable[_id] = this;
+            _internal_name = "minecraft:" + _name.ToLower().Replace(' ', '_');
+            _name += string.Format(" ({0})", id);
         }
 
         /// <summary>
@@ -448,6 +464,13 @@ namespace Substrate
             _name = name;
             _blockTable[_id] = this;
             _registered = true;
+            _internal_name = "minecraft:" + name.ToLower().Replace(' ', '_');
+        }
+
+        public BlockInfo SetInternalName(string name)
+        {
+          _internal_name = "minecraft:" + name;
+          return this;
         }
 
         /// <summary>
@@ -749,7 +772,7 @@ namespace Substrate
             Grass = new BlockInfo(2, "Grass").SetTick(10);
             Dirt = new BlockInfo(3, "Dirt");
             Cobblestone = new BlockInfo(4, "Cobblestone");
-            WoodPlank = new BlockInfo(5, "Wooden Plank");
+            WoodPlank = new BlockInfo(5, "Wooden Plank").SetInternalName("planks");
             Sapling = new BlockInfo(6, "Sapling").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             Bedrock = new BlockInfo(7, "Bedrock");
             Water = new BlockInfo(8, "Water").SetOpacity(3).SetState(BlockState.FLUID).SetTick(5);
@@ -761,43 +784,43 @@ namespace Substrate
             GoldOre = new BlockInfo(14, "Gold Ore");
             IronOre = new BlockInfo(15, "Iron Ore");
             CoalOre = new BlockInfo(16, "Coal Ore");
-            Wood = new BlockInfo(17, "Wood");
+            Wood = new BlockInfo(17, "Wood").SetInternalName("log");
             Leaves = new BlockInfo(18, "Leaves").SetOpacity(1).SetTick(10);
             Sponge = new BlockInfo(19, "Sponge");
             Glass = new BlockInfo(20, "Glass").SetOpacity(0);
-            LapisOre = new BlockInfo(21, "Lapis Lazuli Ore");
-            LapisBlock = new BlockInfo(22, "Lapis Lazuli Block");
+            LapisOre = new BlockInfo(21, "Lapis Lazuli Ore").SetInternalName("lapis_ore");
+            LapisBlock = new BlockInfo(22, "Lapis Lazuli Block").SetInternalName("lapis_block");
             Dispenser = (BlockInfoEx)new BlockInfoEx(23, "Dispenser").SetTick(4);
             Sandstone = new BlockInfo(24, "Sandstone");
-            NoteBlock = new BlockInfoEx(25, "Note Block");
+            NoteBlock = (BlockInfoEx)new BlockInfoEx(25, "Note Block").SetInternalName("noteblock");
             Bed = new BlockInfo(26, "Bed").SetOpacity(0);
-            PoweredRail = new BlockInfo(27, "Powered Rail").SetOpacity(0).SetState(BlockState.NONSOLID);
+            PoweredRail = new BlockInfo(27, "Powered Rail").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("golden_rail");
             DetectorRail = new BlockInfo(28, "Detector Rail").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20);
             StickyPiston = new BlockInfo(29, "Sticky Piston").SetOpacity(0);
-            Cobweb = new BlockInfo(30, "Cobweb").SetOpacity(0).SetState(BlockState.NONSOLID);
-            TallGrass = new BlockInfo(31, "Tall Grass").SetOpacity(0).SetState(BlockState.NONSOLID);
-            DeadShrub = new BlockInfo(32, "Dead Shrub").SetOpacity(0).SetState(BlockState.NONSOLID);
+            Cobweb = new BlockInfo(30, "Cobweb").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("web");
+            TallGrass = new BlockInfo(31, "Tall Grass").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("tallgrass");
+            DeadShrub = new BlockInfo(32, "Dead Shrub").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("deadbush");
             Piston = new BlockInfo(33, "Piston").SetOpacity(0);
             PistonHead = new BlockInfo(34, "Piston Head").SetOpacity(0);
             Wool = new BlockInfo(35, "Wool");
             PistonMoving = (BlockInfoEx)new BlockInfoEx(36, "Piston Moving").SetOpacity(0);
-            YellowFlower = new BlockInfo(37, "Yellow Flower").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
-            RedRose = new BlockInfo(38, "Red Rose").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
+            YellowFlower = new BlockInfo(37, "Yellow Flower").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10).SetInternalName("yellow_flower");
+            RedRose = new BlockInfo(38, "Red Rose").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10).SetInternalName("red_flower");
             BrownMushroom = new BlockInfo(39, "Brown Mushroom").SetOpacity(0).SetLuminance(1).SetState(BlockState.NONSOLID).SetTick(10);
             RedMushroom = new BlockInfo(40, "Red Mushroom").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             GoldBlock = new BlockInfo(41, "Gold Block");
             IronBlock = new BlockInfo(42, "Iron Block");
-            DoubleStoneSlab = new BlockInfo(43, "Double Slab");
-            StoneSlab = new BlockInfo(44, "Slab").SetOpacity(0);
+            DoubleStoneSlab = new BlockInfo(43, "Double Slab").SetInternalName("double_stone_slab");
+            StoneSlab = new BlockInfo(44, "Slab").SetOpacity(0).SetInternalName("stone_slab");
             BrickBlock = new BlockInfo(45, "Brick Block");
             TNT = new BlockInfo(46, "TNT");
             Bookshelf = new BlockInfo(47, "Bookshelf");
-            MossStone = new BlockInfo(48, "Moss Stone");
+            MossStone = new BlockInfo(48, "Moss Stone").SetInternalName("mossy_cobblestone");
             Obsidian = new BlockInfo(49, "Obsidian");
             Torch = new BlockInfo(50, "Torch").SetOpacity(0).SetLuminance(MAX_LUMINANCE - 1).SetState(BlockState.NONSOLID).SetTick(10);
             Fire = new BlockInfo(51, "Fire").SetOpacity(0).SetLuminance(MAX_LUMINANCE).SetState(BlockState.NONSOLID).SetTick(40);
             MonsterSpawner = (BlockInfoEx)new BlockInfoEx(52, "Monster Spawner").SetOpacity(0);
-            WoodStairs = new BlockInfo(53, "Wooden Stairs").SetOpacity(0);
+            WoodStairs = new BlockInfo(53, "Wooden Stairs").SetOpacity(0).SetInternalName("oak_stairs");
             Chest = (BlockInfoEx)new BlockInfoEx(54, "Chest").SetOpacity(0);
             RedstoneWire = new BlockInfo(55, "Redstone Wire").SetOpacity(0).SetState(BlockState.NONSOLID);
             DiamondOre = new BlockInfo(56, "Diamond Ore");
@@ -810,8 +833,8 @@ namespace Substrate
             SignPost = (BlockInfoEx)new BlockInfoEx(63, "Sign Post").SetOpacity(0).SetState(BlockState.NONSOLID);
             WoodDoor = new BlockInfo(64, "Wooden Door").SetOpacity(0);
             Ladder = new BlockInfo(65, "Ladder").SetOpacity(0);
-            Rails = new BlockInfo(66, "Rails").SetOpacity(0).SetState(BlockState.NONSOLID);
-            CobbleStairs = new BlockInfo(67, "Cobblestone Stairs").SetOpacity(0);
+            Rails = new BlockInfo(66, "Rails").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("rail");
+            CobbleStairs = new BlockInfo(67, "Cobblestone Stairs").SetOpacity(0).SetInternalName("stone_stairs");
             WallSign = (BlockInfoEx)new BlockInfoEx(68, "Wall Sign").SetOpacity(0).SetState(BlockState.NONSOLID);
             Lever = new BlockInfo(69, "Lever").SetOpacity(0).SetState(BlockState.NONSOLID);
             StonePlate = new BlockInfo(70, "Stone Pressure Plate").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20);
@@ -819,59 +842,59 @@ namespace Substrate
             WoodPlate = new BlockInfo(72, "Wooden Pressure Plate").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20);
             RedstoneOre = new BlockInfo(73, "Redstone Ore").SetTick(30);
             GlowRedstoneOre = new BlockInfo(74, "Glowing Redstone Ore").SetLuminance(9).SetTick(30);
-            RedstoneTorch = new BlockInfo(75, "Redstone Torch (Off)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(2);
-            RedstoneTorchOn = new BlockInfo(76, "Redstone Torch (On)").SetOpacity(0).SetLuminance(7).SetState(BlockState.NONSOLID).SetTick(2);
+            RedstoneTorch = new BlockInfo(75, "Redstone Torch (Off)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(2).SetInternalName("unlit_redstone_torch");
+            RedstoneTorchOn = new BlockInfo(76, "Redstone Torch (On)").SetOpacity(0).SetLuminance(7).SetState(BlockState.NONSOLID).SetTick(2).SetInternalName("redstone_torch");
             StoneButton = new BlockInfo(77, "Stone Button").SetOpacity(0).SetState(BlockState.NONSOLID);
-            Snow = new BlockInfo(78, "Snow").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
+            Snow = new BlockInfo(78, "Snow").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10).SetInternalName("snow_layer");
             Ice = new BlockInfo(79, "Ice").SetOpacity(3).SetTick(10);
             SnowBlock = new BlockInfo(80, "Snow Block").SetTick(10);
             Cactus = new BlockInfo(81, "Cactus").SetOpacity(0).SetTick(10);
             ClayBlock = new BlockInfo(82, "Clay Block");
-            SugarCane = new BlockInfo(83, "Sugar Cane").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
+            SugarCane = new BlockInfo(83, "Sugar Cane").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10).SetInternalName("reeds");
             Jukebox = new BlockInfo(84, "Jukebox");
             Fence = new BlockInfo(85, "Fence").SetOpacity(0);
             Pumpkin = new BlockInfo(86, "Pumpkin");
             Netherrack = new BlockInfo(87, "Netherrack");
             SoulSand = new BlockInfo(88, "Soul Sand");
-            Glowstone = new BlockInfo(89, "Glowstone Block").SetLuminance(MAX_LUMINANCE);
+            Glowstone = new BlockInfo(89, "Glowstone Block").SetLuminance(MAX_LUMINANCE).SetInternalName("glowstone");
             Portal = new BlockInfo(90, "Portal").SetOpacity(0).SetLuminance(11).SetState(BlockState.NONSOLID);
-            JackOLantern = new BlockInfo(91, "Jack-O-Lantern").SetLuminance(MAX_LUMINANCE);
+            JackOLantern = new BlockInfo(91, "Jack-O-Lantern").SetLuminance(MAX_LUMINANCE).SetInternalName("lit_pumpkin");
             CakeBlock = new BlockInfo(92, "Cake Block").SetOpacity(0);
-            RedstoneRepeater = new BlockInfo(93, "Redstone Repeater (Off)").SetOpacity(0).SetTick(10);
-            RedstoneRepeaterOn = new BlockInfo(94, "Redstone Repeater (On)").SetOpacity(0).SetLuminance(7).SetTick(10);
+            RedstoneRepeater = new BlockInfo(93, "Redstone Repeater (Off)").SetOpacity(0).SetTick(10).SetInternalName("unpowered_repeater");
+            RedstoneRepeaterOn = new BlockInfo(94, "Redstone Repeater (On)").SetOpacity(0).SetLuminance(7).SetTick(10).SetInternalName("powered_repeater");
             LockedChest = (BlockInfoEx)new BlockInfoEx(95, "Locked Chest").SetLuminance(MAX_LUMINANCE).SetTick(10);
             StainedGlass = new BlockInfo(95, "Stained Glass").SetOpacity(0);
             Trapdoor = new BlockInfo(96, "Trapdoor").SetOpacity(0);
             SilverfishStone = new BlockInfo(97, "Stone with Silverfish");
-            StoneBrick = new BlockInfo(98, "Stone Brick");
-            HugeRedMushroom = new BlockInfo(99, "Huge Red Mushroom");
-            HugeBrownMushroom = new BlockInfo(100, "Huge Brown Mushroom");
+            StoneBrick = new BlockInfo(98, "Stone Brick").SetInternalName("stonebrick");
+            HugeRedMushroom = new BlockInfo(99, "Huge Red Mushroom").SetInternalName("red_mushroom_block");
+            HugeBrownMushroom = new BlockInfo(100, "Huge Brown Mushroom").SetInternalName("brown_mushroom_block");
             IronBars = new BlockInfo(101, "Iron Bars").SetOpacity(0);
             GlassPane = new BlockInfo(102, "Glass Pane").SetOpacity(0);
-            Melon = new BlockInfo(103, "Melon");
+            Melon = new BlockInfo(103, "Melon").SetInternalName("melon_block");
             PumpkinStem = new BlockInfo(104, "Pumpkin Stem").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             MelonStem = new BlockInfo(105, "Melon Stem").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
-            Vines = new BlockInfo(106, "Vines").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
+            Vines = new BlockInfo(106, "Vines").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10).SetInternalName("vine");
             FenceGate = new BlockInfo(107, "Fence Gate").SetOpacity(0);
             BrickStairs = new BlockInfo(108, "Brick Stairs").SetOpacity(0);
             StoneBrickStairs = new BlockInfo(109, "Stone Brick Stairs").SetOpacity(0);
             Mycelium = new BlockInfo(110, "Mycelium").SetTick(10);
-            LillyPad = new BlockInfo(111, "Lilly Pad").SetOpacity(0).SetState(BlockState.NONSOLID);
+            LillyPad = new BlockInfo(111, "Lilly Pad").SetOpacity(0).SetState(BlockState.NONSOLID).SetInternalName("waterlily");
             NetherBrick = new BlockInfo(112, "Nether Brick");
             NetherBrickFence = new BlockInfo(113, "Nether Brick Fence").SetOpacity(0);
             NetherBrickStairs = new BlockInfo(114, "Nether Brick Stairs").SetOpacity(0);
             NetherWart = new BlockInfo(115, "Nether Wart").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
-            EnchantmentTable = (BlockInfoEx)new BlockInfoEx(116, "Enchantment Table").SetOpacity(0);
+            EnchantmentTable = (BlockInfoEx)new BlockInfoEx(116, "Enchantment Table").SetOpacity(0).SetInternalName("enchanting_table");
             BrewingStand = (BlockInfoEx)new BlockInfoEx(117, "Brewing Stand").SetOpacity(0);
             Cauldron = new BlockInfo(118, "Cauldron").SetOpacity(0);
             EndPortal = (BlockInfoEx)new BlockInfoEx(119, "End Portal").SetOpacity(0).SetLuminance(MAX_LUMINANCE).SetState(BlockState.NONSOLID);
             EndPortalFrame = new BlockInfo(120, "End Portal Frame").SetLuminance(MAX_LUMINANCE);
             EndStone = new BlockInfo(121, "End Stone");
             DragonEgg = new BlockInfo(122, "Dragon Egg").SetOpacity(0).SetLuminance(1).SetTick(3);
-            RedstoneLampOff = new BlockInfo(123, "Redstone Lamp (Off)").SetTick(2);
-            RedstoneLampOn = new BlockInfo(124, "Redstone Lamp (On)").SetLuminance(15).SetTick(2);
-            DoubleWoodSlab = new BlockInfo(125, "Double Wood Slab");
-            WoodSlab = new BlockInfo(126, "Wood Slab");
+            RedstoneLampOff = new BlockInfo(123, "Redstone Lamp (Off)").SetTick(2).SetInternalName("redstone_lamp");
+            RedstoneLampOn = new BlockInfo(124, "Redstone Lamp (On)").SetLuminance(15).SetTick(2).SetInternalName("lit_redstone_lamp");
+            DoubleWoodSlab = new BlockInfo(125, "Double Wood Slab").SetInternalName("double_wooden_slab");
+            WoodSlab = new BlockInfo(126, "Wood Slab").SetInternalName("wooden_slab");
             CocoaPlant = new BlockInfo(127, "Cocoa Plant").SetLuminance(2).SetOpacity(0);
             SandstoneStairs = new BlockInfo(128, "Sandstone Stairs").SetOpacity(0);
             EmeraldOre = new BlockInfo(129, "Emerald Ore");
@@ -879,37 +902,37 @@ namespace Substrate
             TripwireHook = new BlockInfo(131, "Tripwire Hook").SetOpacity(0).SetState(BlockState.NONSOLID);
             Tripwire = new BlockInfo(132, "Tripwire").SetOpacity(0).SetState(BlockState.NONSOLID);
             EmeraldBlock = new BlockInfo(133, "Emerald Block");
-            SpruceWoodStairs = new BlockInfo(134, "Sprice Wood Stairs").SetOpacity(0);
-            BirchWoodStairs = new BlockInfo(135, "Birch Wood Stairs").SetOpacity(0);
-            JungleWoodStairs = new BlockInfo(136, "Jungle Wood Stairs").SetOpacity(0);
+            SpruceWoodStairs = new BlockInfo(134, "Sprice Wood Stairs").SetOpacity(0).SetInternalName("spruce_stairs");
+            BirchWoodStairs = new BlockInfo(135, "Birch Wood Stairs").SetOpacity(0).SetInternalName("birch_stairs");
+            JungleWoodStairs = new BlockInfo(136, "Jungle Wood Stairs").SetOpacity(0).SetInternalName("jungle_stairs");
             CommandBlock = (BlockInfoEx)new BlockInfoEx(137, "Command Block");
-            BeaconBlock = (BlockInfoEx)new BlockInfoEx(138, "Beacon Block").SetOpacity(0).SetLuminance(MAX_LUMINANCE);
+            BeaconBlock = (BlockInfoEx)new BlockInfoEx(138, "Beacon Block").SetOpacity(0).SetLuminance(MAX_LUMINANCE).SetInternalName("beacon");
             CobblestoneWall = new BlockInfo(139, "Cobblestone Wall").SetOpacity(0);
             FlowerPot = new BlockInfo(140, "Flower Pot").SetOpacity(0);
             Carrots = new BlockInfo(141, "Carrots").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             Potatoes = new BlockInfo(142, "Potatoes").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             WoodButton = new BlockInfo(143, "Wooden Button").SetOpacity(0).SetState(BlockState.NONSOLID);
-            Heads = new BlockInfo(144, "Heads").SetOpacity(0);
+            Heads = new BlockInfo(144, "Heads").SetOpacity(0).SetInternalName("skull");
             Anvil = new BlockInfo(145, "Anvil").SetOpacity(0);
             TrappedChest = (BlockInfoEx)new BlockInfoEx(146, "Trapped Chest").SetOpacity(0).SetTick(10);
-            WeightedPressurePlateLight = new BlockInfo(147, "Weighted Pressure Plate (Light)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20);
-            WeightedPressurePlateHeavy = new BlockInfo(148, "Weighted Pressure Plate (Heavy)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20);
-            RedstoneComparatorInactive = new BlockInfo(149, "Redstone Comparator (Inactive)").SetOpacity(0).SetTick(10);
-            RedstoneComparatorActive = new BlockInfo(150, "Redstone Comparator (Active)").SetOpacity(0).SetLuminance(9).SetTick(10);
-            DaylightSensor = new BlockInfo(151, "Daylight Sensor").SetOpacity(0).SetTick(10);
-            RedstoneBlock = new BlockInfo(152, "Block of Redstone").SetTick(10);
-            NetherQuartzOre = new BlockInfo(153, "Neither Quartz Ore");
+            WeightedPressurePlateLight = new BlockInfo(147, "Weighted Pressure Plate (Light)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20).SetInternalName("light_weighted_pressure_plate");
+            WeightedPressurePlateHeavy = new BlockInfo(148, "Weighted Pressure Plate (Heavy)").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(20).SetInternalName("heavy_weighted_pressure_plate");
+            RedstoneComparatorInactive = new BlockInfo(149, "Redstone Comparator (Inactive)").SetOpacity(0).SetTick(10).SetInternalName("unpowered_comparator");
+            RedstoneComparatorActive = new BlockInfo(150, "Redstone Comparator (Active)").SetOpacity(0).SetLuminance(9).SetTick(10).SetInternalName("comparator");
+            DaylightSensor = new BlockInfo(151, "Daylight Sensor").SetOpacity(0).SetTick(10).SetInternalName("daylight_detector");
+            RedstoneBlock = new BlockInfo(152, "Block of Redstone").SetTick(10).SetInternalName("redstone_block");
+            NetherQuartzOre = new BlockInfo(153, "Nether Quartz Ore").SetInternalName("quartz_ore");
             Hopper = (BlockInfoEx)new BlockInfoEx(154, "Hopper").SetOpacity(0).SetTick(10);
-            QuartzBlock = new BlockInfo(155, "Block of Quartz");
+            QuartzBlock = new BlockInfo(155, "Block of Quartz").SetInternalName("quartz_block");
             QuartzStairs = new BlockInfo(156, "Quartz Stairs").SetOpacity(0);
             ActivatorRail = new BlockInfo(157, "Activator Rail").SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
             Dropper = (BlockInfoEx)new BlockInfoEx(158, "Dropper").SetTick(10);
-            StainedClay = new BlockInfo(159, "Stained Clay");
+            StainedClay = new BlockInfo(159, "Stained Clay").SetInternalName("stained_hardened_clay");
             StainedGlassPane = new BlockInfo(160, "Stained Glass Pane").SetOpacity(0);
             HayBlock = new BlockInfo(170, "Hay Block");
             Carpet = new BlockInfo(171, "Carpet").SetOpacity(0);
             HardenedClay = new BlockInfo(172, "Hardened Clay");
-            CoalBlock = new BlockInfo(173, "Block of Coal");
+            CoalBlock = new BlockInfo(173, "Block of Coal").SetInternalName("coal_block");
 
             for (int i = 0; i < MAX_BLOCKS; i++) {
                 if (_blockTable[i] == null) {

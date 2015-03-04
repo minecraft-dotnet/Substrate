@@ -12,7 +12,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("id", TagType.TAG_SHORT),
+            new SchemaNodeScaler("id", TagType.TAG_SHORT, SchemaOptions.CAN_BE_STRING),
             new SchemaNodeScaler("Damage", TagType.TAG_SHORT),
             new SchemaNodeScaler("Count", TagType.TAG_BYTE),
             new SchemaNodeCompound("tag", new SchemaNodeCompound("") {
@@ -149,7 +149,32 @@ namespace Substrate
 
             _enchantments.Clear();
 
-            _id = ctree["id"].ToTagShort();
+            _id = 0;
+            if (ctree["id"] is TagNodeString)
+            {
+              TagNodeString str = ctree["id"].ToTagString();
+              ItemInfo info = ItemInfo.GetItemInfoByInternalName(str);
+              if (info != null)
+              {
+                _id = (short)info.ID;
+              }
+              else 
+              {
+                BlockInfo blockInfo = BlockInfo.GetBlockInfoByInternalName(str);
+                if (blockInfo != null)
+                {
+                  _id = (short)blockInfo.ID;
+                }
+                else
+                {
+                  throw new Exception("Item not found!");
+                }
+              }
+            }
+            else
+            {
+              _id = ctree["id"].ToTagShort();
+            }
             _count = ctree["Count"].ToTagByte();
             _damage = ctree["Damage"].ToTagShort();
 
