@@ -2,6 +2,7 @@
 using System.IO;
 using Substrate.Core;
 using Substrate.Nbt;
+using Substrate.Source;
 
 namespace Substrate
 {
@@ -60,7 +61,8 @@ namespace Substrate
 				new SchemaNodeScaler("generatorName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
 				new SchemaNodeScaler("generatorOptions", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
 				new SchemaNodeScaler("Difficulty", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
-				new SchemaNodeScaler("DifficultyLocked", TagType.TAG_BYTE, SchemaOptions.OPTIONAL)
+				new SchemaNodeScaler("DifficultyLocked", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+				new SchemaNodeScaler("allowCommands", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
             },
         };
 
@@ -97,11 +99,45 @@ namespace Substrate
 		private string _generatorName;
 		private LevelGeneratorOptions _generatorOptions;
 
+		private byte? _allowCommands;
+
+		/// <summary>
+		/// Gets or sets whether the player can use commands in the world.
+		/// </summary>
+		public bool AllowCommands
+		{
+			get { return _allowCommands.GetValueOrDefault() > 0; }
+			set { if (value) { _allowCommands = 1; } else { _allowCommands = 0; } }
+		}
+
+		/// <summary>
+		/// Gets or sets the difficulty the world is running at.
+		/// </summary>
+		public Difficulty Difficulty
+		{
+			get { return (Difficulty)_difficulty; }
+			set { _difficulty = (byte)value; }
+		}
+		/// <summary>
+		/// Gets or sets whether the difficulty of the world can be changed by the player.
+		/// </summary>
+		public bool DifficultyLocked
+		{
+			get { return _difficultyLocked.GetValueOrDefault() > 0; }
+			set { if (value) { _difficultyLocked = 1; } else { _difficultyLocked = 0; } }
+		}
+
+		/// <summary>
+		/// Gets or sets the name of the generator that this world should use.
+		/// </summary>
 		public string GeneratorName
 		{
 			get { return _generatorName; }
 			set { _generatorName = value; }
 		}
+		/// <summary>
+		/// Gets or sets the generator options of the level if the GeneratorName is set to be the superflat world generator.
+		/// </summary>
 		public LevelGeneratorOptions GeneratorOptions
 		{
 			get { return _generatorOptions; }
@@ -480,6 +516,15 @@ namespace Substrate
 				catch (FormatException) { }
 			}
 
+			if (ctree.ContainsKey("Difficulty")) {
+				_difficulty = ctree["Difficulty"].ToTagByte();
+			}
+			if (ctree.ContainsKey("DifficultyLocked")) {
+				_difficultyLocked = ctree["DifficultyLocked"].ToTagByte();
+			}
+			if (ctree.ContainsKey("allowCommands")) {
+				_allowCommands = ctree["allowCommands"].ToTagByte();
+			}
             _source = ctree.Copy() as TagNodeCompound;
 
             return this;
@@ -559,6 +604,16 @@ namespace Substrate
 			else {
 				data["generatorOptions"] = new TagNodeString("");
 			}
+			if (_difficulty != null) {
+				data["Difficulty"] = new TagNodeByte(_difficulty ?? 0);
+			}
+			if (_difficultyLocked != null) {
+				data["DifficultyLocked"] = new TagNodeByte(_difficultyLocked ?? 0);
+			}
+			if (_allowCommands != null) {
+				data["allowCommands"] = new TagNodeByte(_allowCommands ?? 0);
+			}
+
 
             if (_source != null) {
                 data.MergeFrom(_source);
