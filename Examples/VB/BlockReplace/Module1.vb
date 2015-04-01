@@ -24,7 +24,7 @@ Module Module1
 
         ' The chunk manager is more efficient than the block manager for
         ' this purpose, since we'll inspect every block
-        Dim cm As BetaChunkManager = world.GetChunkManager()
+        Dim cm As RegionChunkManager = world.GetChunkManager()
 
         For Each chunk As ChunkRef In cm
             ' You could hardcode your dimensions, but maybe some day they

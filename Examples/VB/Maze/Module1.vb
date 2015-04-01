@@ -44,7 +44,7 @@ Module Module1
 
         Console.WriteLine("Relight Chunks")
 
-        Dim cm As BetaChunkManager = world.GetChunkManager()
+        Dim cm As RegionChunkManager = world.GetChunkManager()
         cm.RelightDirtyChunks()
 
         world.Save()

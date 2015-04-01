@@ -16,7 +16,7 @@ Module Module1
 
         ' This will instantly create any necessary directory structure
         Dim world As BetaWorld = BetaWorld.Create(dest)
-        Dim cm As BetaChunkManager = world.GetChunkManager()
+        Dim cm As RegionChunkManager = world.GetChunkManager()
 
         ' We can set different world parameters
         world.Level.LevelName = "Flatlands"
