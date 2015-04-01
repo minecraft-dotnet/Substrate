@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AFE30E14-3F2F-4461-9F7D-147AB4DCA4C3}</ProjectGuid>
+    <ProjectGuid>{7264A1C4-AB4A-4437-B252-7379B98B5509}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Substrate</RootNamespace>
-    <AssemblyName>Substrate.net20</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <!--<AssemblyName>Substrate.xxx</AssemblyName>-->
+    <!--<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>-->
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <StartupObject>
@@ -19,7 +19,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
+    <!--<TargetFrameworkProfile>Client</TargetFrameworkProfile>-->
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -35,7 +35,10 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40-client-Debug|AnyCPU' ">
+    <AssemblyName>Substrate.net40-client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -43,23 +46,77 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Substrate.net20.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Substrate.net40-client.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40-client-Release|AnyCPU' ">
+    <AssemblyName>Substrate.net40-client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\NET2\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Substrate.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Substrate.net40-client.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net20-Release|AnyCPU'">
+    <AssemblyName>Substrate.net20</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Substrate.net20.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net20-Debug|AnyCPU'">
+    <AssemblyName>Substrate.net20</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Substrate.net20.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net35-Debug|AnyCPU'">
+    <AssemblyName>Substrate.net35</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Substrate.net35.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net35-Release|AnyCPU'">
+    <AssemblyName>Substrate.net35</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Substrate.net35.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\AlphaChunk.cs" />
     <Compile Include="Source\AlphaWorld.cs" />
     <Compile Include="Source\AnvilBiomeCollection.cs" />
     <Compile Include="Source\AnvilChunk.cs" />
@@ -67,20 +124,17 @@
     <Compile Include="Source\AnvilRegionManager.cs" />
     <Compile Include="Source\AnvilSection.cs" />
     <Compile Include="Source\AnvilWorld.cs" />
-    <Compile Include="Source\BetaRegionManager.cs" />
-    <Compile Include="Source\Core\CompositeDataArray.cs" />
-    <Compile Include="Source\Core\FusedDataArray.cs" />
-    <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
-    <Compile Include="Source\Nbt\TagNodeShortArray.cs" />
-    <Compile Include="Source\Nbt\SchemaNodeLongArray.cs" />
-    <Compile Include="Source\Nbt\TagNodeLongArray.cs" />
-    <Compile Include="Source\RegionChunkManager.cs" />
     <Compile Include="Source\BetaRegion.cs" />
+    <Compile Include="Source\BetaRegionManager.cs" />
     <Compile Include="Source\BetaWorld.cs" />
     <Compile Include="Source\BiomeInfo.cs" />
     <Compile Include="Source\Core\BlockTileTicks.cs" />
     <Compile Include="Source\Core\BoundedBlockInterface.cs" />
+    <Compile Include="Source\Core\CompositeDataArray.cs" />
+    <Compile Include="Source\Core\FusedDataArray.cs" />
     <Compile Include="Source\Core\ItemInterface.cs" />
+    <Compile Include="Source\Core\Region.cs" />
+    <Compile Include="Source\Core\RegionManager.cs" />
     <Compile Include="Source\Data\BetaDataManager.cs" />
     <Compile Include="Source\Data\DataExceptions.cs" />
     <Compile Include="Source\Data\MapFile.cs" />
@@ -125,6 +179,9 @@
     <Compile Include="Source\Nbt\SchemaNodeIntArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeList.cs" />
     <Compile Include="Source\Nbt\SchemaNodeScaler.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeLongArray.cs" />
+    <Compile Include="Source\Nbt\TagNodeLongArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeString.cs" />
     <Compile Include="Source\Nbt\SchemaOptions.cs" />
     <Compile Include="Source\Nbt\TagNode.cs" />
@@ -137,6 +194,7 @@
     <Compile Include="Source\Nbt\TagNodeList.cs" />
     <Compile Include="Source\Nbt\TagNodeLong.cs" />
     <Compile Include="Source\Nbt\TagNodeShort.cs" />
+    <Compile Include="Source\Nbt\TagNodeShortArray.cs" />
     <Compile Include="Source\Nbt\TagNodeString.cs" />
     <Compile Include="Source\Nbt\TagType.cs" />
     <Compile Include="Source\Nbt\TagNodeByte.cs" />
@@ -151,7 +209,6 @@
     <Compile Include="Source\Core\BlockInterface.cs" />
     <Compile Include="Source\Core\BlockKey.cs" />
     <Compile Include="Source\BlockManager.cs" />
-    <Compile Include="Source\AlphaChunk.cs" />
     <Compile Include="Source\Core\ChunkFile.cs" />
     <Compile Include="Source\AlphaChunkManager.cs" />
     <Compile Include="Source\Core\ChunkInterface.cs" />
@@ -163,10 +220,9 @@
     <Compile Include="Source\Core\NBTFile.cs" />
     <Compile Include="Source\Nbt\JSONSerializer.cs" />
     <Compile Include="Source\Player.cs" />
-    <Compile Include="Source\Core\Region.cs" />
     <Compile Include="Source\Core\RegionFile.cs" />
     <Compile Include="Source\Core\RegionKey.cs" />
-    <Compile Include="Source\Core\RegionManager.cs" />
+    <Compile Include="Source\RegionChunkManager.cs" />
     <Compile Include="Source\SpawnPoint.cs" />
     <Compile Include="Source\SubstrateException.cs" />
     <Compile Include="Source\TileEntity.cs" />
@@ -226,10 +282,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\Experimental\" />
-    <Folder Include="Source\Util\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Vendor\DotNetZip\Zlib\LICENSE.txt" />
   </ItemGroup>
