@@ -142,10 +142,9 @@
     <Compile Include="TileEntities\TileEntityTrap.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Substrate.csproj">
+    <ProjectReference Include="..\Substrate\Substrate.csproj">
       <Project>{7264a1c4-ab4a-4437-b252-7379b98b5509}</Project>
       <Name>Substrate</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
