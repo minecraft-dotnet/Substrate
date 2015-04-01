@@ -27,7 +27,7 @@ Module Module1
 
         ' Open our world
         Dim world As BetaWorld = BetaWorld.Open(dest)
-        Dim cm As BetaChunkManager = world.GetChunkManager()
+        Dim cm As RegionChunkManager = world.GetChunkManager()
 
         Dim added As Integer = 0
 

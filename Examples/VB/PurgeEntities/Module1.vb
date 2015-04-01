@@ -32,7 +32,7 @@ Module Module1
 
         ' Load world
         Dim world As BetaWorld = BetaWorld.Open(dest)
-        Dim cm As BetaChunkManager = world.GetChunkManager()
+        Dim cm As RegionChunkManager = world.GetChunkManager()
 
         ' Remove entities
         For Each chunk As ChunkRef In cm
