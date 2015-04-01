@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Substrate")]
-[assembly: AssemblyCopyright("2011-2012 Justin Aquadro")]
+[assembly: AssemblyCopyright("Copyright © 2011-2015 Justin Aquadro")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,8 +30,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.9.0")]
-[assembly: AssemblyFileVersion("1.3.9.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 // This library is compatible with all CLS-compliant .NET programming languages.
 [assembly: CLSCompliant(true)]
