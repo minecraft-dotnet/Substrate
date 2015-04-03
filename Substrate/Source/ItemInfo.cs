@@ -309,6 +309,7 @@ namespace Substrate
         /// Constructs a new <see cref="ItemInfo"/> record for the given item id and name.
         /// </summary>
         /// <param name="id">The id of an item type.</param>
+        /// <param name="nameId">The name id of an item type</param>
         /// <param name="name">The name of an item type.</param>
         public ItemInfo (int id, string nameId, string name)
         {
