@@ -318,6 +318,7 @@ namespace Substrate
         private bool _transmitLight = false;
         private bool _blocksFluid = true;
         private bool _registered = false;
+        private string _tileEntityName = null;
 
         private BlockState _state = BlockState.SOLID;
 
@@ -483,6 +484,18 @@ namespace Substrate
             set { _tick = value; }
         }
 
+
+        /// <summary>
+        /// Gets the name of the registered <see cref="TileEntity"/> type associated with this block type.
+        /// Sets the name of the registered <see cref="TileEntity"/> type associated with this block type.
+        /// </summary>
+        /// <seealso cref="TileEntityFactory"/>
+        public string TileEntityName
+        {
+            get { return _tileEntityName; }
+            set { _tileEntityName = value; }
+        }
+
         public BlockDataLimits DataLimits
         {
             get { return _dataLimits; }
@@ -551,9 +564,9 @@ namespace Substrate
         public readonly static BlockInfo Glass;
         public readonly static BlockInfo LapisOre;
         public readonly static BlockInfo LapisBlock;
-        public readonly static BlockInfoEx Dispenser;
+        public readonly static BlockInfo Dispenser;
         public readonly static BlockInfo Sandstone;
-        public readonly static BlockInfoEx NoteBlock;
+        public readonly static BlockInfo NoteBlock;
         public readonly static BlockInfo Bed;
         public readonly static BlockInfo PoweredRail;
         public readonly static BlockInfo DetectorRail;
@@ -564,7 +577,7 @@ namespace Substrate
         public readonly static BlockInfo Piston;
         public readonly static BlockInfo PistonHead;
         public readonly static BlockInfo Wool;
-        public readonly static BlockInfoEx PistonMoving;
+        public readonly static BlockInfo PistonMoving;
         public readonly static BlockInfo YellowFlower;
         public readonly static BlockInfo RedRose;
         public readonly static BlockInfo BrownMushroom;
@@ -580,23 +593,23 @@ namespace Substrate
         public readonly static BlockInfo Obsidian;
         public readonly static BlockInfo Torch;
         public readonly static BlockInfo Fire;
-        public readonly static BlockInfoEx MonsterSpawner;
+        public readonly static BlockInfo MonsterSpawner;
         public readonly static BlockInfo WoodStairs;
-        public readonly static BlockInfoEx Chest;
+        public readonly static BlockInfo Chest;
         public readonly static BlockInfo RedstoneWire;
         public readonly static BlockInfo DiamondOre;
         public readonly static BlockInfo DiamondBlock;
         public readonly static BlockInfo CraftTable;
         public readonly static BlockInfo Crops;
         public readonly static BlockInfo Farmland;
-        public readonly static BlockInfoEx Furnace;
-        public readonly static BlockInfoEx BurningFurnace;
-        public readonly static BlockInfoEx SignPost;
+        public readonly static BlockInfo Furnace;
+        public readonly static BlockInfo BurningFurnace;
+        public readonly static BlockInfo SignPost;
         public readonly static BlockInfo WoodDoor;
         public readonly static BlockInfo Ladder;
         public readonly static BlockInfo Rails;
         public readonly static BlockInfo CobbleStairs;
-        public readonly static BlockInfoEx WallSign;
+        public readonly static BlockInfo WallSign;
         public readonly static BlockInfo Lever;
         public readonly static BlockInfo StonePlate;
         public readonly static BlockInfo IronDoor;
@@ -623,7 +636,7 @@ namespace Substrate
         public readonly static BlockInfo CakeBlock;
         public readonly static BlockInfo RedstoneRepeater;
         public readonly static BlockInfo RedstoneRepeaterOn;
-        public readonly static BlockInfoEx LockedChest;
+        public readonly static BlockInfo LockedChest;
         public readonly static BlockInfo StainedGlass;
         public readonly static BlockInfo Trapdoor;
         public readonly static BlockInfo SilverfishStone;
@@ -645,10 +658,10 @@ namespace Substrate
         public readonly static BlockInfo NetherBrickFence;
         public readonly static BlockInfo NetherBrickStairs;
         public readonly static BlockInfo NetherWart;
-        public readonly static BlockInfoEx EnchantmentTable;
-        public readonly static BlockInfoEx BrewingStand;
+        public readonly static BlockInfo EnchantmentTable;
+        public readonly static BlockInfo BrewingStand;
         public readonly static BlockInfo Cauldron;
-        public readonly static BlockInfoEx EndPortal;
+        public readonly static BlockInfo EndPortal;
         public readonly static BlockInfo EndPortalFrame;
         public readonly static BlockInfo EndStone;
         public readonly static BlockInfo DragonEgg;
@@ -659,15 +672,15 @@ namespace Substrate
         public readonly static BlockInfo CocoaPlant;
         public readonly static BlockInfo SandstoneStairs;
         public readonly static BlockInfo EmeraldOre;
-        public readonly static BlockInfoEx EnderChest;
+        public readonly static BlockInfo EnderChest;
         public readonly static BlockInfo TripwireHook;
         public readonly static BlockInfo Tripwire;
         public readonly static BlockInfo EmeraldBlock;
         public readonly static BlockInfo SpruceWoodStairs;
         public readonly static BlockInfo BirchWoodStairs;
         public readonly static BlockInfo JungleWoodStairs;
-        public readonly static BlockInfoEx CommandBlock;
-        public readonly static BlockInfoEx BeaconBlock;
+        public readonly static BlockInfo CommandBlock;
+        public readonly static BlockInfo BeaconBlock;
         public readonly static BlockInfo CobblestoneWall;
         public readonly static BlockInfo FlowerPot;
         public readonly static BlockInfo Carrots;
@@ -675,7 +688,7 @@ namespace Substrate
         public readonly static BlockInfo WoodButton;
         public readonly static BlockInfo Heads;
         public readonly static BlockInfo Anvil;
-        public readonly static BlockInfoEx TrappedChest;
+        public readonly static BlockInfo TrappedChest;
         public readonly static BlockInfo WeightedPressurePlateLight;
         public readonly static BlockInfo WeightedPressurePlateHeavy;
         public readonly static BlockInfo RedstoneComparatorInactive;
@@ -683,11 +696,11 @@ namespace Substrate
         public readonly static BlockInfo DaylightSensor;
         public readonly static BlockInfo RedstoneBlock;
         public readonly static BlockInfo NetherQuartzOre;
-        public readonly static BlockInfoEx Hopper;
+        public readonly static BlockInfo Hopper;
         public readonly static BlockInfo QuartzBlock;
         public readonly static BlockInfo QuartzStairs;
         public readonly static BlockInfo ActivatorRail;
-        public readonly static BlockInfoEx Dropper;
+        public readonly static BlockInfo Dropper;
         public readonly static BlockInfo StainedClay;
         public readonly static BlockInfo StainedGlassPane;
         public readonly static BlockInfo Leaves2;
@@ -761,9 +774,9 @@ namespace Substrate
             Glass = new BlockInfo(20, "minecraft:glass", "Glass") { Opacity = 0 };
             LapisOre = new BlockInfo(21, "minecraft:lapis_ore", "Lapis Lazuli Ore");
             LapisBlock = new BlockInfo(22, "minecraft:lapis_block", "Lapis Lazuli Block");
-            Dispenser = new BlockInfoEx(23, "minecraft:dispenser", "Dispenser") { Tick = 4, TileEntityName = "Trap", DataLimits = new BlockDataLimits(2, 5, 0) };
+            Dispenser = new BlockInfo(23, "minecraft:dispenser", "Dispenser") { Tick = 4, TileEntityName = "Trap", DataLimits = new BlockDataLimits(2, 5, 0) };
             Sandstone = new BlockInfo(24, "minecraft:sandstone", "Sandstone");
-            NoteBlock = new BlockInfoEx(25, "minecraft:noteblock", "Note Block") { TileEntityName = "Music" };
+            NoteBlock = new BlockInfo(25, "minecraft:noteblock", "Note Block") { TileEntityName = "Music" };
             Bed = new BlockInfo(26, "minecraft:bed", "Bed") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0x8) };
             PoweredRail = new BlockInfo(27, "minecraft:golden_rail", "Powered Rail") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             DetectorRail = new BlockInfo(28, "minecraft:detector_rail", "Detector Rail") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 5, 0x8) };
@@ -774,7 +787,7 @@ namespace Substrate
             Piston = new BlockInfo(33, "minecraft:piston", "Piston") { Opacity = 0, DataLimits = new BlockDataLimits(1, 5, 0x8) };
             PistonHead = new BlockInfo(34, "minecraft:piston_head", "Piston Head") { Opacity = 0, DataLimits = new BlockDataLimits(1, 5, 0x8) };
             Wool = new BlockInfo(35, "minecraft:wool", "Wool") { DataLimits = new BlockDataLimits(0, 15, 0) };
-            PistonMoving = new BlockInfoEx(36, "minecraft:piston_extension", "Piston Moving") { Opacity = 0, TileEntityName = "Piston" };
+            PistonMoving = new BlockInfo(36, "minecraft:piston_extension", "Piston Moving") { Opacity = 0, TileEntityName = "Piston" };
             YellowFlower = new BlockInfo(37, "minecraft:yellow_flower", "Yellow Flower") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
             RedRose = new BlockInfo(38, "minecraft:red_flower", "Red Rose") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
             BrownMushroom = new BlockInfo(39, "minecraft:brown_mushroom", "Brown Mushroom") { Opacity = 0, Luminance = 1, State = BlockState.NONSOLID, Tick = 10 };
@@ -790,23 +803,23 @@ namespace Substrate
             Obsidian = new BlockInfo(49, "minecraft:obsidian", "Obsidian");
             Torch = new BlockInfo(50, "minecraft:torch", "Torch") { Opacity = 0, Luminance = MAX_LUMINANCE - 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(1, 5, 0) };
             Fire = new BlockInfo(51, "minecraft:fire", "Fire") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, Tick = 40 };
-            MonsterSpawner = new BlockInfoEx(52, "minecraft:mob_spawner", "Monster Spawner") { Opacity = 0, TileEntityName = "MobSpawner" };
+            MonsterSpawner = new BlockInfo(52, "minecraft:mob_spawner", "Monster Spawner") { Opacity = 0, TileEntityName = "MobSpawner" };
             WoodStairs = new BlockInfo(53, "minecraft:oak_stairs", "Wooden Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            Chest = new BlockInfoEx(54, "minecraft:chest", "Chest") { Opacity = 0, TileEntityName = "Chest" };
+            Chest = new BlockInfo(54, "minecraft:chest", "Chest") { Opacity = 0, TileEntityName = "Chest" };
             RedstoneWire = new BlockInfo(55, "minecraft:redstone_wire", "Redstone Wire") { Opacity = 0, State = BlockState.NONSOLID };
             DiamondOre = new BlockInfo(56, "minecraft:diamond_ore", "Diamond Ore");
             DiamondBlock = new BlockInfo(57, "minecraft:diamond_block", "Diamond Block");
             CraftTable = new BlockInfo(58, "minecraft:crafting_table", "Crafting Table");
             Crops = new BlockInfo(59, "minecraft:wheat", "Crops") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7, 0) };
             Farmland = new BlockInfo(60, "minecraft:farmland", "Farmland") { Opacity = 0, Tick = 10, TransmitsLight = false };
-            Furnace = new BlockInfoEx(61, "minecraft:furnace", "Furnace") { TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
-            BurningFurnace = new BlockInfoEx(62, "minecraft:lit_furnace", "Burning Furnace") { Luminance = MAX_LUMINANCE - 1, TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
-            SignPost = new BlockInfoEx(63, "minecraft:standing_sign", "Sign Post") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(0, 15, 0) };
+            Furnace = new BlockInfo(61, "minecraft:furnace", "Furnace") { TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
+            BurningFurnace = new BlockInfo(62, "minecraft:lit_furnace", "Burning Furnace") { Luminance = MAX_LUMINANCE - 1, TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
+            SignPost = new BlockInfo(63, "minecraft:standing_sign", "Sign Post") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(0, 15, 0) };
             WoodDoor = new BlockInfo(64, "minecraft:wooden_door", "Wooden Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
             Ladder = new BlockInfo(65, "minecraft:ladder", "Ladder") { Opacity = 0, DataLimits = new BlockDataLimits(2, 5, 0) };
             Rails = new BlockInfo(66, "minecraft:rail", "Rails") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 9, 0) };
             CobbleStairs = new BlockInfo(67, "minecraft:stone_stairs", "Cobblestone Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            WallSign = new BlockInfoEx(68, "minecraft:wall_sign", "Wall Sign") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(2, 5, 0) };
+            WallSign = new BlockInfo(68, "minecraft:wall_sign", "Wall Sign") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(2, 5, 0) };
             Lever = new BlockInfo(69, "minecraft:lever", "Lever") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 6, 0x8) };
             StonePlate = new BlockInfo(70, "minecraft:stone_pressure_plate", "Stone Pressure Plate") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 0, 0x1) };
             IronDoor = new BlockInfo(71, "minecraft:iron_door", "Iron Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
@@ -833,7 +846,7 @@ namespace Substrate
             CakeBlock = new BlockInfo(92, "minecraft:cake", "Cake Block") { Opacity = 0 };
             RedstoneRepeater = new BlockInfo(93, "minecraft:unpowered_repeater", "Redstone Repeater (Off)") { Opacity = 0, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
             RedstoneRepeaterOn = new BlockInfo(94, "minecraft:powered_repeater", "Redstone Repeater (On)") { Opacity = 0, Luminance = 7, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
-            LockedChest = new BlockInfoEx(95, "minecraft:chest_locked_aprilfools_super_old_legacy_we_should_not_even_have_this", "Locked Chest") { Luminance = MAX_LUMINANCE, Tick = 10 };
+            LockedChest = new BlockInfo(95, "minecraft:chest_locked_aprilfools_super_old_legacy_we_should_not_even_have_this", "Locked Chest") { Luminance = MAX_LUMINANCE, Tick = 10 };
             StainedGlass = new BlockInfo(95, "minecraft:stained_glass", "Stained Glass") { Opacity = 0 };
             Trapdoor = new BlockInfo(96, "minecraft:trapdoor", "Trapdoor") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             SilverfishStone = new BlockInfo(97, "minecraft:monster_egg", "Stone with Silverfish") { DataLimits = new BlockDataLimits(0, 2, 0) };
@@ -855,10 +868,10 @@ namespace Substrate
             NetherBrickFence = new BlockInfo(113, "minecraft:nether_brick_fence", "Nether Brick Fence") { Opacity = 0 };
             NetherBrickStairs = new BlockInfo(114, "minecraft:nether_brick_stairs", "Nether Brick Stairs") { Opacity = 0, TransmitsLight = false };
             NetherWart = new BlockInfo(115, "minecraft:nether_wart", "Nether Wart") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            EnchantmentTable = new BlockInfoEx(116, "minecraft:enchanting_table", "Enchantment Table") { Opacity = 0, TileEntityName = "EnchantTable" };
-            BrewingStand = new BlockInfoEx(117, "minecraft:brewing_stand", "Brewing Stand") { Opacity = 0, TileEntityName = "Cauldron", DataLimits = new BlockDataLimits(0, 0, 0x7) };
+            EnchantmentTable = new BlockInfo(116, "minecraft:enchanting_table", "Enchantment Table") { Opacity = 0, TileEntityName = "EnchantTable" };
+            BrewingStand = new BlockInfo(117, "minecraft:brewing_stand", "Brewing Stand") { Opacity = 0, TileEntityName = "Cauldron", DataLimits = new BlockDataLimits(0, 0, 0x7) };
             Cauldron = new BlockInfo(118, "minecraft:cauldron", "Cauldron") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0) };
-            EndPortal = new BlockInfoEx(119, "minecraft:end_portal", "End Portal") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, TileEntityName = "Airportal" };
+            EndPortal = new BlockInfo(119, "minecraft:end_portal", "End Portal") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, TileEntityName = "Airportal" };
             EndPortalFrame = new BlockInfo(120, "minecraft:end_portal_frame", "End Portal Frame") { Luminance = MAX_LUMINANCE, DataLimits = new BlockDataLimits(0, 0, 0x7) };
             EndStone = new BlockInfo(121, "minecraft:end_stone", "End Stone");
             DragonEgg = new BlockInfo(122, "minecraft:dragon_egg", "Dragon Egg") { Opacity = 0, Luminance = 1, Tick = 3 };
@@ -869,15 +882,15 @@ namespace Substrate
             CocoaPlant = new BlockInfo(127, "minecraft:cocoa", "Cocoa Plant") { Luminance = 2, Opacity = 0 };
             SandstoneStairs = new BlockInfo(128, "minecraft:sandstone_stairs", "Sandstone Stairs") { Opacity = 0, TransmitsLight = false };
             EmeraldOre = new BlockInfo(129, "minecraft:emerald_ore", "Emerald Ore");
-            EnderChest = new BlockInfoEx(130, "minecraft:ender_chest", "Ender Chest") { Luminance = 7, Opacity = 0, TileEntityName = "EnderChest" };
+            EnderChest = new BlockInfo(130, "minecraft:ender_chest", "Ender Chest") { Luminance = 7, Opacity = 0, TileEntityName = "EnderChest" };
             TripwireHook = new BlockInfo(131, "minecraft:tripwire_hook", "Tripwire Hook") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 3, 0xC) };
             Tripwire = new BlockInfo(132, "minecraft:tripwire", "Tripwire") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 0, 0x5) };
             EmeraldBlock = new BlockInfo(133, "minecraft:emerald_block", "Emerald Block");
             SpruceWoodStairs = new BlockInfo(134, "minecraft:spruce_stairs", "Sprice Wood Stairs") { Opacity = 0, TransmitsLight = false };
             BirchWoodStairs = new BlockInfo(135, "minecraft:birch_stairs", "Birch Wood Stairs") { Opacity = 0, TransmitsLight = false };
             JungleWoodStairs = new BlockInfo(136, "minecraft:jungle_stairs", "Jungle Wood Stairs") { Opacity = 0, TransmitsLight = false };
-            CommandBlock = new BlockInfoEx(137, "minecraft:command_block", "Command Block") { TileEntityName = "Control" };
-            BeaconBlock = new BlockInfoEx(138, "minecraft:beacon", "Beacon Block") { Opacity = 0, Luminance = MAX_LUMINANCE, TileEntityName = "Beacon" };
+            CommandBlock = new BlockInfo(137, "minecraft:command_block", "Command Block") { TileEntityName = "Control" };
+            BeaconBlock = new BlockInfo(138, "minecraft:beacon", "Beacon Block") { Opacity = 0, Luminance = MAX_LUMINANCE, TileEntityName = "Beacon" };
             CobblestoneWall = new BlockInfo(139, "minecraft:cobblestone_wall", "Cobblestone Wall") { Opacity = 0 };
             FlowerPot = new BlockInfo(140, "minecraft:flower_pot", "Flower Pot") { Opacity = 0 };
             Carrots = new BlockInfo(141, "minecraft:carrots", "Carrots") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
@@ -885,7 +898,7 @@ namespace Substrate
             WoodButton = new BlockInfo(143, "minecraft:wooden_button", "Wooden Button") { Opacity = 0, State = BlockState.NONSOLID };
             Heads = new BlockInfo(144, "minecraft:skull", "Heads") { Opacity = 0 };
             Anvil = new BlockInfo(145, "minecraft:anvil", "Anvil") { Opacity = 0, DataLimits = new BlockDataLimits(0, 0, 0xD) };
-            TrappedChest = new BlockInfoEx(146, "minecraft:trapped_chest", "Trapped Chest") { Opacity = 0, Tick = 10, TileEntityName = "Chest" };
+            TrappedChest = new BlockInfo(146, "minecraft:trapped_chest", "Trapped Chest") { Opacity = 0, Tick = 10, TileEntityName = "Chest" };
             WeightedPressurePlateLight = new BlockInfo(147, "minecraft:light_weighted_pressure_plate", "Weighted Pressure Plate (Light)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20 };
             WeightedPressurePlateHeavy = new BlockInfo(148, "minecraft:heavy_weighted_pressure_plate", "Weighted Pressure Plate (Heavy)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20 };
             RedstoneComparatorInactive = new BlockInfo(149, "minecraft:unpowered_comparator", "Redstone Comparator (Inactive)") { Opacity = 0, Tick = 10 };
@@ -893,11 +906,11 @@ namespace Substrate
             DaylightSensor = new BlockInfo(151, "minecraft:daylight_detector", "Daylight Sensor") { Opacity = 0, Tick = 10 };
             RedstoneBlock = new BlockInfo(152, "minecraft:redstone_block", "Block of Redstone") { Tick = 10 };
             NetherQuartzOre = new BlockInfo(153, "minecraft:quartz_ore", "Neither Quartz Ore");
-            Hopper = new BlockInfoEx(154, "minecraft:hopper", "Hopper") { Opacity = 0, Tick = 10, TileEntityName = "Hopper", DataLimits = new BlockDataLimits(0, 5, 0) };
+            Hopper = new BlockInfo(154, "minecraft:hopper", "Hopper") { Opacity = 0, Tick = 10, TileEntityName = "Hopper", DataLimits = new BlockDataLimits(0, 5, 0) };
             QuartzBlock = new BlockInfo(155, "minecraft:quartz_block", "Block of Quartz") { DataLimits = new BlockDataLimits(0, 4, 0) };
             QuartzStairs = new BlockInfo(156, "minecraft:quartz_stairs", "Quartz Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             ActivatorRail = new BlockInfo(157, "minecraft:activator_rail", "Activator Rail") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            Dropper = new BlockInfoEx(158, "minecraft:dropper", "Dropper") { Tick = 10, TileEntityName = "Dropper", DataLimits = new BlockDataLimits(0, 5, 0) };
+            Dropper = new BlockInfo(158, "minecraft:dropper", "Dropper") { Tick = 10, TileEntityName = "Dropper", DataLimits = new BlockDataLimits(0, 5, 0) };
             StainedClay = new BlockInfo(159, "minecraft:stained_hardened_clay", "Stained Clay");
             StainedGlassPane = new BlockInfo(160, "minecraft:stained_glass_pane", "Stained Glass Pane") { Opacity = 0 };
 
@@ -951,34 +964,5 @@ namespace Substrate
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// An extended <see cref="BlockInfo"/> that includes <see cref="TileEntity"/> information.
-    /// </summary>
-    public class BlockInfoEx : BlockInfo
-    {
-        private string _tileEntityName;
-
-        /// <summary>
-        /// Gets the name of the registered <see cref="TileEntity"/> type associated with this block type.
-        /// Sets the name of the registered <see cref="TileEntity"/> type associated with this block type.
-        /// </summary>
-        /// <seealso cref="TileEntityFactory"/>
-        public string TileEntityName
-        {
-            get { return _tileEntityName; }
-            set { _tileEntityName = value; }
-        }
-
-        internal BlockInfoEx(int id) : base(id) { }
-
-        /// <summary>
-        /// Constructs a new <see cref="BlockInfoEx"/> with a given block id and name.
-        /// </summary>
-        /// <param name="id">The id of the block type.</param>
-        /// <param name="nameId">The name id of the block type</param>
-        /// <param name="name">The name of the block type.</param>
-        public BlockInfoEx(int id, string nameId, string name) : base(id, nameId, name) { }
     }
 }
