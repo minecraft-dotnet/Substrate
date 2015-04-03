@@ -977,6 +977,7 @@ namespace Substrate
         /// Constructs a new <see cref="BlockInfoEx"/> with a given block id and name.
         /// </summary>
         /// <param name="id">The id of the block type.</param>
+        /// <param name="nameId">The name id of the block type</param>
         /// <param name="name">The name of the block type.</param>
         public BlockInfoEx(int id, string nameId, string name) : base(id, nameId, name) { }
     }
