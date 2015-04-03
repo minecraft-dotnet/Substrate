@@ -15,15 +15,15 @@ namespace Substrate.Core
     /// </summary>
     public abstract class Region : IDisposable, IRegion
     {
-        protected const int XDIM = 32;
-        protected const int ZDIM = 32;
-        protected const int XMASK = XDIM - 1;
-        protected const int ZMASK = ZDIM - 1;
-        protected const int XLOG = 5;
-        protected const int ZLOG = 5;
+        private const int XDIM = 32;
+        private const int ZDIM = 32;
+        private const int XMASK = XDIM - 1;
+        private const int ZMASK = ZDIM - 1;
+        private const int XLOG = 5;
+        private const int ZLOG = 5;
 
-        protected int _rx;
-        protected int _rz;
+        private int _rx;
+        private int _rz;
         private bool _disposed = false;
 
         protected RegionManager _regionMan;
@@ -32,7 +32,7 @@ namespace Substrate.Core
 
         private WeakReference _regionFile;
 
-        protected ChunkCache _cache;
+        private ChunkCache _cache;
 
         protected abstract IChunk CreateChunkCore (int cx, int cz);
 

@@ -19,7 +19,7 @@ namespace Substrate
         protected override RegionFile CreateRegionFileCore (int rx, int rz)
         {
             string fp = "r." + rx + "." + rz + ".mca";
-            return new RegionFile(Path.Combine(_regionPath, fp));
+            return new RegionFile(Path.Combine(GetRegionPath(), fp));
         }
 
         protected override void DeleteRegionCore (IRegion region)

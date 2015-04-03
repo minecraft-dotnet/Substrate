@@ -17,7 +17,7 @@ namespace Substrate
         /// <inherits />
         public override string GetFileName ()
         {
-            return "r." + _rx + "." + _rz + ".mca";
+            return "r." + X + "." + Z + ".mca";
 
         }
 
