@@ -7,6 +7,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Substrate.Tests</RootNamespace>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,10 +17,10 @@
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net40-client-Debug|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40-client-Debug|AnyCPU' ">
     <AssemblyName>Substrate.Tests.net40-client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <!--<TargetFrameworkProfile>Client</TargetFrameworkProfile>-->
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -29,10 +30,10 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net40-client-Release|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40-client-Release|AnyCPU' ">
     <AssemblyName>Substrate.Tests.net40-client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <!--<TargetFrameworkProfile>Client</TargetFrameworkProfile>-->
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -99,7 +100,11 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise />
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="LevelTests.cs" />
@@ -108,10 +113,13 @@
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SubstrateCS\Substrate %28NET4%29.csproj">
-      <Project>{7264a1c4-ab4a-4437-b252-7379b98b5509}</Project>
-      <Name>Substrate %28NET4%29</Name>
+    <ProjectReference Include="..\Substrate\Substrate.csproj">
+      <Project>{7264A1C4-AB4A-4437-B252-7379B98B5509}</Project>
+      <Name>Substrate</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Source\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

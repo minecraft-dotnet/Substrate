@@ -264,12 +264,12 @@ namespace Substrate
 				    new	SchemaNodeScaler("doTileDrops", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("keepInventory", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("mobGriefing", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("doDaylightCycle", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("logAdminCommands", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("naturalRegeneration", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("randomTickSpeed", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("sendCommandFeedback", TagType.TAG_STRING),
-				    new	SchemaNodeScaler("showDeathMessages", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("doDaylightCycle", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+				    new	SchemaNodeScaler("logAdminCommands", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+				    new	SchemaNodeScaler("naturalRegeneration", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+				    new	SchemaNodeScaler("randomTickSpeed", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+				    new	SchemaNodeScaler("sendCommandFeedback", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+				    new	SchemaNodeScaler("showDeathMessages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
 			    },
             },
         };
@@ -929,17 +929,38 @@ namespace Substrate
                 _gameRules.DoTileDrops = gr["doTileDrops"].ToTagString().Data == "true";
                 _gameRules.KeepInventory = gr["keepInventory"].ToTagString().Data == "true";
                 _gameRules.MobGriefing = gr["mobGriefing"].ToTagString().Data == "true";
-                
-                _gameRules.DoDaylightCycle = gr["doDaylightCycle"].ToTagString().Data == "true";
-                _gameRules.LogAdminCommands = gr["logAdminCommands"].ToTagString().Data == "true";
-                _gameRules.NaturalRegeneration = gr["naturalRegeneration"].ToTagString().Data == "true";
 
-                int temp = 3;
-                int.TryParse(gr["randomTickSpeed"].ToTagString().Data, out temp);
-                _gameRules.RandomTickSpeed = temp;
+                if (gr.ContainsKey("doDaylightCycle"))
+                {
+                    _gameRules.DoDaylightCycle = gr["doDaylightCycle"].ToTagString().Data == "true";
+                }
 
-                _gameRules.SendCommandFeedback = gr["sendCommandFeedback"].ToTagString().Data == "true";
-                _gameRules.ShowDeathMessages = gr["showDeathMessages"].ToTagString().Data == "true";
+                if (gr.ContainsKey("logAdminCommands"))
+                {
+                    _gameRules.LogAdminCommands = gr["logAdminCommands"].ToTagString().Data == "true";
+                }
+
+                if (gr.ContainsKey("naturalRegeneration"))
+                {
+                    _gameRules.NaturalRegeneration = gr["naturalRegeneration"].ToTagString().Data == "true";
+                }
+
+                if (gr.ContainsKey("randomTickSpeed"))
+                {
+                    int temp = 3;
+                    int.TryParse(gr["randomTickSpeed"].ToTagString().Data, out temp);
+                    _gameRules.RandomTickSpeed = temp;
+                }
+
+                if (gr.ContainsKey("sendCommandFeedback"))
+                {
+                    _gameRules.SendCommandFeedback = gr["sendCommandFeedback"].ToTagString().Data == "true";
+                }
+
+                if (gr.ContainsKey("showDeathMessages"))
+                {
+                    _gameRules.ShowDeathMessages = gr["showDeathMessages"].ToTagString().Data == "true";
+                }
             }
 
             _source = ctree.Copy() as TagNodeCompound;
