@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate", "Substrate\Subs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate.Tests", "Substrate.Tests\Substrate.Tests.csproj", "{5D875E2D-AD97-43DB-9180-DBA3F26DC569}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{D7504FC4-BC1A-449D-9BDE-1EA742E1FF16}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+		VERSION.md = VERSION.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		net20-Debug|Any CPU = net20-Debug|Any CPU
