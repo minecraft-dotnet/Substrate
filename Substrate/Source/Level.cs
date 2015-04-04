@@ -17,6 +17,12 @@ namespace Substrate
         private bool _doTileDrops = true;
         private bool _keepInventory = false;
         private bool _mobGriefing = true;
+        private bool _doDaylightCycle = true;
+        private bool _logAdminCommands = true;
+        private bool _naturalRegeneration = true;
+        private int _randomTickSpeed = 3;
+        private bool _sendCommandFeedback = true;
+        private bool _showDeathMessages = true;
 
         /// <summary>
         /// Gets or sets whether or not actions performed by command blocks are displayed in the chat.
@@ -81,6 +87,60 @@ namespace Substrate
             set { _mobGriefing = value; }
         }
 
+        /// <summary>
+        /// Whether to do the Daylight Cycle or not. True by default.
+        /// </summary>
+        public bool DoDaylightCycle
+        {
+            get { return _doDaylightCycle; }
+            set { _doDaylightCycle = value; }
+        }
+
+        /// <summary>
+        /// Whether to log admin commands to server log. True by default.
+        /// </summary>
+        public bool LogAdminCommands
+        {
+            get { return _logAdminCommands; }
+            set { _logAdminCommands = value; }
+        }
+
+        /// <summary>
+        /// Whether the player naturally regenerates health if hunger is high enough. True by default.
+        /// </summary>
+        public bool NaturalRegeneration
+        {
+            get { return _naturalRegeneration; }
+            set { _naturalRegeneration = value; }
+        }
+
+        /// <summary>
+        /// How often a random tick occurs, such as plant growth, leaf decay, etc. 3 by default.
+        /// </summary>
+        public int RandomTickSpeed
+        {
+            get { return _randomTickSpeed; }
+            set { _randomTickSpeed = value; }
+        }
+
+        /// <summary>
+        /// Whether the feedback from commands executed by a player should show up in chat. True by default.
+        /// </summary>
+        public bool SendCommandFeedback
+        {
+            get { return _sendCommandFeedback; }
+            set { _sendCommandFeedback = value; }
+        }
+
+        /// <summary>
+        /// Whether a message appears in chat when a player dies. True by default.
+        /// </summary>
+        public bool ShowDeathMessages
+        {
+            get { return _showDeathMessages; }
+            set { _showDeathMessages = value; }
+        }
+
         #region ICopyable<GameRules> Members
 
         /// <inheritdoc />
@@ -94,6 +154,12 @@ namespace Substrate
             gr._doTileDrops = _doTileDrops;
             gr._keepInventory = _keepInventory;
             gr._mobGriefing = _mobGriefing;
+            gr._doDaylightCycle = _doDaylightCycle;
+            gr._logAdminCommands = _logAdminCommands;
+            gr._naturalRegeneration = _naturalRegeneration;
+            gr._randomTickSpeed = _randomTickSpeed;
+            gr._sendCommandFeedback = _sendCommandFeedback;
+            gr._showDeathMessages = _showDeathMessages;
 
             return gr;
         }
@@ -115,6 +181,24 @@ namespace Substrate
         /// The world will be played in Creative mode.
         /// </summary>
         CREATIVE = 1,
+
+        /// <summary>
+        /// The world will be played in Adventure mode.
+        /// </summary>
+        ADVENTURE = 2,
+
+        /// <summary>
+        /// The world will be played in Spectator mode.
+        /// </summary>
+        SPECTATOR = 3,
+    }
+
+    public enum Difficulty
+    {
+        Peaceful = 0,
+        Easy = 1,
+        Normal = 2,
+        Hard = 3,
     }
 
     public enum TimeOfDay
@@ -159,8 +243,20 @@ namespace Substrate
                 new SchemaNodeScaler("initialized", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("allowCommands", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("DayTime", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("Difficulty", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("DifficultyLocked", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderCenterX", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderCenterZ", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderSize", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderSafeZone", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderWarningBlocks", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderWarningTime", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderSizeLerpTarget", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderSizeLerpTime", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("BorderDamagePerBlock", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("clearWeatherTime", TagType.TAG_INT, SchemaOptions.OPTIONAL),
                 new	SchemaNodeCompound("GameRules", SchemaOptions.OPTIONAL)
-			    {			
+			    {
 				    new	SchemaNodeScaler("commandBlockOutput", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("doFireTick", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("doMobLoot", TagType.TAG_STRING),
@@ -168,6 +264,12 @@ namespace Substrate
 				    new	SchemaNodeScaler("doTileDrops", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("keepInventory", TagType.TAG_STRING),
 				    new	SchemaNodeScaler("mobGriefing", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("doDaylightCycle", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("logAdminCommands", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("naturalRegeneration", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("randomTickSpeed", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("sendCommandFeedback", TagType.TAG_STRING),
+				    new	SchemaNodeScaler("showDeathMessages", TagType.TAG_STRING),
 			    },
             },
         };
@@ -205,6 +307,20 @@ namespace Substrate
         private byte? _initialized;
         private byte? _allowCommands;
         private long? _DayTime;
+
+        private byte? _difficulty;
+        private byte? _difficultyLocked;
+        private double? _borderCenterX;
+        private double? _borderCenterZ;
+        private double? _borderSize;
+        private double? _borderSafeZone;
+        private double? _borderWarningBlocks;
+        private double? _borderWarningTime;
+        private double? _borderSizeLerpTarget;
+        private long? _borderSizeLerpTime;
+        private double? _borderDamagePerBlock;
+        private int? _clearWeatherTime;
+
 
         private GameRules _gameRules;
 
@@ -423,6 +539,78 @@ namespace Substrate
             set { _DayTime = value; }
         }
 
+        public Difficulty Difficulty
+        {
+            get { return (Difficulty)(_difficulty ?? (int)Difficulty.Normal); }
+            set { _difficulty = (byte)value; }
+        }
+
+        public byte DifficultyLocked
+        {
+            get { return _difficultyLocked ?? 0; }
+            set { _difficultyLocked = value; }
+        }
+
+        public double BorderCenterX
+        {
+            get { return _borderCenterX ?? 0; }
+            set { _borderCenterX = value; }
+        }
+
+        public double BorderCenterZ
+        {
+            get { return _borderCenterZ ?? 0; }
+            set { _borderCenterZ = value; }
+        }
+
+        public double BorderSize
+        {
+            get { return _borderSize ?? 60000000; }
+            set { _borderSize = value; }
+        }
+
+        public double BorderSafeZone
+        {
+            get { return _borderSafeZone ?? 5; }
+            set { _borderSafeZone = value; }
+        }
+
+        public double BorderWarningBlocks
+        {
+            get { return _borderWarningBlocks ?? 5; }
+            set { _borderWarningBlocks = value; }
+        }
+
+        public double BorderWarningTime
+        {
+            get { return _borderWarningTime ?? 15; }
+            set { _borderWarningTime = value; }
+        }
+
+        public double BorderSizeLerpTarget
+        {
+            get { return _borderSizeLerpTarget ?? 60000000; }
+            set { _borderSizeLerpTarget = value; }
+        }
+
+        public long BorderSizeLerpTime
+        {
+            get { return _borderSizeLerpTime ?? 0; }
+            set { _borderSizeLerpTime = value; }
+        }
+
+        public double BorderDamagePerBlock
+        {
+            get { return _borderDamagePerBlock ?? 5; }
+            set { _borderDamagePerBlock = value; }
+        }
+
+        public int ClearWeatherTime
+        {
+            get { return _clearWeatherTime ?? 0; }
+            set { _clearWeatherTime = value; }
+        }
+
         /// <summary>
         /// Gets the level's game rules.
         /// </summary>
@@ -516,6 +704,20 @@ namespace Substrate
             _allowCommands = p._allowCommands;
             _DayTime = p._DayTime;
             _gameRules = p._gameRules.Copy();
+
+
+            _difficulty = p._difficulty;
+            _difficultyLocked = p._difficultyLocked;
+            _borderCenterX = p._borderCenterX;
+            _borderCenterZ = p._borderCenterZ;
+            _borderSize = p._borderSize;
+            _borderSafeZone = p._borderSafeZone;
+            _borderWarningBlocks = p._borderWarningBlocks;
+            _borderWarningTime = p._borderWarningTime;
+            _borderSizeLerpTarget = p._borderSizeLerpTarget;
+            _borderSizeLerpTime = p._borderSizeLerpTime;
+            _borderDamagePerBlock = p._borderDamagePerBlock;
+            _clearWeatherTime = p._clearWeatherTime;
 
             if (p._player != null) {
                 _player = p._player.Copy();
@@ -666,6 +868,55 @@ namespace Substrate
             if (ctree.ContainsKey("DayTime")) {
                 _DayTime = ctree["DayTime"].ToTagLong();
             }
+            if (ctree.ContainsKey("Difficulty"))
+            {
+                _difficulty = ctree["Difficulty"].ToTagByte();
+            }
+            if (ctree.ContainsKey("DifficultyLocked"))
+            {
+                _difficultyLocked = ctree["DifficultyLocked"].ToTagByte();
+            }
+            if (ctree.ContainsKey("BorderCenterX"))
+            {
+                _borderCenterX = ctree["BorderCenterX"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderCenterZ"))
+            {
+                _borderCenterZ = ctree["BorderCenterZ"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderSize"))
+            {
+                _borderSize = ctree["BorderSize"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderSafeZone"))
+            {
+                _borderSafeZone = ctree["BorderSafeZone"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderWarningBlocks"))
+            {
+                _borderWarningBlocks = ctree["BorderWarningBlocks"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderWarningTime"))
+            {
+                _borderWarningTime = ctree["BorderWarningTime"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderSizeLerpTarget"))
+            {
+                _borderSizeLerpTarget = ctree["BorderSizeLerpTarget"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("BorderSizeLerpTime"))
+            {
+                _borderSizeLerpTime = ctree["BorderSizeLerpTime"].ToTagLong();
+            }
+            if (ctree.ContainsKey("BorderDamagePerBlock"))
+            {
+                _borderDamagePerBlock = ctree["BorderDamagePerBlock"].ToTagDouble();
+            }
+            if (ctree.ContainsKey("clearWeatherTime"))
+            {
+                _clearWeatherTime = ctree["clearWeatherTime"].ToTagInt();
+            }
+
             if (ctree.ContainsKey("GameRules"))
             {
                 TagNodeCompound gr = ctree["GameRules"].ToTagCompound();
@@ -678,6 +929,17 @@ namespace Substrate
                 _gameRules.DoTileDrops = gr["doTileDrops"].ToTagString().Data == "true";
                 _gameRules.KeepInventory = gr["keepInventory"].ToTagString().Data == "true";
                 _gameRules.MobGriefing = gr["mobGriefing"].ToTagString().Data == "true";
+                
+                _gameRules.DoDaylightCycle = gr["doDaylightCycle"].ToTagString().Data == "true";
+                _gameRules.LogAdminCommands = gr["logAdminCommands"].ToTagString().Data == "true";
+                _gameRules.NaturalRegeneration = gr["naturalRegeneration"].ToTagString().Data == "true";
+
+                int temp = 3;
+                int.TryParse(gr["randomTickSpeed"].ToTagString().Data, out temp);
+                _gameRules.RandomTickSpeed = temp;
+
+                _gameRules.SendCommandFeedback = gr["sendCommandFeedback"].ToTagString().Data == "true";
+                _gameRules.ShowDeathMessages = gr["showDeathMessages"].ToTagString().Data == "true";
             }
 
             _source = ctree.Copy() as TagNodeCompound;
@@ -769,6 +1031,58 @@ namespace Substrate
             if (_DayTime != null) {
                 data["DayTime"] = new TagNodeLong(_DayTime ?? 0);
             }
+
+
+            if (_difficulty != null)
+            {
+                data["Difficulty"] = new TagNodeByte(_difficulty ?? 2);
+            }
+            if (_difficultyLocked != null)
+            {
+                data["DifficultyLocked"] = new TagNodeByte(_difficultyLocked ?? 0);
+            }
+            if (_borderCenterX != null)
+            {
+                data["BorderCenterX"] = new TagNodeDouble(_borderCenterX ?? 0);
+            }
+            if (_borderCenterZ != null)
+            {
+                data["BorderCenterZ"] = new TagNodeDouble(_borderCenterZ ?? 0);
+            }
+            if (_borderSize != null)
+            {
+                data["BorderSize"] = new TagNodeDouble(_borderSize ?? 60000000);
+            }
+            if (_borderSafeZone != null)
+            {
+                data["BorderSafeZone"] = new TagNodeDouble(_borderSafeZone ?? 5);
+            }
+            if (_borderWarningBlocks != null)
+            {
+                data["BorderWarningBlocks"] = new TagNodeDouble(_borderWarningBlocks ?? 5);
+            }
+            if (_borderWarningTime != null)
+            {
+                data["BorderWarningTime"] = new TagNodeDouble(_borderWarningTime ?? 15);
+            }
+            if (_borderSizeLerpTarget != null)
+            {
+                data["BorderSizeLerpTarget"] = new TagNodeDouble(_borderSizeLerpTarget ?? 60000000);
+            }
+            if (_borderSizeLerpTime != null)
+            {
+                data["BorderSizeLerpTime"] = new TagNodeLong(_borderSizeLerpTime ?? 0);
+            }
+            if (_borderDamagePerBlock != null)
+            {
+                data["BorderDamagePerBlock"] = new TagNodeDouble(_borderDamagePerBlock ?? 0.2);
+            }
+            if (_clearWeatherTime != null)
+            {
+                data["clearWeatherTime"] = new TagNodeInt(_clearWeatherTime ?? 0);
+            }
+            
+
             TagNodeCompound gr = new TagNodeCompound();
             gr["commandBlockOutput"] = new TagNodeString(_gameRules.CommandBlockOutput ? "true" : "false");
             gr["doFireTick"] = new TagNodeString(_gameRules.DoFireTick ? "true" : "false");
@@ -777,6 +1091,12 @@ namespace Substrate
             gr["doTileDrops"] = new TagNodeString(_gameRules.DoTileDrops ? "true" : "false");
             gr["keepInventory"] = new TagNodeString(_gameRules.KeepInventory ? "true" : "false");
             gr["mobGriefing"] = new TagNodeString(_gameRules.MobGriefing ? "true" : "false");
+            gr["doDaylightCycle"] = new TagNodeString(_gameRules.DoDaylightCycle ? "true" : "false");
+            gr["logAdminCommands"] = new TagNodeString(_gameRules.LogAdminCommands ? "true" : "false");
+            gr["naturalRegeneration"] = new TagNodeString(_gameRules.NaturalRegeneration ? "true" : "false");
+            gr["randomTickSpeed"] = new TagNodeString(_gameRules.RandomTickSpeed.ToString());
+            gr["sendCommandFeedback"] = new TagNodeString(_gameRules.SendCommandFeedback ? "true" : "false");
+            gr["showDeathMessages"] = new TagNodeString(_gameRules.ShowDeathMessages ? "true" : "false");
             data["GameRules"] = gr;
 
             if (_source != null) {
