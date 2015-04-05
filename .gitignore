@@ -1,6 +1,6 @@
-**/Debug/*
-**/bin/*
-**/obj/*
+**//Debug/*
+**//bin/*
+**//obj/*
 *.suo
 *.sdf
 *.user
