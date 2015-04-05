@@ -289,10 +289,12 @@ namespace Substrate
 
         /// <summary>
         /// Gets the maximum stack size allowed for this item type.
+        /// A stack size between 1 and 64, inclusive.
         /// </summary>
         public int StackSize
         {
             get { return _stack; }
+            set { _stack = value; }
         }
 
         /// <summary>
@@ -317,17 +319,6 @@ namespace Substrate
             _nameId = nameId;
             _name = name;
             _itemTable[_id] = this;
-        }
-
-        /// <summary>
-        /// Sets the maximum stack size for this item type.
-        /// </summary>
-        /// <param name="stack">A stack size between 1 and 64, inclusive.</param>
-        /// <returns>The object instance used to invoke this method.</returns>
-        public ItemInfo SetStackSize (int stack)
-        {
-            _stack = stack;
-            return this;
         }
 
         /// <summary>
@@ -539,13 +530,13 @@ namespace Substrate
             IronPickaxe = new ItemInfo(257, "minecraft:iron_pickaxe", "Iron Pickaxe");
             IronAxe = new ItemInfo(258, "minecraft:iron_axe", "Iron Axe");
             FlintAndSteel = new ItemInfo(259, "minecraft:flint_and_steel", "Flint and Steel");
-            Apple = new ItemInfo(260, "minecraft:apple", "Apple").SetStackSize(64);
+            Apple = new ItemInfo(260, "minecraft:apple", "Apple") { StackSize = 64 };
             Bow = new ItemInfo(261, "minecraft:bow", "Bow");
-            Arrow = new ItemInfo(262, "minecraft:arrow", "Arrow").SetStackSize(64);
-            Coal = new ItemInfo(263, "minecraft:coal", "Coal").SetStackSize(64);
-            Diamond = new ItemInfo(264, "minecraft:diamond", "Diamond").SetStackSize(64);
-            IronIngot = new ItemInfo(265, "minecraft:iron_ingot", "Iron Ingot").SetStackSize(64);
-            GoldIngot = new ItemInfo(266, "minecraft:gold_ingot", "Gold Ingot").SetStackSize(64);
+            Arrow = new ItemInfo(262, "minecraft:arrow", "Arrow") { StackSize = 64 };
+            Coal = new ItemInfo(263, "minecraft:coal", "Coal") { StackSize = 64 };
+            Diamond = new ItemInfo(264, "minecraft:diamond", "Diamond") { StackSize = 64 };
+            IronIngot = new ItemInfo(265, "minecraft:iron_ingot", "Iron Ingot") { StackSize = 64 };
+            GoldIngot = new ItemInfo(266, "minecraft:gold_ingot", "Gold Ingot") { StackSize = 64 };
             IronSword = new ItemInfo(267, "minecraft:iron_sword", "Iron Sword");
             WoodenSword = new ItemInfo(268, "minecraft:wooden_sword", "Wooden Sword");
             WoodenShovel = new ItemInfo(269, "minecraft:wooden_shovel", "Wooden Shovel");
@@ -559,24 +550,24 @@ namespace Substrate
             DiamondShovel = new ItemInfo(277, "minecraft:diamond_shovel", "Diamond Shovel");
             DiamondPickaxe = new ItemInfo(278, "minecraft:diamond_pickaxe", "Diamond Pickaxe");
             DiamondAxe = new ItemInfo(279, "minecraft:diamond_axe", "Diamond Axe");
-            Stick = new ItemInfo(280, "minecraft:stick", "Stick").SetStackSize(64);
-            Bowl = new ItemInfo(281, "minecraft:bowl", "Bowl").SetStackSize(64);
+            Stick = new ItemInfo(280, "minecraft:stick", "Stick") { StackSize = 64 };
+            Bowl = new ItemInfo(281, "minecraft:bowl", "Bowl") { StackSize = 64 };
             MushroomSoup = new ItemInfo(282, "minecraft:mushroom_stew", "Mushroom Soup");
             GoldSword = new ItemInfo(283, "minecraft:golden_sword", "Gold Sword");
             GoldShovel = new ItemInfo(284, "minecraft:golden_shovel", "Gold Shovel");
             GoldPickaxe = new ItemInfo(285, "minecraft:golden_pickaxe", "Gold Pickaxe");
             GoldAxe = new ItemInfo(286, "minecraft:golden_axe", "Gold Axe");
-            String = new ItemInfo(287, "minecraft:string", "String").SetStackSize(64);
-            Feather = new ItemInfo(288, "minecraft:feather", "Feather").SetStackSize(64);
-            Gunpowder = new ItemInfo(289, "minecraft:gunpowder", "Gunpowder").SetStackSize(64);
+            String = new ItemInfo(287, "minecraft:string", "String") { StackSize = 64 };
+            Feather = new ItemInfo(288, "minecraft:feather", "Feather") { StackSize = 64 };
+            Gunpowder = new ItemInfo(289, "minecraft:gunpowder", "Gunpowder") { StackSize = 64 };
             WoodenHoe = new ItemInfo(290, "minecraft:wooden_hoe", "Wooden Hoe");
             StoneHoe = new ItemInfo(291, "minecraft:stone_hoe", "Stone Hoe");
             IronHoe = new ItemInfo(292, "minecraft:iron_hoe", "Iron Hoe");
             DiamondHoe = new ItemInfo(293, "minecraft:diamond_hoe", "Diamond Hoe");
             GoldHoe = new ItemInfo(294, "minecraft:golden_hoe", "Gold Hoe");
-            Seeds = new ItemInfo(295, "minecraft:wheat_seeds", "Seeds").SetStackSize(64);
-            Wheat = new ItemInfo(296, "minecraft:wheat", "Wheat").SetStackSize(64);
-            Bread = new ItemInfo(297, "minecraft:bread", "Bread").SetStackSize(64);
+            Seeds = new ItemInfo(295, "minecraft:wheat_seeds", "Seeds") { StackSize = 64 };
+            Wheat = new ItemInfo(296, "minecraft:wheat", "Wheat") { StackSize = 64 };
+            Bread = new ItemInfo(297, "minecraft:bread", "Bread") { StackSize = 64 };
             LeatherCap = new ItemInfo(298, "minecraft:leather_helmet", "Leather Cap");
             LeatherTunic = new ItemInfo(299, "minecraft:leather_chestplate", "Leather Tunic");
             LeatherPants = new ItemInfo(300, "minecraft:leather_leggings", "Leather Pants");
@@ -597,11 +588,11 @@ namespace Substrate
             GoldChestplate = new ItemInfo(315, "minecraft:golden_chestplate", "Gold Chestplate");
             GoldLeggings = new ItemInfo(316, "minecraft:golden_leggings", "Gold Leggings");
             GoldBoots = new ItemInfo(317, "minecraft:golden_boots", "Gold Boots");
-            Flint = new ItemInfo(318, "minecraft:flint", "Flint").SetStackSize(64);
-            RawPorkchop = new ItemInfo(319, "minecraft:porkchop", "Raw Porkchop").SetStackSize(64);
-            CookedPorkchop = new ItemInfo(320, "minecraft:cooked_porkchop", "Cooked Porkchop").SetStackSize(64);
-            Painting = new ItemInfo(321, "minecraft:painting", "Painting").SetStackSize(64);
-            GoldenApple = new ItemInfo(322, "minecraft:golden_apple", "Golden Apple").SetStackSize(64);
+            Flint = new ItemInfo(318, "minecraft:flint", "Flint") { StackSize = 64 };
+            RawPorkchop = new ItemInfo(319, "minecraft:porkchop", "Raw Porkchop") { StackSize = 64 };
+            CookedPorkchop = new ItemInfo(320, "minecraft:cooked_porkchop", "Cooked Porkchop") { StackSize = 64 };
+            Painting = new ItemInfo(321, "minecraft:painting", "Painting") { StackSize = 64 };
+            GoldenApple = new ItemInfo(322, "minecraft:golden_apple", "Golden Apple") { StackSize = 64 };
             Sign = new ItemInfo(323, "minecraft:sign", "Sign");
             WoodenDoor = new ItemInfo(324, "minecraft:wooden_door", "Door");
             Bucket = new ItemInfo(325, "minecraft:bucket", "Bucket");
@@ -610,82 +601,82 @@ namespace Substrate
             Minecart = new ItemInfo(328, "minecraft:minecart", "Minecart");
             Saddle = new ItemInfo(329, "minecraft:saddle", "Saddle");
             IronDoor = new ItemInfo(330, "minecraft:iron_door", "Iron Door");
-            RedstoneDust = new ItemInfo(331, "minecraft:redstone", "Redstone Dust").SetStackSize(64);
-            Snowball = new ItemInfo(332, "minecraft:snowball", "Snowball").SetStackSize(16);
+            RedstoneDust = new ItemInfo(331, "minecraft:redstone", "Redstone Dust") { StackSize = 64 };
+            Snowball = new ItemInfo(332, "minecraft:snowball", "Snowball") { StackSize = 16 };
             Boat = new ItemInfo(333, "minecraft:boat", "Boat");
-            Leather = new ItemInfo(334, "minecraft:leather", "Leather").SetStackSize(64);
+            Leather = new ItemInfo(334, "minecraft:leather", "Leather") { StackSize = 64 };
             Milk = new ItemInfo(335, "minecraft:milk_bucket", "Milk");
-            ClayBrick = new ItemInfo(336, "minecraft:brick", "Clay Brick").SetStackSize(64);
-            Clay = new ItemInfo(337, "minecraft:clay_ball", "Clay").SetStackSize(64);
-            SugarCane = new ItemInfo(338, "minecraft:reeds", "Sugar Cane").SetStackSize(64);
-            Paper = new ItemInfo(339, "minecraft:paper", "Paper").SetStackSize(64);
-            Book = new ItemInfo(340, "minecraft:book", "Book").SetStackSize(64);
-            Slimeball = new ItemInfo(341, "minecraft:slime_ball", "Slimeball").SetStackSize(64);
+            ClayBrick = new ItemInfo(336, "minecraft:brick", "Clay Brick") { StackSize = 64 };
+            Clay = new ItemInfo(337, "minecraft:clay_ball", "Clay") { StackSize = 64 };
+            SugarCane = new ItemInfo(338, "minecraft:reeds", "Sugar Cane") { StackSize = 64 };
+            Paper = new ItemInfo(339, "minecraft:paper", "Paper") { StackSize = 64 };
+            Book = new ItemInfo(340, "minecraft:book", "Book") { StackSize = 64 };
+            Slimeball = new ItemInfo(341, "minecraft:slime_ball", "Slimeball") { StackSize = 64 };
             StorageMinecart = new ItemInfo(342, "minecraft:chest_minecart", "Storage Minecart");
             PoweredMinecart = new ItemInfo(343, "minecraft:furnace_minecart", "Powered Minecart");
-            Egg = new ItemInfo(344, "minecraft:egg", "Egg").SetStackSize(16);
+            Egg = new ItemInfo(344, "minecraft:egg", "Egg") { StackSize = 16 };
             Compass = new ItemInfo(345, "minecraft:compass", "Compass");
             FishingRod = new ItemInfo(346, "minecraft:fishing_rod", "Fishing Rod");
             Clock = new ItemInfo(347, "minecraft:clock", "Clock");
-            GlowstoneDust = new ItemInfo(348, "minecraft:glowstone_dust", "Glowstone Dust").SetStackSize(64);
-            RawFish = new ItemInfo(349, "minecraft:fish", "Raw Fish").SetStackSize(64);
-            CookedFish = new ItemInfo(350, "minecraft:cooked_fish", "Cooked Fish").SetStackSize(64);
-            Dye = new ItemInfo(351, "minecraft:dye", "Dye").SetStackSize(64);
-            Bone = new ItemInfo(352, "minecraft:bone", "Bone").SetStackSize(64);
-            Sugar = new ItemInfo(353, "minecraft:sugar", "Sugar").SetStackSize(64);
+            GlowstoneDust = new ItemInfo(348, "minecraft:glowstone_dust", "Glowstone Dust") { StackSize = 64 };
+            RawFish = new ItemInfo(349, "minecraft:fish", "Raw Fish") { StackSize = 64 };
+            CookedFish = new ItemInfo(350, "minecraft:cooked_fish", "Cooked Fish") { StackSize = 64 };
+            Dye = new ItemInfo(351, "minecraft:dye", "Dye") { StackSize = 64 };
+            Bone = new ItemInfo(352, "minecraft:bone", "Bone") { StackSize = 64 };
+            Sugar = new ItemInfo(353, "minecraft:sugar", "Sugar") { StackSize = 64 };
             Cake = new ItemInfo(354, "minecraft:cake", "Cake");
             Bed = new ItemInfo(355, "minecraft:bed", "Bed");
-            RedstoneRepeater = new ItemInfo(356, "minecraft:repeater", "Redstone Repeater").SetStackSize(64);
-            Cookie = new ItemInfo(357, "minecraft:cookie", "Cookie").SetStackSize(8);
+            RedstoneRepeater = new ItemInfo(356, "minecraft:repeater", "Redstone Repeater") { StackSize = 64 };
+            Cookie = new ItemInfo(357, "minecraft:cookie", "Cookie") { StackSize = 8 };
             Map = new ItemInfo(358, "minecraft:filled_map", "Map");
             Shears = new ItemInfo(359, "minecraft:shears", "Shears");
-            MelonSlice = new ItemInfo(360, "minecraft:melon", "Melon Slice").SetStackSize(64);
-            PumpkinSeeds = new ItemInfo(361, "minecraft:pumpkin_seeds", "Pumpkin Seeds").SetStackSize(64);
-            MelonSeeds = new ItemInfo(362, "minecraft:melon_seeds", "Melon Seeds").SetStackSize(64);
-            RawBeef = new ItemInfo(363, "minecraft:beef", "Raw Beef").SetStackSize(64);
-            Steak = new ItemInfo(364, "minecraft:cooked_beef", "Steak").SetStackSize(64);
-            RawChicken = new ItemInfo(365, "minecraft:chicken", "Raw Chicken").SetStackSize(64);
-            CookedChicken = new ItemInfo(366, "minecraft:cooked_chicken", "Cooked Chicken").SetStackSize(64);
-            RottenFlesh = new ItemInfo(367, "minecraft:rotten_flesh", "Rotten Flesh").SetStackSize(64);
-            EnderPearl = new ItemInfo(368, "minecraft:ender_pearl", "Ender Pearl").SetStackSize(64);
-            BlazeRod = new ItemInfo(369, "minecraft:blaze_rod", "Blaze Rod").SetStackSize(64);
-            GhastTear = new ItemInfo(370, "minecraft:ghast_tear", "Ghast Tear").SetStackSize(64);
-            GoldNugget = new ItemInfo(371, "minecraft:gold_nugget", "Gold Nugget").SetStackSize(64);
-            NetherWart = new ItemInfo(372, "minecraft:nether_wart", "Nether Wart").SetStackSize(64);
+            MelonSlice = new ItemInfo(360, "minecraft:melon", "Melon Slice") { StackSize = 64 };
+            PumpkinSeeds = new ItemInfo(361, "minecraft:pumpkin_seeds", "Pumpkin Seeds") { StackSize = 64 };
+            MelonSeeds = new ItemInfo(362, "minecraft:melon_seeds", "Melon Seeds") { StackSize = 64 };
+            RawBeef = new ItemInfo(363, "minecraft:beef", "Raw Beef") { StackSize = 64 };
+            Steak = new ItemInfo(364, "minecraft:cooked_beef", "Steak") { StackSize = 64 };
+            RawChicken = new ItemInfo(365, "minecraft:chicken", "Raw Chicken") { StackSize = 64 };
+            CookedChicken = new ItemInfo(366, "minecraft:cooked_chicken", "Cooked Chicken") { StackSize = 64 };
+            RottenFlesh = new ItemInfo(367, "minecraft:rotten_flesh", "Rotten Flesh") { StackSize = 64 };
+            EnderPearl = new ItemInfo(368, "minecraft:ender_pearl", "Ender Pearl") { StackSize = 64 };
+            BlazeRod = new ItemInfo(369, "minecraft:blaze_rod", "Blaze Rod") { StackSize = 64 };
+            GhastTear = new ItemInfo(370, "minecraft:ghast_tear", "Ghast Tear") { StackSize = 64 };
+            GoldNugget = new ItemInfo(371, "minecraft:gold_nugget", "Gold Nugget") { StackSize = 64 };
+            NetherWart = new ItemInfo(372, "minecraft:nether_wart", "Nether Wart") { StackSize = 64 };
             Potion = new ItemInfo(373, "minecraft:potion", "Potion");
-            GlassBottle = new ItemInfo(374, "minecraft:glass_bottle", "Glass Bottle").SetStackSize(64);
-            SpiderEye = new ItemInfo(375, "minecraft:spider_eye", "Spider Eye").SetStackSize(64);
-            FermentedSpiderEye = new ItemInfo(376, "minecraft:fermented_spider_eye", "Fermented Spider Eye").SetStackSize(64);
-            BlazePowder = new ItemInfo(377, "minecraft:blaze_powder", "Blaze Powder").SetStackSize(64);
-            MagmaCream = new ItemInfo(378, "minecraft:magma_cream", "Magma Cream").SetStackSize(64);
-            BrewingStand = new ItemInfo(379, "minecraft:brewing_stand", "Brewing Stand").SetStackSize(64);
+            GlassBottle = new ItemInfo(374, "minecraft:glass_bottle", "Glass Bottle") { StackSize = 64 };
+            SpiderEye = new ItemInfo(375, "minecraft:spider_eye", "Spider Eye") { StackSize = 64 };
+            FermentedSpiderEye = new ItemInfo(376, "minecraft:fermented_spider_eye", "Fermented Spider Eye") { StackSize = 64 };
+            BlazePowder = new ItemInfo(377, "minecraft:blaze_powder", "Blaze Powder") { StackSize = 64 };
+            MagmaCream = new ItemInfo(378, "minecraft:magma_cream", "Magma Cream") { StackSize = 64 };
+            BrewingStand = new ItemInfo(379, "minecraft:brewing_stand", "Brewing Stand") { StackSize = 64 };
             Cauldron = new ItemInfo(380, "minecraft:cauldron", "Cauldron");
-            EyeOfEnder = new ItemInfo(381, "minecraft:ender_eye", "Eye of Ender").SetStackSize(64);
-            GlisteringMelon = new ItemInfo(382, "minecraft:speckled_melon", "Glistering Melon").SetStackSize(64);
-            SpawnEgg = new ItemInfo(383, "minecraft:spawn_egg", "Spawn Egg").SetStackSize(64);
-            BottleOEnchanting = new ItemInfo(384, "minecraft:experience_bottle", "Bottle O' Enchanting").SetStackSize(64);
-            FireCharge = new ItemInfo(385, "minecraft:fire_charge", "Fire Charge").SetStackSize(64);
+            EyeOfEnder = new ItemInfo(381, "minecraft:ender_eye", "Eye of Ender") { StackSize = 64 };
+            GlisteringMelon = new ItemInfo(382, "minecraft:speckled_melon", "Glistering Melon") { StackSize = 64 };
+            SpawnEgg = new ItemInfo(383, "minecraft:spawn_egg", "Spawn Egg") { StackSize = 64 };
+            BottleOEnchanting = new ItemInfo(384, "minecraft:experience_bottle", "Bottle O' Enchanting") { StackSize = 64 };
+            FireCharge = new ItemInfo(385, "minecraft:fire_charge", "Fire Charge") { StackSize = 64 };
             BookAndQuill = new ItemInfo(386, "minecraft:writable_book", "Book and Quill");
             WrittenBook = new ItemInfo(387, "minecraft:written_book", "Written Book");
-            Emerald = new ItemInfo(388, "minecraft:emerald", "Emerald").SetStackSize(64);
-            ItemFrame = new ItemInfo(389, "minecraft:item_frame", "Item Frame").SetStackSize(64);
-            FlowerPot = new ItemInfo(390, "minecraft:flower_pot", "Flower Pot").SetStackSize(64);
-            Carrot = new ItemInfo(391, "minecraft:carrot", "Carrot").SetStackSize(64);
-            Potato = new ItemInfo(392, "minecraft:potato", "Potato").SetStackSize(64);
-            BakedPotato = new ItemInfo(393, "minecraft:baked_potato", "Baked Potato").SetStackSize(64);
-            PoisonPotato = new ItemInfo(394, "minecraft:poisonous_potato", "Poisonous Potato").SetStackSize(64);
-            EmptyMap = new ItemInfo(395, "minecraft:map", "Empty Map").SetStackSize(64);
-            GoldenCarrot = new ItemInfo(396, "minecraft:golden_carrot", "Golden Carrot").SetStackSize(64);
-            MobHead = new ItemInfo(397, "minecraft:skull", "Mob Head").SetStackSize(64);
+            Emerald = new ItemInfo(388, "minecraft:emerald", "Emerald") { StackSize = 64 };
+            ItemFrame = new ItemInfo(389, "minecraft:item_frame", "Item Frame") { StackSize = 64 };
+            FlowerPot = new ItemInfo(390, "minecraft:flower_pot", "Flower Pot") { StackSize = 64 };
+            Carrot = new ItemInfo(391, "minecraft:carrot", "Carrot") { StackSize = 64 };
+            Potato = new ItemInfo(392, "minecraft:potato", "Potato") { StackSize = 64 };
+            BakedPotato = new ItemInfo(393, "minecraft:baked_potato", "Baked Potato") { StackSize = 64 };
+            PoisonPotato = new ItemInfo(394, "minecraft:poisonous_potato", "Poisonous Potato") { StackSize = 64 };
+            EmptyMap = new ItemInfo(395, "minecraft:map", "Empty Map") { StackSize = 64 };
+            GoldenCarrot = new ItemInfo(396, "minecraft:golden_carrot", "Golden Carrot") { StackSize = 64 };
+            MobHead = new ItemInfo(397, "minecraft:skull", "Mob Head") { StackSize = 64 };
             CarrotOnStick = new ItemInfo(398, "minecraft:carrot_on_a_stick", "Carrot on a Stick");
-            NetherStar = new ItemInfo(399, "minecraft:nether_star", "Nether Star").SetStackSize(64);
-            PumpkinPie = new ItemInfo(400, "minecraft:pumpkin_pie", "Pumpkin Pie").SetStackSize(64);
+            NetherStar = new ItemInfo(399, "minecraft:nether_star", "Nether Star") { StackSize = 64 };
+            PumpkinPie = new ItemInfo(400, "minecraft:pumpkin_pie", "Pumpkin Pie") { StackSize = 64 };
             FireworkRocket = new ItemInfo(401, "minecraft:fireworks", "Firework Rocket");
-            FireworkStar = new ItemInfo(402, "minecraft:firework_charge", "Firework Star").SetStackSize(64);
+            FireworkStar = new ItemInfo(402, "minecraft:firework_charge", "Firework Star") { StackSize = 64 };
             EnchantedBook = new ItemInfo(403, "minecraft:enchanted_book", "Enchanted Book");
-            RedstoneComparator = new ItemInfo(404, "minecraft:comparator", "Redstone Comparator").SetStackSize(64);
-            NetherBrick = new ItemInfo(405, "minecraft:netherbrick", "Nether Brick").SetStackSize(64);
-            NetherQuartz = new ItemInfo(406, "minecraft:quartz", "Nether Quartz").SetStackSize(64);
+            RedstoneComparator = new ItemInfo(404, "minecraft:comparator", "Redstone Comparator") { StackSize = 64 };
+            NetherBrick = new ItemInfo(405, "minecraft:netherbrick", "Nether Brick") { StackSize = 64 };
+            NetherQuartz = new ItemInfo(406, "minecraft:quartz", "Nether Quartz") { StackSize = 64 };
             TntMinecart = new ItemInfo(407, "minecraft:tnt_minecart", "Minecart with TNT");
             HopperMinecart = new ItemInfo(408, "minecraft:hopper_minecart", "Minecart with Hopper");
             PrismarineShard = new ItemInfo(409, "minecraft:prismarine_shard", "Prismarine Shard");
@@ -699,10 +690,10 @@ namespace Substrate
             IronHorseArmor = new ItemInfo(417, "minecraft:iron_horse_armor", "Iron Horse Armor");
             GoldHorseArmor = new ItemInfo(418, "minecraft:golden_horse_armor", "Gold Horse Armor");
             DiamondHorseArmor = new ItemInfo(419, "minecraft:diamond_horse_armor", "Diamond Horse Armor");
-            Lead = new ItemInfo(420, "minecraft:lead", "Lead").SetStackSize(64);
-            NameTag = new ItemInfo(421, "minecraft:name_tag", "Name Tag").SetStackSize(64);
+            Lead = new ItemInfo(420, "minecraft:lead", "Lead") { StackSize = 64 };
+            NameTag = new ItemInfo(421, "minecraft:name_tag", "Name Tag") { StackSize = 64 };
             MinecartWithCommandBlock = new ItemInfo(422, "minecraft:command_block_minecart", "Minecart With Command Block");
-            RawMutton = new ItemInfo(423, "minecraft:mutton",  "Raw Mutton");
+            RawMutton = new ItemInfo(423, "minecraft:mutton", "Raw Mutton");
             CookedMutton = new ItemInfo(424, "minecraft:cooked_mutton", "Cooked Mutton");
             Banner = new ItemInfo(425, "minecraft:banner", "Banner");
 
