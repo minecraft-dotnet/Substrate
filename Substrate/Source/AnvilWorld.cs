@@ -18,6 +18,9 @@ namespace Substrate
     {
         private const string _REGION_DIR = "region";
         private const string _PLAYER_DIR = "players";
+        private const string _PLAYERDATA_DIR = "playerdata";
+        private const string _STATS_DIR = "stats";
+        private const string _DATA_DIR = "players";
         private string _levelFile = "level.dat";
 
         private Level _level;
