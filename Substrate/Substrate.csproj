@@ -176,6 +176,7 @@
     <Compile Include="Source\Nbt\NbtVerifier.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\Nbt\SchemaBuilder.cs" />
     <Compile Include="Source\Nbt\SchemaNode.cs" />
     <Compile Include="Source\Nbt\SchemaNodeArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeCompound.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Source\Nbt\SchemaNodeString.cs" />
     <Compile Include="Source\Nbt\SchemaOptions.cs" />
     <Compile Include="Source\Nbt\TagNode.cs" />
+    <Compile Include="Source\Nbt\TagNodeAttribute.cs" />
     <Compile Include="Source\Nbt\TagNodeByteArray.cs" />
     <Compile Include="Source\Nbt\TagNodeCompound.cs" />
     <Compile Include="Source\Nbt\TagNodeDouble.cs" />
@@ -236,6 +238,7 @@
     <Compile Include="Source\Core\NibbleArray.cs" />
     <Compile Include="Source\TileTick.cs" />
     <Compile Include="Source\Vector.cs" />
+    <Compile Include="Source\Villages.cs" />
     <Compile Include="Source\World.cs" />
     <Compile Include="Vendor\DotNetZip\Zlib\Crc32.cs" />
     <Compile Include="Vendor\DotNetZip\Zlib\Deflate.cs" />
