@@ -242,6 +242,7 @@ namespace Substrate
         public const int MIN_LUMINANCE = 0;
 
         private static readonly BlockInfo[] _blockTable;
+        private static readonly Dictionary<string, BlockInfo> _nameIdLookup;
         private static readonly int[] _opacityTable;
         private static readonly int[] _luminanceTable;
 
@@ -334,6 +335,17 @@ namespace Substrate
         public static ICacheTable<BlockInfo> BlockTable
         {
             get { return _blockTableCache; }
+        }
+
+        public static BlockInfo GetBlockByNameId(string nameId)
+        {
+            BlockInfo bi;
+            if (_nameIdLookup.TryGetValue(nameId, out bi))
+            {
+                return bi;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -522,6 +534,7 @@ namespace Substrate
             _nameId = nameId;
             _name = name;
             _blockTable[_id] = this;
+            _nameIdLookup.Add(_nameId, this);
             _registered = true;
         }
 
@@ -744,6 +757,7 @@ namespace Substrate
         static BlockInfo()
         {
             _blockTable = new BlockInfo[MAX_BLOCKS];
+            _nameIdLookup = new Dictionary<string, BlockInfo>();
             _opacityTable = new int[MAX_BLOCKS];
             _luminanceTable = new int[MAX_BLOCKS];
 
