@@ -84,7 +84,7 @@ namespace Substrate.Core
         /// as being out of bounds, the lookup will be delegated to the correct region and the lookup will be performed there
         /// instead.  This allows any <see cref="Region"/> to perform a similar task to <see cref="RegionChunkManager"/>, but with a
         /// region-local frame of reference instead of a global frame of reference.</remarks>
-        ChunkRef GetChunkRef (int lcx, int lcz);
+        new ChunkRef GetChunkRef (int lcx, int lcz);
 
         /// <summary>
         /// Creates a new chunk at the given local coordinates relative to this region and returns a new <see cref="ChunkRef"/> for it.
@@ -94,7 +94,7 @@ namespace Substrate.Core
         /// <returns>A <see cref="ChunkRef"/> for the newly created chunk.</returns>
         /// <remarks>If the local coordinates are out of bounds for this region, the action will be forwarded to the correct region
         /// transparently.</remarks>
-        ChunkRef CreateChunk (int lcx, int lcz);
+        new ChunkRef CreateChunk (int lcx, int lcz);
 
         /// <summary>
         /// Gets the timestamp of a chunk from the underlying region file.
