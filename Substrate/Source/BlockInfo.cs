@@ -277,36 +277,23 @@ namespace Substrate
 
         public class BlockDataLimits
         {
-            private int _low;
-            private int _high;
-            private int _bitmask;
+            public int Low { get; private set; }
 
-            public int Low
-            {
-                get { return _low; }
-            }
+            public int High { get; private set; }
 
-            public int High
-            {
-                get { return _high; }
-            }
+            public int Bitmask { get; private set; }
 
-            public int Bitmask
+            public BlockDataLimits(int low, int high, int bitmask = 0)
             {
-                get { return _bitmask; }
-            }
-
-            public BlockDataLimits(int low, int high, int bitmask)
-            {
-                _low = low;
-                _high = high;
-                _bitmask = bitmask;
+                Low = low;
+                High = high;
+                Bitmask = bitmask;
             }
 
             public bool Test(int data)
             {
-                int rdata = data & ~_bitmask;
-                return rdata >= _low && rdata <= _high;
+                int rdata = data & ~Bitmask;
+                return rdata >= Low && rdata <= High;
             }
         }
 
@@ -766,209 +753,209 @@ namespace Substrate
             _luminanceTableCache = new CacheTableArray<int>(_luminanceTable);
 
             Air = new BlockInfo(0, "minecraft:air", "Air") { Opacity = 0, State = BlockState.NONSOLID };
-            Stone = new BlockInfo(1, "minecraft:stone", "Stone");
-            Grass = new BlockInfo(2, "minecraft:grass", "Grass") { Tick = 10 };
-            Dirt = new BlockInfo(3, "minecraft:dirt", "Dirt");
+            Stone = new BlockInfo(1, "minecraft:stone", "Stone") { DataLimits = new BlockDataLimits(0, 6) }; ;
+            Grass = new BlockInfo(2, "minecraft:grass", "Grass") { Tick = 10, DataLimits = new BlockDataLimits(0, 2) };
+            Dirt = new BlockInfo(3, "minecraft:dirt", "Dirt") { DataLimits = new BlockDataLimits(0, 2) }; ;
             Cobblestone = new BlockInfo(4, "minecraft:cobblestone", "Cobblestone");
-            WoodPlank = new BlockInfo(5, "minecraft:planks", "Wooden Plank");
-            Sapling = new BlockInfo(6, "minecraft:sapling", "Sapling") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15, 0) };
+            WoodPlank = new BlockInfo(5, "minecraft:planks", "Wooden Plank") { DataLimits = new BlockDataLimits(0, 5) };
+            Sapling = new BlockInfo(6, "minecraft:sapling", "Sapling") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             Bedrock = new BlockInfo(7, "minecraft:bedrock", "Bedrock");
             Water = new BlockInfo(8, "minecraft:flowing_water", "Water") { Opacity = 3, State = BlockState.FLUID, Tick = 5, DataLimits = new BlockDataLimits(0, 7, 0x8) };
             StationaryWater = new BlockInfo(9, "minecraft:water", "Stationary Water") { Opacity = 3, State = BlockState.FLUID };
             Lava = new BlockInfo(10, "minecraft:flowing_lava", "Lava") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.FLUID, Tick = 30, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 7, 0x8) };
             StationaryLava = new BlockInfo(11, "minecraft:lava", "Stationary Lava") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.FLUID, Tick = 10, TransmitsLight = false };
-            Sand = new BlockInfo(12, "minecraft:sand", "Sand") { Tick = 3 };
+            Sand = new BlockInfo(12, "minecraft:sand", "Sand") { Tick = 3, DataLimits = new BlockDataLimits(0, 1) };
             Gravel = new BlockInfo(13, "minecraft:gravel", "Gravel") { Tick = 3 };
             GoldOre = new BlockInfo(14, "minecraft:gold_ore", "Gold Ore");
             IronOre = new BlockInfo(15, "minecraft:iron_ore", "Iron Ore");
             CoalOre = new BlockInfo(16, "minecraft:coal_ore", "Coal Ore");
-            Wood = new BlockInfo(17, "minecraft:log", "Wood") { DataLimits = new BlockDataLimits(0, 2, 0) };
-            Leaves = new BlockInfo(18, "minecraft:leaves", "Leaves") { Opacity = 1, Tick = 10, DataLimits = new BlockDataLimits(0, 2, 0) };
-            Sponge = new BlockInfo(19, "minecraft:sponge", "Sponge");
+            Wood = new BlockInfo(17, "minecraft:log", "Wood") { DataLimits = new BlockDataLimits(0, 15) };
+            Leaves = new BlockInfo(18, "minecraft:leaves", "Leaves") { Opacity = 1, Tick = 10, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            Sponge = new BlockInfo(19, "minecraft:sponge", "Sponge") { DataLimits = new BlockDataLimits(0, 1) };
             Glass = new BlockInfo(20, "minecraft:glass", "Glass") { Opacity = 0 };
             LapisOre = new BlockInfo(21, "minecraft:lapis_ore", "Lapis Lazuli Ore");
             LapisBlock = new BlockInfo(22, "minecraft:lapis_block", "Lapis Lazuli Block");
-            Dispenser = new BlockInfo(23, "minecraft:dispenser", "Dispenser") { Tick = 4, TileEntityName = "Trap", DataLimits = new BlockDataLimits(2, 5, 0) };
-            Sandstone = new BlockInfo(24, "minecraft:sandstone", "Sandstone");
+            Dispenser = new BlockInfo(23, "minecraft:dispenser", "Dispenser") { Tick = 4, TileEntityName = "Trap", DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            Sandstone = new BlockInfo(24, "minecraft:sandstone", "Sandstone") { DataLimits = new BlockDataLimits(0, 2) };
             NoteBlock = new BlockInfo(25, "minecraft:noteblock", "Note Block") { TileEntityName = "Music" };
-            Bed = new BlockInfo(26, "minecraft:bed", "Bed") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0x8) };
+            Bed = new BlockInfo(26, "minecraft:bed", "Bed") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
             PoweredRail = new BlockInfo(27, "minecraft:golden_rail", "Powered Rail") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             DetectorRail = new BlockInfo(28, "minecraft:detector_rail", "Detector Rail") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 5, 0x8) };
-            StickyPiston = new BlockInfo(29, "minecraft:sticky_piston", "Sticky Piston") { Opacity = 0, DataLimits = new BlockDataLimits(1, 5, 0x8) };
+            StickyPiston = new BlockInfo(29, "minecraft:sticky_piston", "Sticky Piston") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             Cobweb = new BlockInfo(30, "minecraft:web", "Cobweb") { Opacity = 0, State = BlockState.NONSOLID };
             TallGrass = new BlockInfo(31, "minecraft:tallgrass", "Tall Grass") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 2, 0) };
             DeadShrub = new BlockInfo(32, "minecraft:deadbush", "Dead Shrub") { Opacity = 0, State = BlockState.NONSOLID };
-            Piston = new BlockInfo(33, "minecraft:piston", "Piston") { Opacity = 0, DataLimits = new BlockDataLimits(1, 5, 0x8) };
-            PistonHead = new BlockInfo(34, "minecraft:piston_head", "Piston Head") { Opacity = 0, DataLimits = new BlockDataLimits(1, 5, 0x8) };
-            Wool = new BlockInfo(35, "minecraft:wool", "Wool") { DataLimits = new BlockDataLimits(0, 15, 0) };
+            Piston = new BlockInfo(33, "minecraft:piston", "Piston") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            PistonHead = new BlockInfo(34, "minecraft:piston_head", "Piston Head") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            Wool = new BlockInfo(35, "minecraft:wool", "Wool") { DataLimits = new BlockDataLimits(0, 15) };
             PistonMoving = new BlockInfo(36, "minecraft:piston_extension", "Piston Moving") { Opacity = 0, TileEntityName = "Piston" };
-            YellowFlower = new BlockInfo(37, "minecraft:yellow_flower", "Yellow Flower") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            RedRose = new BlockInfo(38, "minecraft:red_flower", "Red Rose") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            BrownMushroom = new BlockInfo(39, "minecraft:brown_mushroom", "Brown Mushroom") { Opacity = 0, Luminance = 1, State = BlockState.NONSOLID, Tick = 10 };
-            RedMushroom = new BlockInfo(40, "minecraft:red_mushroom", "Red Mushroom") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
+            YellowFlower = new BlockInfo(37, "minecraft:yellow_flower", "Yellow Flower") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 0) };
+            RedRose = new BlockInfo(38, "minecraft:red_flower", "Red Rose") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 8) };
+            BrownMushroom = new BlockInfo(39, "minecraft:brown_mushroom", "Brown Mushroom") { Opacity = 0, Luminance = 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15) };
+            RedMushroom = new BlockInfo(40, "minecraft:red_mushroom", "Red Mushroom") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15) };
             GoldBlock = new BlockInfo(41, "minecraft:gold_block", "Gold Block");
             IronBlock = new BlockInfo(42, "minecraft:iron_block", "Iron Block");
-            DoubleStoneSlab = new BlockInfo(43, "minecraft:double_stone_slab", "Double Slab") { DataLimits = new BlockDataLimits(0, 5, 0x8) };
-            StoneSlab = new BlockInfo(44, "minecraft:stone_slab", "Slab") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 5, 0) };
+            DoubleStoneSlab = new BlockInfo(43, "minecraft:double_stone_slab", "Double Slab") { DataLimits = new BlockDataLimits(0, 9, 0x8) };
+            StoneSlab = new BlockInfo(44, "minecraft:stone_slab", "Slab") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 9, 0x8) };
             BrickBlock = new BlockInfo(45, "minecraft:brick_block", "Brick Block");
             TNT = new BlockInfo(46, "minecraft:tnt", "TNT");
             Bookshelf = new BlockInfo(47, "minecraft:bookshelf", "Bookshelf");
             MossStone = new BlockInfo(48, "minecraft:mossy_cobblestone", "Moss Stone");
             Obsidian = new BlockInfo(49, "minecraft:obsidian", "Obsidian");
-            Torch = new BlockInfo(50, "minecraft:torch", "Torch") { Opacity = 0, Luminance = MAX_LUMINANCE - 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(1, 5, 0) };
+            Torch = new BlockInfo(50, "minecraft:torch", "Torch") { Opacity = 0, Luminance = MAX_LUMINANCE - 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(1, 5) };
             Fire = new BlockInfo(51, "minecraft:fire", "Fire") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, Tick = 40 };
             MonsterSpawner = new BlockInfo(52, "minecraft:mob_spawner", "Monster Spawner") { Opacity = 0, TileEntityName = "MobSpawner" };
             WoodStairs = new BlockInfo(53, "minecraft:oak_stairs", "Wooden Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            Chest = new BlockInfo(54, "minecraft:chest", "Chest") { Opacity = 0, TileEntityName = "Chest" };
-            RedstoneWire = new BlockInfo(55, "minecraft:redstone_wire", "Redstone Wire") { Opacity = 0, State = BlockState.NONSOLID };
+            Chest = new BlockInfo(54, "minecraft:chest", "Chest") { Opacity = 0, TileEntityName = "Chest", DataLimits = new BlockDataLimits(2, 5) };
+            RedstoneWire = new BlockInfo(55, "minecraft:redstone_wire", "Redstone Wire") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 15) };
             DiamondOre = new BlockInfo(56, "minecraft:diamond_ore", "Diamond Ore");
             DiamondBlock = new BlockInfo(57, "minecraft:diamond_block", "Diamond Block");
             CraftTable = new BlockInfo(58, "minecraft:crafting_table", "Crafting Table");
-            Crops = new BlockInfo(59, "minecraft:wheat", "Crops") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7, 0) };
-            Farmland = new BlockInfo(60, "minecraft:farmland", "Farmland") { Opacity = 0, Tick = 10, TransmitsLight = false };
+            Crops = new BlockInfo(59, "minecraft:wheat", "Crops") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7) };
+            Farmland = new BlockInfo(60, "minecraft:farmland", "Farmland") { Opacity = 0, Tick = 10, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 7) };
             Furnace = new BlockInfo(61, "minecraft:furnace", "Furnace") { TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
             BurningFurnace = new BlockInfo(62, "minecraft:lit_furnace", "Burning Furnace") { Luminance = MAX_LUMINANCE - 1, TileEntityName = "Furnace", DataLimits = new BlockDataLimits(2, 5, 0) };
-            SignPost = new BlockInfo(63, "minecraft:standing_sign", "Sign Post") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(0, 15, 0) };
-            WoodDoor = new BlockInfo(64, "minecraft:wooden_door", "Wooden Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            SignPost = new BlockInfo(63, "minecraft:standing_sign", "Sign Post") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(0, 15) };
+            WoodDoor = new BlockInfo(64, "minecraft:wooden_door", "Wooden Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 0, 0xF) };
             Ladder = new BlockInfo(65, "minecraft:ladder", "Ladder") { Opacity = 0, DataLimits = new BlockDataLimits(2, 5, 0) };
             Rails = new BlockInfo(66, "minecraft:rail", "Rails") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 9, 0) };
             CobbleStairs = new BlockInfo(67, "minecraft:stone_stairs", "Cobblestone Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            WallSign = new BlockInfo(68, "minecraft:wall_sign", "Wall Sign") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(2, 5, 0) };
-            Lever = new BlockInfo(69, "minecraft:lever", "Lever") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 6, 0x8) };
+            WallSign = new BlockInfo(68, "minecraft:wall_sign", "Wall Sign") { Opacity = 0, State = BlockState.NONSOLID, BlocksFluid = true, TileEntityName = "Sign", DataLimits = new BlockDataLimits(2, 5) };
+            Lever = new BlockInfo(69, "minecraft:lever", "Lever") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 7, 0x8) };
             StonePlate = new BlockInfo(70, "minecraft:stone_pressure_plate", "Stone Pressure Plate") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 0, 0x1) };
-            IronDoor = new BlockInfo(71, "minecraft:iron_door", "Iron Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            IronDoor = new BlockInfo(71, "minecraft:iron_door", "Iron Door") { Opacity = 0, DataLimits = new BlockDataLimits(0, 0, 0xF) };
             WoodPlate = new BlockInfo(72, "minecraft:wooden_pressure_plate", "Wooden Pressure Plate") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 0, 0x1) };
             RedstoneOre = new BlockInfo(73, "minecraft:redstone_ore", "Redstone Ore") { Tick = 30 };
             GlowRedstoneOre = new BlockInfo(74, "minecraft:lit_redstone_ore", "Glowing Redstone Ore") { Luminance = 9, Tick = 30 };
-            RedstoneTorch = new BlockInfo(75, "minecraft:unlit_redstone_torch", "Redstone Torch (Off)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 2, DataLimits = new BlockDataLimits(0, 5, 0) };
-            RedstoneTorchOn = new BlockInfo(76, "minecraft:redstone_torch", "Redstone Torch (On)") { Opacity = 0, Luminance = 7, State = BlockState.NONSOLID, Tick = 2, DataLimits = new BlockDataLimits(0, 5, 0) };
-            StoneButton = new BlockInfo(77, "minecraft:stone_button", "Stone Button") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(1, 4, 0x8) };
+            RedstoneTorch = new BlockInfo(75, "minecraft:unlit_redstone_torch", "Redstone Torch (Off)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 2, DataLimits = new BlockDataLimits(1, 5) };
+            RedstoneTorchOn = new BlockInfo(76, "minecraft:redstone_torch", "Redstone Torch (On)") { Opacity = 0, Luminance = 7, State = BlockState.NONSOLID, Tick = 2, DataLimits = new BlockDataLimits(1, 5) };
+            StoneButton = new BlockInfo(77, "minecraft:stone_button", "Stone Button") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             Snow = new BlockInfo(78, "minecraft:snow_layer", "Snow") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7, 0) };
             Ice = new BlockInfo(79, "minecraft:ice", "Ice") { Opacity = 3, Tick = 10 };
             SnowBlock = new BlockInfo(80, "minecraft:snow", "Snow Block") { Tick = 10 };
-            Cactus = new BlockInfo(81, "minecraft:cactus", "Cactus") { Opacity = 0, Tick = 10, BlocksFluid = true, DataLimits = new BlockDataLimits(0, 5, 0) };
+            Cactus = new BlockInfo(81, "minecraft:cactus", "Cactus") { Opacity = 0, Tick = 10, BlocksFluid = true, DataLimits = new BlockDataLimits(0, 15) };
             ClayBlock = new BlockInfo(82, "minecraft:clay", "Clay Block");
-            SugarCane = new BlockInfo(83, "minecraft:reeds", "Sugar Cane") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15, 0) };
-            Jukebox = new BlockInfo(84, "minecraft:jukebox", "Jukebox") { DataLimits = new BlockDataLimits(0, 2, 0) };
+            SugarCane = new BlockInfo(83, "minecraft:reeds", "Sugar Cane") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15) };
+            Jukebox = new BlockInfo(84, "minecraft:jukebox", "Jukebox") { DataLimits = new BlockDataLimits(0, 1) };
             Fence = new BlockInfo(85, "minecraft:fence", "Fence") { Opacity = 0 };
-            Pumpkin = new BlockInfo(86, "minecraft:pumpkin", "Pumpkin") { DataLimits = new BlockDataLimits(0, 3, 0) };
+            Pumpkin = new BlockInfo(86, "minecraft:pumpkin", "Pumpkin") { DataLimits = new BlockDataLimits(0, 3, 0x4) };
             Netherrack = new BlockInfo(87, "minecraft:netherrack", "Netherrack");
             SoulSand = new BlockInfo(88, "minecraft:soul_sand", "Soul Sand");
             Glowstone = new BlockInfo(89, "minecraft:glowstone", "Glowstone Block") { Luminance = MAX_LUMINANCE };
             Portal = new BlockInfo(90, "minecraft:portal", "Portal") { Opacity = 0, Luminance = 11, State = BlockState.NONSOLID };
-            JackOLantern = new BlockInfo(91, "minecraft:lit_pumpkin", "Jack-O-Lantern") { Luminance = MAX_LUMINANCE, DataLimits = new BlockDataLimits(0, 3, 0) };
-            CakeBlock = new BlockInfo(92, "minecraft:cake", "Cake Block") { Opacity = 0 };
+            JackOLantern = new BlockInfo(91, "minecraft:lit_pumpkin", "Jack-O-Lantern") { Luminance = MAX_LUMINANCE, DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            CakeBlock = new BlockInfo(92, "minecraft:cake", "Cake Block") { Opacity = 0, DataLimits = new BlockDataLimits(0, 6) };
             RedstoneRepeater = new BlockInfo(93, "minecraft:unpowered_repeater", "Redstone Repeater (Off)") { Opacity = 0, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
             RedstoneRepeaterOn = new BlockInfo(94, "minecraft:powered_repeater", "Redstone Repeater (On)") { Opacity = 0, Luminance = 7, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
-            LockedChest = new BlockInfo(95, "minecraft:chest_locked_aprilfools_super_old_legacy_we_should_not_even_have_this", "Locked Chest") { Luminance = MAX_LUMINANCE, Tick = 10 };
-            StainedGlass = new BlockInfo(95, "minecraft:stained_glass", "Stained Glass") { Opacity = 0 };
-            Trapdoor = new BlockInfo(96, "minecraft:trapdoor", "Trapdoor") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            SilverfishStone = new BlockInfo(97, "minecraft:monster_egg", "Stone with Silverfish") { DataLimits = new BlockDataLimits(0, 2, 0) };
-            StoneBrick = new BlockInfo(98, "minecraft:stonebrick", "Stone Brick") { DataLimits = new BlockDataLimits(0, 2, 0) };
-            HugeRedMushroom = new BlockInfo(99, "minecraft:brown_mushroom_block", "Huge Red Mushroom") { DataLimits = new BlockDataLimits(0, 10, 0) };
-            HugeBrownMushroom = new BlockInfo(100, "minecraft:red_mushroom_block", "Huge Brown Mushroom") { DataLimits = new BlockDataLimits(0, 10, 0) };
+            //LockedChest = new BlockInfo(95, "minecraft:chest_locked_aprilfools_super_old_legacy_we_should_not_even_have_this", "Locked Chest") { Luminance = MAX_LUMINANCE, Tick = 10 };
+            StainedGlass = new BlockInfo(95, "minecraft:stained_glass", "Stained Glass") { Opacity = 0, DataLimits = new BlockDataLimits(0, 15) };
+            Trapdoor = new BlockInfo(96, "minecraft:trapdoor", "Trapdoor") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            SilverfishStone = new BlockInfo(97, "minecraft:monster_egg", "Stone with Silverfish") { DataLimits = new BlockDataLimits(0, 5) };
+            StoneBrick = new BlockInfo(98, "minecraft:stonebrick", "Stone Brick") { DataLimits = new BlockDataLimits(0, 3) };
+            HugeRedMushroom = new BlockInfo(99, "minecraft:brown_mushroom_block", "Huge Red Mushroom") { DataLimits = new BlockDataLimits(0, 15) }; // VERIFYME data values
+            HugeBrownMushroom = new BlockInfo(100, "minecraft:red_mushroom_block", "Huge Brown Mushroom") { DataLimits = new BlockDataLimits(0, 15) }; // VERIFYME data values
             IronBars = new BlockInfo(101, "minecraft:iron_bars", "Iron Bars") { Opacity = 0 };
             GlassPane = new BlockInfo(102, "minecraft:glass_pane", "Glass Pane") { Opacity = 0 };
             Melon = new BlockInfo(103, "minecraft:melon_block", "Melon");
-            PumpkinStem = new BlockInfo(104, "minecraft:pumpkin_stem", "Pumpkin Stem") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            MelonStem = new BlockInfo(105, "minecraft:melon_stem", "Melon Stem") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
+            PumpkinStem = new BlockInfo(104, "minecraft:pumpkin_stem", "Pumpkin Stem") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7) };
+            MelonStem = new BlockInfo(105, "minecraft:melon_stem", "Melon Stem") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7) };
             Vines = new BlockInfo(106, "minecraft:vine", "Vines") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
-            FenceGate = new BlockInfo(107, "minecraft:fence_gate", "Fence Gate") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            BrickStairs = new BlockInfo(108, "minecraft:brick_stairs", "Brick Stairs") { Opacity = 0, TransmitsLight = false };
-            StoneBrickStairs = new BlockInfo(109, "minecraft:stone_brick_stairs", "Stone Brick Stairs") { Opacity = 0, TransmitsLight = false };
+            FenceGate = new BlockInfo(107, "minecraft:fence_gate", "Fence Gate") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
+            BrickStairs = new BlockInfo(108, "minecraft:brick_stairs", "Brick Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            StoneBrickStairs = new BlockInfo(109, "minecraft:stone_brick_stairs", "Stone Brick Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             Mycelium = new BlockInfo(110, "minecraft:mycelium", "Mycelium") { Tick = 10 };
             LillyPad = new BlockInfo(111, "minecraft:waterlily", "Lilly Pad") { Opacity = 0, State = BlockState.NONSOLID };
             NetherBrick = new BlockInfo(112, "minecraft:nether_brick", "Nether Brick");
             NetherBrickFence = new BlockInfo(113, "minecraft:nether_brick_fence", "Nether Brick Fence") { Opacity = 0 };
-            NetherBrickStairs = new BlockInfo(114, "minecraft:nether_brick_stairs", "Nether Brick Stairs") { Opacity = 0, TransmitsLight = false };
-            NetherWart = new BlockInfo(115, "minecraft:nether_wart", "Nether Wart") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
+            NetherBrickStairs = new BlockInfo(114, "minecraft:nether_brick_stairs", "Nether Brick Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            NetherWart = new BlockInfo(115, "minecraft:nether_wart", "Nether Wart") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 3) };
             EnchantmentTable = new BlockInfo(116, "minecraft:enchanting_table", "Enchantment Table") { Opacity = 0, TileEntityName = "EnchantTable" };
             BrewingStand = new BlockInfo(117, "minecraft:brewing_stand", "Brewing Stand") { Opacity = 0, TileEntityName = "Cauldron", DataLimits = new BlockDataLimits(0, 0, 0x7) };
             Cauldron = new BlockInfo(118, "minecraft:cauldron", "Cauldron") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0) };
-            EndPortal = new BlockInfo(119, "minecraft:end_portal", "End Portal") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, TileEntityName = "Airportal" };
+            EndPortal = new BlockInfo(119, "minecraft:end_portal", "End Portal") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, TileEntityName = "Airportal", DataLimits = new BlockDataLimits(0, 3, 0x4) };
             EndPortalFrame = new BlockInfo(120, "minecraft:end_portal_frame", "End Portal Frame") { Luminance = MAX_LUMINANCE, DataLimits = new BlockDataLimits(0, 0, 0x7) };
             EndStone = new BlockInfo(121, "minecraft:end_stone", "End Stone");
             DragonEgg = new BlockInfo(122, "minecraft:dragon_egg", "Dragon Egg") { Opacity = 0, Luminance = 1, Tick = 3 };
             RedstoneLampOff = new BlockInfo(123, "minecraft:redstone_lamp", "Redstone Lamp (Off)") { Tick = 2 };
             RedstoneLampOn = new BlockInfo(124, "minecraft:lit_redstone_lamp", "Redstone Lamp (On)") { Luminance = 15, Tick = 2 };
-            DoubleWoodSlab = new BlockInfo(125, "minecraft:double_wooden_slab", "Double Wood Slab") { DataLimits = new BlockDataLimits(0, 5, 0x8) };
-            WoodSlab = new BlockInfo(126, "minecraft:wooden_slab", "Wood Slab") { TransmitsLight = false, DataLimits = new BlockDataLimits(0, 5, 0) };
-            CocoaPlant = new BlockInfo(127, "minecraft:cocoa", "Cocoa Plant") { Luminance = 2, Opacity = 0 };
-            SandstoneStairs = new BlockInfo(128, "minecraft:sandstone_stairs", "Sandstone Stairs") { Opacity = 0, TransmitsLight = false };
+            DoubleWoodSlab = new BlockInfo(125, "minecraft:double_wooden_slab", "Double Wood Slab") { DataLimits = new BlockDataLimits(0, 5) };
+            WoodSlab = new BlockInfo(126, "minecraft:wooden_slab", "Wood Slab") { TransmitsLight = false, DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            CocoaPlant = new BlockInfo(127, "minecraft:cocoa", "Cocoa Plant") { Luminance = 2, Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            SandstoneStairs = new BlockInfo(128, "minecraft:sandstone_stairs", "Sandstone Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             EmeraldOre = new BlockInfo(129, "minecraft:emerald_ore", "Emerald Ore");
-            EnderChest = new BlockInfo(130, "minecraft:ender_chest", "Ender Chest") { Luminance = 7, Opacity = 0, TileEntityName = "EnderChest" };
+            EnderChest = new BlockInfo(130, "minecraft:ender_chest", "Ender Chest") { Luminance = 7, Opacity = 0, TileEntityName = "EnderChest", DataLimits = new BlockDataLimits(2, 5) };
             TripwireHook = new BlockInfo(131, "minecraft:tripwire_hook", "Tripwire Hook") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 3, 0xC) };
-            Tripwire = new BlockInfo(132, "minecraft:tripwire", "Tripwire") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 0, 0x5) };
+            Tripwire = new BlockInfo(132, "minecraft:tripwire", "Tripwire") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 0, 0xF) };
             EmeraldBlock = new BlockInfo(133, "minecraft:emerald_block", "Emerald Block");
-            SpruceWoodStairs = new BlockInfo(134, "minecraft:spruce_stairs", "Sprice Wood Stairs") { Opacity = 0, TransmitsLight = false };
-            BirchWoodStairs = new BlockInfo(135, "minecraft:birch_stairs", "Birch Wood Stairs") { Opacity = 0, TransmitsLight = false };
-            JungleWoodStairs = new BlockInfo(136, "minecraft:jungle_stairs", "Jungle Wood Stairs") { Opacity = 0, TransmitsLight = false };
+            SpruceWoodStairs = new BlockInfo(134, "minecraft:spruce_stairs", "Sprice Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            BirchWoodStairs = new BlockInfo(135, "minecraft:birch_stairs", "Birch Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            JungleWoodStairs = new BlockInfo(136, "minecraft:jungle_stairs", "Jungle Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             CommandBlock = new BlockInfo(137, "minecraft:command_block", "Command Block") { TileEntityName = "Control" };
             BeaconBlock = new BlockInfo(138, "minecraft:beacon", "Beacon Block") { Opacity = 0, Luminance = MAX_LUMINANCE, TileEntityName = "Beacon" };
-            CobblestoneWall = new BlockInfo(139, "minecraft:cobblestone_wall", "Cobblestone Wall") { Opacity = 0 };
-            FlowerPot = new BlockInfo(140, "minecraft:flower_pot", "Flower Pot") { Opacity = 0 };
-            Carrots = new BlockInfo(141, "minecraft:carrots", "Carrots") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            Potatoes = new BlockInfo(142, "minecraft:potatoes", "Potatoes") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            WoodButton = new BlockInfo(143, "minecraft:wooden_button", "Wooden Button") { Opacity = 0, State = BlockState.NONSOLID };
-            Heads = new BlockInfo(144, "minecraft:skull", "Heads") { Opacity = 0 };
-            Anvil = new BlockInfo(145, "minecraft:anvil", "Anvil") { Opacity = 0, DataLimits = new BlockDataLimits(0, 0, 0xD) };
-            TrappedChest = new BlockInfo(146, "minecraft:trapped_chest", "Trapped Chest") { Opacity = 0, Tick = 10, TileEntityName = "Chest" };
-            WeightedPressurePlateLight = new BlockInfo(147, "minecraft:light_weighted_pressure_plate", "Weighted Pressure Plate (Light)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20 };
-            WeightedPressurePlateHeavy = new BlockInfo(148, "minecraft:heavy_weighted_pressure_plate", "Weighted Pressure Plate (Heavy)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20 };
-            RedstoneComparatorInactive = new BlockInfo(149, "minecraft:unpowered_comparator", "Redstone Comparator (Inactive)") { Opacity = 0, Tick = 10 };
-            RedstoneComparatorActive = new BlockInfo(150, "minecraft:powered_comparator", "Redstone Comparator (Active)") { Opacity = 0, Luminance = 9, Tick = 10 };
-            DaylightSensor = new BlockInfo(151, "minecraft:daylight_detector", "Daylight Sensor") { Opacity = 0, Tick = 10 };
+            CobblestoneWall = new BlockInfo(139, "minecraft:cobblestone_wall", "Cobblestone Wall") { Opacity = 0, DataLimits = new BlockDataLimits(0, 1) };
+            FlowerPot = new BlockInfo(140, "minecraft:flower_pot", "Flower Pot") { Opacity = 0, DataLimits = new BlockDataLimits(0, 15) }; // VERIFYME data values
+            Carrots = new BlockInfo(141, "minecraft:carrots", "Carrots") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7) };
+            Potatoes = new BlockInfo(142, "minecraft:potatoes", "Potatoes") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 7) };
+            WoodButton = new BlockInfo(143, "minecraft:wooden_button", "Wooden Button") { Opacity = 0, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            Heads = new BlockInfo(144, "minecraft:skull", "Heads") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };  // VERIFYME data values
+            Anvil = new BlockInfo(145, "minecraft:anvil", "Anvil") { Opacity = 0, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            TrappedChest = new BlockInfo(146, "minecraft:trapped_chest", "Trapped Chest") { Opacity = 0, Tick = 10, TileEntityName = "Chest", DataLimits = new BlockDataLimits(2, 5) };
+            WeightedPressurePlateLight = new BlockInfo(147, "minecraft:light_weighted_pressure_plate", "Weighted Pressure Plate (Light)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 15) };
+            WeightedPressurePlateHeavy = new BlockInfo(148, "minecraft:heavy_weighted_pressure_plate", "Weighted Pressure Plate (Heavy)") { Opacity = 0, State = BlockState.NONSOLID, Tick = 20, DataLimits = new BlockDataLimits(0, 15) };
+            RedstoneComparatorInactive = new BlockInfo(149, "minecraft:unpowered_comparator", "Redstone Comparator (Inactive)") { Opacity = 0, Tick = 10, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            RedstoneComparatorActive = new BlockInfo(150, "minecraft:powered_comparator", "Redstone Comparator (Active)") { Opacity = 0, Luminance = 9, Tick = 10, DataLimits = new BlockDataLimits(0, 3, 0xC) };
+            DaylightSensor = new BlockInfo(151, "minecraft:daylight_detector", "Daylight Sensor") { Opacity = 0, Tick = 10, DataLimits = new BlockDataLimits(0, 15) };
             RedstoneBlock = new BlockInfo(152, "minecraft:redstone_block", "Block of Redstone") { Tick = 10 };
             NetherQuartzOre = new BlockInfo(153, "minecraft:quartz_ore", "Neither Quartz Ore");
-            Hopper = new BlockInfo(154, "minecraft:hopper", "Hopper") { Opacity = 0, Tick = 10, TileEntityName = "Hopper", DataLimits = new BlockDataLimits(0, 5, 0) };
+            Hopper = new BlockInfo(154, "minecraft:hopper", "Hopper") { Opacity = 0, Tick = 10, TileEntityName = "Hopper", DataLimits = new BlockDataLimits(0, 5, 0x8) };
             QuartzBlock = new BlockInfo(155, "minecraft:quartz_block", "Block of Quartz") { DataLimits = new BlockDataLimits(0, 4, 0) };
             QuartzStairs = new BlockInfo(156, "minecraft:quartz_stairs", "Quartz Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            ActivatorRail = new BlockInfo(157, "minecraft:activator_rail", "Activator Rail") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10 };
-            Dropper = new BlockInfo(158, "minecraft:dropper", "Dropper") { Tick = 10, TileEntityName = "Dropper", DataLimits = new BlockDataLimits(0, 5, 0) };
-            StainedClay = new BlockInfo(159, "minecraft:stained_hardened_clay", "Stained Clay");
-            StainedGlassPane = new BlockInfo(160, "minecraft:stained_glass_pane", "Stained Glass Pane") { Opacity = 0 };
+            ActivatorRail = new BlockInfo(157, "minecraft:activator_rail", "Activator Rail") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            Dropper = new BlockInfo(158, "minecraft:dropper", "Dropper") { Tick = 10, TileEntityName = "Dropper", DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            StainedClay = new BlockInfo(159, "minecraft:stained_hardened_clay", "Stained Clay") { DataLimits = new BlockDataLimits(0, 15) };
+            StainedGlassPane = new BlockInfo(160, "minecraft:stained_glass_pane", "Stained Glass Pane") { Opacity = 0, DataLimits = new BlockDataLimits(0, 15) };
 
             // TODO fill in details
-            Leaves2 = new BlockInfo(161, "minecraft:leaves2", "Leaves (Acacia/Dark Oak)");
-            Wood2 = new BlockInfo(162, "minecraft:log2", "Wood (Acacia/Dark Oak)");
-            AcaciaWoodStairs = new BlockInfo(163, "minecraft:acacia_stairs", "Acacia Wood Stairs");
-            DarkOakWoodStairs = new BlockInfo(164, "minecraft:dark_oak_stairs", "Dark Oak Wood Stairs");
+            Leaves2 = new BlockInfo(161, "minecraft:leaves2", "Leaves (Acacia/Dark Oak)") { DataLimits = new BlockDataLimits(0, 1, 0xC) };
+            Wood2 = new BlockInfo(162, "minecraft:log2", "Wood (Acacia/Dark Oak)") { DataLimits = new BlockDataLimits(0, 13) };
+            AcaciaWoodStairs = new BlockInfo(163, "minecraft:acacia_stairs", "Acacia Wood Stairs") { DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            DarkOakWoodStairs = new BlockInfo(164, "minecraft:dark_oak_stairs", "Dark Oak Wood Stairs") { DataLimits = new BlockDataLimits(0, 3, 0x4) };
             SlimeBlock = new BlockInfo(165, "minecraft:slime", "Slime Block");
             Barrier = new BlockInfo(166, "minecraft:barrier", "Barrier");
             IronTrapdoor = new BlockInfo(167, "minecraft:iron_trapdoor", "Iron Trapdoor");
-            Prismarine = new BlockInfo(168, "minecraft:prismarine", "Prismarine");
+            Prismarine = new BlockInfo(168, "minecraft:prismarine", "Prismarine") { DataLimits = new BlockDataLimits(0, 2) };
             SeaLantern = new BlockInfo(169, "minecraft:sea_lantern", "Sea Lantern");
 
             HayBlock = new BlockInfo(170, "minecraft:hay_block", "Hay Block");
-            Carpet = new BlockInfo(171, "minecraft:carpet", "Carpet") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 15, 0) };
+            Carpet = new BlockInfo(171, "minecraft:carpet", "Carpet") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 15) };
             HardenedClay = new BlockInfo(172, "minecraft:hardened_clay", "Hardened Clay");
-            CoalBlock = new BlockInfo(173, "minecraft:coal_block", "Block of Coal");
+            CoalBlock = new BlockInfo(173, "minecraft:coal_block", "Block of Coal") { DataLimits = new BlockDataLimits(0, 1) };
 
             // TODO fill in details
             PackedIce = new BlockInfo(174, "minecraft:packed_ice", "Packed Ice");
-            LargeFlowers = new BlockInfo(175, "minecraft:double_plant", "Large Flowers");
-            StandingBanner = new BlockInfo(176, "minecraft:standing_banner", "Standing Banner");
-            WallBanner = new BlockInfo(177, "minecraft:wall_banner", "Wall Banner");
-            InvertedDaylightSensor = new BlockInfo(178, "minecraft:daylight_detector_inverted", "Inverted Daylight Sensor");
-            RedSandstone = new BlockInfo(179, "minecraft:red_sandstone", "Red Sandstone");
-            RedSandstoneStairs = new BlockInfo(180, "minecraft:red_sandstone_stairs", "Red Sandstone Stairs");
-            DoubleRedSandstoneSlab = new BlockInfo(181, "minecraft:double_stone_slab2", "Double Red Sandstone Slab");
-            RedSandstoneSlab = new BlockInfo(182, "minecraft:stone_slab2", "Red Sandstone Slab");
-            SpruceFenceGate = new BlockInfo(183, "minecraft:spruce_fence_gate", "Spruce Fence Gate");
-            BirchFenceGate = new BlockInfo(184, "minecraft:birch_fence_gate", "Birch Fence Gate");
-            JungleFenceGate = new BlockInfo(185, "minecraft:jungle_fence_gate", "Jungle Fence Gate");
-            DarkOakFenceGate = new BlockInfo(186, "minecraft:dark_oak_fence_gate", "Dark Oak Fence Gate");
-            AcaciaFenceGate = new BlockInfo(187, "minecraft:acacia_fence_gate", "Acacia Fence Gate");
+            LargeFlowers = new BlockInfo(175, "minecraft:double_plant", "Large Flowers") { DataLimits = new BlockDataLimits(0, 5, 0x8) };
+            StandingBanner = new BlockInfo(176, "minecraft:standing_banner", "Standing Banner") { DataLimits = new BlockDataLimits(0, 15) };
+            WallBanner = new BlockInfo(177, "minecraft:wall_banner", "Wall Banner") { DataLimits = new BlockDataLimits(2, 5) };
+            InvertedDaylightSensor = new BlockInfo(178, "minecraft:daylight_detector_inverted", "Inverted Daylight Sensor") { DataLimits = new BlockDataLimits(0, 15) };
+            RedSandstone = new BlockInfo(179, "minecraft:red_sandstone", "Red Sandstone") { DataLimits = new BlockDataLimits(0, 2) };
+            RedSandstoneStairs = new BlockInfo(180, "minecraft:red_sandstone_stairs", "Red Sandstone Stairs") { DataLimits = new BlockDataLimits(0, 3, 0x4) };
+            DoubleRedSandstoneSlab = new BlockInfo(181, "minecraft:double_stone_slab2", "Double Red Sandstone Slab") { DataLimits = new BlockDataLimits(0, 0, 0x8) };
+            RedSandstoneSlab = new BlockInfo(182, "minecraft:stone_slab2", "Red Sandstone Slab") { DataLimits = new BlockDataLimits(0, 0, 0x8) };
+            SpruceFenceGate = new BlockInfo(183, "minecraft:spruce_fence_gate", "Spruce Fence Gate") { DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
+            BirchFenceGate = new BlockInfo(184, "minecraft:birch_fence_gate", "Birch Fence Gate") { DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
+            JungleFenceGate = new BlockInfo(185, "minecraft:jungle_fence_gate", "Jungle Fence Gate") { DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
+            DarkOakFenceGate = new BlockInfo(186, "minecraft:dark_oak_fence_gate", "Dark Oak Fence Gate") { DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
+            AcaciaFenceGate = new BlockInfo(187, "minecraft:acacia_fence_gate", "Acacia Fence Gate") { DataLimits = new BlockDataLimits(0, 3, 0xC) }; // VERIFYME data values
             SpruceFence = new BlockInfo(188, "minecraft:spruce_fence", "Spruce Fence");
             BirchFence = new BlockInfo(189, "minecraft:birch_fence", "Birch Fence");
             JungleFence = new BlockInfo(190, "minecraft:jungle_fence", "Jungle Fence");
             DarkOakFence = new BlockInfo(191, "minecraft:dark_oak_fence", "Dark Oak Fence");
             AcaciaFence = new BlockInfo(192, "minecraft:acacia_fence", "Acacia Fence");
-            SpruceDoor = new BlockInfo(193, "minecraft:spruce_door", "Spruce Door");
-            BirchDoor = new BlockInfo(194, "minecraft:birch_door", "Birch Door");
-            JungleDoor = new BlockInfo(195, "minecraft:jungle_door", "Jungle Door");
-            AcaciaDoor = new BlockInfo(196, "minecraft:acacia_door", "Acacia Door");
-            DarkOakDoor = new BlockInfo(197, "minecraft:dark_oak_door", "Dark Oak Door");
+            SpruceDoor = new BlockInfo(193, "minecraft:spruce_door", "Spruce Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
+            BirchDoor = new BlockInfo(194, "minecraft:birch_door", "Birch Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
+            JungleDoor = new BlockInfo(195, "minecraft:jungle_door", "Jungle Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
+            AcaciaDoor = new BlockInfo(196, "minecraft:acacia_door", "Acacia Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
+            DarkOakDoor = new BlockInfo(197, "minecraft:dark_oak_door", "Dark Oak Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
 
             for (int i = 0; i < MAX_BLOCKS; i++)
             {
