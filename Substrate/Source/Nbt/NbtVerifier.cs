@@ -82,11 +82,13 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="tagName">The expected name of a <see cref="TagNode"/>.</param>
         /// <param name="tag">The <see cref="TagNode"/> involved in this event.</param>
-        public TagEventArgs (string tagName, TagNode tag)
+        /// <param name="parent">The optional parent of tag.</param>
+        public TagEventArgs(string tagName, TagNode tag, TagNode parent = null)
             : base()
         {
             _tag = tag;
             _tagName = tagName;
+            _parent = parent;
         }
 
         /// <summary>
@@ -193,7 +195,7 @@ namespace Substrate.Nbt
                 return VerifyCompound(tag, compound);
             }
 
-            return OnInvalidTagType(new TagEventArgs(schema.Name, tag));
+            return OnInvalidTagType(new TagEventArgs(schema.Name, tag, parent));
         }
 
         private bool VerifyScaler (TagNode tag, SchemaNodeScaler schema)

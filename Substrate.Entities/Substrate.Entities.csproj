@@ -124,6 +124,7 @@
     <Compile Include="Entities\EntityWolf.cs" />
     <Compile Include="Entities\EntityXPOrb.cs" />
     <Compile Include="Entities\EntityZombie.cs" />
+    <Compile Include="Fml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterEntities.cs" />
     <Compile Include="RegisterTileEntities.cs" />
