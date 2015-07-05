@@ -42,5 +42,19 @@ namespace Substrate.Tests
             NbtWorld world = NbtWorld.Open(@"..\..\Data\1_8_3-debug\");
             Assert.IsNotNull(world);
         }
+
+        [TestMethod]
+        public void OpenTest_1_8_7_debug()
+        {
+            NbtWorld world = NbtWorld.Open(@"..\..\Data\1_8_7-debug\");
+            Assert.IsNotNull(world);
+        }
+
+        [TestMethod]
+        public void OpenTest_1_8_7_survival()
+        {
+            NbtWorld world = NbtWorld.Open(@"..\..\Data\1_8_7-survival\");
+            Assert.IsNotNull(world);
+        }
     }
 }
