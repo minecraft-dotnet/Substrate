@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate.Entities", "Substrate.Entities\Substrate.Entities.csproj", "{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate", "Substrate\Substrate.csproj", "{7264A1C4-AB4A-4437-B252-7379B98B5509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substrate.Tests", "Substrate.Tests\Substrate.Tests.csproj", "{5D875E2D-AD97-43DB-9180-DBA3F26DC569}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,18 @@ Global
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
 		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Release|Any CPU.Build.0 = net40-client-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net20-Debug|Any CPU.ActiveCfg = net20-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net20-Debug|Any CPU.Build.0 = net20-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net20-Release|Any CPU.ActiveCfg = net20-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net20-Release|Any CPU.Build.0 = net20-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net35-Debug|Any CPU.ActiveCfg = net35-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net35-Debug|Any CPU.Build.0 = net35-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net35-Release|Any CPU.ActiveCfg = net35-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net35-Release|Any CPU.Build.0 = net35-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Debug|Any CPU.ActiveCfg = net40-client-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Release|Any CPU.Build.0 = net40-client-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
