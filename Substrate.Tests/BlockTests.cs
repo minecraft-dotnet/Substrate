@@ -17,7 +17,7 @@ namespace Substrate.Tests
             public const int MinZ = 1;
             public const int MaxZ = 180;
         }
-
+        
         [TestMethod]
         public void BlockTest_1_8_3_debug()
         {
