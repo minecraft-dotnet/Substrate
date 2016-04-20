@@ -33,7 +33,25 @@ namespace Substrate.Nbt
         /// <returns>A long node representing the same data.</returns>
         public override TagNodeLong ToTagLong ()
         { 
-            return new TagNodeLong(_data); 
+            return new TagNodeLong(_data);
+        }
+
+        /// <summary>
+        /// Converts the node to a new float node.
+        /// </summary>
+        /// <returns>A float node representing the same data.</returns>
+        public override TagNodeFloat ToTagFloat()
+        {
+            return new TagNodeFloat(_data);
+        }
+
+        /// <summary>
+        /// Converts the node to a new double node.
+        /// </summary>
+        /// <returns>A double node representing the same data.</returns>
+        public override TagNodeDouble ToTagDouble()
+        {
+            return new TagNodeDouble(_data);
         }
 
         /// <summary>
@@ -54,7 +72,9 @@ namespace Substrate.Nbt
         {
             return (type == TagType.TAG_SHORT ||
                 type == TagType.TAG_INT ||
-                type == TagType.TAG_LONG);
+                type == TagType.TAG_LONG ||
+                type == TagType.TAG_FLOAT ||
+                type == TagType.TAG_DOUBLE);
         }
 
         /// <summary>

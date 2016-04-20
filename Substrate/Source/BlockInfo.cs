@@ -965,7 +965,7 @@ namespace Substrate
 
             // Set Data Limits
 
-            Wood.SetDataLimits(0, 2, 0);
+            Wood.SetDataLimits(0, 15, 0);
             Leaves.SetDataLimits(0, 2, 0);
             Jukebox.SetDataLimits(0, 2, 0);
             Sapling.SetDataLimits(0, 15, 0);
