@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Substrate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Substrate.Core;
-using Substrate.Nbt;
 using System.IO;
+using Substrate.Nbt;
+using Substrate.Core;
+
 namespace Substrate.Tests
 {
     [TestClass]
