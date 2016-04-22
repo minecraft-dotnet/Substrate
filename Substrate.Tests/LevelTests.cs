@@ -68,5 +68,15 @@ namespace Substrate.Tests
             level = level.LoadTreeSafe(levelTree.Root);
             Assert.IsNotNull(level);
         }
+
+        [TestMethod]
+        public void LoadTreeTest_1_9_2_survival()
+        {
+            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_9_2-survival\level.dat");
+
+            Level level = new Level(null);
+            level = level.LoadTreeSafe(levelTree.Root);
+            Assert.IsNotNull(level);
+        }
     }
 }
