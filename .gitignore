@@ -4,6 +4,7 @@
 *.sdf
 *.user
 *.opensdf
+/.vs/
 
 Substrate/obj/net35-Release/
 Substrate/obj/
