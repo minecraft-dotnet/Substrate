@@ -122,7 +122,7 @@ namespace Substrate
         {
             new SchemaNodeScaler("AttackTime", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScaler("DeathTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Health", TagType.TAG_SHORT),
+            new SchemaNodeScaler("Health", TagType.TAG_FLOAT),
             new SchemaNodeScaler("HurtTime", TagType.TAG_SHORT),
             new SchemaNodeScaler("Dimension", TagType.TAG_INT),
             new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.Schema),
@@ -158,7 +158,7 @@ namespace Substrate
 
         private short _attackTime;
         private short _deathTime;
-        private short _health;
+        private float _health;
         private short _hurtTime;
 
         private int _dimension;
@@ -208,10 +208,10 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the amount of the player's health.
         /// </summary>
-        public int Health
+        public float Health
         {
             get { return _health; }
-            set { _health = (short)value; }
+            set { _health = value; }
         }
 
         /// <summary>
@@ -463,7 +463,7 @@ namespace Substrate
 
             _attackTime = ctree["AttackTime"].ToTagShort();
             _deathTime = ctree["DeathTime"].ToTagShort();
-            _health = ctree["Health"].ToTagShort();
+            _health = ctree["Health"].ToTagFloat();
             _hurtTime = ctree["HurtTime"].ToTagShort();
 
             _dimension = ctree["Dimension"].ToTagInt();
@@ -563,7 +563,7 @@ namespace Substrate
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["AttackTime"] = new TagNodeShort(_attackTime);
             tree["DeathTime"] = new TagNodeShort(_deathTime);
-            tree["Health"] = new TagNodeShort(_health);
+            tree["Health"] = new TagNodeFloat(_health);
             tree["HurtTime"] = new TagNodeShort(_hurtTime);
 
             tree["Dimension"] = new TagNodeInt(_dimension);
