@@ -536,7 +536,7 @@ namespace Substrate
         {
             if (_dataLimits == null)
             {
-                return true;
+                return data == 0;
             }
             return _dataLimits.Test(data);
         }
@@ -577,7 +577,7 @@ namespace Substrate
         public readonly static BlockInfo Piston;
         public readonly static BlockInfo PistonHead;
         public readonly static BlockInfo Wool;
-        public readonly static BlockInfo PistonMoving;
+        public readonly static BlockInfo PistonExtension;
         public readonly static BlockInfo YellowFlower;
         public readonly static BlockInfo RedRose;
         public readonly static BlockInfo BrownMushroom;
@@ -740,6 +740,62 @@ namespace Substrate
         public readonly static BlockInfo JungleDoor;
         public readonly static BlockInfo AcaciaDoor;
         public readonly static BlockInfo DarkOakDoor;
+        public readonly static BlockInfo EndRod;
+        public readonly static BlockInfo ChorusPlant;
+        public readonly static BlockInfo ChorusFlower;
+        public readonly static BlockInfo PurpurBlock;
+        public readonly static BlockInfo PurpurPillar;
+        public readonly static BlockInfo PurpurStairs;
+        public readonly static BlockInfo PurpurDoubleSlab;
+        public readonly static BlockInfo PurpurSlab;
+        public readonly static BlockInfo EndStoneBricks;
+        public readonly static BlockInfo BeetrootSeeds;
+        public readonly static BlockInfo GrassPath;
+        public readonly static BlockInfo EndGateway;
+        public readonly static BlockInfo RepeatingCommandBlock;
+        public readonly static BlockInfo ChainCommandBlock;
+        public readonly static BlockInfo FrostedIce;
+        public readonly static BlockInfo MagmaBlock;
+        public readonly static BlockInfo NetherWartBlock;
+        public readonly static BlockInfo RedNetherBrick;
+        public readonly static BlockInfo BoneBlock;
+        public readonly static BlockInfo StructureVoid;
+        public readonly static BlockInfo Observer;
+        public readonly static BlockInfo WhiteShulkerBox;
+        public readonly static BlockInfo OrangeShulkerBox;
+        public readonly static BlockInfo MagentaShulkerBox;
+        public readonly static BlockInfo LightBlueShulkerBox;
+        public readonly static BlockInfo YellowShulkerBox;
+        public readonly static BlockInfo LimeShulkerBox;
+        public readonly static BlockInfo PinkShulkerBox;
+        public readonly static BlockInfo GrayShulkerBox;
+        public readonly static BlockInfo LightGrayShulkerBox;
+        public readonly static BlockInfo CyanShulkerBox;
+        public readonly static BlockInfo PurpleShulkerBox;
+        public readonly static BlockInfo BlueShulkerBox;
+        public readonly static BlockInfo BrownShulkerBox;
+        public readonly static BlockInfo GreenShulkerBox;
+        public readonly static BlockInfo RedShulkerBox;
+        public readonly static BlockInfo BlackShulkerBox;
+        public readonly static BlockInfo WhiteGlazedTerracotta;
+        public readonly static BlockInfo OrangeGlazedTerracotta;
+        public readonly static BlockInfo MagentaGlazedTerracotta;
+        public readonly static BlockInfo LightBlueGlazedTerracotta;
+        public readonly static BlockInfo YellowGlazedTerracotta;
+        public readonly static BlockInfo LimeGlazedTerracotta;
+        public readonly static BlockInfo PinkGlazedTerracotta;
+        public readonly static BlockInfo GrayGlazedTerracotta;
+        public readonly static BlockInfo LightGrayGlazedTerracotta;
+        public readonly static BlockInfo CyanGlazedTerracotta;
+        public readonly static BlockInfo PurpleGlazedTerracotta;
+        public readonly static BlockInfo BlueGlazedTerracotta;
+        public readonly static BlockInfo BrownGlazedTerracotta;
+        public readonly static BlockInfo GreenGlazedTerracotta;
+        public readonly static BlockInfo RedGlazedTerracotta;
+        public readonly static BlockInfo BlackGlazedTerracotta;
+        public readonly static BlockInfo Concrete;
+        public readonly static BlockInfo ConcretePowder;
+        public readonly static BlockInfo StructureBlock;
 
         static BlockInfo()
         {
@@ -753,17 +809,17 @@ namespace Substrate
             _luminanceTableCache = new CacheTableArray<int>(_luminanceTable);
 
             Air = new BlockInfo(0, "minecraft:air", "Air") { Opacity = 0, State = BlockState.NONSOLID };
-            Stone = new BlockInfo(1, "minecraft:stone", "Stone") { DataLimits = new BlockDataLimits(0, 6) }; ;
+            Stone = new BlockInfo(1, "minecraft:stone", "Stone") { DataLimits = new BlockDataLimits(0, 6) };
             Grass = new BlockInfo(2, "minecraft:grass", "Grass") { Tick = 10, DataLimits = new BlockDataLimits(0, 2) };
-            Dirt = new BlockInfo(3, "minecraft:dirt", "Dirt") { DataLimits = new BlockDataLimits(0, 2) }; ;
+            Dirt = new BlockInfo(3, "minecraft:dirt", "Dirt") { DataLimits = new BlockDataLimits(0, 2) };
             Cobblestone = new BlockInfo(4, "minecraft:cobblestone", "Cobblestone");
             WoodPlank = new BlockInfo(5, "minecraft:planks", "Wooden Plank") { DataLimits = new BlockDataLimits(0, 5) };
             Sapling = new BlockInfo(6, "minecraft:sapling", "Sapling") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             Bedrock = new BlockInfo(7, "minecraft:bedrock", "Bedrock");
             Water = new BlockInfo(8, "minecraft:flowing_water", "Water") { Opacity = 3, State = BlockState.FLUID, Tick = 5, DataLimits = new BlockDataLimits(0, 7, 0x8) };
-            StationaryWater = new BlockInfo(9, "minecraft:water", "Stationary Water") { Opacity = 3, State = BlockState.FLUID };
+            StationaryWater = new BlockInfo(9, "minecraft:water", "Stationary Water") { Opacity = 3, State = BlockState.FLUID, DataLimits = new BlockDataLimits(0, 15) };
             Lava = new BlockInfo(10, "minecraft:flowing_lava", "Lava") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.FLUID, Tick = 30, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 7, 0x8) };
-            StationaryLava = new BlockInfo(11, "minecraft:lava", "Stationary Lava") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.FLUID, Tick = 10, TransmitsLight = false };
+            StationaryLava = new BlockInfo(11, "minecraft:lava", "Stationary Lava") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.FLUID, DataLimits = new BlockDataLimits(0, 15), Tick = 10, TransmitsLight = false };
             Sand = new BlockInfo(12, "minecraft:sand", "Sand") { Tick = 3, DataLimits = new BlockDataLimits(0, 1) };
             Gravel = new BlockInfo(13, "minecraft:gravel", "Gravel") { Tick = 3 };
             GoldOre = new BlockInfo(14, "minecraft:gold_ore", "Gold Ore");
@@ -788,7 +844,7 @@ namespace Substrate
             Piston = new BlockInfo(33, "minecraft:piston", "Piston") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             PistonHead = new BlockInfo(34, "minecraft:piston_head", "Piston Head") { Opacity = 0, DataLimits = new BlockDataLimits(0, 5, 0x8) };
             Wool = new BlockInfo(35, "minecraft:wool", "Wool") { DataLimits = new BlockDataLimits(0, 15) };
-            PistonMoving = new BlockInfo(36, "minecraft:piston_extension", "Piston Moving") { Opacity = 0, TileEntityName = "Piston" };
+            PistonExtension = new BlockInfo(36, "minecraft:piston_extension", "Piston Extension") { Opacity = 0, TileEntityName = "Piston", DataLimits = new BlockDataLimits(0, 19) };
             YellowFlower = new BlockInfo(37, "minecraft:yellow_flower", "Yellow Flower") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 0) };
             RedRose = new BlockInfo(38, "minecraft:red_flower", "Red Rose") { Opacity = 0, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 8) };
             BrownMushroom = new BlockInfo(39, "minecraft:brown_mushroom", "Brown Mushroom") { Opacity = 0, Luminance = 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(0, 15) };
@@ -798,12 +854,12 @@ namespace Substrate
             DoubleStoneSlab = new BlockInfo(43, "minecraft:double_stone_slab", "Double Slab") { DataLimits = new BlockDataLimits(0, 9, 0x8) };
             StoneSlab = new BlockInfo(44, "minecraft:stone_slab", "Slab") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 9, 0x8) };
             BrickBlock = new BlockInfo(45, "minecraft:brick_block", "Brick Block");
-            TNT = new BlockInfo(46, "minecraft:tnt", "TNT");
+            TNT = new BlockInfo(46, "minecraft:tnt", "TNT") { DataLimits = new BlockDataLimits(0, 1) };
             Bookshelf = new BlockInfo(47, "minecraft:bookshelf", "Bookshelf");
             MossStone = new BlockInfo(48, "minecraft:mossy_cobblestone", "Moss Stone");
             Obsidian = new BlockInfo(49, "minecraft:obsidian", "Obsidian");
             Torch = new BlockInfo(50, "minecraft:torch", "Torch") { Opacity = 0, Luminance = MAX_LUMINANCE - 1, State = BlockState.NONSOLID, Tick = 10, DataLimits = new BlockDataLimits(1, 5) };
-            Fire = new BlockInfo(51, "minecraft:fire", "Fire") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, Tick = 40 };
+            Fire = new BlockInfo(51, "minecraft:fire", "Fire") { Opacity = 0, Luminance = MAX_LUMINANCE, State = BlockState.NONSOLID, Tick = 40, DataLimits = new BlockDataLimits(0, 15) };
             MonsterSpawner = new BlockInfo(52, "minecraft:mob_spawner", "Monster Spawner") { Opacity = 0, TileEntityName = "MobSpawner" };
             WoodStairs = new BlockInfo(53, "minecraft:oak_stairs", "Wooden Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             Chest = new BlockInfo(54, "minecraft:chest", "Chest") { Opacity = 0, TileEntityName = "Chest", DataLimits = new BlockDataLimits(2, 5) };
@@ -842,7 +898,7 @@ namespace Substrate
             Netherrack = new BlockInfo(87, "minecraft:netherrack", "Netherrack");
             SoulSand = new BlockInfo(88, "minecraft:soul_sand", "Soul Sand");
             Glowstone = new BlockInfo(89, "minecraft:glowstone", "Glowstone Block") { Luminance = MAX_LUMINANCE };
-            Portal = new BlockInfo(90, "minecraft:portal", "Portal") { Opacity = 0, Luminance = 11, State = BlockState.NONSOLID };
+            Portal = new BlockInfo(90, "minecraft:portal", "Portal") { Opacity = 0, Luminance = 11, State = BlockState.NONSOLID, DataLimits = new BlockDataLimits(0, 2) };
             JackOLantern = new BlockInfo(91, "minecraft:lit_pumpkin", "Jack-O-Lantern") { Luminance = MAX_LUMINANCE, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             CakeBlock = new BlockInfo(92, "minecraft:cake", "Cake Block") { Opacity = 0, DataLimits = new BlockDataLimits(0, 6) };
             RedstoneRepeater = new BlockInfo(93, "minecraft:unpowered_repeater", "Redstone Repeater (Off)") { Opacity = 0, Tick = 10, DataLimits = new BlockDataLimits(0, 0, 0xF) };
@@ -890,7 +946,7 @@ namespace Substrate
             SpruceWoodStairs = new BlockInfo(134, "minecraft:spruce_stairs", "Sprice Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             BirchWoodStairs = new BlockInfo(135, "minecraft:birch_stairs", "Birch Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
             JungleWoodStairs = new BlockInfo(136, "minecraft:jungle_stairs", "Jungle Wood Stairs") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 3, 0x4) };
-            CommandBlock = new BlockInfo(137, "minecraft:command_block", "Command Block") { TileEntityName = "Control" };
+            CommandBlock = new BlockInfo(137, "minecraft:command_block", "Command Block") { TileEntityName = "Control", DataLimits = new BlockDataLimits(0, 13) };
             BeaconBlock = new BlockInfo(138, "minecraft:beacon", "Beacon Block") { Opacity = 0, Luminance = MAX_LUMINANCE, TileEntityName = "Beacon" };
             CobblestoneWall = new BlockInfo(139, "minecraft:cobblestone_wall", "Cobblestone Wall") { Opacity = 0, DataLimits = new BlockDataLimits(0, 1) };
             FlowerPot = new BlockInfo(140, "minecraft:flower_pot", "Flower Pot") { Opacity = 0, DataLimits = new BlockDataLimits(0, 15) }; // VERIFYME data values
@@ -922,11 +978,11 @@ namespace Substrate
             DarkOakWoodStairs = new BlockInfo(164, "minecraft:dark_oak_stairs", "Dark Oak Wood Stairs") { DataLimits = new BlockDataLimits(0, 3, 0x4) };
             SlimeBlock = new BlockInfo(165, "minecraft:slime", "Slime Block");
             Barrier = new BlockInfo(166, "minecraft:barrier", "Barrier");
-            IronTrapdoor = new BlockInfo(167, "minecraft:iron_trapdoor", "Iron Trapdoor");
+            IronTrapdoor = new BlockInfo(167, "minecraft:iron_trapdoor", "Iron Trapdoor") { DataLimits = new BlockDataLimits(0, 15) };
             Prismarine = new BlockInfo(168, "minecraft:prismarine", "Prismarine") { DataLimits = new BlockDataLimits(0, 2) };
             SeaLantern = new BlockInfo(169, "minecraft:sea_lantern", "Sea Lantern");
 
-            HayBlock = new BlockInfo(170, "minecraft:hay_block", "Hay Block");
+            HayBlock = new BlockInfo(170, "minecraft:hay_block", "Hay Block") { DataLimits = new BlockDataLimits(0, 8) };
             Carpet = new BlockInfo(171, "minecraft:carpet", "Carpet") { Opacity = 0, TransmitsLight = false, DataLimits = new BlockDataLimits(0, 15) };
             HardenedClay = new BlockInfo(172, "minecraft:hardened_clay", "Hardened Clay");
             CoalBlock = new BlockInfo(173, "minecraft:coal_block", "Block of Coal") { DataLimits = new BlockDataLimits(0, 1) };
@@ -956,6 +1012,71 @@ namespace Substrate
             JungleDoor = new BlockInfo(195, "minecraft:jungle_door", "Jungle Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
             AcaciaDoor = new BlockInfo(196, "minecraft:acacia_door", "Acacia Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
             DarkOakDoor = new BlockInfo(197, "minecraft:dark_oak_door", "Dark Oak Door") { DataLimits = new BlockDataLimits(0, 0, 0xF) };
+
+            // TODO details
+            EndRod = new BlockInfo(198, "minecraft:end_rod", "End Rod") { DataLimits = new BlockDataLimits(0, 5) };
+            ChorusPlant = new BlockInfo(199, "minecraft:chorus_plant", "Chorus Plant");
+            ChorusFlower = new BlockInfo(200, "minecraft:chorus_flower", "Chorus Flower") { DataLimits = new BlockDataLimits(0, 5) };
+            PurpurBlock = new BlockInfo(201, "minecraft:purpur_block", "Purpur Block");
+            PurpurPillar = new BlockInfo(202, "minecraft:purpur_pillar", "Purpur Pillar") { DataLimits = new BlockDataLimits(0, 8) };
+            PurpurStairs = new BlockInfo(203, "minecraft:purpur_stairs", "Purpur Stairs") { DataLimits = new BlockDataLimits(0, 7) };
+            PurpurDoubleSlab = new BlockInfo(204, "minecraft:purpur_double_slab", "Purpur Double Slab");
+            PurpurSlab = new BlockInfo(205, "minecraft:purpur_slab", "Purpur Slab") { DataLimits = new BlockDataLimits(0, 8) };
+            EndStoneBricks = new BlockInfo(206, "minecraft:end_bricks", "End Stone Bricks");
+            BeetrootSeeds = new BlockInfo(207, "minecraft:beetroots", "Beetroot Seeds") { DataLimits = new BlockDataLimits(0, 3) };
+            GrassPath = new BlockInfo(208, "minecraft:grass_path", "Grass Path");
+            EndGateway = new BlockInfo(209, "minecraft:end_gateway", "End Gateway");
+
+            RepeatingCommandBlock = new BlockInfo(210, "minecraft:repeating_command_block", "Repeating Command Block") { DataLimits = new BlockDataLimits(0, 13) };
+            ChainCommandBlock = new BlockInfo(211, "minecraft:chain_command_block", "Chain Command Block") { DataLimits = new BlockDataLimits(0, 13) };
+            FrostedIce = new BlockInfo(212, "minecraft:frosted_ice", "Frosted Ice") { DataLimits = new BlockDataLimits(0, 3) };
+            MagmaBlock = new BlockInfo(213, "minecraft:magma", "Magma Block");
+            NetherWartBlock = new BlockInfo(214, "minecraft:nether_wart_block", "Nether Wart Block");
+            RedNetherBrick = new BlockInfo(215, "minecraft:red_nether_brick", "Red Nether Brick");
+            BoneBlock = new BlockInfo(216, "minecraft:bone_block", "Bone Block") { DataLimits = new BlockDataLimits(0, 8) };
+            StructureVoid = new BlockInfo(217, "minecraft:structure_void", "Structure Void");
+            Observer = new BlockInfo(218, "minecraft:observer", "Observer") { DataLimits = new BlockDataLimits(0, 13) };
+            WhiteShulkerBox = new BlockInfo(219, "minecraft:white_shulker_box", "White Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+
+            OrangeShulkerBox = new BlockInfo(220, "minecraft:orange_shulker_box", "Orange Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            MagentaShulkerBox = new BlockInfo(221, "minecraft:magenta_shulker_box", "Magenta Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            LightBlueShulkerBox = new BlockInfo(222, "minecraft:light_blue_shulker_box", "Light Blue Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            YellowShulkerBox = new BlockInfo(223, "minecraft:yellow_shulker_box", "Yellow Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            LimeShulkerBox = new BlockInfo(224, "minecraft:lime_shulker_box", "Lime Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            PinkShulkerBox = new BlockInfo(225, "minecraft:pink_shulker_box", "Pink Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            GrayShulkerBox = new BlockInfo(226, "minecraft:gray_shulker_box", "Gray Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            LightGrayShulkerBox = new BlockInfo(227, "minecraft:silver_shulker_box", "Light Gray Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            CyanShulkerBox = new BlockInfo(228, "minecraft:cyan_shulker_box", "Cyan Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            PurpleShulkerBox = new BlockInfo(229, "minecraft:purple_shulker_box", "Purple Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+
+            BlueShulkerBox = new BlockInfo(230, "minecraft:blue_shulker_box", "Blue Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            BrownShulkerBox = new BlockInfo(231, "minecraft:brown_shulker_box", "Brown Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            GreenShulkerBox = new BlockInfo(232, "minecraft:green_shulker_box", "Green Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            RedShulkerBox = new BlockInfo(233, "minecraft:red_shulker_box", "Red Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            BlackShulkerBox = new BlockInfo(234, "minecraft:black_shulker_box", "Black Shulker Box") { DataLimits = new BlockDataLimits(0, 5) };
+            WhiteGlazedTerracotta = new BlockInfo(235, "minecraft:white_glazed_terracotta", "White Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            OrangeGlazedTerracotta = new BlockInfo(236, "minecraft:orange_glazed_terracotta", "Orange Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            MagentaGlazedTerracotta = new BlockInfo(237, "minecraft:magenta_glazed_terracotta", "Magenta Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            LightBlueGlazedTerracotta = new BlockInfo(238, "minecraft:light_blue_glazed_terracotta", "Light Blue Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            YellowGlazedTerracotta = new BlockInfo(239, "minecraft:yellow_glazed_terracotta", "Yellow Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+
+            LimeGlazedTerracotta = new BlockInfo(240, "minecraft:lime_glazed_terracotta", "Lime Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            PinkGlazedTerracotta = new BlockInfo(241, "minecraft:pink_glazed_terracotta", "Pink Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            GrayGlazedTerracotta = new BlockInfo(242, "minecraft:gray_glazed_terracotta", "Gray Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            LightGrayGlazedTerracotta = new BlockInfo(243, "minecraft:silver_glazed_terracotta", "Light Gray Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            CyanGlazedTerracotta = new BlockInfo(244, "minecraft:cyan_glazed_terracotta", "Cyan Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            PurpleGlazedTerracotta = new BlockInfo(245, "minecraft:purple_glazed_terracotta", "Purple Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            BlueGlazedTerracotta = new BlockInfo(246, "minecraft:blue_glazed_terracotta", "Blue Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            BrownGlazedTerracotta = new BlockInfo(247, "minecraft:brown_glazed_terracotta", "Brown Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            GreenGlazedTerracotta = new BlockInfo(248, "minecraft:green_glazed_terracotta", "Green Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            RedGlazedTerracotta = new BlockInfo(249, "minecraft:red_glazed_terracotta", "Red Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+
+            BlackGlazedTerracotta = new BlockInfo(250, "minecraft:minecraft:black_glazed_terracotta", "Black Glazed Terracotta") { DataLimits = new BlockDataLimits(0, 3) };
+            Concrete = new BlockInfo(251, "minecraft:concrete", "Concrete") { DataLimits = new BlockDataLimits(0, 15) };
+            ConcretePowder = new BlockInfo(252, "minecraft:concrete_powder", "Concrete Powder") { DataLimits = new BlockDataLimits(0, 15) };
+            // Unused253 = new BlockInfo(253, "minecraft:", "");
+            // Unused254 = new BlockInfo(254, "minecraft:", "");
+            StructureBlock = new BlockInfo(255, "minecraft:structure_block", "Structure Block") { DataLimits = new BlockDataLimits(0, 3) };
 
             for (int i = 0; i < MAX_BLOCKS; i++)
             {
