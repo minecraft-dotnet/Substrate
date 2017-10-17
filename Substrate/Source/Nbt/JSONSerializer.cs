@@ -23,7 +23,7 @@ namespace Substrate.Nbt
                 SerializeList(tag as TagNodeList, str, level);
             }
             else {
-                SerializeScaler(tag, str);
+                SerializeScalar(tag, str);
             }
 
             return str.ToString();
@@ -57,7 +57,7 @@ namespace Substrate.Nbt
                     SerializeList(item.Value as TagNodeList, str, level + 1);
                 }
                 else {
-                    SerializeScaler(item.Value, str);
+                    SerializeScalar(item.Value, str);
                 }
 
                 first = false;
@@ -97,7 +97,7 @@ namespace Substrate.Nbt
                         str.AppendLine();
                     }
                     Indent(str, level + 1);
-                    SerializeScaler(item, str);
+                    SerializeScalar(item, str);
                 }
 
                 
@@ -108,7 +108,7 @@ namespace Substrate.Nbt
             Add(str, "]", level);
         }
 
-        private static void SerializeScaler (TagNode tag, StringBuilder str)
+        private static void SerializeScalar (TagNode tag, StringBuilder str)
         {
             switch (tag.GetTagType()) {
                 case TagType.TAG_STRING:

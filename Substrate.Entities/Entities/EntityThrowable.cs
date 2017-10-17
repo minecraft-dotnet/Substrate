@@ -10,12 +10,12 @@ namespace Substrate.Entities
     {
         public static readonly SchemaNodeCompound ThrowableSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("xTile", TagType.TAG_SHORT),
-            new SchemaNodeScaler("yTile", TagType.TAG_SHORT),
-            new SchemaNodeScaler("zTile", TagType.TAG_SHORT),
-            new SchemaNodeScaler("inTile", TagType.TAG_BYTE),
-            new SchemaNodeScaler("shake", TagType.TAG_BYTE),
-            new SchemaNodeScaler("inGround", TagType.TAG_BYTE),
+            new SchemaNodeScalar("xTile", TagType.TAG_SHORT),
+            new SchemaNodeScalar("yTile", TagType.TAG_SHORT),
+            new SchemaNodeScalar("zTile", TagType.TAG_SHORT),
+            new SchemaNodeScalar("inTile", TagType.TAG_BYTE),
+            new SchemaNodeScalar("shake", TagType.TAG_BYTE),
+            new SchemaNodeScalar("inGround", TagType.TAG_BYTE),
         });
 
         private short _xTile;

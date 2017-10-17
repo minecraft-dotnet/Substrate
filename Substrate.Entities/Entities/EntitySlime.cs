@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound SlimeSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Size", TagType.TAG_INT),
+            new SchemaNodeScalar("Size", TagType.TAG_INT),
         });
 
         public static new string TypeId

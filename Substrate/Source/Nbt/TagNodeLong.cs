@@ -7,13 +7,11 @@ namespace Substrate.Nbt
     /// </summary>
     public sealed class TagNodeLong : TagNode
     {
-        private long _data = 0;
-
         /// <summary>
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeLong ToTagLong () 
+        public override TagNodeLong ToTagLong()
         {
             return this;
         }
@@ -22,50 +20,46 @@ namespace Substrate.Nbt
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_LONG tag type.</returns>
-        public override TagType GetTagType () 
-        { 
+        public override TagType GetTagType()
+        {
             return TagType.TAG_LONG;
         }
 
         /// <summary>
         /// Gets or sets a long of tag data.
         /// </summary>
-        public long Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public long Data { get; set; }
 
         /// <summary>
         /// Constructs a new long node with a data value of 0.
         /// </summary>
-        public TagNodeLong () { }
+        public TagNodeLong() { }
 
         /// <summary>
         /// Constructs a new long node.
         /// </summary>
         /// <param name="d">The value to set the node's tag data value.</param>
-        public TagNodeLong (long d)
+        public TagNodeLong(long d)
         {
-            _data = d;
+            Data = d;
         }
 
         /// <summary>
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new long node representing the same data.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
-            return new TagNodeLong(_data);
+            return new TagNodeLong(Data);
         }
 
         /// <summary>
         /// Gets a string representation of the node's data.
         /// </summary>
         /// <returns>String representation of the node's data.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
-            return _data.ToString();
+            return Data.ToString();
         }
 
         /// <summary>
@@ -73,7 +67,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="b">A byte value.</param>
         /// <returns>A new long node containing the given value.</returns>
-        public static implicit operator TagNodeLong (byte b)
+        public static implicit operator TagNodeLong(byte b)
         {
             return new TagNodeLong(b);
         }
@@ -83,7 +77,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short value.</param>
         /// <returns>A new long node containing the given value.</returns>
-        public static implicit operator TagNodeLong (short s)
+        public static implicit operator TagNodeLong(short s)
         {
             return new TagNodeLong(s);
         }
@@ -93,7 +87,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An int value.</param>
         /// <returns>A new long node containing the given value.</returns>
-        public static implicit operator TagNodeLong (int i)
+        public static implicit operator TagNodeLong(int i)
         {
             return new TagNodeLong(i);
         }
@@ -103,7 +97,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="l">A long value.</param>
         /// <returns>A new long node containing the given value.</returns>
-        public static implicit operator TagNodeLong (long l)
+        public static implicit operator TagNodeLong(long l)
         {
             return new TagNodeLong(l);
         }
@@ -113,9 +107,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="l">A long node.</param>
         /// <returns>A system long set to the node's data value.</returns>
-        public static implicit operator long (TagNodeLong l)
+        public static implicit operator long(TagNodeLong l)
         {
-            return l._data;
+            return l.Data;
         }
     }
 }

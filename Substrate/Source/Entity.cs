@@ -16,10 +16,10 @@ namespace Substrate
             new SchemaNodeList("Pos", TagType.TAG_DOUBLE, 3),
             new SchemaNodeList("Motion", TagType.TAG_DOUBLE, 3),
             new SchemaNodeList("Rotation", TagType.TAG_FLOAT, 2),
-            new SchemaNodeScaler("FallDistance", TagType.TAG_FLOAT),
-            new SchemaNodeScaler("Fire", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Air", TagType.TAG_SHORT),
-            new SchemaNodeScaler("OnGround", TagType.TAG_BYTE),
+            new SchemaNodeScalar("FallDistance", TagType.TAG_FLOAT),
+            new SchemaNodeScalar("Fire", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Air", TagType.TAG_SHORT),
+            new SchemaNodeScalar("OnGround", TagType.TAG_BYTE),
         };
 
         private TagNodeCompound _source;
@@ -296,7 +296,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = Entity.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("id", TagType.TAG_STRING),
+            new SchemaNodeScalar("id", TagType.TAG_STRING),
         });
 
         private string _id;

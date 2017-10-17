@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// An NBT node representing a null tag type.
@@ -11,7 +9,7 @@ namespace Substrate.Nbt
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeNull ToTagNull ()
+        public override TagNodeNull ToTagNull()
         {
             return this;
         }
@@ -20,7 +18,7 @@ namespace Substrate.Nbt
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_END tag type.</returns>
-        public override TagType GetTagType ()
+        public override TagType GetTagType()
         {
             return TagType.TAG_END;
         }
@@ -29,7 +27,7 @@ namespace Substrate.Nbt
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new null node.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
             return new TagNodeNull();
         }

@@ -11,7 +11,7 @@ namespace Substrate.TileEntities
         {
             new SchemaNodeString("id", TypeId),
             new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.Schema),
-            new SchemaNodeScaler("BrewTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("BrewTime", TagType.TAG_SHORT),
         });
 
         public static string TypeId

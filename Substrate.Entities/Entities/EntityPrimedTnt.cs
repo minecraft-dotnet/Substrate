@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound PrimedTntSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Fuse", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Fuse", TagType.TAG_BYTE),
         });
 
         public static string TypeId

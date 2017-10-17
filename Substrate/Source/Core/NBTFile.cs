@@ -19,7 +19,7 @@ namespace Substrate.Core
     {
         private string _filename;
 
-        public NBTFile (string path)
+        public NBTFile(string path)
         {
             _filename = path;
         }
@@ -30,82 +30,87 @@ namespace Substrate.Core
             protected set { _filename = value; }
         }
 
-        public bool Exists ()
+        public bool Exists()
         {
             return File.Exists(_filename);
         }
 
-        public void Delete ()
+        public void Delete()
         {
             File.Delete(_filename);
         }
 
-        public int GetModifiedTime ()
+        public int GetModifiedTime()
         {
             return Timestamp(File.GetLastWriteTime(_filename));
         }
 
-        public Stream GetDataInputStream ()
+        public Stream GetDataInputStream()
         {
             return GetDataInputStream(CompressionType.GZip);
         }
 
-        public virtual Stream GetDataInputStream (CompressionType compression)
+        public virtual Stream GetDataInputStream(CompressionType compression)
         {
-            try {
+            try
+            {
                 switch (compression)
                 {
-                    case CompressionType.None:
-                        using (FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                        {
-                            long length = fstr.Seek(0, SeekOrigin.End);
-                            fstr.Seek(0, SeekOrigin.Begin);
+                case CompressionType.None:
+                    using (FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        long length = fstr.Seek(0, SeekOrigin.End);
+                        fstr.Seek(0, SeekOrigin.Begin);
 
-                            byte[] data = new byte[length];
-                            fstr.Read(data, 0, data.Length);
+                        byte[] data = new byte[length];
+                        fstr.Read(data, 0, data.Length);
 
-                            return new MemoryStream(data);
-                        }
-                    case CompressionType.GZip:
-                        Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        return new GZipStream(stream1, CompressionMode.Decompress);
-                    case CompressionType.Zlib:
-                        Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        return new ZlibStream(stream2, CompressionMode.Decompress);
-                    case CompressionType.Deflate:
-                        Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        return new DeflateStream(stream3, CompressionMode.Decompress);
-                    default:
-                        throw new ArgumentException("Invalid CompressionType specified", "compression");
+                        return new MemoryStream(data);
+                    }
+                case CompressionType.GZip:
+                    Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    return new GZipStream(stream1, CompressionMode.Decompress);
+                case CompressionType.Zlib:
+                    Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    return new ZlibStream(stream2, CompressionMode.Decompress);
+                case CompressionType.Deflate:
+                    Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    return new DeflateStream(stream3, CompressionMode.Decompress);
+                default:
+                    throw new ArgumentException("Invalid CompressionType specified", "compression");
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw new NbtIOException("Failed to open compressed NBT data stream for input.", ex);
             }
         }
 
-        public Stream GetDataOutputStream ()
+        public Stream GetDataOutputStream()
         {
             return GetDataOutputStream(CompressionType.GZip);
         }
 
-        public virtual Stream GetDataOutputStream (CompressionType compression)
+        public virtual Stream GetDataOutputStream(CompressionType compression)
         {
-            try {
-                switch (compression) {
-                    case CompressionType.None:
-                        return new NBTBuffer(this);
-                    case CompressionType.GZip:
-                        return new GZipStream(new NBTBuffer(this), CompressionMode.Compress);
-                    case CompressionType.Zlib:
-                        return new ZlibStream(new NBTBuffer(this), CompressionMode.Compress);
-                    case CompressionType.Deflate:
-                        return new DeflateStream(new NBTBuffer(this), CompressionMode.Compress);
-                    default:
-                        throw new ArgumentException("Invalid CompressionType specified", "compression");
+            try
+            {
+                switch (compression)
+                {
+                case CompressionType.None:
+                    return new NBTBuffer(this);
+                case CompressionType.GZip:
+                    return new GZipStream(new NBTBuffer(this), CompressionMode.Compress);
+                case CompressionType.Zlib:
+                    return new ZlibStream(new NBTBuffer(this), CompressionMode.Compress);
+                case CompressionType.Deflate:
+                    return new DeflateStream(new NBTBuffer(this), CompressionMode.Compress);
+                default:
+                    throw new ArgumentException("Invalid CompressionType specified", "compression");
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw new NbtIOException("Failed to initialize compressed NBT data stream for output.", ex);
             }
         }
@@ -114,13 +119,13 @@ namespace Substrate.Core
         {
             private NBTFile file;
 
-            public NBTBuffer (NBTFile c)
+            public NBTBuffer(NBTFile c)
                 : base(8096)
             {
                 this.file = c;
             }
 
-            public override void Close ()
+            public override void Close()
             {
                 try
                 {
@@ -147,7 +152,7 @@ namespace Substrate.Core
             }
         }
 
-        private int Timestamp (DateTime time)
+        private int Timestamp(DateTime time)
         {
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return (int)((time - epoch).Ticks / (10000L * 1000L));

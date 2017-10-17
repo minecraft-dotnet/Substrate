@@ -11,7 +11,7 @@ namespace Substrate.Core
 
         private int _mask1;
 
-        public FusedDataArray3 (IDataArray3 array0, IDataArray3 array1)
+        public FusedDataArray3(IDataArray3 array0, IDataArray3 array1)
         {
             if (array0 == null || array1 == null)
                 throw new ArgumentException("arguments cannot be null");
@@ -50,12 +50,12 @@ namespace Substrate.Core
             get { return _array1.ZDim; }
         }
 
-        public int GetIndex (int x, int y, int z)
+        public int GetIndex(int x, int y, int z)
         {
             return _array1.GetIndex(x, y, z);
         }
 
-        public void GetMultiIndex (int index, out int x, out int y, out int z)
+        public void GetMultiIndex(int index, out int x, out int y, out int z)
         {
             _array1.GetMultiIndex(index, out x, out y, out z);
         }
@@ -80,7 +80,7 @@ namespace Substrate.Core
             get { return _array0.DataWidth + _array1.DataWidth; }
         }
 
-        public void Clear ()
+        public void Clear()
         {
             _array0.Clear();
             _array1.Clear();

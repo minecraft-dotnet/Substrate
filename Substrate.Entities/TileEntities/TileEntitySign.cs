@@ -11,10 +11,10 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound SignSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Text1", TagType.TAG_STRING),
-            new SchemaNodeScaler("Text2", TagType.TAG_STRING),
-            new SchemaNodeScaler("Text3", TagType.TAG_STRING),
-            new SchemaNodeScaler("Text4", TagType.TAG_STRING),
+            new SchemaNodeScalar("Text1", TagType.TAG_STRING),
+            new SchemaNodeScalar("Text2", TagType.TAG_STRING),
+            new SchemaNodeScalar("Text3", TagType.TAG_STRING),
+            new SchemaNodeScalar("Text4", TagType.TAG_STRING),
         });
 
         public static string TypeId

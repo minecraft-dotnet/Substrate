@@ -13,9 +13,9 @@ namespace Substrate.ImportExport
     {
         private static SchemaNodeCompound _schema = new SchemaNodeCompound()
         {
-            new SchemaNodeScaler("Width", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Length", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Height", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Width", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Length", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Height", TagType.TAG_SHORT),
             new SchemaNodeString("Materials", "Alpha"),
             new SchemaNodeArray("Blocks"),
             new SchemaNodeArray("Data"),
@@ -35,7 +35,7 @@ namespace Substrate.ImportExport
         private AlphaBlockCollection _blockset;
         private EntityCollection _entityset;
 
-        private Schematic ()
+        private Schematic()
         {
         }
 
@@ -44,7 +44,7 @@ namespace Substrate.ImportExport
         /// </summary>
         /// <param name="blocks">An existing <see cref="AlphaBlockCollection"/>.</param>
         /// <param name="entities">An existing <see cref="EntityCollection"/>.</param>
-        public Schematic (AlphaBlockCollection blocks, EntityCollection entities)
+        public Schematic(AlphaBlockCollection blocks, EntityCollection entities)
         {
             _blockset = blocks;
             _entityset = entities;
@@ -56,7 +56,7 @@ namespace Substrate.ImportExport
         /// <param name="xdim">The length of the X-dimension in blocks.</param>
         /// <param name="ydim">The length of the Y-dimension in blocks.</param>
         /// <param name="zdim">The length of the Z-dimension in blocks.</param>
-        public Schematic (int xdim, int ydim, int zdim)
+        public Schematic(int xdim, int ydim, int zdim)
         {
             _blocks = new XZYByteArray(xdim, ydim, zdim);
             _data = new XZYNibbleArray(xdim, ydim, zdim);
@@ -98,10 +98,11 @@ namespace Substrate.ImportExport
         /// </summary>
         /// <param name="path">The path to the schematic file.</param>
         /// <returns>A <see cref="Schematic"/> object containing the decoded schematic file data.</returns>
-        public static Schematic Import (string path)
+        public static Schematic Import(string path)
         {
             NBTFile schematicFile = new NBTFile(path);
-            if (!schematicFile.Exists()) {
+            if (!schematicFile.Exists())
+            {
                 return null;
             }
             NbtTree tree;
@@ -117,7 +118,8 @@ namespace Substrate.ImportExport
             }
 
             NbtVerifier v = new NbtVerifier(tree.Root, _schema);
-            if (!v.Verify()) {
+            if (!v.Verify())
+            {
                 return null;
             }
 
@@ -133,9 +135,12 @@ namespace Substrate.ImportExport
             YZXByteArray schemaBlocks = new YZXByteArray(xdim, ydim, zdim, schematic["Blocks"].ToTagByteArray());
             YZXByteArray schemaData = new YZXByteArray(xdim, ydim, zdim, schematic["Data"].ToTagByteArray());
 
-            for (int x = 0; x < xdim; x++) {
-                for (int y = 0; y < ydim; y++) {
-                    for (int z = 0; z < zdim; z++) {
+            for (int x = 0; x < xdim; x++)
+            {
+                for (int y = 0; y < ydim; y++)
+                {
+                    for (int z = 0; z < zdim; z++)
+                    {
                         self._blocks[x, y, z] = schemaBlocks[x, y, z];
                         self._data[x, y, z] = schemaData[x, y, z];
                     }
@@ -143,12 +148,14 @@ namespace Substrate.ImportExport
             }
 
             TagNodeList entities = schematic["Entities"] as TagNodeList;
-            foreach (TagNode e in entities) {
+            foreach (TagNode e in entities)
+            {
                 self._entities.Add(e);
             }
 
             TagNodeList tileEntities = schematic["TileEntities"] as TagNodeList;
-            foreach (TagNode te in tileEntities) {
+            foreach (TagNode te in tileEntities)
+            {
                 self._tileEntities.Add(te);
             }
 
@@ -161,7 +168,7 @@ namespace Substrate.ImportExport
         /// Exports the <see cref="Schematic"/> object to a schematic file.
         /// </summary>
         /// <param name="path">The path to write out the schematic file to.</param>
-        public void Export (string path)
+        public void Export(string path)
         {
             int xdim = _blockset.XDim;
             int ydim = _blockset.YDim;
@@ -176,15 +183,19 @@ namespace Substrate.ImportExport
             TagNodeList entities = new TagNodeList(TagType.TAG_COMPOUND);
             TagNodeList tileEntities = new TagNodeList(TagType.TAG_COMPOUND);
 
-            for (int x = 0; x < xdim; x++) {
-                for (int z = 0; z < zdim; z++) {
-                    for (int y = 0; y < ydim; y++) {
+            for (int x = 0; x < xdim; x++)
+            {
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
                         AlphaBlock block = _blockset.GetBlock(x, y, z);
                         schemaBlocks[x, y, z] = (byte)block.ID;
                         schemaData[x, y, z] = (byte)block.Data;
 
                         TileEntity te = block.GetTileEntity();
-                        if (te != null) {
+                        if (te != null)
+                        {
                             te.X = x;
                             te.Y = y;
                             te.Z = z;
@@ -195,7 +206,8 @@ namespace Substrate.ImportExport
                 }
             }
 
-            foreach (TypedEntity e in _entityset) {
+            foreach (TypedEntity e in _entityset)
+            {
                 entities.Add(e.BuildTree());
             }
 

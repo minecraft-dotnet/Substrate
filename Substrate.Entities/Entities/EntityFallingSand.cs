@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound FallingSandSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Tile", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Tile", TagType.TAG_BYTE),
         });
 
         public static string TypeId

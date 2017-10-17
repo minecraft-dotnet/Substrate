@@ -19,11 +19,11 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound PaintingSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Dir", TagType.TAG_BYTE),
-            new SchemaNodeScaler("TileX", TagType.TAG_INT),
-            new SchemaNodeScaler("TileY", TagType.TAG_INT),
-            new SchemaNodeScaler("TileZ", TagType.TAG_INT),
-            new SchemaNodeScaler("Motive", TagType.TAG_STRING),
+            new SchemaNodeScalar("Dir", TagType.TAG_BYTE),
+            new SchemaNodeScalar("TileX", TagType.TAG_INT),
+            new SchemaNodeScalar("TileY", TagType.TAG_INT),
+            new SchemaNodeScalar("TileZ", TagType.TAG_INT),
+            new SchemaNodeScalar("Motive", TagType.TAG_STRING),
         });
 
         public static string TypeId

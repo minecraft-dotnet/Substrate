@@ -87,6 +87,23 @@ namespace Substrate.Tests
             Level level = new Level(null);
             level = level.LoadTreeSafe(levelTree.Root);
             Assert.IsNotNull(level);
+
+
+            NbtTree mineshaftTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\Mineshaft.dat");
+            //Assert.IsTrue(new NbtVerifier(mineshaftTree.Root, _schema).Verify());
+
+            NbtTree templeTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\Temple.dat");
+
+            NbtTree villageTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\Village.dat");
+
+            NbtTree villagesTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\villages.dat");
+            Assert.IsTrue(new NbtVerifier(villagesTree.Root, Villages.Schema).Verify());
+
+            NbtTree villagesEndTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\villages_end.dat");
+            Assert.IsTrue(new NbtVerifier(villagesEndTree.Root, Villages.Schema).Verify());
+
+            NbtTree villagesNetherTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\villages_nether.dat");
+            Assert.IsTrue(new NbtVerifier(villagesNetherTree.Root, Villages.Schema).Verify());
         }
     }
 }

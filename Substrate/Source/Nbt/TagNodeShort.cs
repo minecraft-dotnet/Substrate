@@ -7,33 +7,31 @@ namespace Substrate.Nbt
     /// </summary>
     public sealed class TagNodeShort : TagNode
     {
-        private short _data = 0;
-
         /// <summary>
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeShort ToTagShort () 
-        { 
-            return this; 
+        public override TagNodeShort ToTagShort()
+        {
+            return this;
         }
 
         /// <summary>
         /// Converts the node to a new int node.
         /// </summary>
         /// <returns>An int node representing the same data.</returns>
-        public override TagNodeInt ToTagInt () 
-        { 
-            return new TagNodeInt(_data); 
+        public override TagNodeInt ToTagInt()
+        {
+            return new TagNodeInt(Data);
         }
 
         /// <summary>
         /// Converts the node to a new long node.
         /// </summary>
         /// <returns>A long node representing the same data.</returns>
-        public override TagNodeLong ToTagLong ()
+        public override TagNodeLong ToTagLong()
         {
-            return new TagNodeLong(_data);
+            return new TagNodeLong(Data);
         }
 
         /// <summary>
@@ -42,15 +40,15 @@ namespace Substrate.Nbt
         /// <returns>A new float node.</returns>
         public override TagNodeFloat ToTagFloat()
         {
-            return new TagNodeFloat(_data);
+            return new TagNodeFloat(Data);
         }
 
         /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_SHORT tag type.</returns>
-        public override TagType GetTagType () 
-        { 
+        public override TagType GetTagType()
+        {
             return TagType.TAG_SHORT;
         }
 
@@ -59,7 +57,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="type">An NBT tag type.</param>
         /// <returns>Status indicating whether this object could be cast to a node type represented by the given tag type.</returns>
-        public override bool IsCastableTo (TagType type)
+        public override bool IsCastableTo(TagType type)
         {
             return (type == TagType.TAG_SHORT ||
                 type == TagType.TAG_INT ||
@@ -71,42 +69,38 @@ namespace Substrate.Nbt
         /// <summary>
         /// Gets or sets a short of tag data.
         /// </summary>
-        public short Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public short Data { get; set; }
 
         /// <summary>
         /// Constructs a new short node with a data value of 0.
         /// </summary>
-        public TagNodeShort () { }
+        public TagNodeShort() { }
 
         /// <summary>
         /// Constructs a new short node.
         /// </summary>
         /// <param name="d">The value to set the node's tag data value.</param>
-        public TagNodeShort (short d)
+        public TagNodeShort(short d)
         {
-            _data = d;
+            Data = d;
         }
 
         /// <summary>
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new short node representing the same data.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
-            return new TagNodeShort(_data);
+            return new TagNodeShort(Data);
         }
 
         /// <summary>
         /// Gets a string representation of the node's data.
         /// </summary>
         /// <returns>String representation of the node's data.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
-            return _data.ToString();
+            return Data.ToString();
         }
 
         /// <summary>
@@ -114,7 +108,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="b">A byte value.</param>
         /// <returns>A new short node containing the given value.</returns>
-        public static implicit operator TagNodeShort (byte b)
+        public static implicit operator TagNodeShort(byte b)
         {
             return new TagNodeShort(b);
         }
@@ -124,7 +118,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short value.</param>
         /// <returns>A new short node containing the given value.</returns>
-        public static implicit operator TagNodeShort (short s)
+        public static implicit operator TagNodeShort(short s)
         {
             return new TagNodeShort(s);
         }
@@ -134,9 +128,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short node.</param>
         /// <returns>A system short set to the node's data value.</returns>
-        public static implicit operator short (TagNodeShort s)
+        public static implicit operator short(TagNodeShort s)
         {
-            return s._data;
+            return s.Data;
         }
 
         /// <summary>
@@ -144,9 +138,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short node.</param>
         /// <returns>A system int set to the node's data value.</returns>
-        public static implicit operator int (TagNodeShort s)
+        public static implicit operator int(TagNodeShort s)
         {
-            return s._data;
+            return s.Data;
         }
 
         /// <summary>
@@ -154,9 +148,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short node.</param>
         /// <returns>A system long set to the node's data value.</returns>
-        public static implicit operator long (TagNodeShort s)
+        public static implicit operator long(TagNodeShort s)
         {
-            return s._data;
+            return s.Data;
         }
     }
 }

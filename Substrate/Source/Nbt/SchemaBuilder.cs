@@ -21,7 +21,7 @@ namespace Substrate.Source.Nbt
                     var attribute = (TagNodeAttribute)untypedAttributes[0];
 
                     var name = attribute.Name ?? property.Name;
-                    TagType tagType = attribute.Type ?? GetTagTypeForProperty(property);
+                    TagType tagType = attribute.TagType != TagType.TAG_END ? attribute.TagType : GetTagTypeForProperty(property);
                     SchemaOptions options = 0;
                     if (attribute.Optional) { options |= SchemaOptions.OPTIONAL; }
                     if (attribute.CreateOnMissing) { options |= SchemaOptions.CREATE_ON_MISSING; }
@@ -34,7 +34,7 @@ namespace Substrate.Source.Nbt
                     case TagType.TAG_LONG:
                     case TagType.TAG_FLOAT:
                     case TagType.TAG_DOUBLE:
-                        schema.Add(new SchemaNodeScaler(name, tagType, options));
+                        schema.Add(new SchemaNodeScalar(name, tagType, options));
                         break;
 
                     case TagType.TAG_STRING:
@@ -105,7 +105,7 @@ namespace Substrate.Source.Nbt
         public static void FormatNode(SchemaNode node, StringBuilder builder, int tablevel)
         {
             builder.Append(new string('\t', tablevel));
-            builder.AppendFormat("'{0}', {1}", node.Name, node.Options.ToString());
+            builder.AppendFormat("'{0}', ({1}), {2}", node.Name, node.GetType().Name, node.Options.ToString());
             builder.AppendLine();
 
             if (node is SchemaNodeCompound)
@@ -121,7 +121,10 @@ namespace Substrate.Source.Nbt
             {
                 var atree = node as SchemaNodeList;
 
-                FormatNode(atree.SubSchema, builder, tablevel + 1);
+                if (atree.Type == TagType.TAG_COMPOUND)
+                {
+                    FormatNode(atree.SubSchema, builder, tablevel + 1);
+                }
             }
         }
     }

@@ -11,7 +11,7 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound ControlSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Command", TagType.TAG_STRING),
+            new SchemaNodeScalar("Command", TagType.TAG_STRING),
         });
 
         public static string TypeId

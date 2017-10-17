@@ -7,11 +7,9 @@ namespace Substrate.Nbt
     [AttributeUsage(AttributeTargets.Property)]
     public class TagNodeAttribute : Attribute
     {
-        string _name = null;
+        public string Name { get; set; }
 
-        public string Name { get { return _name; } set { _name = value; } }
-
-        public TagType? Type { get; set; }
+        public TagType TagType { get; set; }
 
         public bool Optional { get; set; }
 
@@ -23,7 +21,7 @@ namespace Substrate.Nbt
 
         public TagNodeAttribute(string name)
         {
-            _name = name;
+            Name = name;
         }
     }
 }

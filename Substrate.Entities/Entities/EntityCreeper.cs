@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound CreeperSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("powered", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("powered", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
         });
 
         public static new string TypeId

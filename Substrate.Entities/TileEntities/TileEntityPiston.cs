@@ -11,11 +11,11 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound PistonSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("blockId", TagType.TAG_INT),
-            new SchemaNodeScaler("blockData", TagType.TAG_INT),
-            new SchemaNodeScaler("facing", TagType.TAG_INT),
-            new SchemaNodeScaler("progress", TagType.TAG_FLOAT),
-            new SchemaNodeScaler("extending", TagType.TAG_BYTE),
+            new SchemaNodeScalar("blockId", TagType.TAG_INT),
+            new SchemaNodeScalar("blockData", TagType.TAG_INT),
+            new SchemaNodeScalar("facing", TagType.TAG_INT),
+            new SchemaNodeScalar("progress", TagType.TAG_FLOAT),
+            new SchemaNodeScalar("extending", TagType.TAG_BYTE),
         });
 
         public static string TypeId

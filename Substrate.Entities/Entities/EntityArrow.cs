@@ -11,8 +11,8 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound ArrowSchema = ThrowableSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("inData", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("player", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("inData", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("player", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
         });
 
         public static string TypeId
