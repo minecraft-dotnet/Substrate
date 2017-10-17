@@ -8,7 +8,7 @@ namespace Substrate.Core
     /// </summary>
     /// <param name="path">The path to the directory of the world to open.</param>
     /// <returns>An instance of a concrete derivative of <see cref="NbtWorld"/>.</returns>
-    public delegate NbtWorld OpenWorldCallback (string path);
+    public delegate NbtWorld OpenWorldCallback(string path);
 
     /// <summary>
     /// Event arugments and response data for any handlers trying to determine if they can open a given world.
@@ -22,7 +22,7 @@ namespace Substrate.Core
         /// Create a new instance of event arguments.
         /// </summary>
         /// <param name="path">The path to the directory of a world.</param>
-        public OpenWorldEventArgs (string path)
+        public OpenWorldEventArgs(string path)
             : base()
         {
             _path = path;
@@ -41,7 +41,7 @@ namespace Substrate.Core
         /// Adds an <see cref="OpenWorldCallback"/> delegate that can open a world and return a corresponding <see cref="NbtWorld"/> object.
         /// </summary>
         /// <param name="callback">The delegate to return to the code that raised the event.</param>
-        public void AddHandler (OpenWorldCallback callback)
+        public void AddHandler(OpenWorldCallback callback)
         {
             _handlers.Add(callback);
         }

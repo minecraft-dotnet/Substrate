@@ -7,14 +7,12 @@ namespace Substrate.Nbt
     /// </summary>
     public sealed class TagNodeInt : TagNode
     {
-        private int _data = 0;
-
         /// <summary>
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeInt ToTagInt () 
-        { 
+        public override TagNodeInt ToTagInt()
+        {
             return this;
         }
 
@@ -22,16 +20,16 @@ namespace Substrate.Nbt
         /// Converts the node to a new long node.
         /// </summary>
         /// <returns>A long node representing the same data.</returns>
-        public override TagNodeLong ToTagLong () 
-        { 
-            return new TagNodeLong(_data); 
+        public override TagNodeLong ToTagLong()
+        {
+            return new TagNodeLong(Data);
         }
 
         /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_INT tag type.</returns>
-        public override TagType GetTagType ()
+        public override TagType GetTagType()
         {
             return TagType.TAG_INT;
         }
@@ -41,7 +39,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="type">An NBT tag type.</param>
         /// <returns>Status indicating whether this object could be cast to a node type represented by the given tag type.</returns>
-        public override bool IsCastableTo (TagType type)
+        public override bool IsCastableTo(TagType type)
         {
             return (type == TagType.TAG_INT ||
                 type == TagType.TAG_LONG);
@@ -50,42 +48,38 @@ namespace Substrate.Nbt
         /// <summary>
         /// Gets or sets an int of tag data.
         /// </summary>
-        public int Data
-        {
-            get { return _data; }
-            set { _data = value; }
-        }
+        public int Data { get; set; }
 
         /// <summary>
         /// Constructs a new int node with a data value of 0.
         /// </summary>
-        public TagNodeInt () { }
+        public TagNodeInt() { }
 
         /// <summary>
         /// Constructs a new int node.
         /// </summary>
         /// <param name="d">The value to set the node's tag data value.</param>
-        public TagNodeInt (int d)
+        public TagNodeInt(int d)
         {
-            _data = d;
+            Data = d;
         }
 
         /// <summary>
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new int node representing the same data.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
-            return new TagNodeInt(_data);
+            return new TagNodeInt(Data);
         }
 
         /// <summary>
         /// Gets a string representation of the node's data.
         /// </summary>
         /// <returns>String representation of the node's data.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
-            return _data.ToString();
+            return Data.ToString();
         }
 
         /// <summary>
@@ -93,7 +87,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="b">A byte value.</param>
         /// <returns>A new int node containing the given value.</returns>
-        public static implicit operator TagNodeInt (byte b)
+        public static implicit operator TagNodeInt(byte b)
         {
             return new TagNodeInt(b);
         }
@@ -103,7 +97,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="s">A short value.</param>
         /// <returns>A new int node containing the given value.</returns>
-        public static implicit operator TagNodeInt (short s)
+        public static implicit operator TagNodeInt(short s)
         {
             return new TagNodeInt(s);
         }
@@ -113,7 +107,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An int value.</param>
         /// <returns>A new int node containing the given value.</returns>
-        public static implicit operator TagNodeInt (int i)
+        public static implicit operator TagNodeInt(int i)
         {
             return new TagNodeInt(i);
         }
@@ -123,9 +117,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An int node.</param>
         /// <returns>A system int set to the node's data value.</returns>
-        public static implicit operator int (TagNodeInt i)
+        public static implicit operator int(TagNodeInt i)
         {
-            return i._data;
+            return i.Data;
         }
 
         /// <summary>
@@ -133,9 +127,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An int node.</param>
         /// <returns>A system long set to the node's data value.</returns>
-        public static implicit operator long (TagNodeInt i)
+        public static implicit operator long(TagNodeInt i)
         {
-            return i._data;
+            return i.Data;
         }
     }
 }

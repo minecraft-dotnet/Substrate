@@ -10,9 +10,9 @@ namespace Substrate.Entities
     {
         public static readonly SchemaNodeCompound MinecartFurnaceSchema = MinecartSchema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("PushX", TagType.TAG_DOUBLE),
-            new SchemaNodeScaler("PushZ", TagType.TAG_DOUBLE),
-            new SchemaNodeScaler("Fuel", TagType.TAG_SHORT),
+            new SchemaNodeScalar("PushX", TagType.TAG_DOUBLE),
+            new SchemaNodeScalar("PushZ", TagType.TAG_DOUBLE),
+            new SchemaNodeScalar("Fuel", TagType.TAG_SHORT),
         });
 
         public static new string TypeId

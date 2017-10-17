@@ -22,7 +22,7 @@ namespace Substrate.Core
                 get { return _value; }
             }
 
-            public CacheValueArgs (TKey key, TValue value)
+            public CacheValueArgs(TKey key, TValue value)
             {
                 _key = key;
                 _value = value;
@@ -36,7 +36,7 @@ namespace Substrate.Core
 
         private int _capacity;
 
-        public LRUCache (int capacity)
+        public LRUCache(int capacity)
         {
             if (capacity <= 0)
             {
@@ -51,7 +51,7 @@ namespace Substrate.Core
 
         #region IDictionary<TKey,TValue> Members
 
-        public void Add (TKey key, TValue value)
+        public void Add(TKey key, TValue value)
         {
             if (_data.ContainsKey(key))
             {
@@ -70,7 +70,7 @@ namespace Substrate.Core
             }
         }
 
-        public bool ContainsKey (TKey key)
+        public bool ContainsKey(TKey key)
         {
             return _data.ContainsKey(key);
         }
@@ -80,7 +80,7 @@ namespace Substrate.Core
             get { return _data.Keys; }
         }
 
-        public bool Remove (TKey key)
+        public bool Remove(TKey key)
         {
             if (_data.Remove(key))
             {
@@ -91,7 +91,7 @@ namespace Substrate.Core
             return false;
         }
 
-        public bool TryGetValue (TKey key, out TValue value)
+        public bool TryGetValue(TKey key, out TValue value)
         {
             if (!_data.TryGetValue(key, out value))
             {
@@ -138,23 +138,23 @@ namespace Substrate.Core
 
         #region ICollection<KeyValuePair<TKey,TValue>> Members
 
-        public void Add (KeyValuePair<TKey, TValue> item)
+        public void Add(KeyValuePair<TKey, TValue> item)
         {
             Add(item.Key, item.Value);
         }
 
-        public void Clear ()
+        public void Clear()
         {
             _data.Clear();
             _index.Clear();
         }
 
-        public bool Contains (KeyValuePair<TKey, TValue> item)
+        public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             return ((ICollection<KeyValuePair<TKey, TValue>>)_data).Contains(item);
         }
 
-        public void CopyTo (KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             ((ICollection<KeyValuePair<TKey, TValue>>)_data).CopyTo(array, arrayIndex);
         }
@@ -169,7 +169,7 @@ namespace Substrate.Core
             get { return false; }
         }
 
-        public bool Remove (KeyValuePair<TKey, TValue> item)
+        public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             if (((ICollection<KeyValuePair<TKey, TValue>>)_data).Remove(item))
             {
@@ -184,7 +184,7 @@ namespace Substrate.Core
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return _data.GetEnumerator();
         }
@@ -193,14 +193,14 @@ namespace Substrate.Core
 
         #region IEnumerable Members
 
-        IEnumerator IEnumerable.GetEnumerator ()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _data.GetEnumerator();
         }
 
         #endregion
 
-        private void OnRemoveCacheValue (CacheValueArgs e)
+        private void OnRemoveCacheValue(CacheValueArgs e)
         {
             if (RemoveCacheValue != null)
             {

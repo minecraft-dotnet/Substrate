@@ -41,14 +41,14 @@ namespace Substrate.Core
         /// <remarks>Terrain features include ores, water and lava sources, dungeons, trees, flowers, etc.</remarks>
         bool IsTerrainPopulated { get; set; }
 
-        void SetLocation (int x, int z);
+        void SetLocation(int x, int z);
 
         /// <summary>
         /// Writes out the chunk's data to an output stream.
         /// </summary>
         /// <param name="outStream">A valid, open output stream.</param>
         /// <returns>True if the chunk could be saved; false otherwise.</returns>
-        bool Save (Stream outStream);
+        bool Save(Stream outStream);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace Substrate.Core
         /// <remarks>This is largely intended for internal use.  If an <see cref="IChunk"/> is assigned coordinates by an
         /// <see cref="IChunkContainer"/>, the interpretation of those coordinates is ambiguous.  This method ensures the coordinate
         /// returned is interpreted as a global coordinate.</remarks>
-        int ChunkGlobalX (int cx);
+        int ChunkGlobalX(int cx);
 
         /// <summary>
         /// Returns a global chunk Z-coordinate, given a container-defined Z-coordinate.
@@ -74,7 +74,7 @@ namespace Substrate.Core
         /// <remarks>This is largely intended for internal use.  If an <see cref="IChunk"/> is assigned coordinates by an
         /// <see cref="IChunkContainer"/>, the interpretation of those coordinates is ambiguous.  This method ensures the coordinate
         /// returned is interpreted as a global coordinate.</remarks>
-        int ChunkGlobalZ (int cz);
+        int ChunkGlobalZ(int cz);
 
         /// <summary>
         /// Returns a local chunk X-coordinate, given a container-defined X-coordinate.
@@ -84,7 +84,7 @@ namespace Substrate.Core
         /// <remarks>This is largely intended for internal use.  If an <see cref="IChunk"/> is assigned coordinates by an
         /// <see cref="IChunkContainer"/>, the interpretation of those coordinates is ambiguous.  This method ensures the coordinate
         /// returned is interpreted as a local coordinate.</remarks>
-        int ChunkLocalX (int cx);
+        int ChunkLocalX(int cx);
 
         /// <summary>
         /// Returns a local chunk Z-coordinate, given a container-defined Z-coordinate.
@@ -94,7 +94,7 @@ namespace Substrate.Core
         /// <remarks>This is largely intended for internal use.  If an <see cref="IChunk"/> is assigned coordinates by an
         /// <see cref="IChunkContainer"/>, the interpretation of those coordinates is ambiguous.  This method ensures the coordinate
         /// returned is interpreted as a local coordinate.</remarks>
-        int ChunkLocalZ (int cz);
+        int ChunkLocalZ(int cz);
 
         /// <summary>
         /// Gets an unwrapped <see cref="IChunk"/> object for the given container-local coordinates.
@@ -102,7 +102,7 @@ namespace Substrate.Core
         /// <param name="cx">The container-local X-coordinate of a chunk.</param>
         /// <param name="cz">The container-local Z-coordinate of a chunk.</param>
         /// <returns>A <see cref="IChunk"/> for the given coordinates, or null if no chunk exists at those coordinates.</returns>
-        IChunk GetChunk (int cx, int cz);
+        IChunk GetChunk(int cx, int cz);
 
         /// <summary>
         /// Gets a <see cref="ChunkRef"/> binding a chunk to this container for the given container-local coordinates.
@@ -111,7 +111,7 @@ namespace Substrate.Core
         /// <param name="cz">The container-local Z-coordinate of a chunk.</param>
         /// <returns>A <see cref="ChunkRef"/> for the given coordinates binding a <see cref="IChunk"/> to this container, or null if
         /// no chunk exists at the given coordinates.</returns>
-        ChunkRef GetChunkRef (int cx, int cz);
+        ChunkRef GetChunkRef(int cx, int cz);
 
         /// <summary>
         /// Creates an empty chunk at the given coordinates, if no chunk previously exists.
@@ -121,7 +121,7 @@ namespace Substrate.Core
         /// <returns>A <see cref="ChunkRef"/> for the newly created chunk if no previous chunk existed; a <see cref="ChunkRef"/> 
         /// to the existing chunk otherwise.</returns>
         /// <remarks>This method ensures that an empty/default chunk is written out to the underlying data store before returning.</remarks>
-        ChunkRef CreateChunk (int cx, int cz);
+        ChunkRef CreateChunk(int cx, int cz);
 
         /// <summary>
         /// Saves an unwrapped <see cref="IChunk"/> to the container at the given container-local coordinates.
@@ -136,7 +136,7 @@ namespace Substrate.Core
         /// other <see cref="ChunkRef"/> is written to the underlying data store with invalid coordinates.</para>
         /// <para>The <see cref="ChunkRef"/> specification is designed to avoid this situation from occuring, but
         /// class hierarchy extensions could violate these safeguards.</para></remarks>
-        ChunkRef SetChunk (int cx, int cz, IChunk chunk);
+        ChunkRef SetChunk(int cx, int cz, IChunk chunk);
 
         /// <summary>
         /// Checks if a chunk exists at the given container-local coordinates.
@@ -144,7 +144,7 @@ namespace Substrate.Core
         /// <param name="cx">The container-local X-coordinate of a chunk.</param>
         /// <param name="cz">The container-local Z-coordinate of a chunk.</param>
         /// <returns>True if a chunk exists at the given coordinates; false otherwise.</returns>
-        bool ChunkExists (int cx, int cz);
+        bool ChunkExists(int cx, int cz);
 
         /// <summary>
         /// Deletes a chunk at the given container-local coordinates if it exists.
@@ -152,7 +152,7 @@ namespace Substrate.Core
         /// <param name="cx">The container-local X-coordinate of a chunk.</param>
         /// <param name="cz">The container-local Z-coordinate of a chunk.</param>
         /// <returns>True if a chunk existed and was deleted; false otherwise.</returns>
-        bool DeleteChunk (int cx, int cz);
+        bool DeleteChunk(int cx, int cz);
 
         /// <summary>
         /// Saves any chunks in the container that currently have unsaved changes.
@@ -162,11 +162,11 @@ namespace Substrate.Core
         /// modified by an action on this container that was delegated to another container will not be saved.  The foreign
         /// containers must be individually saved, but are guaranteed to know about the unsaved changes originating from
         /// an action in another container.</remarks>
-        int Save ();
+        int Save();
 
         // TODO: Check that this doesn't violate borders
         /// <exclude/>
-        bool SaveChunk (IChunk chunk);
+        bool SaveChunk(IChunk chunk);
 
         /// <summary>
         /// Checks if this container supports delegating an action on out-of-bounds coordinates to another container.

@@ -12,13 +12,13 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("id", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Damage", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Count", TagType.TAG_BYTE),
+            new SchemaNodeScalar("id", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Damage", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Count", TagType.TAG_BYTE),
             new SchemaNodeCompound("tag", new SchemaNodeCompound("") {
                 new SchemaNodeList("ench", TagType.TAG_COMPOUND, Enchantment.Schema, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("title", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("author", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("title", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("author", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
                 new SchemaNodeList("pages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
             }, SchemaOptions.OPTIONAL),
         };
@@ -34,7 +34,7 @@ namespace Substrate
         /// <summary>
         /// Constructs an empty <see cref="Item"/> instance.
         /// </summary>
-        public Item ()
+        public Item()
         {
             _enchantments = new List<Enchantment>();
             _source = new TagNodeCompound();
@@ -44,7 +44,7 @@ namespace Substrate
         /// Constructs an <see cref="Item"/> instance representing the given item id.
         /// </summary>
         /// <param name="id">An item id.</param>
-        public Item (int id)
+        public Item(int id)
             : this()
         {
             _id = (short)id;
@@ -63,6 +63,7 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the current type (id) of the item.
         /// </summary>
+        [TagNode("id", TagType = TagType.TAG_SHORT)]
         public int ID
         {
             get { return _id; }
@@ -73,6 +74,7 @@ namespace Substrate
         /// Gets or sets the damage value of the item.
         /// </summary>
         /// <remarks>The damage value may represent a generic data value for some items.</remarks>
+        [TagNode]
         public int Damage
         {
             get { return _damage; }
@@ -82,6 +84,7 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the number of this item stacked together in an item slot.
         /// </summary>
+        [TagNode]
         public int Count
         {
             get { return _count; }
@@ -117,18 +120,20 @@ namespace Substrate
         #region ICopyable<Item> Members
 
         /// <inheritdoc/>
-        public Item Copy ()
+        public Item Copy()
         {
             Item item = new Item();
             item._id = _id;
             item._count = _count;
             item._damage = _damage;
 
-            foreach (Enchantment e in _enchantments) {
+            foreach (Enchantment e in _enchantments)
+            {
                 item._enchantments.Add(e.Copy());
             }
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 item._source = _source.Copy() as TagNodeCompound;
             }
 
@@ -140,10 +145,11 @@ namespace Substrate
         #region INBTObject<Item> Members
 
         /// <inheritdoc/>
-        public Item LoadTree (TagNode tree)
+        public Item LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
@@ -153,12 +159,15 @@ namespace Substrate
             _count = ctree["Count"].ToTagByte();
             _damage = ctree["Damage"].ToTagShort();
 
-            if (ctree.ContainsKey("tag")) {
+            if (ctree.ContainsKey("tag"))
+            {
                 TagNodeCompound tagtree = ctree["tag"].ToTagCompound();
-                if (tagtree.ContainsKey("ench")) {
+                if (tagtree.ContainsKey("ench"))
+                {
                     TagNodeList enchList = tagtree["ench"].ToTagList();
 
-                    foreach (TagNode tag in enchList) {
+                    foreach (TagNode tag in enchList)
+                    {
                         _enchantments.Add(new Enchantment().LoadTree(tag));
                     }
                 }
@@ -170,9 +179,10 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public Item LoadTreeSafe (TagNode tree)
+        public Item LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -180,30 +190,34 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public TagNode BuildTree ()
+        public TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
             tree["id"] = new TagNodeShort(_id);
             tree["Count"] = new TagNodeByte(_count);
             tree["Damage"] = new TagNodeShort(_damage);
 
-            if (_enchantments.Count > 0) {
+            if (_enchantments.Count > 0)
+            {
                 TagNodeList enchList = new TagNodeList(TagType.TAG_COMPOUND);
-                foreach (Enchantment e in _enchantments) {
+                foreach (Enchantment e in _enchantments)
+                {
                     enchList.Add(e.BuildTree());
                 }
 
                 TagNodeCompound tagtree = new TagNodeCompound();
                 tagtree["ench"] = enchList;
 
-                if (_source != null && _source.ContainsKey("tag")) {
+                if (_source != null && _source.ContainsKey("tag"))
+                {
                     tagtree.MergeFrom(_source["tag"].ToTagCompound());
                 }
 
                 tree["tag"] = tagtree;
             }
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 tree.MergeFrom(_source);
             }
 
@@ -211,7 +225,7 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public bool ValidateTree (TagNode tree)
+        public bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }

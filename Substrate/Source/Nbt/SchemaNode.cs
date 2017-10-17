@@ -9,32 +9,23 @@ namespace Substrate.Nbt
     /// </summary>
     public abstract class SchemaNode
     {
-        private string _name;
-        private SchemaOptions _options;
-
         /// <summary>
         /// Gets the name of an expected NBT node.
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Gets additional schema options defined for this node.
         /// </summary>
-        public SchemaOptions Options
-        {
-            get { return _options; }
-        }
+        public SchemaOptions Options { get; private set; }
 
         /// <summary>
         /// Constructs a new <see cref="SchemaNode"/> representing a <see cref="TagNode"/> named <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNode"/>.</param>
-        protected SchemaNode (string name)
+        protected SchemaNode(string name)
         {
-            _name = name;
+            Name = name;
         }
 
         /// <summary>
@@ -42,17 +33,17 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNode"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
-        protected SchemaNode (string name, SchemaOptions options)
+        protected SchemaNode(string name, SchemaOptions options)
         {
-            _name = name;
-            _options = options;
+            Name = name;
+            Options = options;
         }
 
         /// <summary>
         /// Construct a sensible default NBT tree representative of this schema node.
         /// </summary>
         /// <returns>A <see cref="TagNode"/> that is valid for this schema node.</returns>
-        public virtual TagNode BuildDefaultTree ()
+        public virtual TagNode BuildDefaultTree()
         {
             return null;
         }

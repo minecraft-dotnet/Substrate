@@ -74,15 +74,15 @@ using Substrate.Core;
         public static readonly SchemaNodeCompound MobSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("AttackTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("DeathTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Health", TagType.TAG_SHORT),
-            new SchemaNodeScaler("HurtTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("AttackTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("DeathTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Health", TagType.TAG_SHORT),
+            new SchemaNodeScalar("HurtTime", TagType.TAG_SHORT),
             new SchemaNodeCompound("ActiveEffects", SchemaOptions.OPTIONAL)
             {
-                new SchemaNodeScaler("Id", TagType.TAG_BYTE),
-                new SchemaNodeScaler("Amplifier", TagType.TAG_BYTE),
-                new SchemaNodeScaler("Duration", TagType.TAG_INT),
+                new SchemaNodeScalar("Id", TagType.TAG_BYTE),
+                new SchemaNodeScalar("Amplifier", TagType.TAG_BYTE),
+                new SchemaNodeScalar("Duration", TagType.TAG_INT),
             },
         });
 

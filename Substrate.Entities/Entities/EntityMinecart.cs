@@ -18,7 +18,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound MinecartSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Type", TagType.TAG_INT),
+            new SchemaNodeScalar("Type", TagType.TAG_INT),
         });
 
         public static string TypeId

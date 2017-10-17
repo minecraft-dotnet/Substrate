@@ -11,7 +11,7 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound RecordPlayerSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Record", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("Record", TagType.TAG_INT, SchemaOptions.OPTIONAL),
         });
 
         public static string TypeId

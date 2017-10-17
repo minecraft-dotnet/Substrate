@@ -33,10 +33,10 @@ namespace Substrate
                 new SchemaNodeList("Entities", TagType.TAG_COMPOUND, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeList("TileEntities", TagType.TAG_COMPOUND, TileEntity.Schema, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeList("TileTicks", TagType.TAG_COMPOUND, TileTick.Schema, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("LastUpdate", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
-                new SchemaNodeScaler("xPos", TagType.TAG_INT),
-                new SchemaNodeScaler("zPos", TagType.TAG_INT),
-                new SchemaNodeScaler("TerrainPopulated", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
+                new SchemaNodeScalar("LastUpdate", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
+                new SchemaNodeScalar("xPos", TagType.TAG_INT),
+                new SchemaNodeScalar("zPos", TagType.TAG_INT),
+                new SchemaNodeScalar("TerrainPopulated", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
             },
         };
 

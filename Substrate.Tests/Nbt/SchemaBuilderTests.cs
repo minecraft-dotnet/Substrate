@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Substrate.Source.Nbt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace Substrate.Nbt.Tests
 {
@@ -11,11 +12,18 @@ namespace Substrate.Nbt.Tests
         [TestMethod]
         public void FromClassTest()
         {
-            SchemaNodeCompound _schema = SchemaBuilder.FromClass(typeof(Villages));
+            SchemaNodeCompound _schemaManual = Item.Schema;
 
-            string formatted = SchemaBuilder.FormatTree(_schema);
+            SchemaNodeCompound _schemaBuilt = SchemaBuilder.FromClass(typeof(Item));
 
-            System.Diagnostics.Debug.Write(formatted);
+            string formattedManual = SchemaBuilder.FormatTree(_schemaManual);
+
+            string formattedBuilt = SchemaBuilder.FormatTree(_schemaBuilt);
+
+            Debug.WriteLine("Manual:");
+            Debug.WriteLine(formattedManual);
+            Debug.WriteLine("Built:");
+            Debug.WriteLine(formattedBuilt);
         }
     }
 }

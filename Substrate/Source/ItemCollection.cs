@@ -13,7 +13,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = Item.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("Slot", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Slot", TagType.TAG_BYTE),
         });
 
         private static readonly SchemaNodeList _listSchema = new SchemaNodeList("", TagType.TAG_COMPOUND, _schema);

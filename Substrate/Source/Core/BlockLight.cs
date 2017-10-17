@@ -13,7 +13,7 @@ namespace Substrate.Core
             public int z;
             public int str;
 
-            public LightRecord (int _x, int _y, int _z, int s)
+            public LightRecord(int _x, int _y, int _z, int s)
             {
                 x = _x;
                 y = _y;
@@ -32,11 +32,11 @@ namespace Substrate.Core
         private BitArray _lightbit;
         private Queue<BlockKey> _update;
 
-        public delegate IBoundedLitBlockCollection NeighborLookupHandler (int relx, int rely, int relz);
+        public delegate IBoundedLitBlockCollection NeighborLookupHandler(int relx, int rely, int relz);
 
         public event NeighborLookupHandler ResolveNeighbor;
 
-        public BlockLight (IBoundedLitBlockCollection blockset)
+        public BlockLight(IBoundedLitBlockCollection blockset)
         {
             _blockset = blockset;
 
@@ -48,7 +48,7 @@ namespace Substrate.Core
             _update = new Queue<BlockKey>();
         }
 
-        public BlockLight (BlockLight bl)
+        public BlockLight(BlockLight bl)
         {
             _blockset = bl._blockset;
 
@@ -60,7 +60,7 @@ namespace Substrate.Core
             _update = new Queue<BlockKey>();
         }
 
-        public void UpdateBlockLight (int lx, int ly, int lz)
+        public void UpdateBlockLight(int lx, int ly, int lz)
         {
             BlockKey primary = new BlockKey(lx, ly, lz);
             _update.Enqueue(primary);
@@ -68,10 +68,12 @@ namespace Substrate.Core
             //BlockInfo info = _blockset.GetInfo(lx, ly, lz);
 
             //if (info.Luminance > BlockInfo.MIN_LUMINANCE || info.TransmitsLight) {
-            if (ly > 0) {
+            if (ly > 0)
+            {
                 QueueRelight(new BlockKey(lx, ly - 1, lz));
             }
-            if (ly < _ydim - 1) {
+            if (ly < _ydim - 1)
+            {
                 QueueRelight(new BlockKey(lx, ly + 1, lz));
             }
 
@@ -84,7 +86,7 @@ namespace Substrate.Core
             UpdateBlockLight();
         }
 
-        public void UpdateBlockSkyLight (int lx, int ly, int lz)
+        public void UpdateBlockSkyLight(int lx, int ly, int lz)
         {
             BlockKey primary = new BlockKey(lx, ly, lz);
             _update.Enqueue(primary);
@@ -92,34 +94,39 @@ namespace Substrate.Core
             UpdateBlockSkyLight();
         }
 
-        public void UpdateHeightMap (int lx, int ly, int lz)
+        public void UpdateHeightMap(int lx, int ly, int lz)
         {
             BlockInfo info = _blockset.GetInfo(lx, ly, lz);
             int h = Math.Min(ly + 1, _ydim - 1);
 
             int height = _blockset.GetHeight(lx, lz);
-            if (h < height) {
+            if (h < height)
+            {
                 return;
             }
 
-            if (h == height && !info.ObscuresLight) {
-                for (int i = ly - 1; i >= 0; i--) {
+            if (h == height && !info.ObscuresLight)
+            {
+                for (int i = ly - 1; i >= 0; i--)
+                {
                     BlockInfo info2 = _blockset.GetInfo(lx, i, lz);
-                    if (info2.ObscuresLight) {
+                    if (info2.ObscuresLight)
+                    {
                         _blockset.SetHeight(lx, lz, Math.Min(i + 1, _ydim - 1));
                         break;
                     }
                 }
                 UpdateBlockSkyLight(lx, h, lz);
             }
-            else if (h > height && info.ObscuresLight) {
+            else if (h > height && info.ObscuresLight)
+            {
                 _blockset.SetHeight(lx, lz, h);
                 UpdateBlockSkyLight(lx, h, lz);
             }
         }
 
 
-        public void RebuildBlockLight ()
+        public void RebuildBlockLight()
         {
             IBoundedLitBlockCollection[,] chunkMap = LocalBlockLightMap();
 
@@ -128,11 +135,15 @@ namespace Substrate.Core
             int ydim = _ydim;
             int zdim = _zdim;
 
-            for (int x = 0; x < xdim; x++) {
-                for (int z = 0; z < zdim; z++) {
-                    for (int y = 0; y < ydim; y++) {
+            for (int x = 0; x < xdim; x++)
+            {
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
                         BlockInfo info = _blockset.GetInfo(x, y, z);
-                        if (info.Luminance > 0) {
+                        if (info.Luminance > 0)
+                        {
                             SpreadBlockLight(chunkMap, x, y, z);
                         }
                     }
@@ -140,7 +151,7 @@ namespace Substrate.Core
             }
         }
 
-        public void RebuildBlockSkyLight ()
+        public void RebuildBlockSkyLight()
         {
             IBoundedLitBlockCollection[,] chunkMap = LocalBlockLightMap();
             int[,] heightMap = LocalHeightMap(chunkMap);
@@ -150,8 +161,10 @@ namespace Substrate.Core
             int zdim = _zdim;
 
             // Optimization - only need to queue at level of highest neighbor's height
-            for (int x = 0; x < xdim; x++) {
-                for (int z = 0; z < zdim; z++) {
+            for (int x = 0; x < xdim; x++)
+            {
+                for (int z = 0; z < zdim; z++)
+                {
                     int xi = x + xdim;
                     int zi = z + zdim;
 
@@ -161,7 +174,8 @@ namespace Substrate.Core
                     h = Math.Max(h, heightMap[xi + 1, zi]);
                     h = Math.Max(h, heightMap[xi, zi + 1]);
 
-                    for (int y = h + 1; y < ydim; y++) {
+                    for (int y = h + 1; y < ydim; y++)
+                    {
                         _blockset.SetSkyLight(x, y, z, BlockInfo.MAX_LUMINANCE);
                     }
 
@@ -171,17 +185,21 @@ namespace Substrate.Core
             }
         }
 
-        public void RebuildHeightMap ()
+        public void RebuildHeightMap()
         {
             int xdim = _xdim;
             int ydim = _ydim;
             int zdim = _zdim;
 
-            for (int x = 0; x < xdim; x++) {
-                for (int z = 0; z < zdim; z++) {
-                    for (int y = ydim - 1; y >= 0; y--) {
+            for (int x = 0; x < xdim; x++)
+            {
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = ydim - 1; y >= 0; y--)
+                    {
                         BlockInfo info = _blockset.GetInfo(x, y, z);
-                        if (info.ObscuresLight) {
+                        if (info.ObscuresLight)
+                        {
                             _blockset.SetHeight(x, z, Math.Min(y + 1, ydim - 1));
                             break;
                         }
@@ -191,26 +209,30 @@ namespace Substrate.Core
         }
 
 
-        public void StitchBlockLight ()
+        public void StitchBlockLight()
         {
             IBoundedLitBlockCollection[,] map = LocalBlockLightMap();
 
-            if (map[1, 0] != null) {
+            if (map[1, 0] != null)
+            {
                 StitchBlockLight(map[1, 0], BlockCollectionEdge.EAST);
             }
-            if (map[0, 1] != null) {
+            if (map[0, 1] != null)
+            {
                 StitchBlockLight(map[0, 1], BlockCollectionEdge.NORTH);
             }
-            if (map[1, 2] != null) {
+            if (map[1, 2] != null)
+            {
                 StitchBlockLight(map[1, 2], BlockCollectionEdge.WEST);
             }
-            if (map[2, 1] != null) {
+            if (map[2, 1] != null)
+            {
                 StitchBlockLight(map[2, 1], BlockCollectionEdge.SOUTH);
             }
         }
 
         // TODO: Revise to cache the specified chunk into local map
-        public void StitchBlockLight (IBoundedLitBlockCollection chunk, BlockCollectionEdge edge)
+        public void StitchBlockLight(IBoundedLitBlockCollection chunk, BlockCollectionEdge edge)
         {
             int xdim = _xdim;
             int ydim = _ydim;
@@ -218,66 +240,80 @@ namespace Substrate.Core
 
             if (chunk.XDim != xdim ||
                 chunk.YDim != ydim ||
-                chunk.ZDim != zdim) {
-                    throw new InvalidOperationException("BlockLight must have same dimensions to be stitched");
+                chunk.ZDim != zdim)
+            {
+                throw new InvalidOperationException("BlockLight must have same dimensions to be stitched");
             }
 
-            switch (edge) {
-                case BlockCollectionEdge.EAST:
-                    for (int x = 0; x < xdim; x++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestBlockLight(chunk, x, y, 0, x, y, zdim - 1);
-                        }
+            switch (edge)
+            {
+            case BlockCollectionEdge.EAST:
+                for (int x = 0; x < xdim; x++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestBlockLight(chunk, x, y, 0, x, y, zdim - 1);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.NORTH:
-                    for (int z = 0; z < zdim; z++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestBlockLight(chunk, 0, y, z, xdim - 1, y, z);
-                        }
+            case BlockCollectionEdge.NORTH:
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestBlockLight(chunk, 0, y, z, xdim - 1, y, z);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.WEST:
-                    for (int x = 0; x < xdim; x++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestBlockLight(chunk, x, y, zdim - 1, x, y, 0);
-                        }
+            case BlockCollectionEdge.WEST:
+                for (int x = 0; x < xdim; x++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestBlockLight(chunk, x, y, zdim - 1, x, y, 0);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.SOUTH:
-                    for (int z = 0; z < zdim; z++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestBlockLight(chunk, xdim - 1, y, z, 0, y, z);
-                        }
+            case BlockCollectionEdge.SOUTH:
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestBlockLight(chunk, xdim - 1, y, z, 0, y, z);
                     }
-                    break;
+                }
+                break;
             }
 
             UpdateBlockLight();
         }
 
-        public void StitchBlockSkyLight ()
+        public void StitchBlockSkyLight()
         {
             IBoundedLitBlockCollection[,] map = LocalBlockLightMap();
 
-            if (map[1, 0] != null) {
+            if (map[1, 0] != null)
+            {
                 StitchBlockSkyLight(map[1, 0], BlockCollectionEdge.EAST);
             }
-            if (map[0, 1] != null) {
+            if (map[0, 1] != null)
+            {
                 StitchBlockSkyLight(map[0, 1], BlockCollectionEdge.NORTH);
             }
-            if (map[1, 2] != null) {
+            if (map[1, 2] != null)
+            {
                 StitchBlockSkyLight(map[1, 2], BlockCollectionEdge.WEST);
             }
-            if (map[2, 1] != null) {
+            if (map[2, 1] != null)
+            {
                 StitchBlockSkyLight(map[2, 1], BlockCollectionEdge.SOUTH);
             }
         }
 
-        public void StitchBlockSkyLight (IBoundedLitBlockCollection chunk, BlockCollectionEdge edge)
+        public void StitchBlockSkyLight(IBoundedLitBlockCollection chunk, BlockCollectionEdge edge)
         {
             int xdim = _xdim;
             int ydim = _ydim;
@@ -285,49 +321,59 @@ namespace Substrate.Core
 
             if (chunk.XDim != xdim ||
                 chunk.YDim != ydim ||
-                chunk.ZDim != zdim) {
+                chunk.ZDim != zdim)
+            {
                 throw new InvalidOperationException("BlockLight must have same dimensions to be stitched");
             }
 
-            switch (edge) {
-                case BlockCollectionEdge.EAST:
-                    for (int x = 0; x < xdim; x++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestSkyLight(chunk, x, y, 0, x, y, zdim - 1);
-                        }
+            switch (edge)
+            {
+            case BlockCollectionEdge.EAST:
+                for (int x = 0; x < xdim; x++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestSkyLight(chunk, x, y, 0, x, y, zdim - 1);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.NORTH:
-                    for (int z = 0; z < zdim; z++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestSkyLight(chunk, 0, y, z, xdim - 1, y, z);
-                        }
+            case BlockCollectionEdge.NORTH:
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestSkyLight(chunk, 0, y, z, xdim - 1, y, z);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.WEST:
-                    for (int x = 0; x < xdim; x++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestSkyLight(chunk, x, y, zdim - 1, x, y, 0);
-                        }
+            case BlockCollectionEdge.WEST:
+                for (int x = 0; x < xdim; x++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestSkyLight(chunk, x, y, zdim - 1, x, y, 0);
                     }
-                    break;
+                }
+                break;
 
-                case BlockCollectionEdge.SOUTH:
-                    for (int z = 0; z < zdim; z++) {
-                        for (int y = 0; y < ydim; y++) {
-                            TestSkyLight(chunk, xdim - 1, y, z, 0, y, z);
-                        }
+            case BlockCollectionEdge.SOUTH:
+                for (int z = 0; z < zdim; z++)
+                {
+                    for (int y = 0; y < ydim; y++)
+                    {
+                        TestSkyLight(chunk, xdim - 1, y, z, 0, y, z);
                     }
-                    break;
+                }
+                break;
             }
 
             UpdateBlockSkyLight();
         }
 
 
-        private void UpdateBlockLight ()
+        private void UpdateBlockLight()
         {
             IBoundedLitBlockCollection[,] chunkMap = LocalBlockLightMap();
 
@@ -335,7 +381,8 @@ namespace Substrate.Core
             int ydim = _ydim;
             int zdim = _zdim;
 
-            while (_update.Count > 0) {
+            while (_update.Count > 0)
+            {
                 BlockKey k = _update.Dequeue();
                 int index = LightBitmapIndex(k);
                 _lightbit[index] = false;
@@ -344,7 +391,8 @@ namespace Substrate.Core
                 int zi = k.z + zdim;
 
                 IBoundedLitBlockCollection cc = chunkMap[xi / xdim, zi / zdim];
-                if (cc == null) {
+                if (cc == null)
+                {
                     continue;
                 }
 
@@ -372,16 +420,20 @@ namespace Substrate.Core
 
                 light = Math.Max(light - info.Opacity, 0);
 
-                if (light != lightval) {
+                if (light != lightval)
+                {
                     //Console.WriteLine("Block Light: ({0},{1},{2}) " + lightval + " -> " + light, k.x, k.y, k.z);
 
                     cc.SetBlockLight(x, y, z, light);
 
-                    if (info.TransmitsLight) {
-                        if (k.y > 0) {
+                    if (info.TransmitsLight)
+                    {
+                        if (k.y > 0)
+                        {
                             QueueRelight(new BlockKey(k.x, k.y - 1, k.z));
                         }
-                        if (k.y < ydim - 1) {
+                        if (k.y < ydim - 1)
+                        {
                             QueueRelight(new BlockKey(k.x, k.y + 1, k.z));
                         }
 
@@ -394,7 +446,7 @@ namespace Substrate.Core
             }
         }
 
-        private void UpdateBlockSkyLight ()
+        private void UpdateBlockSkyLight()
         {
             IBoundedLitBlockCollection[,] chunkMap = LocalBlockLightMap();
 
@@ -402,7 +454,8 @@ namespace Substrate.Core
             int ydim = _ydim;
             int zdim = _zdim;
 
-            while (_update.Count > 0) {
+            while (_update.Count > 0)
+            {
                 BlockKey k = _update.Dequeue();
                 int index = LightBitmapIndex(k);
                 _lightbit[index] = false;
@@ -411,7 +464,8 @@ namespace Substrate.Core
                 int zi = k.z + zdim;
 
                 IBoundedLitBlockCollection cc = chunkMap[xi / xdim, zi / zdim];
-                if (cc == null) {
+                if (cc == null)
+                {
                     continue;
                 }
 
@@ -424,10 +478,12 @@ namespace Substrate.Core
 
                 int light = BlockInfo.MIN_LUMINANCE;
 
-                if (cc.GetHeight(x, z) <= y) {
+                if (cc.GetHeight(x, z) <= y)
+                {
                     light = BlockInfo.MAX_LUMINANCE;
                 }
-                else {
+                else
+                {
                     int lle = NeighborSkyLight(chunkMap, k.x, k.y, k.z - 1);
                     int lln = NeighborSkyLight(chunkMap, k.x - 1, k.y, k.z);
                     int lls = NeighborSkyLight(chunkMap, k.x, k.y, k.z + 1);
@@ -445,16 +501,20 @@ namespace Substrate.Core
 
                 light = Math.Max(light - info.Opacity, 0);
 
-                if (light != lightval) {
+                if (light != lightval)
+                {
                     //Console.WriteLine("Block SkyLight: ({0},{1},{2}) " + lightval + " -> " + light, k.x, k.y, k.z);
 
                     cc.SetSkyLight(x, y, z, light);
 
-                    if (info.TransmitsLight) {
-                        if (k.y > 0) {
+                    if (info.TransmitsLight)
+                    {
+                        if (k.y > 0)
+                        {
                             QueueRelight(new BlockKey(k.x, k.y - 1, k.z));
                         }
-                        if (k.y < ydim - 1) {
+                        if (k.y < ydim - 1)
+                        {
                             QueueRelight(new BlockKey(k.x, k.y + 1, k.z));
                         }
 
@@ -467,17 +527,19 @@ namespace Substrate.Core
             }
         }
 
-        private void SpreadBlockLight (IBoundedLitBlockCollection[,] chunkMap, int lx, int ly, int lz)
+        private void SpreadBlockLight(IBoundedLitBlockCollection[,] chunkMap, int lx, int ly, int lz)
         {
             BlockInfo primary = _blockset.GetInfo(lx, ly, lz);
             int primaryLight = _blockset.GetBlockLight(lx, ly, lz);
             int priLum = Math.Max(primary.Luminance - primary.Opacity, 0);
 
-            if (primaryLight < priLum) {
-               _blockset.SetBlockLight(lx, ly, lz, priLum);
+            if (primaryLight < priLum)
+            {
+                _blockset.SetBlockLight(lx, ly, lz, priLum);
             }
 
-            if (primaryLight > primary.Luminance - 1 && !primary.TransmitsLight) {
+            if (primaryLight > primary.Luminance - 1 && !primary.TransmitsLight)
+            {
                 return;
             }
 
@@ -486,10 +548,12 @@ namespace Substrate.Core
             int zdim = _zdim;
 
             Queue<LightRecord> spread = new Queue<LightRecord>();
-            if (ly > 0) {
+            if (ly > 0)
+            {
                 spread.Enqueue(new LightRecord(lx, ly - 1, lz, primary.Luminance - 1));
             }
-            if (ly < ydim - 1) {
+            if (ly < ydim - 1)
+            {
                 spread.Enqueue(new LightRecord(lx, ly + 1, lz, primary.Luminance - 1));
             }
 
@@ -498,14 +562,16 @@ namespace Substrate.Core
             spread.Enqueue(new LightRecord(lx, ly, lz - 1, primary.Luminance - 1));
             spread.Enqueue(new LightRecord(lx, ly, lz + 1, primary.Luminance - 1));
 
-            while (spread.Count > 0) {
+            while (spread.Count > 0)
+            {
                 LightRecord rec = spread.Dequeue();
 
                 int xi = rec.x + xdim;
                 int zi = rec.z + zdim;
 
                 IBoundedLitBlockCollection cc = chunkMap[xi / xdim, zi / zdim];
-                if (cc == null) {
+                if (cc == null)
+                {
                     continue;
                 }
 
@@ -518,16 +584,20 @@ namespace Substrate.Core
 
                 int dimStr = Math.Max(rec.str - info.Opacity, 0);
 
-                if (dimStr > light) {
+                if (dimStr > light)
+                {
                     cc.SetBlockLight(x, y, z, dimStr);
 
-                    if (info.TransmitsLight) {
+                    if (info.TransmitsLight)
+                    {
                         int strength = (info.Opacity > 0) ? dimStr : dimStr - 1;
 
-                        if (rec.y > 0) {
+                        if (rec.y > 0)
+                        {
                             spread.Enqueue(new LightRecord(rec.x, rec.y - 1, rec.z, strength));
                         }
-                        if (rec.y < ydim - 1) {
+                        if (rec.y < ydim - 1)
+                        {
                             spread.Enqueue(new LightRecord(rec.x, rec.y + 1, rec.z, strength));
                         }
 
@@ -540,17 +610,19 @@ namespace Substrate.Core
             }
         }
 
-        private void SpreadSkyLight (IBoundedLitBlockCollection[,] chunkMap, int[,] heightMap, int lx, int ly, int lz)
+        private void SpreadSkyLight(IBoundedLitBlockCollection[,] chunkMap, int[,] heightMap, int lx, int ly, int lz)
         {
             BlockInfo primary = _blockset.GetInfo(lx, ly, lz);
             int primaryLight = _blockset.GetSkyLight(lx, ly, lz);
             int priLum = Math.Max(BlockInfo.MAX_LUMINANCE - primary.Opacity, 0);
 
-            if (primaryLight < priLum) {
+            if (primaryLight < priLum)
+            {
                 _blockset.SetSkyLight(lx, ly, lz, priLum);
             }
 
-            if (primaryLight > BlockInfo.MAX_LUMINANCE - 1 || !primary.TransmitsLight) {
+            if (primaryLight > BlockInfo.MAX_LUMINANCE - 1 || !primary.TransmitsLight)
+            {
                 return;
             }
 
@@ -565,42 +637,53 @@ namespace Substrate.Core
 
             int strength = (primary.Opacity > 0) ? priLum : priLum - 1;
 
-            if (ly > 0) {
-                if (heightMap[lxi, lzi] > ly - 1) {
+            if (ly > 0)
+            {
+                if (heightMap[lxi, lzi] > ly - 1)
+                {
                     spread.Enqueue(new LightRecord(lx, ly - 1, lz, strength));
                 }
-                else {
+                else
+                {
                     spread.Enqueue(new LightRecord(lx, ly - 1, lz, priLum));
                 }
             }
 
-            if (ly < ydim - 1) {
-                if (heightMap[lxi, lzi] > ly + 1) {
+            if (ly < ydim - 1)
+            {
+                if (heightMap[lxi, lzi] > ly + 1)
+                {
                     spread.Enqueue(new LightRecord(lx, ly + 1, lz, strength));
                 }
             }
 
-            if (heightMap[lxi - 1, lzi] > ly) {
+            if (heightMap[lxi - 1, lzi] > ly)
+            {
                 spread.Enqueue(new LightRecord(lx - 1, ly, lz, strength));
             }
-            if (heightMap[lxi + 1, lzi] > ly) {
+            if (heightMap[lxi + 1, lzi] > ly)
+            {
                 spread.Enqueue(new LightRecord(lx + 1, ly, lz, strength));
             }
-            if (heightMap[lxi, lzi - 1] > ly) {
+            if (heightMap[lxi, lzi - 1] > ly)
+            {
                 spread.Enqueue(new LightRecord(lx, ly, lz - 1, strength));
             }
-            if (heightMap[lxi, lzi + 1] > ly) {
+            if (heightMap[lxi, lzi + 1] > ly)
+            {
                 spread.Enqueue(new LightRecord(lx, ly, lz + 1, strength));
             }
 
-            while (spread.Count > 0) {
+            while (spread.Count > 0)
+            {
                 LightRecord rec = spread.Dequeue();
 
                 int xi = rec.x + xdim;
                 int zi = rec.z + zdim;
 
                 IBoundedLitBlockCollection cc = chunkMap[xi / xdim, zi / zdim];
-                if (cc == null) {
+                if (cc == null)
+                {
                     continue;
                 }
 
@@ -613,37 +696,48 @@ namespace Substrate.Core
 
                 int dimStr = Math.Max(rec.str - info.Opacity, 0);
 
-                if (dimStr > light) {
+                if (dimStr > light)
+                {
                     cc.SetSkyLight(x, y, z, dimStr);
 
-                    if (info.TransmitsLight) {
+                    if (info.TransmitsLight)
+                    {
                         strength = (info.Opacity > 0) ? dimStr : dimStr - 1;
 
-                        if (rec.y > 0) {
-                            if (heightMap[xi, zi] > rec.y - 1) {
+                        if (rec.y > 0)
+                        {
+                            if (heightMap[xi, zi] > rec.y - 1)
+                            {
                                 spread.Enqueue(new LightRecord(rec.x, rec.y - 1, rec.z, strength));
                             }
-                            else {
+                            else
+                            {
                                 spread.Enqueue(new LightRecord(rec.x, rec.y - 1, rec.z, dimStr));
                             }
                         }
 
-                        if (rec.y < ydim - 1) {
-                            if (heightMap[xi, zi] > rec.y + 1) {
+                        if (rec.y < ydim - 1)
+                        {
+                            if (heightMap[xi, zi] > rec.y + 1)
+                            {
                                 spread.Enqueue(new LightRecord(rec.x, rec.y + 1, rec.z, strength));
                             }
                         }
 
-                        if (heightMap[xi - 1, zi] > rec.y) {
+                        if (heightMap[xi - 1, zi] > rec.y)
+                        {
                             spread.Enqueue(new LightRecord(rec.x - 1, rec.y, rec.z, strength));
                         }
-                        if (heightMap[xi + 1, zi] > rec.y) {
+                        if (heightMap[xi + 1, zi] > rec.y)
+                        {
                             spread.Enqueue(new LightRecord(rec.x + 1, rec.y, rec.z, strength));
                         }
-                        if (heightMap[xi, zi - 1] > rec.y) {
+                        if (heightMap[xi, zi - 1] > rec.y)
+                        {
                             spread.Enqueue(new LightRecord(rec.x, rec.y, rec.z - 1, strength));
                         }
-                        if (heightMap[xi, zi + 1] > rec.y) {
+                        if (heightMap[xi, zi + 1] > rec.y)
+                        {
                             spread.Enqueue(new LightRecord(rec.x, rec.y, rec.z + 1, strength));
                         }
                     }
@@ -652,7 +746,7 @@ namespace Substrate.Core
         }
 
 
-        private int LightBitmapIndex (BlockKey key)
+        private int LightBitmapIndex(BlockKey key)
         {
             int x = key.x + _xdim;
             int y = key.y;
@@ -664,59 +758,72 @@ namespace Substrate.Core
             return (x * xstride) + (z * zstride) + y;
         }
 
-        private void QueueRelight (BlockKey key)
+        private void QueueRelight(BlockKey key)
         {
-            if (key.x < -15 || key.x >= 31 || key.z < -15 || key.z >= 31) {
+            if (key.x < -15 || key.x >= 31 || key.z < -15 || key.z >= 31)
+            {
                 return;
             }
 
             int index = LightBitmapIndex(key);
 
-            if (!_lightbit[index]) {
+            if (!_lightbit[index])
+            {
                 _lightbit[index] = true;
                 _update.Enqueue(key);
             }
         }
 
 
-        private IBoundedLitBlockCollection LocalChunk (int lx, int ly, int lz)
+        private IBoundedLitBlockCollection LocalChunk(int lx, int ly, int lz)
         {
-            if (ly < 0 || ly >= _ydim) {
+            if (ly < 0 || ly >= _ydim)
+            {
                 return null;
             }
 
-            if (lx < 0) {
-                if (lz < 0) {
+            if (lx < 0)
+            {
+                if (lz < 0)
+                {
                     return OnResolveNeighbor(-1, 0, -1);
                 }
-                else if (lz >= _zdim) {
+                else if (lz >= _zdim)
+                {
                     return OnResolveNeighbor(-1, 0, 1);
                 }
                 return OnResolveNeighbor(-1, 0, 0);
             }
-            else if (lx >= _xdim) {
-                if (lz < 0) {
+            else if (lx >= _xdim)
+            {
+                if (lz < 0)
+                {
                     return OnResolveNeighbor(1, 0, -1);
                 }
-                else if (lz >= _zdim) {
+                else if (lz >= _zdim)
+                {
                     return OnResolveNeighbor(1, 0, 1);
                 }
                 return OnResolveNeighbor(1, 0, 0);
             }
-            else {
-                if (lz < 0) {
+            else
+            {
+                if (lz < 0)
+                {
                     return OnResolveNeighbor(0, 0, -1);
                 }
-                else if (lz >= _zdim) {
+                else if (lz >= _zdim)
+                {
                     return OnResolveNeighbor(0, 0, 1);
                 }
                 return _blockset;
             }
         }
 
-        private int NeighborLight (IBoundedLitBlockCollection[,] chunkMap, int x, int y, int z)
+        private int NeighborLight(IBoundedLitBlockCollection[,] chunkMap, int x, int y, int z)
         {
-            if (y < 0 || y >= _ydim) {
+            if (y < 0 || y >= _ydim)
+            {
                 return 0;
             }
 
@@ -727,7 +834,8 @@ namespace Substrate.Core
             int zi = z + zdim;
 
             IBoundedLitBlockCollection src = chunkMap[xi / xdim, zi / zdim];
-            if (src == null) {
+            if (src == null)
+            {
                 return 0;
             }
 
@@ -735,7 +843,8 @@ namespace Substrate.Core
             z = zi % zdim;
 
             BlockInfo info = src.GetInfo(x, y, z);
-            if (!info.TransmitsLight) {
+            if (!info.TransmitsLight)
+            {
                 return info.Luminance;
             }
 
@@ -744,9 +853,10 @@ namespace Substrate.Core
             return Math.Max((info.Opacity > 0) ? light : light - 1, info.Luminance - 1);
         }
 
-        private int NeighborSkyLight (IBoundedLitBlockCollection[,] chunkMap, int x, int y, int z)
+        private int NeighborSkyLight(IBoundedLitBlockCollection[,] chunkMap, int x, int y, int z)
         {
-            if (y < 0 || y >= _ydim) {
+            if (y < 0 || y >= _ydim)
+            {
                 return 0;
             }
 
@@ -757,7 +867,8 @@ namespace Substrate.Core
             int zi = z + zdim;
 
             IBoundedLitBlockCollection src = chunkMap[xi / xdim, zi / zdim];
-            if (src == null) {
+            if (src == null)
+            {
                 return 0;
             }
 
@@ -765,7 +876,8 @@ namespace Substrate.Core
             z = zi % zdim;
 
             BlockInfo info = src.GetInfo(x, y, z);
-            if (!info.TransmitsLight) {
+            if (!info.TransmitsLight)
+            {
                 return BlockInfo.MIN_LUMINANCE;
             }
 
@@ -774,10 +886,11 @@ namespace Substrate.Core
             return (info.Opacity > 0) ? light : light - 1;
         }
 
-        private int NeighborHeight (int x, int z)
+        private int NeighborHeight(int x, int z)
         {
             IBoundedLitBlockCollection src = LocalChunk(x, 0, z);
-            if (src == null) {
+            if (src == null)
+            {
                 return _ydim - 1;
             }
 
@@ -788,7 +901,7 @@ namespace Substrate.Core
         }
 
 
-        private void TestBlockLight (IBoundedLitBlockCollection chunk, int x1, int y1, int z1, int x2, int y2, int z2)
+        private void TestBlockLight(IBoundedLitBlockCollection chunk, int x1, int y1, int z1, int x2, int y2, int z2)
         {
             int light1 = _blockset.GetBlockLight(x1, y1, z1);
             int light2 = chunk.GetBlockLight(x2, y2, z2);
@@ -797,23 +910,25 @@ namespace Substrate.Core
 
             int v1 = Math.Max(light1, lum1);
             int v2 = Math.Max(light2, lum2);
-            if (Math.Abs(v1 - v2) > 1) {
+            if (Math.Abs(v1 - v2) > 1)
+            {
                 QueueRelight(new BlockKey(x1, y1, z1));
             }
         }
 
-        private void TestSkyLight (IBoundedLitBlockCollection chunk, int x1, int y1, int z1, int x2, int y2, int z2)
+        private void TestSkyLight(IBoundedLitBlockCollection chunk, int x1, int y1, int z1, int x2, int y2, int z2)
         {
             int light1 = _blockset.GetSkyLight(x1, y1, z1);
             int light2 = chunk.GetSkyLight(x2, y2, z2);
 
-            if (Math.Abs(light1 - light2) > 1) {
+            if (Math.Abs(light1 - light2) > 1)
+            {
                 QueueRelight(new BlockKey(x1, y1, z1));
             }
         }
 
 
-        private IBoundedLitBlockCollection[,] LocalBlockLightMap ()
+        private IBoundedLitBlockCollection[,] LocalBlockLightMap()
         {
             IBoundedLitBlockCollection[,] map = new IBoundedLitBlockCollection[3, 3];
 
@@ -830,24 +945,29 @@ namespace Substrate.Core
             return map;
         }
 
-        private int[,] LocalHeightMap (IBoundedLitBlockCollection[,] chunkMap)
+        private int[,] LocalHeightMap(IBoundedLitBlockCollection[,] chunkMap)
         {
             int xdim = _xdim;
             int zdim = _zdim;
 
             int[,] map = new int[3 * xdim, 3 * zdim];
 
-            for (int xi = 0; xi < 3; xi++) {
+            for (int xi = 0; xi < 3; xi++)
+            {
                 int xoff = xi * xdim;
-                for (int zi = 0; zi < 3; zi++) {
+                for (int zi = 0; zi < 3; zi++)
+                {
                     int zoff = zi * zdim;
-                    if (chunkMap[xi, zi] == null) {
+                    if (chunkMap[xi, zi] == null)
+                    {
                         continue;
                     }
 
-                    for (int x = 0; x < xdim; x++) {
+                    for (int x = 0; x < xdim; x++)
+                    {
                         int xx = xoff + x;
-                        for (int z = 0; z < zdim; z++) {
+                        for (int z = 0; z < zdim; z++)
+                        {
                             int zz = zoff + z;
                             map[xx, zz] = chunkMap[xi, zi].GetHeight(x, z);
                         }
@@ -859,19 +979,22 @@ namespace Substrate.Core
         }
 
 
-        private IBoundedLitBlockCollection OnResolveNeighbor (int relX, int relY, int relZ)
+        private IBoundedLitBlockCollection OnResolveNeighbor(int relX, int relY, int relZ)
         {
-            if (ResolveNeighbor != null) {
+            if (ResolveNeighbor != null)
+            {
                 IBoundedLitBlockCollection n = ResolveNeighbor(relX, relY, relZ);
 
-                if (n == null) {
+                if (n == null)
+                {
                     return null;
                 }
 
                 if (n.XDim != _xdim ||
                     n.YDim != _ydim ||
-                    n.ZDim != _zdim) {
-                        throw new InvalidOperationException("Subscriber returned incompatible ILitBlockCollection");
+                    n.ZDim != _zdim)
+                {
+                    throw new InvalidOperationException("Subscriber returned incompatible ILitBlockCollection");
                 }
 
                 return n;
@@ -880,6 +1003,6 @@ namespace Substrate.Core
             return null;
         }
 
-        
+
     }
 }

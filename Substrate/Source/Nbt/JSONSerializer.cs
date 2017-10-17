@@ -30,7 +30,7 @@ namespace Substrate.Nbt
                 SerializeIntArray(tag as TagNodeIntArray, str, level);
             }
             else {
-                SerializeScaler(tag, str);
+                SerializeScalar(tag, str);
             }
 
             return str.ToString();
@@ -70,7 +70,7 @@ namespace Substrate.Nbt
                     SerializeIntArray(item.Value as TagNodeIntArray, str, level + 1);
                 }
                 else {
-                    SerializeScaler(item.Value, str);
+                    SerializeScalar(item.Value, str);
                 }
 
                 first = false;

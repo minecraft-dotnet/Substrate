@@ -14,7 +14,7 @@ namespace Substrate
             new SchemaNodeArray("Data", 2048),
             new SchemaNodeArray("SkyLight", 2048),
             new SchemaNodeArray("BlockLight", 2048),
-            new SchemaNodeScaler("Y", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Y", TagType.TAG_BYTE),
             new SchemaNodeArray("Add", 2048, SchemaOptions.OPTIONAL),
         };
 

@@ -12,8 +12,6 @@ namespace Substrate.Nbt
     /// </remarks>
     public sealed class TagNodeList : TagNode, IList<TagNode>
     {
-        private TagType _type = TagType.TAG_END;
-
         private List<TagNode> _items = null;
 
         /// <summary>
@@ -47,7 +45,7 @@ namespace Substrate.Nbt
         /// </summary>
         public TagType ValueType
         {
-            get { return _type; }
+            get; private set;
         }
 
         /// <summary>
@@ -56,7 +54,7 @@ namespace Substrate.Nbt
         /// <param name="type">The tag type of the list's subnodes.</param>
         public TagNodeList (TagType type)
         {
-            _type = type;
+            ValueType = type;
             _items = new List<TagNode>();
         }
 
@@ -67,7 +65,7 @@ namespace Substrate.Nbt
         /// <param name="items">A list containing node objects matching the type parameter.</param>
         public TagNodeList (TagType type, List<TagNode> items)
         {
-            _type = type;
+            ValueType = type;
             _items = items;
         }
 
@@ -77,7 +75,7 @@ namespace Substrate.Nbt
         /// <returns>A new list node containing new subnodes representing the same data.</returns>
         public override TagNode Copy ()
         {
-            TagNodeList list = new TagNodeList(_type);
+            TagNodeList list = new TagNodeList(ValueType);
             foreach (TagNode item in _items) {
                 list.Add(item.Copy());
             }
@@ -158,11 +156,11 @@ namespace Substrate.Nbt
         /// <param name="type">The new tag type to store in the list.</param>
         public void ChangeValueType (TagType type)
         {
-            if (type == _type)
+            if (type == ValueType)
                 return;
 
             _items.Clear();
-            _type = type;
+            ValueType = type;
         }
 
         #region IList<NBT_Value> Members
@@ -185,7 +183,7 @@ namespace Substrate.Nbt
         /// <exception cref="ArgumentException">Thrown when a subnode being inserted has the wrong tag type.</exception>
         public void Insert (int index, TagNode item)
         {
-            if (item.GetTagType() != _type) {
+            if (item.GetTagType() != ValueType) {
                 throw new ArgumentException("The tag type of item is invalid for this node");
             }
             _items.Insert(index, item);
@@ -214,7 +212,7 @@ namespace Substrate.Nbt
             }
             set
             {
-                if (value.GetTagType() != _type) {
+                if (value.GetTagType() != ValueType) {
                     throw new ArgumentException("The tag type of the assigned subnode is invalid for this node");
                 }
                 _items[index] = value;
@@ -232,7 +230,7 @@ namespace Substrate.Nbt
         /// <exception cref="ArgumentException">Thrown when a subnode being added has the wrong tag type.</exception>
         public void Add (TagNode item)
         {
-            if (item.GetTagType() != _type) {
+            if (item.GetTagType() != ValueType) {
                 throw new ArgumentException("The tag type of item is invalid for this node");
             }
 

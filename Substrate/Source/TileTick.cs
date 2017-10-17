@@ -13,11 +13,11 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("i", TagType.TAG_INT),
-            new SchemaNodeScaler("t", TagType.TAG_INT),
-            new SchemaNodeScaler("x", TagType.TAG_INT),
-            new SchemaNodeScaler("y", TagType.TAG_INT),
-            new SchemaNodeScaler("z", TagType.TAG_INT),
+            new SchemaNodeScalar("i", TagType.TAG_INT),
+            new SchemaNodeScalar("t", TagType.TAG_INT),
+            new SchemaNodeScalar("x", TagType.TAG_INT),
+            new SchemaNodeScalar("y", TagType.TAG_INT),
+            new SchemaNodeScalar("z", TagType.TAG_INT),
         };
 
         private int _blockId;

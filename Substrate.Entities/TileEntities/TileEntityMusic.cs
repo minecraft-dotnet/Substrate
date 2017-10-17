@@ -11,7 +11,7 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound MusicSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("note", TagType.TAG_BYTE),
+            new SchemaNodeScalar("note", TagType.TAG_BYTE),
         });
 
         public static string TypeId

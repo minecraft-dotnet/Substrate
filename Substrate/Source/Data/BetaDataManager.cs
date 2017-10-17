@@ -10,7 +10,7 @@ namespace Substrate.Data
     {
         private static SchemaNodeCompound _schema = new SchemaNodeCompound()
         {
-            new SchemaNodeScaler("map", TagType.TAG_SHORT),
+            new SchemaNodeScalar("map", TagType.TAG_SHORT),
         };
 
         private TagNodeCompound _source;

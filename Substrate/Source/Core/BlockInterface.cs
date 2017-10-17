@@ -80,7 +80,7 @@ namespace Substrate.Core
         /// Gets a tile entity attached to this block.
         /// </summary>
         /// <returns>A <see cref="TileEntity"/> for this block, or null if this block type does not support a tile entity.</returns>
-        TileEntity GetTileEntity ();
+        TileEntity GetTileEntity();
 
         /// <summary>
         /// Sets the tile entity attached to this block.
@@ -88,7 +88,7 @@ namespace Substrate.Core
         /// <param name="te">A <see cref="TileEntity"/> supported by this block type.</param>
         /// <exception cref="ArgumentException">Thrown when the <see cref="TileEntity"/> being passed is of the wrong type for the given block.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the given block is of a type that does not support a <see cref="TileEntity"/> record.</exception>
-        void SetTileEntity (TileEntity te);
+        void SetTileEntity(TileEntity te);
 
         /// <summary>
         /// Creates a default tile entity for this block consistent with its type.
@@ -96,12 +96,12 @@ namespace Substrate.Core
         /// <remarks>This method will overwrite any existing <see cref="TileEntity"/> attached to the block.</remarks>
         /// <exception cref="InvalidOperationException">Thrown when the given block is of a type that does not support a <see cref="TileEntity"/> record.</exception>
         /// <exception cref="UnknownTileEntityException">Thrown when the block type requests a <see cref="TileEntity"/> that has not been registered with the <see cref="TileEntityFactory"/>.</exception>
-        void CreateTileEntity ();
+        void CreateTileEntity();
 
         /// <summary>
         /// Deletes the tile entity attached to this block if one exists.
         /// </summary>
-        void ClearTileEntity ();
+        void ClearTileEntity();
     }
 
     /// <summary>
@@ -113,24 +113,24 @@ namespace Substrate.Core
         /// Gets a <see cref="TileTick"/> entry attached to this block.
         /// </summary>
         /// <returns>A <see cref="TileTick"/> for this block, or null if one has not been created yet.</returns>
-        TileTick GetTileTick ();
+        TileTick GetTileTick();
 
         /// <summary>
         /// Sets the <see cref="TileTick"/> attached to this block.
         /// </summary>
         /// <param name="tt">A <see cref="TileTick"/> representing the delay until this block is next processed in-game.</param>
-        void SetTileTick (TileTick tt);
+        void SetTileTick(TileTick tt);
 
         /// <summary>
         /// Creates a default <see cref="TileTick"/> entry for this block.
         /// </summary>
         /// <remarks>This method will overwrite any existing <see cref="TileTick"/> attached to the block.</remarks>
-        void CreateTileTick ();
+        void CreateTileTick();
 
         /// <summary>
         /// Deletes the <see cref="TileTick"/> entry attached to this block, if one exists.
         /// </summary>
-        void ClearTileTick ();
+        void ClearTileTick();
 
         /// <summary>
         /// Gets or sets the the actual tick delay associated with this block.
@@ -175,7 +175,7 @@ namespace Substrate.Core
     /// Provides a common interface for block containers that provide global management.
     /// </summary>
     public interface IBlockManager : IAlphaBlockCollection
-    { 
+    {
     }
 
     /// <summary>

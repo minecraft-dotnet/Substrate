@@ -9,12 +9,12 @@ namespace Substrate.Core
     {
         private readonly byte[] _data = null;
 
-        public NibbleArray (int length)
+        public NibbleArray(int length)
         {
             _data = new byte[(int)Math.Ceiling(length / 2.0)];
         }
 
-        public NibbleArray (byte[] data)
+        public NibbleArray(byte[] data)
         {
             _data = data;
         }
@@ -63,7 +63,7 @@ namespace Substrate.Core
             get { return _data; }
         }
 
-        public void Clear ()
+        public void Clear()
         {
             for (int i = 0; i < _data.Length; i++)
             {
@@ -73,7 +73,7 @@ namespace Substrate.Core
 
         #region ICopyable<NibbleArray> Members
 
-        public virtual NibbleArray Copy ()
+        public virtual NibbleArray Copy()
         {
             byte[] data = new byte[_data.Length];
             _data.CopyTo(data, 0);
@@ -90,7 +90,7 @@ namespace Substrate.Core
         private readonly int _ydim;
         private readonly int _zdim;
 
-        public XZYNibbleArray (int xdim, int ydim, int zdim)
+        public XZYNibbleArray(int xdim, int ydim, int zdim)
             : base(xdim * ydim * zdim)
         {
             _xdim = xdim;
@@ -98,7 +98,7 @@ namespace Substrate.Core
             _zdim = zdim;
         }
 
-        public XZYNibbleArray (int xdim, int ydim, int zdim, byte[] data)
+        public XZYNibbleArray(int xdim, int ydim, int zdim, byte[] data)
             : base(data)
         {
             _xdim = xdim;
@@ -141,12 +141,12 @@ namespace Substrate.Core
             get { return _zdim; }
         }
 
-        public int GetIndex (int x, int y, int z)
+        public int GetIndex(int x, int y, int z)
         {
             return _ydim * (x * _zdim + z) + y;
         }
 
-        public void GetMultiIndex (int index, out int x, out int y, out int z)
+        public void GetMultiIndex(int index, out int x, out int y, out int z)
         {
             int yzdim = _ydim * _zdim;
             x = index / yzdim;
@@ -158,7 +158,7 @@ namespace Substrate.Core
 
         #region ICopyable<NibbleArray> Members
 
-        public override NibbleArray Copy ()
+        public override NibbleArray Copy()
         {
             byte[] data = new byte[Data.Length];
             Data.CopyTo(data, 0);
@@ -175,7 +175,7 @@ namespace Substrate.Core
         private readonly int _ydim;
         private readonly int _zdim;
 
-        public YZXNibbleArray (int xdim, int ydim, int zdim)
+        public YZXNibbleArray(int xdim, int ydim, int zdim)
             : base(xdim * ydim * zdim)
         {
             _xdim = xdim;
@@ -183,14 +183,15 @@ namespace Substrate.Core
             _zdim = zdim;
         }
 
-        public YZXNibbleArray (int xdim, int ydim, int zdim, byte[] data)
+        public YZXNibbleArray(int xdim, int ydim, int zdim, byte[] data)
             : base(data)
         {
             _xdim = xdim;
             _ydim = ydim;
             _zdim = zdim;
 
-            if (xdim * ydim * zdim != data.Length * 2) {
+            if (xdim * ydim * zdim != data.Length * 2)
+            {
                 throw new ArgumentException("Product of dimensions must equal half length of raw data");
             }
         }
@@ -225,12 +226,12 @@ namespace Substrate.Core
             get { return _zdim; }
         }
 
-        public int GetIndex (int x, int y, int z)
+        public int GetIndex(int x, int y, int z)
         {
             return _xdim * (y * _zdim + z) + x;
         }
 
-        public void GetMultiIndex (int index, out int x, out int y, out int z)
+        public void GetMultiIndex(int index, out int x, out int y, out int z)
         {
             int xzdim = _xdim * _zdim;
             y = index / xzdim;
@@ -242,7 +243,7 @@ namespace Substrate.Core
 
         #region ICopyable<NibbleArray> Members
 
-        public override NibbleArray Copy ()
+        public override NibbleArray Copy()
         {
             byte[] data = new byte[Data.Length];
             Data.CopyTo(data, 0);

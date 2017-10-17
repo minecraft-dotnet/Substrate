@@ -11,16 +11,16 @@ namespace Substrate
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
             new SchemaNodeList("ModeItemData", TagType.TAG_COMPOUND, new SchemaNodeCompound("") {
-                new SchemaNodeScaler("ItemId", TagType.TAG_INT),
-                new SchemaNodeScaler("ordinal", TagType.TAG_INT),
-                new SchemaNodeScaler("ItemType", TagType.TAG_STRING),
-                new SchemaNodeScaler("ModeId", TagType.TAG_STRING),
-                new SchemaNodeScaler("ForcedModId", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("ForcedName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("ItemId", TagType.TAG_INT),
+                new SchemaNodeScalar("ordinal", TagType.TAG_INT),
+                new SchemaNodeScalar("ItemType", TagType.TAG_STRING),
+                new SchemaNodeScalar("ModeId", TagType.TAG_STRING),
+                new SchemaNodeScalar("ForcedModId", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("ForcedName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
                 }),
             new SchemaNodeList("ModList", TagType.TAG_COMPOUND, new SchemaNodeCompound("") {
-                new SchemaNodeScaler("ModId", TagType.TAG_STRING),
-                new SchemaNodeScaler("ModVersion", TagType.TAG_STRING),
+                new SchemaNodeScalar("ModId", TagType.TAG_STRING),
+                new SchemaNodeScalar("ModVersion", TagType.TAG_STRING),
                 }),
         };
 

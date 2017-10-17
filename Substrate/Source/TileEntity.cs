@@ -14,10 +14,10 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("id", TagType.TAG_STRING),
-            new SchemaNodeScaler("x", TagType.TAG_INT),
-            new SchemaNodeScaler("y", TagType.TAG_INT),
-            new SchemaNodeScaler("z", TagType.TAG_INT),
+            new SchemaNodeScalar("id", TagType.TAG_STRING),
+            new SchemaNodeScalar("x", TagType.TAG_INT),
+            new SchemaNodeScalar("y", TagType.TAG_INT),
+            new SchemaNodeScalar("z", TagType.TAG_INT),
         };
 
         private TagNodeCompound _source;

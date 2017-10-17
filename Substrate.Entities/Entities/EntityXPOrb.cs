@@ -11,9 +11,9 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound XPOrbSchema = TypedEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Health", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Age", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Value", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Health", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Age", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Value", TagType.TAG_SHORT),
         });
 
         public static string TypeId

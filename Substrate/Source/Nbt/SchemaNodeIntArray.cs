@@ -9,32 +9,27 @@ namespace Substrate.Nbt
     /// </summary>
     public sealed class SchemaNodeIntArray : SchemaNode
     {
-        private int _length;
-
         /// <summary>
         /// Gets the expected length of the corresponding int array.
         /// </summary>
-        public int Length
-        {
-            get { return _length; }
-        }
+        public int Length { get; private set; }
 
         /// <summary>
         /// Indicates whether there is an expected length of the corresponding int array.
         /// </summary>
         public bool HasExpectedLength
         {
-            get { return _length > 0; }
+            get { return Length > 0; }
         }
 
         /// <summary>
         /// Constructs a new <see cref="SchemaNodeIntArray"/> representing a <see cref="TagNodeIntArray"/> named <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
-        public SchemaNodeIntArray (string name)
+        public SchemaNodeIntArray(string name)
             : base(name)
         {
-            _length = 0;
+            Length = 0;
         }
 
         /// <summary>
@@ -42,10 +37,10 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
-        public SchemaNodeIntArray (string name, SchemaOptions options)
+        public SchemaNodeIntArray(string name, SchemaOptions options)
             : base(name, options)
         {
-            _length = 0;
+            Length = 0;
         }
 
         /// <summary>
@@ -53,10 +48,10 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
-        public SchemaNodeIntArray (string name, int length)
+        public SchemaNodeIntArray(string name, int length)
             : base(name)
         {
-            _length = length;
+            Length = length;
         }
 
         /// <summary>
@@ -65,19 +60,19 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
-        public SchemaNodeIntArray (string name, int length, SchemaOptions options)
+        public SchemaNodeIntArray(string name, int length, SchemaOptions options)
             : base(name, options)
         {
-            _length = length;
+            Length = length;
         }
 
         /// <summary>
         /// Constructs a default <see cref="TagNodeIntArray"/> satisfying the constraints of this node.
         /// </summary>
         /// <returns>A <see cref="TagNodeString"/> with a sensible default value.</returns>
-        public override TagNode BuildDefaultTree ()
+        public override TagNode BuildDefaultTree()
         {
-            return new TagNodeIntArray(new int[_length]);
+            return new TagNodeIntArray(new int[Length]);
         }
     }
 }

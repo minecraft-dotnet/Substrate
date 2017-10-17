@@ -11,9 +11,9 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound BeaconSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Levels", TagType.TAG_INT),
-            new SchemaNodeScaler("Primary", TagType.TAG_INT),
-            new SchemaNodeScaler("Secondary", TagType.TAG_INT),
+            new SchemaNodeScalar("Levels", TagType.TAG_INT),
+            new SchemaNodeScalar("Primary", TagType.TAG_INT),
+            new SchemaNodeScalar("Secondary", TagType.TAG_INT),
         });
 
         public static string TypeId

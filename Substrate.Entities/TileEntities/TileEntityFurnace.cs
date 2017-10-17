@@ -10,8 +10,8 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound FurnaceSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("BurnTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("CookTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("BurnTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("CookTime", TagType.TAG_SHORT),
             new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.Schema),
         });
 

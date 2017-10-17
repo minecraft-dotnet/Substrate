@@ -11,8 +11,8 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound SheepSchema = AnimalSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Sheared", TagType.TAG_BYTE),
-            new SchemaNodeScaler("Color", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("Sheared", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Color", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
         });
 
         public static new string TypeId

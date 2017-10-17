@@ -1,22 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>minecraft-dotnet.Substrate</id>
-        <version>2.0.0-alpha</version>
-        <authors>Justin Aquadro, Simon Stevenson</authors>
-        <owners>Justin Aquadro</owners>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>SDK for loading and modifying Minecraft worlds</description>
-    </metadata>
-    <files>
-        <file src="bin\Release\Substrate.net20.dll" target="lib\net20\Substrate.net20.dll" />
-        <file src="bin\Release\Substrate.net20.pdb" target="lib\net20\Substrate.net20.pdb" />
-        <file src="bin\Release\Substrate.net20.XML" target="lib\net20\Substrate.net20.XML" />
-        <file src="bin\Release\Substrate.net35.dll" target="lib\net35\Substrate.net35.dll" />
-        <file src="bin\Release\Substrate.net35.pdb" target="lib\net35\Substrate.net35.pdb" />
-        <file src="bin\Release\Substrate.net35.XML" target="lib\net35\Substrate.net35.XML" />
-        <file src="bin\Release\Substrate.net40-client.dll" target="lib\net40-client\Substrate.net40-client.dll" />
-        <file src="bin\Release\Substrate.net40-client.pdb" target="lib\net40-client\Substrate.net40-client.pdb" />
-        <file src="bin\Release\Substrate.net40-client.XML" target="lib\net40-client\Substrate.net40-client.XML" />
-    </files>
+  <metadata>
+    <id>minecraft-dotnet.Substrate</id>
+    <version>2.0.0-alpha</version>
+    <authors>Justin Aquadro, Simon Stevenson</authors>
+    <owners>Justin Aquadro</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SDK for loading and modifying Minecraft worlds</description>
+    <projectUrl>https://github.com/minecraft-dotnet/Substrate</projectUrl>
+    <licenseUrl>https://github.com/minecraft-dotnet/Substrate/blob/master/LICENSE.txt</licenseUrl>
+    <tags>minecraft level client world</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\Substrate.net20.dll" target="lib\net20\Substrate.net20.dll" />
+    <file src="bin\Release\Substrate.net20.pdb" target="lib\net20\Substrate.net20.pdb" />
+    <file src="bin\Release\Substrate.net20.XML" target="lib\net20\Substrate.net20.XML" />
+    <file src="bin\Release\Substrate.net35.dll" target="lib\net35\Substrate.net35.dll" />
+    <file src="bin\Release\Substrate.net35.pdb" target="lib\net35\Substrate.net35.pdb" />
+    <file src="bin\Release\Substrate.net35.XML" target="lib\net35\Substrate.net35.XML" />
+    <file src="bin\Release\Substrate.net40-client.dll" target="lib\net40-client\Substrate.net40-client.dll" />
+    <file src="bin\Release\Substrate.net40-client.pdb" target="lib\net40-client\Substrate.net40-client.pdb" />
+    <file src="bin\Release\Substrate.net40-client.XML" target="lib\net40-client\Substrate.net40-client.XML" />
+  </files>
 </package>
