@@ -71,6 +71,8 @@
     <Compile Include="Source\Core\FusedDataArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
     <Compile Include="Source\Nbt\TagNodeShortArray.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeLongArray.cs" />
+    <Compile Include="Source\Nbt\TagNodeLongArray.cs" />
     <Compile Include="Source\RegionChunkManager.cs" />
     <Compile Include="Source\BetaRegion.cs" />
     <Compile Include="Source\BetaWorld.cs" />
