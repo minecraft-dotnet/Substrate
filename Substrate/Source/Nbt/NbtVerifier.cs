@@ -168,6 +168,12 @@ namespace Substrate.Nbt
                 return VerifyIntArray(tag, intarray);
             }
 
+            SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
+            if (longarray != null)
+            {
+                return VerifyLongArray(tag, longarray);
+            }
+
             SchemaNodeShortArray shortarray = schema as SchemaNodeShortArray;
             if (shortarray != null)
             {
@@ -273,6 +279,23 @@ namespace Substrate.Nbt
             return true;
         }
 
+        private bool VerifyLongArray(TagNode tag, SchemaNodeLongArray schema)
+        {
+            TagNodeLongArray atag = tag as TagNodeLongArray;
+            if (atag == null) {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+                    return false;
+                }
+            }
+            if (schema.Length > 0 && atag.Length != schema.Length) {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private bool VerifyShortArray(TagNode tag, SchemaNodeShortArray schema)
         {
             TagNodeShortArray atag = tag as TagNodeShortArray;
@@ -353,7 +376,7 @@ namespace Substrate.Nbt
             bool pass = true;
 
             Dictionary<string, TagNode> _scratch = new Dictionary<string, TagNode>();
-
+  
             foreach (SchemaNode node in schema)
             {
                 TagNode value;
@@ -401,10 +424,10 @@ namespace Substrate.Nbt
                     TagEventCode code = func(e);
                     switch (code)
                     {
-                    case TagEventCode.FAIL:
-                        return false;
-                    case TagEventCode.PASS:
-                        return true;
+                        case TagEventCode.FAIL:
+                            return false;
+                        case TagEventCode.PASS:
+                            return true;
                     }
                 }
             }
@@ -426,10 +449,10 @@ namespace Substrate.Nbt
                     TagEventCode code = func(e);
                     switch (code)
                     {
-                    case TagEventCode.FAIL:
-                        return false;
-                    case TagEventCode.PASS:
-                        return true;
+                        case TagEventCode.FAIL:
+                            return false;
+                        case TagEventCode.PASS:
+                            return true;
                     }
                 }
             }
@@ -451,10 +474,10 @@ namespace Substrate.Nbt
                     TagEventCode code = func(e);
                     switch (code)
                     {
-                    case TagEventCode.FAIL:
-                        return false;
-                    case TagEventCode.PASS:
-                        return true;
+                        case TagEventCode.FAIL:
+                            return false;
+                        case TagEventCode.PASS:
+                            return true;
                     }
                 }
             }

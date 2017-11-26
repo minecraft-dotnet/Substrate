@@ -383,7 +383,7 @@ namespace Substrate
             _sleepTimer = 0;
 
             Air = 300;
-            Health = 20;
+            Health = 20.0f;
             Fire = -20;
         }
 

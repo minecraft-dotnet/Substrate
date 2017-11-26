@@ -22,6 +22,12 @@ namespace Substrate.Nbt
             else if (tag.GetTagType() == TagType.TAG_LIST) {
                 SerializeList(tag as TagNodeList, str, level);
             }
+            else if (tag.GetTagType() == TagType.TAG_BYTE_ARRAY) {
+                SerializeByteArray(tag as TagNodeByteArray, str, level);
+            }
+            else if (tag.GetTagType() == TagType.TAG_INT_ARRAY) {
+                SerializeIntArray(tag as TagNodeIntArray, str, level);
+            }
             else {
                 SerializeScalar(tag, str);
             }
@@ -55,6 +61,12 @@ namespace Substrate.Nbt
                 }
                 else if (item.Value.GetTagType() == TagType.TAG_LIST) {
                     SerializeList(item.Value as TagNodeList, str, level + 1);
+                }
+                else if (item.Value.GetTagType() == TagType.TAG_BYTE_ARRAY) {
+                    SerializeByteArray(item.Value as TagNodeByteArray, str, level);
+                }
+                else if (item.Value.GetTagType() == TagType.TAG_INT_ARRAY) {
+                    SerializeIntArray(item.Value as TagNodeIntArray, str, level + 1);
                 }
                 else {
                     SerializeScalar(item.Value, str);
@@ -97,7 +109,15 @@ namespace Substrate.Nbt
                         str.AppendLine();
                     }
                     Indent(str, level + 1);
-                    SerializeScalar(item, str);
+                    if (item.GetTagType() == TagType.TAG_INT_ARRAY) {
+                        SerializeIntArray(item as TagNodeIntArray, str, level);
+                    }
+                    else if (item.GetTagType() == TagType.TAG_BYTE_ARRAY) {
+                        SerializeByteArray(item as TagNodeByteArray, str, level);
+                    }
+                    else {
+                        SerializeScalar(item, str);
+                }
                 }
 
                 
@@ -108,11 +128,55 @@ namespace Substrate.Nbt
             Add(str, "]", level);
         }
 
-        private static void SerializeScalar (TagNode tag, StringBuilder str)
+        private static void SerializeByteArray (TagNodeByteArray tag, StringBuilder str, int level)
+        {
+            if (tag.Length == 0) {
+                str.Append("[ ]");
+                return;
+            }
+
+            str.Append("[ ");
+
+            bool first = true;
+            for (int i = 0; i < tag.Length; i++) {
+                if (!first) {
+                    str.Append(", ");
+                }
+
+                str.Append(tag.Data[i]);
+                first = false;
+            }
+
+            str.Append(" ]");
+        }
+
+        private static void SerializeIntArray (TagNodeIntArray tag, StringBuilder str, int level)
+        {
+            if (tag.Length == 0) {
+                str.Append("[ ]");
+                return;
+            }
+
+            str.Append("[ ");
+
+            bool first = true;
+            for (int i = 0; i < tag.Length; i++) {
+                if (!first) {
+                    str.Append(", ");
+                }
+
+                str.Append(tag.Data[i]);
+                first = false;
+            }
+
+            str.Append(" ]");
+        }
+
+        private static void SerializeScalar(TagNode tag, StringBuilder str)
         {
             switch (tag.GetTagType()) {
                 case TagType.TAG_STRING:
-                    str.Append("\"" + tag.ToTagString().Data + "\"");
+                    str.Append("\"" + Escape(tag.ToTagString().Data) + "\"");
                     break;
 
                 case TagType.TAG_BYTE:
@@ -168,6 +232,21 @@ namespace Substrate.Nbt
             for (int i = 0; i < count; i++) {
                 str.Append("\t");
             }
+        }
+
+        private static string Escape (String str)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (char ch in str) {
+                if (ch < 0x20)
+                    builder.Append("\\u" + ((byte)ch).ToString("x4"));
+                else if (ch == '"')
+                    builder.Append("\\\"");
+                else
+                    builder.Append(ch);
+            }
+
+            return builder.ToString();
         }
     }
 }
