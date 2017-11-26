@@ -120,36 +120,36 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = Entity.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("AttackTime", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("DeathTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Health", TagType.TAG_FLOAT),
-            new SchemaNodeScaler("HurtTime", TagType.TAG_SHORT),
-            new SchemaNodeScaler("Dimension", TagType.TAG_INT),
+            new SchemaNodeScalar("AttackTime", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("DeathTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Health", TagType.TAG_FLOAT),
+            new SchemaNodeScalar("HurtTime", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Dimension", TagType.TAG_INT),
             new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.Schema),
             //new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, ItemCollection.Schema, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("World", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("Sleeping", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("SleepTimer", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("SpawnX", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("SpawnY", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("SpawnZ", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("foodLevel", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("foodTickTimer", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("foodExhaustionLevel", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("foodSaturationLevel", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("XpP", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("XpLevel", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("XpTotal", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("Score", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeScaler("playerGameType", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("World", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("Sleeping", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("SleepTimer", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("SpawnX", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("SpawnY", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("SpawnZ", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("foodLevel", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("foodTickTimer", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("foodExhaustionLevel", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("foodSaturationLevel", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("XpP", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("XpLevel", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("XpTotal", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("Score", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("playerGameType", TagType.TAG_INT, SchemaOptions.OPTIONAL),
             new SchemaNodeCompound("abilities", new SchemaNodeCompound("") {
-                new SchemaNodeScaler("flying", TagType.TAG_BYTE),
-                new SchemaNodeScaler("instabuild", TagType.TAG_BYTE),
-                new SchemaNodeScaler("mayfly", TagType.TAG_BYTE),
-                new SchemaNodeScaler("invulnerable", TagType.TAG_BYTE),
-                new SchemaNodeScaler("mayBuild", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("walkSpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("flySpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("flying", TagType.TAG_BYTE),
+                new SchemaNodeScalar("instabuild", TagType.TAG_BYTE),
+                new SchemaNodeScalar("mayfly", TagType.TAG_BYTE),
+                new SchemaNodeScalar("invulnerable", TagType.TAG_BYTE),
+                new SchemaNodeScalar("mayBuild", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("walkSpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("flySpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
             }, SchemaOptions.OPTIONAL),
         });
 
@@ -383,7 +383,7 @@ namespace Substrate
             _sleepTimer = 0;
 
             Air = 300;
-            Health = 20;
+            Health = 20.0f;
             Fire = -20;
         }
 

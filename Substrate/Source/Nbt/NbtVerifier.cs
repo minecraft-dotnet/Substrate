@@ -30,51 +30,34 @@ namespace Substrate.Nbt
     /// </summary>
     public class TagEventArgs : EventArgs
     {
-        private string _tagName;
-        private TagNode _parent;
-        private TagNode _tag;
-        private SchemaNode _schema;
-
         /// <summary>
         /// Gets the expected name of the <see cref="TagNode"/> referenced by this event.
         /// </summary>
-        public string TagName
-        {
-            get { return _tagName; }
-        }
+        public string TagName { get; private set; }
 
         /// <summary>
         /// Gets the parent  <see cref="TagNode"/> of the <see cref="TagNode"/> referenced by this event, if it exists.
         /// </summary>
-        public TagNode Parent
-        {
-            get { return _parent; }
-        }
+        public TagNode Parent { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="TagNode"/> referenced by this event.
         /// </summary>
-        public TagNode Tag
-        {
-            get { return _tag; }
-        }
+        public TagNode Tag { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="SchemaNode"/> corresponding to the <see cref="TagNode"/> referenced by this event.
         /// </summary>
-        public SchemaNode Schema
-        {
-            get { return _schema; }
-        }
+        public SchemaNode Schema { get; private set; }
 
         /// <summary>
         /// Constructs a new event argument set.
         /// </summary>
         /// <param name="tagName">The expected name of a <see cref="TagNode"/>.</param>
-        public TagEventArgs (string tagName)
+        public TagEventArgs(string tagName)
             : base()
         {
-            _tagName = tagName;
+            TagName = tagName;
         }
 
         /// <summary>
@@ -86,9 +69,9 @@ namespace Substrate.Nbt
         public TagEventArgs(string tagName, TagNode tag, TagNode parent = null)
             : base()
         {
-            _tag = tag;
-            _tagName = tagName;
-            _parent = parent;
+            Tag = tag;
+            TagName = tagName;
+            Parent = parent;
         }
 
         /// <summary>
@@ -96,11 +79,11 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="schema">The <see cref="SchemaNode"/> corresponding to the <see cref="TagNode"/> involved in this event.</param>
         /// <param name="tag">The <see cref="TagNode"/> involved in this event.</param>
-        public TagEventArgs (SchemaNode schema, TagNode tag)
+        public TagEventArgs(SchemaNode schema, TagNode tag)
             : base()
         {
-            _tag = tag;
-            _schema = schema;
+            Tag = tag;
+            Schema = schema;
         }
     }
 
@@ -109,7 +92,7 @@ namespace Substrate.Nbt
     /// </summary>
     /// <param name="eventArgs">Information relating to a verification event.</param>
     /// <returns>A <see cref="TagEventCode"/> determining how the event processor should respond.</returns>
-    public delegate TagEventCode VerifierEventHandler (TagEventArgs eventArgs);
+    public delegate TagEventCode VerifierEventHandler(TagEventArgs eventArgs);
 
     /// <summary>
     /// Verifies the integrity of an NBT tree against a schema definition.
@@ -139,7 +122,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="root">A <see cref="TagNode"/> representing the root of an NBT tree.</param>
         /// <param name="schema">A <see cref="SchemaNode"/> representing the root of a schema definition for the NBT tree.</param>
-        public NbtVerifier (TagNode root, SchemaNode schema)
+        public NbtVerifier(TagNode root, SchemaNode schema)
         {
             _root = root;
             _schema = schema;
@@ -149,59 +132,75 @@ namespace Substrate.Nbt
         /// Invokes the verifier.
         /// </summary>
         /// <returns>Status indicating whether the NBT tree is valid for the given schema.</returns>
-        public virtual bool Verify ()
+        public virtual bool Verify()
         {
             return Verify(null, _root, _schema);
         }
 
-        private bool Verify (TagNode parent, TagNode tag, SchemaNode schema)
+        private bool Verify(TagNode parent, TagNode tag, SchemaNode schema)
         {
-            if (tag == null) {
+            if (tag == null)
+            {
                 return OnMissingTag(new TagEventArgs(schema.Name));
             }
 
-            SchemaNodeScaler scaler = schema as SchemaNodeScaler;
-            if (scaler != null) {
-                return VerifyScaler(tag, scaler);
+            SchemaNodeScalar scalar = schema as SchemaNodeScalar;
+            if (scalar != null)
+            {
+                return VerifyScalar(tag, scalar);
             }
 
             SchemaNodeString str = schema as SchemaNodeString;
-            if (str != null) {
+            if (str != null)
+            {
                 return VerifyString(tag, str);
             }
 
             SchemaNodeArray array = schema as SchemaNodeArray;
-            if (array != null) {
+            if (array != null)
+            {
                 return VerifyArray(tag, array);
             }
 
             SchemaNodeIntArray intarray = schema as SchemaNodeIntArray;
-            if (intarray != null) {
+            if (intarray != null)
+            {
                 return VerifyIntArray(tag, intarray);
             }
 
+            SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
+            if (longarray != null)
+            {
+                return VerifyLongArray(tag, longarray);
+            }
+
             SchemaNodeShortArray shortarray = schema as SchemaNodeShortArray;
-            if (shortarray != null) {
+            if (shortarray != null)
+            {
                 return VerifyShortArray(tag, shortarray);
             }
 
             SchemaNodeList list = schema as SchemaNodeList;
-            if (list != null) {
+            if (list != null)
+            {
                 return VerifyList(tag, list);
             }
 
             SchemaNodeCompound compound = schema as SchemaNodeCompound;
-            if (compound != null) {
+            if (compound != null)
+            {
                 return VerifyCompound(tag, compound);
             }
 
             return OnInvalidTagType(new TagEventArgs(schema.Name, tag, parent));
         }
 
-        private bool VerifyScaler (TagNode tag, SchemaNodeScaler schema)
+        private bool VerifyScalar(TagNode tag, SchemaNodeScalar schema)
         {
-            if (!tag.IsCastableTo(schema.Type)) {
-                if (!OnInvalidTagType(new TagEventArgs(schema.Name, tag))) {
+            if (!tag.IsCastableTo(schema.Type))
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema.Name, tag)))
+                {
                     return false;
                 }
             }
@@ -209,21 +208,27 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyString (TagNode tag, SchemaNodeString schema)
+        private bool VerifyString(TagNode tag, SchemaNodeString schema)
         {
             TagNodeString stag = tag as TagNodeString;
-            if (stag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (stag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Length > 0 && stag.Length > schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Length > 0 && stag.Length > schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Value != null && stag.Data != schema.Value) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Value != null && stag.Data != schema.Value)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
@@ -232,16 +237,20 @@ namespace Substrate.Nbt
         }
 
 
-        private bool VerifyArray (TagNode tag, SchemaNodeArray schema)
+        private bool VerifyArray(TagNode tag, SchemaNodeArray schema)
         {
             TagNodeByteArray atag = tag as TagNodeByteArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (atag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Length > 0 && atag.Length != schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
@@ -249,9 +258,30 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyIntArray (TagNode tag, SchemaNodeIntArray schema)
+        private bool VerifyIntArray(TagNode tag, SchemaNodeIntArray schema)
         {
             TagNodeIntArray atag = tag as TagNodeIntArray;
+            if (atag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
+                    return false;
+                }
+            }
+            if (schema.Length > 0 && atag.Length != schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool VerifyLongArray(TagNode tag, SchemaNodeLongArray schema)
+        {
+            TagNodeLongArray atag = tag as TagNodeLongArray;
             if (atag == null) {
                 if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
                     return false;
@@ -266,16 +296,20 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyShortArray (TagNode tag, SchemaNodeShortArray schema)
+        private bool VerifyShortArray(TagNode tag, SchemaNodeShortArray schema)
         {
             TagNodeShortArray atag = tag as TagNodeShortArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (atag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Length > 0 && atag.Length != schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
@@ -283,21 +317,27 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyList (TagNode tag, SchemaNodeList schema)
+        private bool VerifyList(TagNode tag, SchemaNodeList schema)
         {
             TagNodeList ltag = tag as TagNodeList;
-            if (ltag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (ltag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (ltag.Count > 0 && ltag.ValueType != schema.Type) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (ltag.Count > 0 && ltag.ValueType != schema.Type)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Length > 0 && ltag.Count != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Length > 0 && ltag.Count != schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
@@ -311,8 +351,10 @@ namespace Substrate.Nbt
 
             // If a subschema is set, test all items in list against it
 
-            if (schema.SubSchema != null) {
-                foreach (TagNode v in ltag) {
+            if (schema.SubSchema != null)
+            {
+                foreach (TagNode v in ltag)
+                {
                     pass = Verify(tag, v, schema.SubSchema) && pass;
                 }
             }
@@ -320,29 +362,35 @@ namespace Substrate.Nbt
             return pass;
         }
 
-        private bool VerifyCompound (TagNode tag, SchemaNodeCompound schema)
+        private bool VerifyCompound(TagNode tag, SchemaNodeCompound schema)
         {
             TagNodeCompound ctag = tag as TagNodeCompound;
-            if (ctag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (ctag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
 
             bool pass = true;
 
-            Dictionary<string, TagNode> _scratch = new Dictionary<string,TagNode>();
+            Dictionary<string, TagNode> _scratch = new Dictionary<string, TagNode>();
   
-            foreach (SchemaNode node in schema) {
+            foreach (SchemaNode node in schema)
+            {
                 TagNode value;
                 ctag.TryGetValue(node.Name, out value);
 
-                if (value == null) {
-                    if ((node.Options & SchemaOptions.CREATE_ON_MISSING) == SchemaOptions.CREATE_ON_MISSING) {
+                if (value == null)
+                {
+                    if ((node.Options & SchemaOptions.CREATE_ON_MISSING) == SchemaOptions.CREATE_ON_MISSING)
+                    {
                         _scratch[node.Name] = node.BuildDefaultTree();
                         continue;
                     }
-                    else if ((node.Options & SchemaOptions.OPTIONAL) == SchemaOptions.OPTIONAL) {
+                    else if ((node.Options & SchemaOptions.OPTIONAL) == SchemaOptions.OPTIONAL)
+                    {
                         continue;
                     }
                 }
@@ -350,7 +398,8 @@ namespace Substrate.Nbt
                 pass = Verify(tag, value, node) && pass;
             }
 
-            foreach (KeyValuePair<string, TagNode> item in _scratch) {
+            foreach (KeyValuePair<string, TagNode> item in _scratch)
+            {
                 ctag[item.Key] = item.Value;
             }
 
@@ -366,12 +415,15 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Arguments for this event.</param>
         /// <returns>Status indicating whether this event can be ignored.</returns>
-        protected virtual bool OnMissingTag (TagEventArgs e)
+        protected virtual bool OnMissingTag(TagEventArgs e)
         {
-            if (MissingTag != null) {
-                foreach (VerifierEventHandler func in MissingTag.GetInvocationList()) {
+            if (MissingTag != null)
+            {
+                foreach (VerifierEventHandler func in MissingTag.GetInvocationList())
+                {
                     TagEventCode code = func(e);
-                    switch (code) {
+                    switch (code)
+                    {
                         case TagEventCode.FAIL:
                             return false;
                         case TagEventCode.PASS:
@@ -388,12 +440,15 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Arguments for this event.</param>
         /// <returns>Status indicating whether this event can be ignored.</returns>
-        protected virtual bool OnInvalidTagType (TagEventArgs e)
+        protected virtual bool OnInvalidTagType(TagEventArgs e)
         {
-            if (InvalidTagType != null) {
-                foreach (VerifierEventHandler func in InvalidTagType.GetInvocationList()) {
+            if (InvalidTagType != null)
+            {
+                foreach (VerifierEventHandler func in InvalidTagType.GetInvocationList())
+                {
                     TagEventCode code = func(e);
-                    switch (code) {
+                    switch (code)
+                    {
                         case TagEventCode.FAIL:
                             return false;
                         case TagEventCode.PASS:
@@ -410,12 +465,15 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Arguments for this event.</param>
         /// <returns>Status indicating whether this event can be ignored.</returns>
-        protected virtual bool OnInvalidTagValue (TagEventArgs e)
+        protected virtual bool OnInvalidTagValue(TagEventArgs e)
         {
-            if (InvalidTagValue != null) {
-                foreach (VerifierEventHandler func in InvalidTagValue.GetInvocationList()) {
+            if (InvalidTagValue != null)
+            {
+                foreach (VerifierEventHandler func in InvalidTagValue.GetInvocationList())
+                {
                     TagEventCode code = func(e);
-                    switch (code) {
+                    switch (code)
+                    {
                         case TagEventCode.FAIL:
                             return false;
                         case TagEventCode.PASS:

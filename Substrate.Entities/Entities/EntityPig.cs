@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound PigSchema = AnimalSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Saddle", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Saddle", TagType.TAG_BYTE),
         });
 
         public static new string TypeId

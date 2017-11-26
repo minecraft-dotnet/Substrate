@@ -12,19 +12,16 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("id", TagType.TAG_SHORT),
-            new SchemaNodeScaler("lvl", TagType.TAG_SHORT),
+            new SchemaNodeScalar("id", TagType.TAG_SHORT),
+            new SchemaNodeScalar("lvl", TagType.TAG_SHORT),
         };
 
         private TagNodeCompound _source;
-
-        private short _id;
-        private short _level;
-
+        
         /// <summary>
         /// Constructs a blank <see cref="Enchantment"/>.
         /// </summary>
-        public Enchantment ()
+        public Enchantment()
         {
         }
 
@@ -33,10 +30,10 @@ namespace Substrate
         /// </summary>
         /// <param name="id">The id (type) of the enchantment.</param>
         /// <param name="level">The level of the enchantment.</param>
-        public Enchantment (int id, int level)
+        public Enchantment(int id, int level)
         {
-            _id = (short)id;
-            _level = (short)level;
+            Id = id;
+            Level = level;
         }
 
         #region Properties
@@ -46,26 +43,20 @@ namespace Substrate
         /// </summary>
         public EnchantmentInfo Info
         {
-            get { return EnchantmentInfo.EnchantmentTable[_id]; }
+            get { return EnchantmentInfo.EnchantmentTable[Id]; }
         }
 
         /// <summary>
         /// Gets or sets the current type (id) of the enchantment.
         /// </summary>
-        public int Id
-        {
-            get { return _id; }
-            set { _id = (short)value; }
-        }
+        [TagNode("id")]
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the level of the enchantment.
         /// </summary>
-        public int Level
-        {
-            get { return _level; }
-            set { _level = (short)value; }
-        }
+        [TagNode("lvl")]
+        public int Level { get; set; }
 
         /// <summary>
         /// Gets a <see cref="SchemaNode"/> representing the schema of an enchantment.
@@ -80,15 +71,16 @@ namespace Substrate
         #region INbtObject<Enchantment> Members
 
         /// <inheritdoc />
-        public Enchantment LoadTree (TagNode tree)
+        public Enchantment LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
-            _id = ctree["id"].ToTagShort();
-            _level = ctree["lvl"].ToTagShort();
+            Id = ctree["id"].ToTagShort();
+            Level = ctree["lvl"].ToTagShort();
 
             _source = ctree.Copy() as TagNodeCompound;
 
@@ -96,9 +88,10 @@ namespace Substrate
         }
 
         /// <inheritdoc />
-        public Enchantment LoadTreeSafe (TagNode tree)
+        public Enchantment LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -106,13 +99,14 @@ namespace Substrate
         }
 
         /// <inheritdoc />
-        public TagNode BuildTree ()
+        public TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
-            tree["id"] = new TagNodeShort(_id);
-            tree["lvl"] = new TagNodeShort(_level);
+            tree["id"] = new TagNodeShort((short)Id);
+            tree["lvl"] = new TagNodeShort((short)Level);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 tree.MergeFrom(_source);
             }
 
@@ -120,7 +114,7 @@ namespace Substrate
         }
 
         /// <inheritdoc />
-        public bool ValidateTree (TagNode tree)
+        public bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -130,11 +124,12 @@ namespace Substrate
         #region ICopyable<Enchantment> Members
 
         /// <inheritdoc />
-        public Enchantment Copy ()
+        public Enchantment Copy()
         {
-            Enchantment ench = new Enchantment(_id, _level);
+            Enchantment ench = new Enchantment(Id, Level);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 ench._source = _source.Copy() as TagNodeCompound;
             }
 

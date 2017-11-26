@@ -9,8 +9,8 @@ namespace Substrate.Entities
     {
         public static readonly SchemaNodeCompound AnimalSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("Age", TagType.TAG_INT, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("InLove", TagType.TAG_INT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("Age", TagType.TAG_INT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("InLove", TagType.TAG_INT, SchemaOptions.CREATE_ON_MISSING),
         });
 
         private int _age;

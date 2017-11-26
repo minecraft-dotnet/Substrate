@@ -16,12 +16,12 @@ namespace Substrate.Data
         {
             new SchemaNodeCompound("data")
             {
-                new SchemaNodeScaler("scale", TagType.TAG_BYTE),
-                new SchemaNodeScaler("dimension", TagType.TAG_BYTE),
-                new SchemaNodeScaler("height", TagType.TAG_SHORT),
-                new SchemaNodeScaler("width", TagType.TAG_SHORT),
-                new SchemaNodeScaler("xCenter", TagType.TAG_INT),
-                new SchemaNodeScaler("zCenter", TagType.TAG_INT),
+                new SchemaNodeScalar("scale", TagType.TAG_BYTE),
+                new SchemaNodeScalar("dimension", TagType.TAG_BYTE),
+                new SchemaNodeScalar("height", TagType.TAG_SHORT),
+                new SchemaNodeScalar("width", TagType.TAG_SHORT),
+                new SchemaNodeScalar("xCenter", TagType.TAG_INT),
+                new SchemaNodeScalar("zCenter", TagType.TAG_INT),
                 new SchemaNodeArray("colors"),
             },
         };

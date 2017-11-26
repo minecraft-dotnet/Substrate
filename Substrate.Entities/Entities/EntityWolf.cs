@@ -11,9 +11,9 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound WolfSchema = AnimalSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Owner", TagType.TAG_STRING),
-            new SchemaNodeScaler("Sitting", TagType.TAG_BYTE),
-            new SchemaNodeScaler("Angry", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Owner", TagType.TAG_STRING),
+            new SchemaNodeScalar("Sitting", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Angry", TagType.TAG_BYTE),
         });
 
         public static new string TypeId

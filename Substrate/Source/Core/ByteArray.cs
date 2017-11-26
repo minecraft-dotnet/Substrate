@@ -10,7 +10,7 @@ namespace Substrate.Core
         int Length { get; }
         int DataWidth { get; }
 
-        void Clear ();
+        void Clear();
     }
 
     public interface IDataArray2 : IDataArray
@@ -29,20 +29,20 @@ namespace Substrate.Core
         int YDim { get; }
         int ZDim { get; }
 
-        int GetIndex (int x, int y, int z);
-        void GetMultiIndex (int index, out int x, out int y, out int z);
+        int GetIndex(int x, int y, int z);
+        void GetMultiIndex(int index, out int x, out int y, out int z);
     }
 
     public class ByteArray : IDataArray, ICopyable<ByteArray>
     {
         protected readonly byte[] dataArray;
 
-        public ByteArray (int length)
+        public ByteArray(int length)
         {
             dataArray = new byte[length];
         }
 
-        public ByteArray (byte[] data)
+        public ByteArray(byte[] data)
         {
             dataArray = data;
         }
@@ -63,7 +63,7 @@ namespace Substrate.Core
             get { return 8; }
         }
 
-        public void Clear ()
+        public void Clear()
         {
             for (int i = 0; i < dataArray.Length; i++)
             {
@@ -73,7 +73,7 @@ namespace Substrate.Core
 
         #region ICopyable<ByteArray> Members
 
-        public virtual ByteArray Copy ()
+        public virtual ByteArray Copy()
         {
             byte[] data = new byte[dataArray.Length];
             dataArray.CopyTo(data, 0);
@@ -90,7 +90,7 @@ namespace Substrate.Core
         private readonly int _ydim;
         private readonly int _zdim;
 
-        public XZYByteArray (int xdim, int ydim, int zdim)
+        public XZYByteArray(int xdim, int ydim, int zdim)
             : base(xdim * ydim * zdim)
         {
             _xdim = xdim;
@@ -98,7 +98,7 @@ namespace Substrate.Core
             _zdim = zdim;
         }
 
-        public XZYByteArray (int xdim, int ydim, int zdim, byte[] data)
+        public XZYByteArray(int xdim, int ydim, int zdim, byte[] data)
             : base(data)
         {
             _xdim = xdim;
@@ -141,12 +141,12 @@ namespace Substrate.Core
             get { return _zdim; }
         }
 
-        public int GetIndex (int x, int y, int z)
+        public int GetIndex(int x, int y, int z)
         {
             return _ydim * (x * _zdim + z) + y;
         }
 
-        public void GetMultiIndex (int index, out int x, out int y, out int z)
+        public void GetMultiIndex(int index, out int x, out int y, out int z)
         {
             int yzdim = _ydim * _zdim;
             x = index / yzdim;
@@ -158,7 +158,7 @@ namespace Substrate.Core
 
         #region ICopyable<XZYByteArray> Members
 
-        public override ByteArray Copy ()
+        public override ByteArray Copy()
         {
             byte[] data = new byte[dataArray.Length];
             dataArray.CopyTo(data, 0);
@@ -175,7 +175,7 @@ namespace Substrate.Core
         private readonly int _ydim;
         private readonly int _zdim;
 
-        public YZXByteArray (int xdim, int ydim, int zdim)
+        public YZXByteArray(int xdim, int ydim, int zdim)
             : base(xdim * ydim * zdim)
         {
             _xdim = xdim;
@@ -183,14 +183,15 @@ namespace Substrate.Core
             _zdim = zdim;
         }
 
-        public YZXByteArray (int xdim, int ydim, int zdim, byte[] data)
+        public YZXByteArray(int xdim, int ydim, int zdim, byte[] data)
             : base(data)
         {
             _xdim = xdim;
             _ydim = ydim;
             _zdim = zdim;
 
-            if (xdim * ydim * zdim != data.Length) {
+            if (xdim * ydim * zdim != data.Length)
+            {
                 throw new ArgumentException("Product of dimensions must equal length of data");
             }
         }
@@ -225,12 +226,12 @@ namespace Substrate.Core
             get { return _zdim; }
         }
 
-        public int GetIndex (int x, int y, int z)
+        public int GetIndex(int x, int y, int z)
         {
             return _xdim * (y * _zdim + z) + x;
         }
 
-        public void GetMultiIndex (int index, out int x, out int y, out int z)
+        public void GetMultiIndex(int index, out int x, out int y, out int z)
         {
             int xzdim = _xdim * _zdim;
             y = index / xzdim;
@@ -242,7 +243,7 @@ namespace Substrate.Core
 
         #region ICopyable<YZXByteArray> Members
 
-        public override ByteArray Copy ()
+        public override ByteArray Copy()
         {
             byte[] data = new byte[dataArray.Length];
             dataArray.CopyTo(data, 0);
@@ -258,14 +259,14 @@ namespace Substrate.Core
         private readonly int _xdim;
         private readonly int _zdim;
 
-        public ZXByteArray (int xdim, int zdim)
+        public ZXByteArray(int xdim, int zdim)
             : base(xdim * zdim)
         {
             _xdim = xdim;
             _zdim = zdim;
         }
 
-        public ZXByteArray (int xdim, int zdim, byte[] data)
+        public ZXByteArray(int xdim, int zdim, byte[] data)
             : base(data)
         {
             _xdim = xdim;
@@ -304,7 +305,7 @@ namespace Substrate.Core
 
         #region ICopyable<ZXByteArray> Members
 
-        public override ByteArray Copy ()
+        public override ByteArray Copy()
         {
             byte[] data = new byte[dataArray.Length];
             dataArray.CopyTo(data, 0);
@@ -319,12 +320,12 @@ namespace Substrate.Core
     {
         protected readonly int[] dataArray;
 
-        public IntArray (int length)
+        public IntArray(int length)
         {
             dataArray = new int[length];
         }
 
-        public IntArray (int[] data)
+        public IntArray(int[] data)
         {
             dataArray = data;
         }
@@ -345,16 +346,17 @@ namespace Substrate.Core
             get { return 32; }
         }
 
-        public void Clear ()
+        public void Clear()
         {
-            for (int i = 0; i < dataArray.Length; i++) {
+            for (int i = 0; i < dataArray.Length; i++)
+            {
                 dataArray[i] = 0;
             }
         }
 
         #region ICopyable<ByteArray> Members
 
-        public virtual IntArray Copy ()
+        public virtual IntArray Copy()
         {
             int[] data = new int[dataArray.Length];
             dataArray.CopyTo(data, 0);
@@ -370,20 +372,21 @@ namespace Substrate.Core
         private readonly int _xdim;
         private readonly int _zdim;
 
-        public ZXIntArray (int xdim, int zdim)
+        public ZXIntArray(int xdim, int zdim)
             : base(xdim * zdim)
         {
             _xdim = xdim;
             _zdim = zdim;
         }
 
-        public ZXIntArray (int xdim, int zdim, int[] data)
+        public ZXIntArray(int xdim, int zdim, int[] data)
             : base(data)
         {
             _xdim = xdim;
             _zdim = zdim;
 
-            if (xdim * zdim != data.Length) {
+            if (xdim * zdim != data.Length)
+            {
                 throw new ArgumentException("Product of dimensions must equal length of data");
             }
         }
@@ -415,7 +418,7 @@ namespace Substrate.Core
 
         #region ICopyable<ZXByteArray> Members
 
-        public override IntArray Copy ()
+        public override IntArray Copy()
         {
             int[] data = new int[dataArray.Length];
             dataArray.CopyTo(data, 0);

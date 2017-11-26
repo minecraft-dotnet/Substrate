@@ -19,31 +19,31 @@ namespace Substrate.Core
             get { return _list.Last.Value; }
         }
 
-        public IndexedLinkedList ()
+        public IndexedLinkedList()
         {
             _list = new LinkedList<T>();
             _index = new Dictionary<T, LinkedListNode<T>>();
         }
 
-        public void AddFirst (T value)
+        public void AddFirst(T value)
         {
             LinkedListNode<T> node = _list.AddFirst(value);
             _index.Add(value, node);
         }
 
-        public void AddLast (T value)
+        public void AddLast(T value)
         {
             LinkedListNode<T> node = _list.AddLast(value);
             _index.Add(value, node);
         }
 
-        public void RemoveFirst ()
+        public void RemoveFirst()
         {
             _index.Remove(_list.First.Value);
             _list.RemoveFirst();
         }
 
-        public void RemoveLast ()
+        public void RemoveLast()
         {
             _index.Remove(_list.First.Value);
             _list.RemoveLast();
@@ -51,23 +51,23 @@ namespace Substrate.Core
 
         #region ICollection<T> Members
 
-        public void Add (T item)
+        public void Add(T item)
         {
             AddLast(item);
         }
 
-        public void Clear ()
+        public void Clear()
         {
             _index.Clear();
             _list.Clear();
         }
 
-        public bool Contains (T item)
+        public bool Contains(T item)
         {
             return _index.ContainsKey(item);
         }
 
-        public void CopyTo (T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             _list.CopyTo(array, arrayIndex);
         }
@@ -77,7 +77,7 @@ namespace Substrate.Core
             get { return false; }
         }
 
-        public bool Remove (T value)
+        public bool Remove(T value)
         {
             LinkedListNode<T> node;
             if (_index.TryGetValue(value, out node))
@@ -94,7 +94,7 @@ namespace Substrate.Core
 
         #region ICollection Members
 
-        void ICollection.CopyTo (Array array, int index)
+        void ICollection.CopyTo(Array array, int index)
         {
             (_list as ICollection).CopyTo(array, index);
         }
@@ -118,7 +118,7 @@ namespace Substrate.Core
 
         #region IEnumerable<T> Members
 
-        public IEnumerator<T> GetEnumerator ()
+        public IEnumerator<T> GetEnumerator()
         {
             return _list.GetEnumerator();
         }
@@ -127,7 +127,7 @@ namespace Substrate.Core
 
         #region IEnumerable Members
 
-        IEnumerator IEnumerable.GetEnumerator ()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return _list.GetEnumerator();
         }

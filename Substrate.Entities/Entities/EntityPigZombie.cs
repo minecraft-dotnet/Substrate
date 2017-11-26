@@ -11,7 +11,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound PigZombieSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Anger", TagType.TAG_SHORT),
+            new SchemaNodeScalar("Anger", TagType.TAG_SHORT),
         });
 
         public static new string TypeId

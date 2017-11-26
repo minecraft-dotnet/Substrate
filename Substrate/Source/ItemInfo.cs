@@ -219,28 +219,29 @@ namespace Substrate
 
             public T this[int index]
             {
-                get 
+                get
                 {
                     T val;
-                    if (_cache.TryGetValue(index, out val)) {
+                    if (_cache.TryGetValue(index, out val))
+                    {
                         return val;
                     }
                     return default(T);
                 }
             }
 
-            public CacheTableDict (Dictionary<int, T> cache)
+            public CacheTableDict(Dictionary<int, T> cache)
             {
                 _cache = cache;
             }
 
-            public IEnumerator<T> GetEnumerator ()
+            public IEnumerator<T> GetEnumerator()
             {
                 foreach (T val in _cache.Values)
                     yield return val;
             }
 
-            IEnumerator IEnumerable.GetEnumerator ()
+            IEnumerator IEnumerable.GetEnumerator()
             {
                 return GetEnumerator();
             }
@@ -301,7 +302,7 @@ namespace Substrate
         /// Constructs a new <see cref="ItemInfo"/> record for the given item id.
         /// </summary>
         /// <param name="id">The id of an item type.</param>
-        public ItemInfo (int id)
+        public ItemInfo(int id)
         {
             _id = id;
             _itemTable[_id] = this;
@@ -313,7 +314,7 @@ namespace Substrate
         /// <param name="id">The id of an item type.</param>
         /// <param name="nameId">The name id of an item type</param>
         /// <param name="name">The name of an item type.</param>
-        public ItemInfo (int id, string nameId, string name)
+        public ItemInfo(int id, string nameId, string name)
         {
             _id = id;
             _nameId = nameId;
@@ -325,7 +326,7 @@ namespace Substrate
         /// Chooses a registered item type at random and returns it.
         /// </summary>
         /// <returns></returns>
-        public static ItemInfo GetRandomItem ()
+        public static ItemInfo GetRandomItem()
         {
             List<ItemInfo> list = new List<ItemInfo>(_itemTable.Values);
             return list[_rand.Next(list.Count)];
@@ -521,7 +522,7 @@ namespace Substrate
         public static ItemInfo MusicDiscWait;
 
 
-        static ItemInfo ()
+        static ItemInfo()
         {
             _itemTable = new Dictionary<int, ItemInfo>();
             _itemTableCache = new CacheTableDict<ItemInfo>(_itemTable);

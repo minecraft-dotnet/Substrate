@@ -119,6 +119,15 @@ namespace Substrate.Nbt
         }
 
         /// <summary>
+        /// Conver this node to a long array tag type if supported.
+        /// </summary>
+        /// <returns>A new long array node.</returns>
+        public virtual TagNodeLongArray ToTagLongArray ()
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
         /// Conver this node to a short array tag type if supported.
         /// </summary>
         /// <returns>A new short array node.</returns>

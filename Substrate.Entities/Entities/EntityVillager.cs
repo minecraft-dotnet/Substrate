@@ -20,7 +20,7 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound VillagerSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("Profession", TagType.TAG_INT),
+            new SchemaNodeScalar("Profession", TagType.TAG_INT),
         });
 
         public static new string TypeId

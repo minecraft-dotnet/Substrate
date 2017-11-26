@@ -182,8 +182,10 @@
     <Compile Include="Source\Nbt\SchemaNodeCompound.cs" />
     <Compile Include="Source\Nbt\SchemaNodeIntArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeList.cs" />
-    <Compile Include="Source\Nbt\SchemaNodeScaler.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeScalar.cs" />
     <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
+    <Compile Include="Source\Nbt\SchemaNodeLongArray.cs" />
+    <Compile Include="Source\Nbt\TagNodeLongArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeString.cs" />
     <Compile Include="Source\Nbt\SchemaOptions.cs" />
     <Compile Include="Source\Nbt\TagNode.cs" />

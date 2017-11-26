@@ -9,7 +9,7 @@ namespace Substrate
 {
     public class Villages
     {
-        private readonly SchemaNodeCompound _schema = SchemaBuilder.FromClass(typeof(Villages));
+        public static SchemaNodeCompound Schema { get; } = SchemaBuilder.FromClass(typeof(Villages));
 
         [TagNode("data")]
         public VillageCompound Data { get; set; }

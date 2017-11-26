@@ -15,8 +15,8 @@ namespace Substrate.Entities
         public static readonly SchemaNodeCompound EndermanSchema = MobSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScaler("carried", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
-            new SchemaNodeScaler("carriedData", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("carried", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
+            new SchemaNodeScalar("carriedData", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
         });
 
         public static new string TypeId
