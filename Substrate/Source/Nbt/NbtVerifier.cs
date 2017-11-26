@@ -178,6 +178,11 @@ namespace Substrate.Nbt
                 return VerifyIntArray(tag, intarray);
             }
 
+            SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
+            if (longarray != null) {
+                return VerifyLongArray(tag, longarray);
+            }
+
             SchemaNodeShortArray shortarray = schema as SchemaNodeShortArray;
             if (shortarray != null) {
                 return VerifyShortArray(tag, shortarray);
@@ -250,6 +255,23 @@ namespace Substrate.Nbt
         private bool VerifyIntArray (TagNode tag, SchemaNodeIntArray schema)
         {
             TagNodeIntArray atag = tag as TagNodeIntArray;
+            if (atag == null) {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+                    return false;
+                }
+            }
+            if (schema.Length > 0 && atag.Length != schema.Length) {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool VerifyLongArray (TagNode tag, SchemaNodeLongArray schema)
+        {
+            TagNodeLongArray atag = tag as TagNodeLongArray;
             if (atag == null) {
                 if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
                     return false;
