@@ -10,12 +10,12 @@ namespace Substrate
     {
         public static SchemaNodeCompound SectionSchema = new SchemaNodeCompound()
         {
-            new SchemaNodeArray("Blocks", 4096),
-            new SchemaNodeArray("Data", 2048),
-            new SchemaNodeArray("SkyLight", 2048),
-            new SchemaNodeArray("BlockLight", 2048),
+            new SchemaNodeByteArray("Blocks", 4096),
+            new SchemaNodeByteArray("Data", 2048),
+            new SchemaNodeByteArray("SkyLight", 2048),
+            new SchemaNodeByteArray("BlockLight", 2048),
             new SchemaNodeScalar("Y", TagType.TAG_BYTE),
-            new SchemaNodeArray("Add", 2048, SchemaOptions.OPTIONAL),
+            new SchemaNodeByteArray("Add", 2048, SchemaOptions.OPTIONAL),
         };
 
         private const int XDIM = 16;

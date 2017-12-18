@@ -31,7 +31,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeString"/>.</param>
         public SchemaNodeString(string name)
-            : base(name)
+            : base(name, TagType.TAG_STRING)
         {
         }
 
@@ -41,7 +41,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeString"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeString(string name, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_STRING, options)
         {
         }
 
@@ -51,7 +51,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeString"/>.</param>
         /// <param name="value">The value that the corresponding <see cref="TagNodeString"/> must be set to.</param>
         public SchemaNodeString(string name, string value)
-            : base(name)
+            : base(name, TagType.TAG_STRING)
         {
             Value = value;
         }
@@ -63,7 +63,7 @@ namespace Substrate.Nbt
         /// <param name="value">The value that the corresponding <see cref="TagNodeString"/> must be set to.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeString(string name, string value, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_STRING, options)
         {
             Value = value;
         }
@@ -74,7 +74,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeString"/>.</param>
         /// <param name="length">The maximum length of strings in the corresponding <see cref="TagNodeString"/>.</param>
         public SchemaNodeString(string name, int length)
-            : base(name)
+            : base(name, TagType.TAG_STRING)
         {
             Length = length;
         }
@@ -86,7 +86,7 @@ namespace Substrate.Nbt
         /// <param name="length">The maximum length of strings in the corresponding <see cref="TagNodeString"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeString(string name, int length, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_STRING, options)
         {
             Length = length;
         }

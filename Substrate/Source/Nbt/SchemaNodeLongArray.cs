@@ -32,7 +32,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         public SchemaNodeLongArray (string name)
-            : base(name)
+            : base(name, TagType.TAG_LONG_ARRAY)
         {
             _length = 0;
         }
@@ -43,7 +43,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeLongArray"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeLongArray (string name, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LONG_ARRAY, options)
         {
             _length = 0;
         }
@@ -54,7 +54,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
         public SchemaNodeLongArray (string name, int length)
-            : base(name)
+            : base(name, TagType.TAG_LONG_ARRAY)
         {
             _length = length;
         }
@@ -66,7 +66,7 @@ namespace Substrate.Nbt
         /// <param name="length">The expected length of corresponding byte array.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeLongArray (string name, int length, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LONG_ARRAY, options)
         {
             _length = length;
         }
