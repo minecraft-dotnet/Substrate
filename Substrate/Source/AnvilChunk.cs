@@ -14,14 +14,14 @@ namespace Substrate
             new SchemaNodeCompound("Level")
             {
                 new SchemaNodeList("Sections", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-                    new SchemaNodeArray("Blocks", 4096),
-                    new SchemaNodeArray("Data", 2048),
-                    new SchemaNodeArray("SkyLight", 2048),
-                    new SchemaNodeArray("BlockLight", 2048),
+                    new SchemaNodeByteArray("Blocks", 4096),
+                    new SchemaNodeByteArray("Data", 2048),
+                    new SchemaNodeByteArray("SkyLight", 2048),
+                    new SchemaNodeByteArray("BlockLight", 2048),
                     new SchemaNodeScalar("Y", TagType.TAG_BYTE),
-                    new SchemaNodeArray("Add", 2048, SchemaOptions.OPTIONAL),
+                    new SchemaNodeByteArray("Add", 2048, SchemaOptions.OPTIONAL),
                 }),
-                new SchemaNodeArray("Biomes", 256, SchemaOptions.OPTIONAL),
+                new SchemaNodeByteArray("Biomes", 256, SchemaOptions.OPTIONAL),
                 new SchemaNodeIntArray("HeightMap", 256),
                 new SchemaNodeList("Entities", TagType.TAG_COMPOUND, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeList("TileEntities", TagType.TAG_COMPOUND, TileEntity.Schema, SchemaOptions.CREATE_ON_MISSING),

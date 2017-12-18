@@ -22,7 +22,7 @@ namespace Substrate.Data
                 new SchemaNodeScalar("width", TagType.TAG_SHORT),
                 new SchemaNodeScalar("xCenter", TagType.TAG_INT),
                 new SchemaNodeScalar("zCenter", TagType.TAG_INT),
-                new SchemaNodeArray("colors"),
+                new SchemaNodeByteArray("colors"),
             },
         };
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Substrate.Nbt
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class TagNodeAttribute : Attribute
     {
         public string Name { get; set; }

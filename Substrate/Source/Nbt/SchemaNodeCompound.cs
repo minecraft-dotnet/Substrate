@@ -107,7 +107,7 @@ namespace Substrate.Nbt
         /// Constructs a new <see cref="SchemaNodeCompound"/> representing a root <see cref="TagNodeCompound"/>.
         /// </summary>
         public SchemaNodeCompound ()
-            : base("")
+            : base("", TagType.TAG_COMPOUND)
         {
             _subnodes = new List<SchemaNode>();
         }
@@ -117,7 +117,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeCompound (SchemaOptions options)
-            : base("", options)
+            : base("", TagType.TAG_COMPOUND, options)
         {
             _subnodes = new List<SchemaNode>();
         }
@@ -127,7 +127,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeCompound"/>.</param>
         public SchemaNodeCompound (string name)
-            : base(name)
+            : base(name, TagType.TAG_COMPOUND)
         {
             _subnodes = new List<SchemaNode>();
         }
@@ -138,7 +138,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeCompound"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeCompound (string name, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_COMPOUND, options)
         {
             _subnodes = new List<SchemaNode>();
         }
@@ -149,7 +149,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeCompound"/>.</param>
         /// <param name="subschema">A <see cref="SchemaNodeCompound"/> representing a schema to verify against the corresponding <see cref="TagNodeCompound"/>.</param>
         public SchemaNodeCompound (string name, SchemaNode subschema)
-            : base(name)
+            : base(name, TagType.TAG_COMPOUND)
         {
             _subnodes = new List<SchemaNode>();
 
@@ -170,7 +170,7 @@ namespace Substrate.Nbt
         /// <param name="subschema">A <see cref="SchemaNodeCompound"/> representing a schema to verify against the corresponding <see cref="TagNodeCompound"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeCompound (string name, SchemaNode subschema, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_COMPOUND, options)
         {
             _subnodes = new List<SchemaNode>();
 

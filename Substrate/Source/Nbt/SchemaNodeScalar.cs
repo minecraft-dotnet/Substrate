@@ -1,26 +1,22 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Substrate.Nbt
 {
     /// <summary>
     /// A concrete <see cref="SchemaNode"/> representing a scalar-type <see cref="TagNode"/>.
     /// </summary>
+    [DebuggerDisplay("Name = {Name}, Options = {Options}, Scalar Type={Type}")]
     public sealed class SchemaNodeScalar : SchemaNode
     {
-        /// <summary>
-        /// Gets the scalar <see cref="TagType"/> that this node represents.
-        /// </summary>
-        public TagType Type { get; private set; }
-
         /// <summary>
         /// Constructs a new <see cref="SchemaNodeScalar"/> representing a <see cref="TagNode"/> named <paramref name="name"/> and of type <paramref name="type"/>.
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNode"/>.</param>
         /// <param name="type">The type of the corresponding <see cref="TagNode"/>, restricted to scalar types.</param>
         public SchemaNodeScalar(string name, TagType type)
-            : base(name)
+            : base(name, type)
         {
-            Type = type;
         }
 
         /// <summary>
@@ -30,9 +26,8 @@ namespace Substrate.Nbt
         /// <param name="type">The type of the corresponding <see cref="TagNode"/>, restricted to scalar types.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeScalar(string name, TagType type, SchemaOptions options)
-            : base(name, options)
+            : base(name, type, options)
         {
-            Type = type;
         }
 
         /// <summary>

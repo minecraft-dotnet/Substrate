@@ -15,7 +15,7 @@ namespace Substrate.Nbt
         /// <summary>
         /// Gets the expected <see cref="TagType"/> of the items contained in the corresponding <see cref="TagNodeList"/>.
         /// </summary>
-        public TagType Type { get; private set; }
+        public TagType ItemType { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="SchemaNode"/> representing a schema that items contained in the corresponding <see cref="TagNodeList"/> should be verified against.
@@ -36,9 +36,9 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="type">The type of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         public SchemaNodeList(string name, TagType type)
-            : base(name)
+            : base(name, TagType.TAG_LIST)
         {
-            Type = type;
+            ItemType = type;
         }
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace Substrate.Nbt
         /// <param name="type">The type of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeList(string name, TagType type, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LIST, options)
         {
-            Type = type;
+            ItemType = type;
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace Substrate.Nbt
         /// <param name="type">The type of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="length">The number of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         public SchemaNodeList(string name, TagType type, int length)
-            : base(name)
+            : base(name, TagType.TAG_LIST)
         {
-            Type = type;
+            ItemType = type;
             Length = length;
         }
 
@@ -74,9 +74,9 @@ namespace Substrate.Nbt
         /// <param name="length">The number of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeList(string name, TagType type, int length, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LIST, options)
         {
-            Type = type;
+            ItemType = type;
             Length = length;
         }
 
@@ -87,9 +87,9 @@ namespace Substrate.Nbt
         /// <param name="type">The type of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="subschema">A <see cref="SchemaNode"/> representing a schema to verify against items contained in the corresponding <see cref="TagNodeList"/>.</param>
         public SchemaNodeList(string name, TagType type, SchemaNode subschema)
-            : base(name)
+            : base(name, TagType.TAG_LIST)
         {
-            Type = type;
+            ItemType = type;
             SubSchema = subschema;
         }
 
@@ -101,9 +101,9 @@ namespace Substrate.Nbt
         /// <param name="subschema">A <see cref="SchemaNode"/> representing a schema to verify against items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeList(string name, TagType type, SchemaNode subschema, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LIST, options)
         {
-            Type = type;
+            ItemType = type;
             SubSchema = subschema;
         }
 
@@ -115,9 +115,9 @@ namespace Substrate.Nbt
         /// <param name="length">The number of items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="subschema">A <see cref="SchemaNode"/> representing a schema to verify against items contained in the corresponding <see cref="TagNodeList"/>.</param>
         public SchemaNodeList(string name, TagType type, int length, SchemaNode subschema)
-            : base(name)
+            : base(name, TagType.TAG_LIST)
         {
-            Type = type;
+            ItemType = type;
             Length = length;
             SubSchema = subschema;
         }
@@ -131,9 +131,9 @@ namespace Substrate.Nbt
         /// <param name="subschema">A <see cref="SchemaNode"/> representing a schema to verify against items contained in the corresponding <see cref="TagNodeList"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeList(string name, TagType type, int length, SchemaNode subschema, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_LIST, options)
         {
-            Type = type;
+            ItemType = type;
             Length = length;
             SubSchema = subschema;
         }
@@ -146,10 +146,10 @@ namespace Substrate.Nbt
         {
             if (Length == 0)
             {
-                return new TagNodeList(Type);
+                return new TagNodeList(ItemType);
             }
 
-            TagNodeList list = new TagNodeList(Type);
+            TagNodeList list = new TagNodeList(ItemType);
             for (int i = 0; i < Length; i++)
             {
                 list.Add(SubSchema.BuildDefaultTree());

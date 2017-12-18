@@ -17,7 +17,7 @@ namespace Substrate
         };
 
         private TagNodeCompound _source;
-        
+
         /// <summary>
         /// Constructs a blank <see cref="Enchantment"/>.
         /// </summary>
@@ -49,13 +49,13 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the current type (id) of the enchantment.
         /// </summary>
-        [TagNode("id")]
+        [TagNode("id", TagType = TagType.TAG_SHORT)]
         public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the level of the enchantment.
         /// </summary>
-        [TagNode("lvl")]
+        [TagNode("lvl", TagType = TagType.TAG_SHORT)]
         public int Level { get; set; }
 
         /// <summary>

@@ -25,11 +25,11 @@ namespace Substrate
         {
             new SchemaNodeCompound("Level")
             {
-                new SchemaNodeArray("Blocks", 32768),
-                new SchemaNodeArray("Data", 16384),
-                new SchemaNodeArray("SkyLight", 16384),
-                new SchemaNodeArray("BlockLight", 16384),
-                new SchemaNodeArray("HeightMap", 256),
+                new SchemaNodeByteArray("Blocks", 32768),
+                new SchemaNodeByteArray("Data", 16384),
+                new SchemaNodeByteArray("SkyLight", 16384),
+                new SchemaNodeByteArray("BlockLight", 16384),
+                new SchemaNodeByteArray("HeightMap", 256),
                 new SchemaNodeList("Entities", TagType.TAG_COMPOUND, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeList("TileEntities", TagType.TAG_COMPOUND, TileEntity.Schema, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeList("TileTicks", TagType.TAG_COMPOUND, TileTick.Schema, SchemaOptions.OPTIONAL),

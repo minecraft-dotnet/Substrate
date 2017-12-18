@@ -27,7 +27,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         public SchemaNodeIntArray(string name)
-            : base(name)
+            : base(name, TagType.TAG_INT_ARRAY)
         {
             Length = 0;
         }
@@ -38,7 +38,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeIntArray(string name, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_INT_ARRAY, options)
         {
             Length = 0;
         }
@@ -49,7 +49,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
         public SchemaNodeIntArray(string name, int length)
-            : base(name)
+            : base(name, TagType.TAG_INT_ARRAY)
         {
             Length = length;
         }
@@ -61,7 +61,7 @@ namespace Substrate.Nbt
         /// <param name="length">The expected length of corresponding byte array.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
         public SchemaNodeIntArray(string name, int length, SchemaOptions options)
-            : base(name, options)
+            : base(name, TagType.TAG_INT_ARRAY, options)
         {
             Length = length;
         }

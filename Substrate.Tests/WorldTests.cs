@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Substrate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Substrate.Nbt;
+
 namespace Substrate.Tests
 {
     [TestClass]
@@ -82,6 +84,20 @@ namespace Substrate.Tests
         public void OpenTest_1_12_2_survival()
         {
             NbtWorld world = NbtWorld.Open(@"..\..\Data\1_12_2-survival\");
+            Assert.IsNotNull(world);
+        }
+
+        [TestMethod]
+        public void OpenTest_Colors_survival()
+        {
+            NbtWorld world = NbtWorld.Open(@"..\..\Data\Colors of the Rainbow SURVIVAL\");
+            Assert.IsNotNull(world);
+        }
+
+        [TestMethod]
+        public void OpenTest_Climatic_Islands_survival()
+        {
+            NbtWorld world = NbtWorld.Open(@"..\..\Data\Climatic Islands [ENG]\");
             Assert.IsNotNull(world);
         }
     }

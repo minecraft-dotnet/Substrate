@@ -85,6 +85,20 @@ namespace Substrate.Nbt
             Tag = tag;
             Schema = schema;
         }
+
+        /// <summary>
+        /// Constructs a new event argument set.
+        /// </summary>
+        /// <param name="tagName">The unexpected name of a <see cref="TagNode"/>.</param>
+        /// <param name="schema">The <see cref="SchemaNode"/> corresponding to the <see cref="TagNode"/> involved in this event.</param>
+        /// <param name="parent">The optional parent of tag.</param>
+        public TagEventArgs(string tagName, SchemaNode schema, TagNode parent = null)
+            : base()
+        {
+            TagName = tagName;
+            Schema = schema;
+            Parent = parent;
+        }
     }
 
     /// <summary>
@@ -106,6 +120,11 @@ namespace Substrate.Nbt
         /// An event that gets fired whenever an expected <see cref="TagNode"/> is not found.
         /// </summary>
         public static event VerifierEventHandler MissingTag;
+
+        /// <summary>
+        /// An event that gets fired whenever an unexpected <see cref="TagNode"/> is found.
+        /// </summary>
+        public static event VerifierEventHandler UnexpectedTag;
 
         /// <summary>
         /// An event that gets fired whenever an expected <see cref="TagNode"/> is of the wrong type and cannot be cast.
@@ -156,7 +175,7 @@ namespace Substrate.Nbt
                 return VerifyString(tag, str);
             }
 
-            SchemaNodeArray array = schema as SchemaNodeArray;
+            SchemaNodeByteArray array = schema as SchemaNodeByteArray;
             if (array != null)
             {
                 return VerifyArray(tag, array);
@@ -236,7 +255,7 @@ namespace Substrate.Nbt
         }
 
 
-        private bool VerifyArray(TagNode tag, SchemaNodeArray schema)
+        private bool VerifyArray(TagNode tag, SchemaNodeByteArray schema)
         {
             TagNodeByteArray atag = tag as TagNodeByteArray;
             if (atag == null)
@@ -326,7 +345,7 @@ namespace Substrate.Nbt
                     return false;
                 }
             }
-            if (ltag.Count > 0 && ltag.ValueType != schema.Type)
+            if (ltag.Count > 0 && ltag.ValueType != schema.ItemType)
             {
                 if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
                 {
@@ -375,11 +394,17 @@ namespace Substrate.Nbt
             bool pass = true;
 
             Dictionary<string, TagNode> _scratch = new Dictionary<string, TagNode>();
-
+            var foundNames = new HashSet<string>();
+  
             foreach (SchemaNode node in schema)
             {
                 TagNode value;
-                ctag.TryGetValue(node.Name, out value);
+                bool found = ctag.TryGetValue(node.Name, out value);
+
+                if (found)
+                {
+                    foundNames.Add(node.Name.ToLower());
+                }
 
                 if (value == null)
                 {
@@ -395,6 +420,17 @@ namespace Substrate.Nbt
                 }
 
                 pass = Verify(tag, value, node) && pass;
+            }
+
+            foreach (var tagName in ctag.Keys)
+            {
+                if (!foundNames.Contains(tagName.ToLower()))
+                {
+                    if (!OnUnexpectedTag(new TagEventArgs(tagName, schema, ctag)))
+                    {
+                        return false;
+                    }
+                }
             }
 
             foreach (KeyValuePair<string, TagNode> item in _scratch)
@@ -432,6 +468,31 @@ namespace Substrate.Nbt
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Processes registered events for <see cref="UnexpectedTag"/> whenever an unexpected <see cref="TagNode"/> is found.
+        /// </summary>
+        /// <param name="e">Arguments for this event.</param>
+        /// <returns>Status indicating whether this event can be ignored.</returns>
+        protected virtual bool OnUnexpectedTag(TagEventArgs e)
+        {
+            if (UnexpectedTag != null)
+            {
+                foreach (VerifierEventHandler func in UnexpectedTag.GetInvocationList())
+                {
+                    TagEventCode code = func(e);
+                    switch (code)
+                    {
+                    case TagEventCode.FAIL:
+                        return false;
+                    case TagEventCode.PASS:
+                        return true;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

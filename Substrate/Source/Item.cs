@@ -5,6 +5,52 @@ using Substrate.Nbt;
 
 namespace Substrate
 {
+    public class ItemTag : ICopyable<ItemTag>
+    {
+
+        /// <summary>
+        /// Gets the list of <see cref="Enchantment"/>s applied to this item.
+        /// </summary>
+        [TagNode(Name = "ench", Optional = true)]
+        public List<Enchantment> Enchantments { get; } = new List<Enchantment>();
+
+        [TagNode(Name = "title", Optional = true)]
+        public string Title { get; set; }
+
+        [TagNode(Name = "author", Optional = true)]
+        public string Author { get; set; }
+
+        [TagNode(Name = "pages", Optional = true)]
+        public List<string> Pages { get; } = new List<string>();
+
+
+
+        #region ICopyable<Item> Members
+
+        /// <inheritdoc/>
+        public virtual ItemTag Copy()
+        {
+            ItemTag itemTag = new ItemTag();
+            itemTag.Title = Title;
+            itemTag.Author = Author;
+
+            foreach (var e in Enchantments)
+            {
+                itemTag.Enchantments.Add(e.Copy());
+            }
+
+            foreach (var e in Pages)
+            {
+                itemTag.Pages.Add(e);
+            }
+
+            return itemTag;
+        }
+
+        #endregion
+
+    }
+
     /// <summary>
     /// Represents an item (or item stack) within an item slot.
     /// </summary>
@@ -23,11 +69,7 @@ namespace Substrate
             }, SchemaOptions.OPTIONAL),
         };
 
-        private TagNodeCompound _source;
-
-        private short _id;
-        private byte _count;
-        private short _damage;
+        protected TagNodeCompound _source;
 
         private List<Enchantment> _enchantments;
 
@@ -47,54 +89,51 @@ namespace Substrate
         public Item(int id)
             : this()
         {
-            _id = (short)id;
+            ID = ItemInfo.ItemTable[id].NameID;
         }
 
         #region Properties
 
-        /// <summary>
-        /// Gets an <see cref="ItemInfo"/> entry for this item's type.
-        /// </summary>
-        public ItemInfo Info
-        {
-            get { return ItemInfo.ItemTable[_id]; }
-        }
+        ///// <summary>
+        ///// Gets an <see cref="ItemInfo"/> entry for this item's type.
+        ///// </summary>
+        //public ItemInfo Info
+        //{
+        //    get { return ItemInfo.ItemTable[ID]; }
+        //}
 
         /// <summary>
         /// Gets or sets the current type (id) of the item.
         /// </summary>
-        [TagNode("id", TagType = TagType.TAG_SHORT)]
-        public int ID
-        {
-            get { return _id; }
-            set { _id = (short)value; }
-        }
+        [TagNode("id", TagType = TagType.TAG_STRING)]
+        public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets the damage value of the item.
         /// </summary>
         /// <remarks>The damage value may represent a generic data value for some items.</remarks>
-        [TagNode]
-        public int Damage
-        {
-            get { return _damage; }
-            set { _damage = (short)value; }
-        }
+        [TagNode(TagType = TagType.TAG_SHORT)]
+        public int Damage { get; set; }
 
         /// <summary>
         /// Gets or sets the number of this item stacked together in an item slot.
         /// </summary>
-        [TagNode]
-        public int Count
-        {
-            get { return _count; }
-            set { _count = (byte)value; }
-        }
+        [TagNode(TagType = TagType.TAG_BYTE)]
+        public int Count { get; set; }
+
+        [TagNode(TagType = TagType.TAG_BYTE)]
+        public int? Slot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of this item stacked together in an item slot.
+        /// </summary>
+        [TagNode(Name = "tag", Optional = true)]
+        public ItemTag Tag { get; set; }
 
         /// <summary>
         /// Gets the list of <see cref="Enchantment"/>s applied to this item.
         /// </summary>
-        public IList<Enchantment> Enchantments
+        public List<Enchantment> Enchantments
         {
             get { return _enchantments; }
         }
@@ -120,12 +159,12 @@ namespace Substrate
         #region ICopyable<Item> Members
 
         /// <inheritdoc/>
-        public Item Copy()
+        public virtual Item Copy()
         {
             Item item = new Item();
-            item._id = _id;
-            item._count = _count;
-            item._damage = _damage;
+            item.ID = ID;
+            item.Count = Count;
+            item.Damage = Damage;
 
             foreach (Enchantment e in _enchantments)
             {
@@ -155,9 +194,18 @@ namespace Substrate
 
             _enchantments.Clear();
 
-            _id = ctree["id"].ToTagShort();
-            _count = ctree["Count"].ToTagByte();
-            _damage = ctree["Damage"].ToTagShort();
+            var id = ctree["id"];
+            if (id.GetTagType() == TagType.TAG_SHORT)
+            {
+                ID = ItemInfo.ItemTable[id.ToTagShort()].NameID;
+            }
+            else
+            {
+                ID = id.ToTagString();
+            }
+
+            Count = ctree["Count"].ToTagByte();
+            Damage = ctree["Damage"].ToTagShort();
 
             if (ctree.ContainsKey("tag"))
             {
@@ -193,9 +241,9 @@ namespace Substrate
         public TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
-            tree["id"] = new TagNodeShort(_id);
-            tree["Count"] = new TagNodeByte(_count);
-            tree["Damage"] = new TagNodeShort(_damage);
+            tree["id"] = new TagNodeString(ID);
+            tree["Count"] = new TagNodeByte((byte)Count);
+            tree["Damage"] = new TagNodeShort((short)Damage);
 
             if (_enchantments.Count > 0)
             {
