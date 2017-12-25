@@ -186,6 +186,7 @@
     <Compile Include="Source\Nbt\SchemaNodeScalar.cs" />
     <Compile Include="Source\Nbt\SchemaNodeShortArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeLongArray.cs" />
+    <Compile Include="Source\Nbt\TagNodeTypeAttribute.cs" />
     <Compile Include="Source\Nbt\TagNodeLongArray.cs" />
     <Compile Include="Source\Nbt\SchemaNodeString.cs" />
     <Compile Include="Source\Nbt\SchemaOptions.cs" />

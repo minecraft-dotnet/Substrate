@@ -10,7 +10,7 @@ namespace Substrate.TileEntities
         public static readonly SchemaNodeCompound ChestSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.Schema),
+            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
         });
 
         public static string TypeId 

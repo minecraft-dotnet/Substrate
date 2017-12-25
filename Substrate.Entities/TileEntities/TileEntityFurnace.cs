@@ -12,7 +12,7 @@ namespace Substrate.TileEntities
             new SchemaNodeString("id", TypeId),
             new SchemaNodeScalar("BurnTime", TagType.TAG_SHORT),
             new SchemaNodeScalar("CookTime", TagType.TAG_SHORT),
-            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.Schema),
+            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
         });
 
         public static string TypeId

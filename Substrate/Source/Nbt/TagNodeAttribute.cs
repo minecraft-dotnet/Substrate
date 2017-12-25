@@ -15,6 +15,8 @@ namespace Substrate.Nbt
 
         public bool CreateOnMissing { get; set; }
 
+        public int Length { get; set; } = -1;
+
         public TagNodeAttribute()
         {
         }

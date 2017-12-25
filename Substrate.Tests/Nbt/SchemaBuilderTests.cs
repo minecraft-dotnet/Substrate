@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Substrate.Source.Nbt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.IO;
 
 namespace Substrate.Nbt.Tests
 {
@@ -41,6 +42,9 @@ namespace Substrate.Nbt.Tests
             Debug.WriteLine(formattedManual);
             Debug.WriteLine("Built:");
             Debug.WriteLine(formattedBuilt);
+
+            File.WriteAllText("Player.Manual.txt", formattedManual);
+            File.WriteAllText("Player.Built.txt", formattedBuilt);
         }
     }
 }

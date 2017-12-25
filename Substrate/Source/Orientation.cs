@@ -3,6 +3,7 @@ using Substrate.Nbt;
 
 namespace Substrate
 {
+    [TagNodeType(TagType.TAG_LIST, TagType.TAG_DOUBLE)]
     public class Orientation : INbtObject2
     {
         public double Pitch { get; set; }

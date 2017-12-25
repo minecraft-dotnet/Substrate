@@ -12,16 +12,10 @@ namespace Substrate
     {
         private TagNodeList _entities;
 
-        private bool _dirty;
-
         /// <summary>
         /// Gets or sets a value indicating whether this collection contains unsaved changes.
         /// </summary>
-        public bool IsDirty
-        {
-            get { return _dirty; }
-            set { _dirty = value; }
-        }
+        public bool IsDirty { get; set; }
 
         /// <summary>
         /// Creates a new <see cref="EntityCollection"/> around a <see cref="TagNodeList"/> containing Entity nodes.
@@ -94,7 +88,7 @@ namespace Substrate
         public void Add (TypedEntity ent)
         {
             _entities.Add(ent.BuildTree());
-            _dirty = true;
+            IsDirty = true;
         }
 
         /// <summary>
@@ -120,7 +114,7 @@ namespace Substrate
             });
 
             if (rem > 0) {
-                _dirty = true;
+                IsDirty = true;
             }
             
             return rem;
@@ -149,7 +143,7 @@ namespace Substrate
             });
 
             if (rem > 0) {
-                _dirty = true;
+                IsDirty = true;
             }
 
             return rem;

@@ -12,12 +12,7 @@ namespace Substrate
     /// <remarks>ItemCollections have a limited number of slots that depends on where they are used.</remarks>
     public class ItemCollection : INbtObject<ItemCollection>, ICopyable<ItemCollection>
     {
-        private static readonly SchemaNodeCompound _schema = Item.Schema.MergeInto(new SchemaNodeCompound("")
-        {
-            new SchemaNodeScalar("Slot", TagType.TAG_BYTE),
-        });
-
-        private static readonly SchemaNodeList _listSchema = new SchemaNodeList("", TagType.TAG_COMPOUND, _schema);
+        private static readonly SchemaNodeList _listSchema = new SchemaNodeList("", TagType.TAG_COMPOUND, Item.Schema);
 
         private static readonly SchemaNodeList Schema2 = new SchemaNodeList("", TagType.TAG_COMPOUND, SchemaBuilder.FromClass(typeof(Item)));
 
@@ -81,9 +76,9 @@ namespace Substrate
         /// <summary>
         /// Gets a <see cref="SchemaNode"/> representing the schema of an item collection.
         /// </summary>
-        public static SchemaNodeCompound Schema
+        public static SchemaNodeCompound ItemSchema
         {
-            get { return _schema; }
+            get { return Item.Schema; }
         }
 
         #endregion
