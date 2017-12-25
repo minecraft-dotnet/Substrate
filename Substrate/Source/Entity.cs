@@ -27,19 +27,19 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the global position of the entity in fractional block coordinates.
         /// </summary>
-        [TagNode(Name = "Pos")]
+        [TagNode(Name = "Pos", TagType = TagType.TAG_LIST)]
         public Vector3 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the velocity of the entity.
         /// </summary>
-        [TagNode]
+        [TagNode(TagType = TagType.TAG_LIST)]
         public Vector3 Motion { get; set; }
 
         /// <summary>
         /// Gets or sets the orientation of the entity.
         /// </summary>
-        [TagNode]
+        [TagNode(TagType = TagType.TAG_LIST)]
         public Orientation Rotation { get; set; }
 
         /// <summary>
@@ -82,8 +82,6 @@ namespace Substrate
             Position = new Vector3();
             Motion = new Vector3();
             Rotation = new Orientation();
-
-            _source = new TagNodeCompound();
         }
 
         /// <summary>

@@ -3,11 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Collections;
 
 namespace Substrate.Source.Nbt
 {
     public class SchemaBuilder
     {
+        public struct PropertyInfo
+        {
+            public TagType TagType;
+            public TagType ItemTagType;
+            public Type ListType;
+            public SchemaOptions SchemaOptions;
+            public bool CustomType;
+        }
+
         public static SchemaNodeCompound FromClass(Type type, string enclosingName = null, SchemaOptions enclosingOptions = 0)
         {
             SchemaNodeCompound schema = new SchemaNodeCompound(enclosingName, enclosingOptions);
@@ -22,8 +32,14 @@ namespace Substrate.Source.Nbt
                     var attribute = (TagNodeAttribute)untypedAttributes[0];
 
                     var name = attribute.Name ?? property.Name;
-                    SchemaOptions schemaOptions = 0;
-                    TagType tagType = attribute.TagType != TagType.TAG_END ? attribute.TagType : GetTagTypeForPropertyType(property.PropertyType, ref schemaOptions);
+
+                    var propertyInfo = GetTagTypeForPropertyType(property.PropertyType);
+
+                    TagType tagType = propertyInfo.CustomType ? propertyInfo.TagType :
+                        attribute.TagType != TagType.TAG_END ? attribute.TagType :
+                        propertyInfo.TagType;
+
+                    SchemaOptions schemaOptions = propertyInfo.SchemaOptions;
                     if (attribute.Optional) { schemaOptions |= SchemaOptions.OPTIONAL; }
                     if (attribute.CreateOnMissing) { schemaOptions |= SchemaOptions.CREATE_ON_MISSING; }
 
@@ -55,16 +71,13 @@ namespace Substrate.Source.Nbt
                         break;
 
                     case TagType.TAG_LIST:
-                        var listType = property.PropertyType.GetGenericArguments()[0];
-                        SchemaOptions schemaOptionsTemp = 0;
-                        var subTagType = GetTagTypeForPropertyType(listType, ref schemaOptionsTemp);
-                        if (subTagType == TagType.TAG_COMPOUND)
+                        if (propertyInfo.ItemTagType == TagType.TAG_COMPOUND)
                         {
-                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, FromClass(listType), schemaOptions));
+                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, FromClass(propertyInfo.ListType), schemaOptions));
                         }
                         else
                         {
-                            schema.Add(new SchemaNodeList(name, subTagType, schemaOptions));
+                            schema.Add(new SchemaNodeList(name, propertyInfo.ItemTagType, schemaOptions));
                         }
                         break;
 
@@ -78,12 +91,48 @@ namespace Substrate.Source.Nbt
             return schema;
         }
 
-        private static TagType GetTagTypeForPropertyType(Type type, ref SchemaOptions options)
+        private static PropertyInfo GetTagTypeForPropertyType(Type type)
         {
+
+            PropertyInfo info = new PropertyInfo();
+
+            var attr = type.GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
+            if (attr != null)
+            {
+                info.TagType = attr.TagType;
+                info.CustomType = true;
+                return info;
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                info.ListType = type.GetGenericArguments()[0];
+                var subTagType = GetTagTypeForPropertyType(info.ListType);
+
+                info.TagType = TagType.TAG_LIST;
+                info.ItemTagType = subTagType.TagType;
+                return info;
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            {
+                if (type.GetGenericArguments()[0] != typeof(int))
+                {
+                    throw new InvalidOperationException("Dictionary-as-list is only supported with int key type");
+                }
+
+                info.ListType = type.GetGenericArguments()[1];
+                var subTagType = GetTagTypeForPropertyType(info.ListType);
+
+                info.TagType = TagType.TAG_LIST;
+                info.ItemTagType = subTagType.TagType;
+                return info;
+            }
+
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 type = type.GetGenericArguments()[0];
-                options |= SchemaOptions.OPTIONAL;
+                info.SchemaOptions |= SchemaOptions.OPTIONAL;
             }
 
             if (type.IsEnum)
@@ -91,29 +140,21 @@ namespace Substrate.Source.Nbt
                 type = type.GetEnumUnderlyingType();
             }
 
-            if (type == typeof(byte)) { return TagType.TAG_BYTE; }
-            if (type == typeof(bool)) { return TagType.TAG_BYTE; }
-            if (type == typeof(short)) { return TagType.TAG_SHORT; }
-            if (type == typeof(int)) { return TagType.TAG_INT; }
-            if (type == typeof(long)) { return TagType.TAG_LONG; }
-            if (type == typeof(float)) { return TagType.TAG_FLOAT; }
-            if (type == typeof(double)) { return TagType.TAG_DOUBLE; }
-            if (type == typeof(string)) { return TagType.TAG_STRING; }
+            if (type == typeof(byte)) { info.TagType = TagType.TAG_BYTE; }
+            else if (type == typeof(bool)) { info.TagType = TagType.TAG_BYTE; }
+            else if (type == typeof(short)) { info.TagType = TagType.TAG_SHORT; }
+            else if (type == typeof(int)) { info.TagType = TagType.TAG_INT; }
+            else if (type == typeof(long)) { info.TagType = TagType.TAG_LONG; }
+            else if (type == typeof(float)) { info.TagType = TagType.TAG_FLOAT; }
+            else if (type == typeof(double)) { info.TagType = TagType.TAG_DOUBLE; }
+            else if (type == typeof(string)) { info.TagType = TagType.TAG_STRING; }
+            else if (type == typeof(List<byte>)) { info.TagType = TagType.TAG_BYTE_ARRAY; }
+            else if (type == typeof(List<int>)) { info.TagType = TagType.TAG_INT_ARRAY; }
+            else if (type == typeof(List<short>)) { info.TagType = TagType.TAG_SHORT_ARRAY; }
+            else if (type == typeof(List<long>)) { info.TagType = TagType.TAG_LONG_ARRAY; }
+            else { info.TagType = TagType.TAG_COMPOUND; }
 
-            if (type == typeof(List<byte>)) { return TagType.TAG_BYTE_ARRAY; }
-            if (type == typeof(List<int>)) { return TagType.TAG_INT_ARRAY; }
-            if (type == typeof(List<short>)) { return TagType.TAG_SHORT_ARRAY; }
-            if (type == typeof(List<long>)) { return TagType.TAG_LONG_ARRAY; }
-
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-            {
-                return TagType.TAG_LIST;
-            }
-
-
-            // check for tagnode attributes on members?
-            return TagType.TAG_COMPOUND;
+            return info;
         }
 
         public static string FormatTree(SchemaNode root)
@@ -198,6 +239,17 @@ namespace Substrate.Source.Nbt
                         var list = treeValue.ToTagList();
 
                         prop.SetValue(nbtObject, list.ToList(), null);
+                    }
+                    else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                    {
+                        var list = treeValue.ToTagList();
+
+                        var dict = subObject as IDictionary;
+                        foreach (var val in list)
+                        {
+                            int slot = val.ToTagCompound()["slot"].ToTagInt();
+                            dict.Add(slot, val);
+                        }
                     }
                 }
                 else

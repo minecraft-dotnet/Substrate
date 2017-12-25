@@ -15,44 +15,44 @@ namespace Substrate
         /// <summary>
         /// Gets or sets whether the player is currently flying.
         /// </summary>
-        [TagNode]
+        [TagNode("flying")]
         public bool Flying { get; set; }
 
         /// <summary>
         /// Gets or sets whether the player can instantly build or mine.
         /// </summary>
-        [TagNode]
+        [TagNode("instabuild")]
         public bool InstantBuild { get; set; }
 
         /// <summary>
         /// Gets or sets whether the player is allowed to fly.
         /// </summary>
-        [TagNode]
+        [TagNode("mayfly")]
         public bool MayFly { get; set; }
 
         /// <summary>
         /// Gets or sets whether the player can take damage.
         /// </summary>
-        [TagNode]
+        [TagNode("invulnerable")]
         public bool Invulnerable { get; set; }
 
         /// <summary>
         /// Gets or sets whether the player can create or destroy blocks.
         /// </summary>
-        [TagNode]
+        [TagNode("mayBuild")]
         public bool? MayBuild { get; set; }
-
-        /// <summary>
-        /// Gets or sets the player's walking speed.  Always 0.1.
-        /// </summary>
-        [TagNode]
-        public float? FlySpeed { get; set; } = 0.1f;
 
         /// <summary>
         /// Gets or sets the player's flying speed.  Always 0.05.
         /// </summary>
-        [TagNode]
+        [TagNode("walkSpeed")]
         public float? WalkSpeed { get; set; } = 0.05f;
+
+        /// <summary>
+        /// Gets or sets the player's walking speed.  Always 0.1.
+        /// </summary>
+        [TagNode("flySpeed")]
+        public float? FlySpeed { get; set; } = 0.1f;
 
         #region ICopyable<PlayerAbilities> Members
 
@@ -96,7 +96,7 @@ namespace Substrate
             new SchemaNodeScalar("Health", TagType.TAG_FLOAT),
             new SchemaNodeScalar("HurtTime", TagType.TAG_SHORT),
             new SchemaNodeScalar("Dimension", TagType.TAG_INT),
-            new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.Schema),
+            new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
             //new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, ItemCollection.Schema, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("World", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Sleeping", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
@@ -163,8 +163,11 @@ namespace Substrate
         [TagNode]
         public Dictionary<int, Item> Inventory { get; } = new Dictionary<int, Item>();
 
-        [TagNode(Name = "playerGameType", Optional = true)]
-        public PlayerGameType? GameType { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the world that the player is currently within.
+        /// </summary>
+        [TagNode(Optional = true)]
+        public string World { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is sleeping in a bed.
@@ -211,21 +214,33 @@ namespace Substrate
         }
 
         /// <summary>
-        /// Gets or sets the name of the world that the player is currently within.
+        /// Gets or sets the hunger level of the player.  Valid values range 0 - 20.
         /// </summary>
-        [TagNode(Optional = true)]
-        public string World { get; set; }
+        [TagNode(Name = "foodLevel", Optional = true)]
+        public int? HungerLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timer used to periodically heal or damage the player based on <see cref="HungerLevel"/>.  Valid values range 0 - 80.
+        /// </summary>
+        [TagNode(Name = "foodTickTimer", Optional = true)]
+        public int? HungerTimer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the counter towards the next hunger point decrement.  Valid values range 0.0 - 4.0.
+        /// </summary>
+        [TagNode(Name = "foodExhaustionLevel", Optional = true)]
+        public float? HungerExhaustionLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player's hunger saturation level, which is reserve food capacity above <see cref="HungerLevel"/>.
+        /// </summary>
+        [TagNode(Name = "foodSaturationLevel", Optional = true)]
+        public float? HungerSaturationLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the name that is used when the player is read or written from a <see cref="PlayerManager"/>.
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the player's score.
-        /// </summary>
-        [TagNode(Optional = true)]
-        public int? Score { get; set; }
 
         /// <summary>
         /// Gets or sets the player's XP Level.
@@ -246,33 +261,18 @@ namespace Substrate
         public int? XpTotal { get; set; }
 
         /// <summary>
-        /// Gets or sets the hunger level of the player.  Valid values range 0 - 20.
+        /// Gets or sets the player's score.
         /// </summary>
-        [TagNode(Name = "foodLevel", Optional = true)]
-        public int? HungerLevel { get; set; }
+        [TagNode(Optional = true)]
+        public int? Score { get; set; }
 
-        /// <summary>
-        /// Gets or sets the player's hunger saturation level, which is reserve food capacity above <see cref="HungerLevel"/>.
-        /// </summary>
-        [TagNode(Name = "foodSaturationLevel", Optional = true)]
-        public float? HungerSaturationLevel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the counter towards the next hunger point decrement.  Valid values range 0.0 - 4.0.
-        /// </summary>
-        [TagNode(Name = "foodExhaustionLevel", Optional = true)]
-        public float? HungerExhaustionLevel { get; set; }
-
-        /// <summary>
-        /// Gets or sets the timer used to periodically heal or damage the player based on <see cref="HungerLevel"/>.  Valid values range 0 - 80.
-        /// </summary>
-        [TagNode(Name = "foodTickTimer", Optional = true)]
-        public int? HungerTimer { get; set; }
+        [TagNode(Name = "playerGameType", Optional = true)]
+        public PlayerGameType? GameType { get; set; }
 
         /// <summary>
         /// Gets the state of the player's abilities.
         /// </summary>
-        [TagNode(Optional = true)]
+        [TagNode("abilities", Optional = true)]
         public PlayerAbilities Abilities { get; private set; } = new PlayerAbilities();
 
         /// <summary>
