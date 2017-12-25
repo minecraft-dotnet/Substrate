@@ -211,6 +211,15 @@ namespace Substrate
         Sunrise = 22200,
     }
 
+    public class LevelData
+    {
+        [TagNode]
+        public long Time { get; set; }
+
+        [TagNode]
+        public Player Player { get; set; }
+    }
+
     /// <summary>
     /// Represents general data and metadata of a single world.
     /// </summary>
@@ -323,6 +332,9 @@ namespace Substrate
 
 
         private GameRules _gameRules;
+
+        [TagNode]
+        public LevelData Data { get; set; }
 
         /// <summary>
         /// Gets or sets the creation time of the world as a long timestamp.

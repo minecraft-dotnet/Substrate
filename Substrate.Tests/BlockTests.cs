@@ -64,6 +64,8 @@ namespace Substrate.Tests
                     }
                 }
             }
+
+            Assert.IsFalse(dataError);
         }
 
         [TestMethod]

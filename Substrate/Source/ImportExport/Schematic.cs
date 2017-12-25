@@ -17,8 +17,8 @@ namespace Substrate.ImportExport
             new SchemaNodeScalar("Length", TagType.TAG_SHORT),
             new SchemaNodeScalar("Height", TagType.TAG_SHORT),
             new SchemaNodeString("Materials", "Alpha"),
-            new SchemaNodeArray("Blocks"),
-            new SchemaNodeArray("Data"),
+            new SchemaNodeByteArray("Blocks"),
+            new SchemaNodeByteArray("Data"),
             new SchemaNodeList("Entities", TagType.TAG_COMPOUND, Entity.Schema),
             new SchemaNodeList("TileEntities", TagType.TAG_COMPOUND, TileEntity.Schema),
         };

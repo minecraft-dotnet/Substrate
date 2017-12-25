@@ -6,11 +6,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Substrate.Core;
 using Substrate.Nbt;
 using System.IO;
+using System.Diagnostics;
+using Substrate.Source.Nbt;
+
 namespace Substrate.Tests
 {
     [TestClass]
     public class LevelTests
     {
+        [ClassInitialize()]
+        public static void ClassInit(TestContext context)
+        {
+            NbtVerifier.UnexpectedTag += new VerifierEventHandler((TagEventArgs e) =>
+            {
+                var fullName = e.Schema.Name +"." + e.TagName;
+
+                Trace.WriteLine($"UnexpectedTag {fullName}");
+
+                return TagEventCode.NEXT;
+            });
+        }
+
         NbtTree LoadLevelTree(string path)
         {
             NBTFile nf = new NBTFile(path);
@@ -104,6 +120,33 @@ namespace Substrate.Tests
 
             NbtTree villagesNetherTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\data\villages_nether.dat");
             Assert.IsTrue(new NbtVerifier(villagesNetherTree.Root, Villages.Schema).Verify());
+        }
+
+        [TestMethod]
+        public void LoadTreeTest_1_12_2_survival_SchemaBuilderLoader()
+        {
+            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_12_2-survival\level.dat");
+            Assert.IsTrue(new NbtVerifier(levelTree.Root, Level.Schema).Verify());
+
+            var level = new Level(null);
+            var level2 = new Level(null);
+
+            SchemaBuilder.LoadTree(level, levelTree.Root, Level.Schema);
+
+            level2.LoadTree(levelTree.Root);
+
+            Assert.IsNotNull(level);
+            Assert.IsNotNull(level2);
+        }
+
+        [TestMethod]
+        public void OpenTest_Climatic_Islands_survival()
+        {
+            NbtWorld world = NbtWorld.Open(@"..\..\Data\Climatic Islands [ENG]\");
+            Assert.IsNotNull(world);
+
+            NbtTree villagesNetherTree = LoadLevelTree(@"..\..\Data\Climatic Islands [ENG]\level.dat");
+            Assert.IsTrue(new NbtVerifier(villagesNetherTree.Root, Level.Schema).Verify());
         }
     }
 }

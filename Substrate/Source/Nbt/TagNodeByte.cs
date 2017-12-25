@@ -85,6 +85,15 @@ namespace Substrate.Nbt
         }
 
         /// <summary>
+        /// Constructs a new byte node.
+        /// </summary>
+        /// <param name="d">The value to set the node's tag data value.</param>
+        public TagNodeByte(bool d)
+        {
+            Data = d ? (byte)1 : (byte)0;
+        }
+
+        /// <summary>
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new byte node representing the same data.</returns>
@@ -110,6 +119,16 @@ namespace Substrate.Nbt
         public static implicit operator TagNodeByte(byte b)
         {
             return new TagNodeByte(b);
+        }
+
+        /// <summary>
+        /// Converts a byte node to a system bool representing the same value.
+        /// </summary>
+        /// <param name="b">A byte node.</param>
+        /// <returns>A system bool set to true if the node's data value is non-zero.</returns>
+        public static implicit operator bool(TagNodeByte b)
+        {
+            return b.Data != 0;
         }
 
         /// <summary>

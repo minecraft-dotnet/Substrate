@@ -24,77 +24,47 @@ namespace Substrate
 
         private TagNodeCompound _source;
 
-        private Vector3 _pos;
-        private Vector3 _motion;
-        private Orientation _rotation;
-
-        private float _fallDistance;
-        private short _fire;
-        private short _air;
-        private byte _onGround;
-
         /// <summary>
         /// Gets or sets the global position of the entity in fractional block coordinates.
         /// </summary>
-        public Vector3 Position
-        {
-            get { return _pos; }
-            set { _pos = value; }
-        }
+        [TagNode(Name = "Pos", TagType = TagType.TAG_LIST)]
+        public Vector3 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the velocity of the entity.
         /// </summary>
-        public Vector3 Motion
-        {
-            get { return _motion; }
-            set { _motion = value; }
-        }
+        [TagNode(TagType = TagType.TAG_LIST)]
+        public Vector3 Motion { get; set; }
 
         /// <summary>
         /// Gets or sets the orientation of the entity.
         /// </summary>
-        public Orientation Rotation
-        {
-            get { return _rotation; }
-            set { _rotation = value; }
-        }
+        [TagNode(TagType = TagType.TAG_LIST)]
+        public Orientation Rotation { get; set; }
 
         /// <summary>
         /// Gets or sets the distance that the entity has fallen, if it is falling.
         /// </summary>
-        public double FallDistance
-        {
-            get { return _fallDistance; }
-            set { _fallDistance = (float)value; }
-        }
+        [TagNode]
+        public float FallDistance { get; set; }
 
         /// <summary>
         /// Gets or sets the fire counter of the entity.
         /// </summary>
-        public int Fire
-        {
-            get { return _fire; }
-            set { _fire = (short)value; }
-        }
+        [TagNode(TagType = TagType.TAG_SHORT)]
+        public int Fire { get; set; }
 
         /// <summary>
         /// Gets or sets the remaining air availale to the entity.
         /// </summary>
-        public int Air
-        {
-            get { return _air; }
-            set { _air = (short)value; }
-        }
+        [TagNode(TagType = TagType.TAG_SHORT)]
+        public int Air { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the entity is currently touch the ground.
         /// </summary>
-        public bool IsOnGround
-        {
-            get { return _onGround == 1; }
-            set { _onGround = (byte)(value ? 1 : 0); }
-        }
+        [TagNode(Name = "OnGround")]
+        public bool IsOnGround { get; set; }
 
         /// <summary>
         /// Gets the source <see cref="TagNodeCompound"/> used to create this <see cref="Entity"/> if it exists.
@@ -107,41 +77,40 @@ namespace Substrate
         /// <summary>
         /// Constructs a new generic <see cref="Entity"/> with default values.
         /// </summary>
-        public Entity ()
+        public Entity()
         {
-            _pos = new Vector3();
-            _motion = new Vector3();
-            _rotation = new Orientation();
-
-            _source = new TagNodeCompound();
+            Position = new Vector3();
+            Motion = new Vector3();
+            Rotation = new Orientation();
         }
 
         /// <summary>
         /// Constructs a new generic <see cref="Entity"/> by copying fields from another <see cref="Entity"/> object.
         /// </summary>
         /// <param name="e">An <see cref="Entity"/> to copy fields from.</param>
-        protected Entity (Entity e)
+        protected Entity(Entity e)
         {
-            _pos = new Vector3();
-            _pos.X = e._pos.X;
-            _pos.Y = e._pos.Y;
-            _pos.Z = e._pos.Z;
+            Position = new Vector3();
+            Position.X = e.Position.X;
+            Position.Y = e.Position.Y;
+            Position.Z = e.Position.Z;
 
-            _motion = new Vector3();
-            _motion.X = e._motion.X;
-            _motion.Y = e._motion.Y;
-            _motion.Z = e._motion.Z;
+            Motion = new Vector3();
+            Motion.X = e.Motion.X;
+            Motion.Y = e.Motion.Y;
+            Motion.Z = e.Motion.Z;
 
-            _rotation = new Orientation();
-            _rotation.Pitch = e._rotation.Pitch;
-            _rotation.Yaw = e._rotation.Yaw;
+            Rotation = new Orientation();
+            Rotation.Pitch = e.Rotation.Pitch;
+            Rotation.Yaw = e.Rotation.Yaw;
 
-            _fallDistance = e._fallDistance;
-            _fire = e._fire;
-            _air = e._air;
-            _onGround = e._onGround;
+            FallDistance = e.FallDistance;
+            Fire = e.Fire;
+            Air = e.Air;
+            IsOnGround = e.IsOnGround;
 
-            if (e._source != null) {
+            if (e._source != null)
+            {
                 _source = e._source.Copy() as TagNodeCompound;
             }
         }
@@ -152,11 +121,11 @@ namespace Substrate
         /// <param name="diffX">The X-offset to move by, in blocks.</param>
         /// <param name="diffY">The Y-offset to move by, in blocks.</param>
         /// <param name="diffZ">The Z-offset to move by, in blocks.</param>
-        public virtual void MoveBy (int diffX, int diffY, int diffZ)
+        public virtual void MoveBy(int diffX, int diffY, int diffZ)
         {
-            _pos.X += diffX;
-            _pos.Y += diffY;
-            _pos.Z += diffZ;
+            Position.X += diffX;
+            Position.Y += diffY;
+            Position.Z += diffZ;
         }
 
 
@@ -175,33 +144,34 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>The <see cref="Entity"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public Entity LoadTree (TagNode tree)
+        public Entity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
             TagNodeList pos = ctree["Pos"].ToTagList();
-            _pos = new Vector3();
-            _pos.X = pos[0].ToTagDouble();
-            _pos.Y = pos[1].ToTagDouble();
-            _pos.Z = pos[2].ToTagDouble();
+            Position = new Vector3();
+            Position.X = pos[0].ToTagDouble();
+            Position.Y = pos[1].ToTagDouble();
+            Position.Z = pos[2].ToTagDouble();
 
             TagNodeList motion = ctree["Motion"].ToTagList();
-            _motion = new Vector3();
-            _motion.X = motion[0].ToTagDouble();
-            _motion.Y = motion[1].ToTagDouble();
-            _motion.Z = motion[2].ToTagDouble();
+            Motion = new Vector3();
+            Motion.X = motion[0].ToTagDouble();
+            Motion.Y = motion[1].ToTagDouble();
+            Motion.Z = motion[2].ToTagDouble();
 
             TagNodeList rotation = ctree["Rotation"].ToTagList();
-            _rotation = new Orientation();
-            _rotation.Yaw = rotation[0].ToTagFloat();
-            _rotation.Pitch = rotation[1].ToTagFloat();
+            Rotation = new Orientation();
+            Rotation.Yaw = rotation[0].ToTagFloat();
+            Rotation.Pitch = rotation[1].ToTagFloat();
 
-            _fire = ctree["Fire"].ToTagShort();
-            _air = ctree["Air"].ToTagShort();
-            _onGround = ctree["OnGround"].ToTagByte();
+            Fire = ctree["Fire"].ToTagShort();
+            Air = ctree["Air"].ToTagShort();
+            IsOnGround = ctree["OnGround"].ToTagByte() != 0;
 
             _source = ctree.Copy() as TagNodeCompound;
 
@@ -213,9 +183,10 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>The <see cref="Entity"/> returns itself on success, or null if the tree failed validation.</returns>
-        public Entity LoadTreeSafe (TagNode tree)
+        public Entity LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -226,33 +197,34 @@ namespace Substrate
         /// Builds an Entity subtree from the current data.
         /// </summary>
         /// <returns>The root node of an Entity subtree representing the current data.</returns>
-        public TagNode BuildTree ()
+        public TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
 
             TagNodeList pos = new TagNodeList(TagType.TAG_DOUBLE);
-            pos.Add(new TagNodeDouble(_pos.X));
-            pos.Add(new TagNodeDouble(_pos.Y));
-            pos.Add(new TagNodeDouble(_pos.Z));
+            pos.Add(new TagNodeDouble(Position.X));
+            pos.Add(new TagNodeDouble(Position.Y));
+            pos.Add(new TagNodeDouble(Position.Z));
             tree["Pos"] = pos;
 
             TagNodeList motion = new TagNodeList(TagType.TAG_DOUBLE);
-            motion.Add(new TagNodeDouble(_motion.X));
-            motion.Add(new TagNodeDouble(_motion.Y));
-            motion.Add(new TagNodeDouble(_motion.Z));
+            motion.Add(new TagNodeDouble(Motion.X));
+            motion.Add(new TagNodeDouble(Motion.Y));
+            motion.Add(new TagNodeDouble(Motion.Z));
             tree["Motion"] = motion;
 
             TagNodeList rotation = new TagNodeList(TagType.TAG_FLOAT);
-            rotation.Add(new TagNodeFloat((float)_rotation.Yaw));
-            rotation.Add(new TagNodeFloat((float)_rotation.Pitch));
+            rotation.Add(new TagNodeFloat((float)Rotation.Yaw));
+            rotation.Add(new TagNodeFloat((float)Rotation.Pitch));
             tree["Rotation"] = rotation;
 
-            tree["FallDistance"] = new TagNodeFloat(_fallDistance);
-            tree["Fire"] = new TagNodeShort(_fire);
-            tree["Air"] = new TagNodeShort(_air);
-            tree["OnGround"] = new TagNodeByte(_onGround);
+            tree["FallDistance"] = new TagNodeFloat(FallDistance);
+            tree["Fire"] = new TagNodeShort((short)Fire);
+            tree["Air"] = new TagNodeShort((short)Air);
+            tree["OnGround"] = new TagNodeByte(IsOnGround);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 tree.MergeFrom(_source);
             }
 
@@ -264,7 +236,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public bool ValidateTree (TagNode tree)
+        public bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -278,7 +250,7 @@ namespace Substrate
         /// Creates a deep-copy of the <see cref="Entity"/>.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="Entity"/>.</returns>
-        public Entity Copy ()
+        public Entity Copy()
         {
             return new Entity(this);
         }
@@ -313,7 +285,7 @@ namespace Substrate
         /// Creates a new generic <see cref="TypedEntity"/> with the given id.
         /// </summary>
         /// <param name="id">The id (name) of the Entity.</param>
-        public TypedEntity (string id)
+        public TypedEntity(string id)
             : base()
         {
             _id = id;
@@ -323,7 +295,7 @@ namespace Substrate
         /// Constructs a new <see cref="TypedEntity"/> by copying an existing one.
         /// </summary>
         /// <param name="e">The <see cref="TypedEntity"/> to copy.</param>
-        protected TypedEntity (TypedEntity e)
+        protected TypedEntity(TypedEntity e)
             : base(e)
         {
             _id = e._id;
@@ -345,10 +317,11 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>The <see cref="TypedEntity"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public virtual new TypedEntity LoadTree (TagNode tree)
+        public virtual new TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -362,9 +335,10 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>The <see cref="TypedEntity"/> returns itself on success, or null if the tree failed validation.</returns>
-        public virtual new TypedEntity LoadTreeSafe (TagNode tree)
+        public virtual new TypedEntity LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -375,7 +349,7 @@ namespace Substrate
         /// Builds an Entity subtree from the current data.
         /// </summary>
         /// <returns>The root node of an Entity subtree representing the current data.</returns>
-        public virtual new TagNode BuildTree ()
+        public virtual new TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["id"] = new TagNodeString(_id);
@@ -388,7 +362,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of an Entity subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public virtual new bool ValidateTree (TagNode tree)
+        public virtual new bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -402,7 +376,7 @@ namespace Substrate
         /// Creates a deep-copy of the <see cref="TypedEntity"/>.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="TypedEntity"/>.</returns>
-        public virtual new TypedEntity Copy ()
+        public virtual new TypedEntity Copy()
         {
             return new TypedEntity(this);
         }

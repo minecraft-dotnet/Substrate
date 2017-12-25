@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Substrate.Source.Nbt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using System.IO;
 
 namespace Substrate.Nbt.Tests
 {
@@ -10,7 +11,7 @@ namespace Substrate.Nbt.Tests
     public class SchemaBuilderTests
     {
         [TestMethod]
-        public void FromClassTest()
+        public void ItemTest()
         {
             SchemaNodeCompound _schemaManual = Item.Schema;
 
@@ -24,6 +25,26 @@ namespace Substrate.Nbt.Tests
             Debug.WriteLine(formattedManual);
             Debug.WriteLine("Built:");
             Debug.WriteLine(formattedBuilt);
+        }
+
+        [TestMethod]
+        public void PlayerTest()
+        {
+            SchemaNodeCompound _schemaManual = Player.Schema;
+
+            SchemaNodeCompound _schemaBuilt = SchemaBuilder.FromClass(typeof(Player));
+
+            string formattedManual = SchemaBuilder.FormatTree(_schemaManual);
+
+            string formattedBuilt = SchemaBuilder.FormatTree(_schemaBuilt);
+
+            Debug.WriteLine("Manual:");
+            Debug.WriteLine(formattedManual);
+            Debug.WriteLine("Built:");
+            Debug.WriteLine(formattedBuilt);
+
+            File.WriteAllText("Player.Manual.txt", formattedManual);
+            File.WriteAllText("Player.Built.txt", formattedBuilt);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Substrate.Entities
     {
         public static readonly SchemaNodeCompound MinecartChestSchema = MinecartSchema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.Schema),
+            new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
         });
 
         public static new string TypeId
