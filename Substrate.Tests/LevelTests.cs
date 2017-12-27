@@ -131,7 +131,7 @@ namespace Substrate.Tests
             var level = new Level(null);
             var level2 = new Level(null);
 
-            SchemaBuilder.LoadTree(level, levelTree.Root, Level.Schema);
+            SchemaBuilder.LoadCompound(level, levelTree.Root, Level.Schema);
 
             level2.LoadTree(levelTree.Root);
 

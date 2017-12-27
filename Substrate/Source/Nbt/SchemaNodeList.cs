@@ -20,7 +20,7 @@ namespace Substrate.Nbt
         /// <summary>
         /// Gets a <see cref="SchemaNode"/> representing a schema that items contained in the corresponding <see cref="TagNodeList"/> should be verified against.
         /// </summary>
-        public SchemaNode SubSchema { get; private set; }
+        public SchemaNode ItemSchema { get; private set; }
 
         /// <summary>
         /// Indicates whether there is an expected number of items of the corresponding <see cref="TagNodeList"/>.
@@ -90,7 +90,7 @@ namespace Substrate.Nbt
             : base(name, TagType.TAG_LIST)
         {
             ItemType = type;
-            SubSchema = subschema;
+            ItemSchema = subschema;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Substrate.Nbt
             : base(name, TagType.TAG_LIST, options)
         {
             ItemType = type;
-            SubSchema = subschema;
+            ItemSchema = subschema;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Substrate.Nbt
         {
             ItemType = type;
             Length = length;
-            SubSchema = subschema;
+            ItemSchema = subschema;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Substrate.Nbt
         {
             ItemType = type;
             Length = length;
-            SubSchema = subschema;
+            ItemSchema = subschema;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Substrate.Nbt
             TagNodeList list = new TagNodeList(ItemType);
             for (int i = 0; i < Length; i++)
             {
-                list.Add(SubSchema.BuildDefaultTree());
+                list.Add(ItemSchema.BuildDefaultTree());
             }
 
             return list;
