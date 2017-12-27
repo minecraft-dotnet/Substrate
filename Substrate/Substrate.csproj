@@ -291,7 +291,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Substrate.2.0.0.nuspec" />
+    <None Include="Substrate.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Vendor\DotNetZip\Zlib\LICENSE.txt" />
