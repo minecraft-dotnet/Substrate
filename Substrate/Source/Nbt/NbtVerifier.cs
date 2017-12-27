@@ -370,11 +370,11 @@ namespace Substrate.Nbt
 
             // If a subschema is set, test all items in list against it
 
-            if (schema.SubSchema != null)
+            if (schema.ItemSchema != null)
             {
                 foreach (TagNode v in ltag)
                 {
-                    pass = Verify(tag, v, schema.SubSchema) && pass;
+                    pass = Verify(tag, v, schema.ItemSchema) && pass;
                 }
             }
 
