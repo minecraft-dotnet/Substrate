@@ -19,7 +19,7 @@ namespace Substrate.Tests
         {
             NbtVerifier.UnexpectedTag += new VerifierEventHandler((TagEventArgs e) =>
             {
-                var fullName = e.Schema.Name +"." + e.TagName;
+                var fullName = e.Schema.Name + "." + e.TagName;
 
                 Trace.WriteLine($"UnexpectedTag {fullName}");
 
@@ -142,6 +142,11 @@ namespace Substrate.Tests
         [TestMethod]
         public void OpenTest_Climatic_Islands_survival()
         {
+            if (!Directory.Exists(@"..\..\Data\Climatic Islands [ENG]\"))
+            {
+                Assert.Inconclusive("Level not found, skipping test");
+            }
+
             NbtWorld world = NbtWorld.Open(@"..\..\Data\Climatic Islands [ENG]\");
             Assert.IsNotNull(world);
 

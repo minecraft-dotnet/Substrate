@@ -4,6 +4,7 @@ using System.Text;
 using Substrate;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Substrate.Nbt;
+using System.IO;
 
 namespace Substrate.Tests
 {
@@ -90,6 +91,11 @@ namespace Substrate.Tests
         [TestMethod]
         public void OpenTest_Colors_survival()
         {
+            if (!Directory.Exists(@"..\..\Data\Colors of the Rainbow SURVIVAL\"))
+            {
+                Assert.Inconclusive("Level not found, skipping test");
+            }
+
             NbtWorld world = NbtWorld.Open(@"..\..\Data\Colors of the Rainbow SURVIVAL\");
             Assert.IsNotNull(world);
         }
@@ -97,6 +103,11 @@ namespace Substrate.Tests
         [TestMethod]
         public void OpenTest_Climatic_Islands_survival()
         {
+            if (!Directory.Exists(@"..\..\Data\Climatic Islands [ENG]\"))
+            {
+                Assert.Inconclusive("Level not found, skipping test");
+            }
+
             NbtWorld world = NbtWorld.Open(@"..\..\Data\Climatic Islands [ENG]\");
             Assert.IsNotNull(world);
         }
