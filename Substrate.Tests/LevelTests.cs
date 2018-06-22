@@ -33,7 +33,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void LoadTreeTest_1_6_4_survival()
         {
-            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_6_4-survival\level.dat");
+            NbtTree levelTree = LoadLevelTree(@"..\..\..\Data\1_6_4-survival\level.dat");
 
             Level level = new Level(null);
             level = level.LoadTreeSafe(levelTree.Root);
@@ -43,7 +43,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void LoadTreeTest_1_7_2_survival()
         {
-            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_7_2-survival\level.dat");
+            NbtTree levelTree = LoadLevelTree(@"..\..\..\Data\1_7_2-survival\level.dat");
 
             Level level = new Level(null);
             level = level.LoadTreeSafe(levelTree.Root);
@@ -53,7 +53,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void LoadTreeTest_1_7_10_survival()
         {
-            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_7_10-survival\level.dat");
+            NbtTree levelTree = LoadLevelTree(@"..\..\..\Data\1_7_10-survival\level.dat");
 
             Level level = new Level(null);
             level = level.LoadTreeSafe(levelTree.Root);
@@ -63,7 +63,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void LoadTreeTest_1_8_3_survival()
         {
-            NbtTree levelTree = LoadLevelTree(@"..\..\Data\1_8_3-survival\level.dat");
+            NbtTree levelTree = LoadLevelTree(@"..\..\..\Data\1_8_3-survival\level.dat");
 
             Level level = new Level(null);
             level = level.LoadTreeSafe(levelTree.Root);
