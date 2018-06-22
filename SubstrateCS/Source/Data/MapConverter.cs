@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
+using Color = SixLabors.ImageSharp.PixelFormats.Bgra32;
+using Bitmap = SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Bgra32>;
 
 namespace Substrate.Data
 {
@@ -44,7 +44,7 @@ namespace Substrate.Data
         /// <summary>
         /// Creates a new <see cref="MapConverter"/> with a Minecraft-default color-index and block-index.
         /// </summary>
-        public MapConverter ()
+        public MapConverter()
         {
             _colorIndex = new Color[256];
             _labIndex = new Vector3[256];
@@ -54,7 +54,8 @@ namespace Substrate.Data
 
             // Setup default block index
             _blockIndex = new ColorGroup[4096];
-            for (int i = 0; i < _blockIndex.Length; i++) {
+            for (int i = 0; i < _blockIndex.Length; i++)
+            {
                 _blockIndex[i] = ColorGroup.Other;
             }
 
@@ -95,7 +96,8 @@ namespace Substrate.Data
             get { return _groupSize; }
             set
             {
-                if (value <= 0) {
+                if (value <= 0)
+                {
                     throw new ArgumentOutOfRangeException("The ColorGroupSize property must be a positive number.");
                 }
                 _groupSize = value;
@@ -124,7 +126,7 @@ namespace Substrate.Data
         /// <param name="blockId">The ID of a block.</param>
         /// <returns>A color index value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="blockId"/> is out of its normal range.</exception>
-        public int BlockToColorIndex (int blockId)
+        public int BlockToColorIndex(int blockId)
         {
             return BlockToColorIndex(blockId, 0);
         }
@@ -136,11 +138,14 @@ namespace Substrate.Data
         /// <param name="level">The color level to select from within the derived <see cref="ColorGroup"/>.</param>
         /// <returns>A color index value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when either <paramref name="blockId"/> or <paramref name="level"/> are out of their normal ranges.</exception>
-        public int BlockToColorIndex (int blockId, int level) {
-            if (level < 0 || level >= _groupSize) {
+        public int BlockToColorIndex(int blockId, int level)
+        {
+            if (level < 0 || level >= _groupSize)
+            {
                 throw new ArgumentOutOfRangeException("level", level, "Argument 'level' must be in range [0, " + (_groupSize - 1) + "]");
             }
-            if (blockId < 0 || blockId >= 4096) {
+            if (blockId < 0 || blockId >= 4096)
+            {
                 throw new ArgumentOutOfRangeException("blockId");
             }
 
@@ -154,7 +159,7 @@ namespace Substrate.Data
         /// <returns>A <see cref="Color"/> value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="blockId"/> is out of its normal range.</exception>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="blockId"/> maps to an invalid color index.</exception>
-        public Color BlockToColor (int blockId)
+        public Color BlockToColor(int blockId)
         {
             return BlockToColor(blockId, 0);
         }
@@ -167,10 +172,11 @@ namespace Substrate.Data
         /// <returns>A <see cref="Color"/> value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when either <paramref name="blockId"/> or <paramref name="level"/> are out of their normal ranges.</exception>
         /// <exception cref="InvalidOperationException">Thrown when <paramref name="blockId"/> maps to an invalid color index.</exception>
-        public Color BlockToColor (int blockId, int level)
+        public Color BlockToColor(int blockId, int level)
         {
             int ci = BlockToColorIndex(blockId, level);
-            if (ci < 0 || ci >= 256) {
+            if (ci < 0 || ci >= 256)
+            {
                 throw new InvalidOperationException("The specified Block ID mapped to an invalid color index.");
             }
 
@@ -182,14 +188,16 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="colorIndex">A color index value.</param>
         /// <returns>A <see cref="ColorGroup"/> value.</returns>
-        public ColorGroup ColorIndexToGroup (int colorIndex)
+        public ColorGroup ColorIndexToGroup(int colorIndex)
         {
             int group = colorIndex / _groupSize;
 
-            try {
+            try
+            {
                 return (ColorGroup)group;
             }
-            catch {
+            catch
+            {
                 return ColorGroup.Other;
             }
         }
@@ -199,7 +207,7 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="group">A <see cref="ColorGroup"/> value.</param>
         /// <returns>The baseline (level = 0) color index value for the given <see cref="ColorGroup"/>.</returns>
-        public int GroupToColorIndex (ColorGroup group)
+        public int GroupToColorIndex(ColorGroup group)
         {
             return GroupToColorIndex(group, 0);
         }
@@ -211,9 +219,10 @@ namespace Substrate.Data
         /// <param name="level">A level value within the <see cref="ColorGroup"/>.</param>
         /// <returns>The color index value for the given <see cref="ColorGroup"/> and group level.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="level"/> is out of range with respect to the current <see cref="ColorGroupSize"/> parameter.</exception>
-        public int GroupToColorIndex (ColorGroup group, int level)
+        public int GroupToColorIndex(ColorGroup group, int level)
         {
-            if (level < 0 || level >= _groupSize) {
+            if (level < 0 || level >= _groupSize)
+            {
                 throw new ArgumentOutOfRangeException("level", level, "Argument 'level' must be in range [0, " + (_groupSize - 1) + "]");
             }
 
@@ -225,7 +234,7 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="group">A <see cref="ColorGroup"/> value.</param>
         /// <returns>The baseline (level = 0) <see cref="Color"/> for the given <see cref="ColorGroup"/>.</returns>
-        public Color GroupToColor (ColorGroup group)
+        public Color GroupToColor(ColorGroup group)
         {
             return GroupToColor(group, 0);
         }
@@ -238,10 +247,11 @@ namespace Substrate.Data
         /// <returns>The <see cref="Color"/> for the given <see cref="ColorGroup"/> and group level.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the <paramref name="level"/> is out of range with respect to the current <see cref="ColorGroupSize"/> parameter.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the <paramref name="group"/> and <paramref name="level"/> map to an invalid color index.</exception>
-        public Color GroupToColor (ColorGroup group, int level)
+        public Color GroupToColor(ColorGroup group, int level)
         {
             int ci = GroupToColorIndex(group, level);
-            if (ci < 0 || ci >= 256) {
+            if (ci < 0 || ci >= 256)
+            {
                 throw new InvalidOperationException("The specified group mapped to an invalid color index.");
             }
 
@@ -251,9 +261,10 @@ namespace Substrate.Data
         /// <summary>
         /// Rebuilds the internal color conversion tables.  Should be called after modifying the <see cref="ColorIndex"/> table.
         /// </summary>
-        public void RefreshColorCache ()
+        public void RefreshColorCache()
         {
-            for (int i = 0; i < _colorIndex.Length; i++) {
+            for (int i = 0; i < _colorIndex.Length; i++)
+            {
                 _labIndex[i] = RgbToLab(_colorIndex[i]);
             }
         }
@@ -264,15 +275,17 @@ namespace Substrate.Data
         /// <param name="color">The source <see cref="Color"/>.</param>
         /// <returns>The closest matching color index value.</returns>
         /// <remarks>This method performs color comparisons in the CIELAB color space, to find the best match according to human perception.</remarks>
-        public int NearestColorIndex (Color color)
+        public int NearestColorIndex(Color color)
         {
             double min = double.MaxValue;
             int minIndex = 0;
 
             Vector3 cr = RgbToLab(color);
 
-            for (int i = 0; i < _colorIndex.Length; i++) {
-                if (_colorIndex[i].A == 0) {
+            for (int i = 0; i < _colorIndex.Length; i++)
+            {
+                if (_colorIndex[i].A == 0)
+                {
                     continue;
                 }
 
@@ -281,7 +294,8 @@ namespace Substrate.Data
                 double z = cr.Z - _labIndex[i].Z;
 
                 double err = x * x + y * y + z * z;
-                if (err < min) {
+                if (err < min)
+                {
                     min = err;
                     minIndex = i;
                 }
@@ -296,7 +310,7 @@ namespace Substrate.Data
         /// <param name="color">The source <see cref="Color"/>.</param>
         /// <returns>The closest matching <see cref="Color"/>.</returns>
         /// <remarks>This method performs color comparisons in the CIELAB color space, to find the best match according to human perception.</remarks>
-        public Color NearestColor (Color color)
+        public Color NearestColor(Color color)
         {
             return _colorIndex[NearestColorIndex(color)];
         }
@@ -307,15 +321,19 @@ namespace Substrate.Data
         /// <param name="map">The <see cref="Map"/> to modify.</param>
         /// <param name="bmp">The source <see cref="Bitmap"/>.</param>
         /// <exception cref="InvalidOperationException">Thrown when the <paramref name="map"/> and <paramref name="bmp"/> objects have different dimensions.</exception>
-        public void BitmapToMap (Map map, Bitmap bmp) 
+        public void BitmapToMap(Map map, Bitmap bmp)
         {
-            if (map.Width != bmp.Width || map.Height != bmp.Height) {
+            if (map.Width != bmp.Width || map.Height != bmp.Height)
+            {
                 throw new InvalidOperationException("The source map and bitmap must have the same dimensions.");
             }
 
-            for (int x = 0; x < map.Width; x++) {
-                for (int z = 0; z < map.Height; z++) {
-                    Color c = bmp.GetPixel(x, z);
+            for (int x = 0; x < map.Width; x++)
+            {
+                for (int z = 0; z < map.Height; z++)
+                {
+
+                    Color c = bmp[x, z];
                     map[x, z] = (byte)NearestColorIndex(c);
                 }
             }
@@ -326,21 +344,23 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="map">The source <see cref="Map"/> object.</param>
         /// <returns>A 32bpp <see cref="Bitmap"/> with the same dimensions and pixel data as the source <see cref="Map"/>.</returns>
-        public Bitmap MapToBitmap (Map map)
+        public Bitmap MapToBitmap(Map map)
         {
-            Bitmap bmp = new Bitmap(map.Width, map.Height, PixelFormat.Format32bppArgb);
+            Bitmap bmp = new Bitmap(map.Width, map.Height);
 
-            for (int x = 0; x < map.Width; x++) {
-                for (int z = 0; z < map.Height; z++) {
+            for (int x = 0; x < map.Width; x++)
+            {
+                for (int z = 0; z < map.Height; z++)
+                {
                     Color c = _colorIndex[map[x, z]];
-                    bmp.SetPixel(x, z, c);
+                    bmp[x, z] = c;
                 }
             }
 
             return bmp;
         }
 
-        private Vector3 RgbToXyz (Color color)
+        private Vector3 RgbToXyz(Color color)
         {
             double r = color.R / 255.0;
             double g = color.G / 255.0;
@@ -369,7 +389,7 @@ namespace Substrate.Data
             return xyz;
         }
 
-        private Vector3 XyzToLab (Vector3 xyz)
+        private Vector3 XyzToLab(Vector3 xyz)
         {
             double x = xyz.X / 95.047;
             double y = xyz.Y / 100.0;
@@ -394,71 +414,94 @@ namespace Substrate.Data
             return lab;
         }
 
-        private Vector3 RgbToLab (Color rgb)
+        private Vector3 RgbToLab(Color rgb)
         {
             return XyzToLab(RgbToXyz(rgb));
         }
 
-        static MapConverter ()
+        static MapConverter()
         {
             _defaultColorIndex = new Color[] {
-                Color.FromArgb(0, 0, 0, 0),         // Unexplored
-                Color.FromArgb(0, 0, 0, 0),
-                Color.FromArgb(0, 0, 0, 0),
-                Color.FromArgb(0, 0, 0, 0),
-                Color.FromArgb(89, 125, 39),        // Grass
-                Color.FromArgb(109, 153, 48),
-                Color.FromArgb(127, 178, 56),
-                Color.FromArgb(109, 153, 48),
-                Color.FromArgb(174, 164, 115),      // Sand/Gravel
-                Color.FromArgb(213, 201, 140),
-                Color.FromArgb(247, 233, 163),
-                Color.FromArgb(213, 201, 140),
-                Color.FromArgb(117, 117, 117),      // Other
-                Color.FromArgb(144, 144, 144),
-                Color.FromArgb(167, 167, 167),
-                Color.FromArgb(144, 144, 144),
-                Color.FromArgb(180, 0, 0),          // Lava
-                Color.FromArgb(220, 0, 0),
-                Color.FromArgb(255, 0, 0),
-                Color.FromArgb(220, 0, 0),
-                Color.FromArgb(112, 112, 180),      // Ice
-                Color.FromArgb(138, 138, 220),
-                Color.FromArgb(160, 160, 255),
-                Color.FromArgb(138, 138, 220),
-                Color.FromArgb(117, 117, 117),      // Iron
-                Color.FromArgb(144, 144, 144),
-                Color.FromArgb(167, 167, 167),
-                Color.FromArgb(144, 144, 144),
-                Color.FromArgb(0, 87, 0),           // Leaves/Flowers
-                Color.FromArgb(0, 106, 0),
-                Color.FromArgb(0, 124, 0),
-                Color.FromArgb(0, 106, 0),
-                Color.FromArgb(180, 180, 180),      // Snow
-                Color.FromArgb(220, 220, 220),
-                Color.FromArgb(255, 255, 255),
-                Color.FromArgb(220, 220, 220),
-                Color.FromArgb(115, 118, 129),      // Clay
-                Color.FromArgb(141, 144, 158),
-                Color.FromArgb(164, 168, 184),
-                Color.FromArgb(141, 144, 158),
-                Color.FromArgb(129, 74, 33),        // Dirt
-                Color.FromArgb(157, 91, 40),
-                Color.FromArgb(183, 106, 47),
-                Color.FromArgb(157, 91, 40),
-                Color.FromArgb(79, 79, 79),         // Stone/Cobblestone/Ore
-                Color.FromArgb(96, 96, 96),
-                Color.FromArgb(112, 112, 112),
-                Color.FromArgb(96, 96, 96),
-                Color.FromArgb(45, 45, 180),        // Water
-                Color.FromArgb(55, 55, 220),
-                Color.FromArgb(64, 64, 255),
-                Color.FromArgb(55, 55, 220),
-                Color.FromArgb(73, 58, 35),         // Log/Tree/Wood
-                Color.FromArgb(89, 71, 43),
-                Color.FromArgb(104, 83, 50),
-                Color.FromArgb(89, 71, 43),
+                FromArgb(0, 0, 0, 0),         // Unexplored
+                FromArgb(0, 0, 0, 0),
+                FromArgb(0, 0, 0, 0),
+                FromArgb(0, 0, 0, 0),
+                FromArgb(89, 125, 39),        // Grass
+                FromArgb(109, 153, 48),
+                FromArgb(127, 178, 56),
+                FromArgb(109, 153, 48),
+                FromArgb(174, 164, 115),      // Sand/Gravel
+                FromArgb(213, 201, 140),
+                FromArgb(247, 233, 163),
+                FromArgb(213, 201, 140),
+                FromArgb(117, 117, 117),      // Other
+                FromArgb(144, 144, 144),
+                FromArgb(167, 167, 167),
+                FromArgb(144, 144, 144),
+                FromArgb(180, 0, 0),          // Lava
+                FromArgb(220, 0, 0),
+                FromArgb(255, 0, 0),
+                FromArgb(220, 0, 0),
+                FromArgb(112, 112, 180),      // Ice
+                FromArgb(138, 138, 220),
+                FromArgb(160, 160, 255),
+                FromArgb(138, 138, 220),
+                FromArgb(117, 117, 117),      // Iron
+                FromArgb(144, 144, 144),
+                FromArgb(167, 167, 167),
+                FromArgb(144, 144, 144),
+                FromArgb(0, 87, 0),           // Leaves/Flowers
+                FromArgb(0, 106, 0),
+                FromArgb(0, 124, 0),
+                FromArgb(0, 106, 0),
+                FromArgb(180, 180, 180),      // Snow
+                FromArgb(220, 220, 220),
+                FromArgb(255, 255, 255),
+                FromArgb(220, 220, 220),
+                FromArgb(115, 118, 129),      // Clay
+                FromArgb(141, 144, 158),
+                FromArgb(164, 168, 184),
+                FromArgb(141, 144, 158),
+                FromArgb(129, 74, 33),        // Dirt
+                FromArgb(157, 91, 40),
+                FromArgb(183, 106, 47),
+                FromArgb(157, 91, 40),
+                FromArgb(79, 79, 79),         // Stone/Cobblestone/Ore
+                FromArgb(96, 96, 96),
+                FromArgb(112, 112, 112),
+                FromArgb(96, 96, 96),
+                FromArgb(45, 45, 180),        // Water
+                FromArgb(55, 55, 220),
+                FromArgb(64, 64, 255),
+                FromArgb(55, 55, 220),
+                FromArgb(73, 58, 35),         // Log/Tree/Wood
+                FromArgb(89, 71, 43),
+                FromArgb(104, 83, 50),
+                FromArgb(89, 71, 43),
             };
+        }
+
+        private static Color FromArgb(int red, int green, int blue) => FromArgb(255, red, green, blue);
+
+        private static Color FromArgb(int alpha, int red, int green, int blue)
+        {
+            if (alpha < 0 || alpha > 255)
+            {
+                throw new ArgumentException("alpha is less than 0 or greater than 255", nameof(alpha));
+            }
+            if (red < 0 || red > 255)
+            {
+                throw new ArgumentException("red is less than 0 or greater than 255", nameof(red));
+            }
+            if (green < 0 || green > 255)
+            {
+                throw new ArgumentException("green is less than 0 or greater than 255", nameof(green));
+            }
+            if (blue < 0 || blue > 255)
+            {
+                throw new ArgumentException("blue is less than 0 or greater than 255", nameof(blue));
+            }
+            return new Color((byte)red, (byte)green, (byte)blue, (byte)alpha);
         }
     }
 }
