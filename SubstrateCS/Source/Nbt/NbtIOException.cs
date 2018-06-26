@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace Substrate.Nbt
 {
@@ -8,13 +7,12 @@ namespace Substrate.Nbt
     /// </summary>
     /// <remarks>In most cases, the <see cref="Exception.InnerException"/> property will contain more detailed information on the
     /// error that occurred.</remarks>
-    [Serializable]
     public class NbtIOException : SubstrateException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NbtIOException"/> class.
         /// </summary>
-        public NbtIOException ()
+        public NbtIOException()
             : base()
         { }
 
@@ -22,7 +20,7 @@ namespace Substrate.Nbt
         /// Initializes a new instance of the <see cref="NbtIOException"/> class with a custom error message.
         /// </summary>
         /// <param name="message">A custom error message.</param>
-        public NbtIOException (string message)
+        public NbtIOException(string message)
             : base(message)
         { }
 
@@ -32,17 +30,8 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="message">A custom error message.</param>
         /// <param name="innerException">A reference to the original exception that caused the error.</param>
-        public NbtIOException (string message, Exception innerException)
+        public NbtIOException(string message, Exception innerException)
             : base(message, innerException)
-        { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NbtIOException"/> class with serialized data.
-        /// </summary>
-        /// <param name="info">The object that holds the serialized object data.</param>
-        /// <param name="context">The contextual information about the source or destination.</param>
-        protected NbtIOException (SerializationInfo info, StreamingContext context)
-            : base(info, context)
         { }
     }
 }
