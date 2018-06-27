@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <Version>2.0.0-alpha</Version>
+    <Description>SDK for loading and modifying Minecraft worlds</Description>
+    <Authors>Justin Aquadro</Authors>
   </PropertyGroup>
 
   <ItemGroup>
