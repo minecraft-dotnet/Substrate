@@ -10,4 +10,8 @@
     <Version>2.0.0-alpha</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
