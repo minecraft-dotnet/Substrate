@@ -78,7 +78,7 @@ namespace Substrate.Core
                 {
                     lock (this.fileLock)
                     {
-                        file.Close();
+                        file.Dispose();
                         file = null;
                     }
                 }
@@ -378,15 +378,19 @@ namespace Substrate.Core
                 _timestamp = timestamp;
             }
 
-            public override void Close()
+            protected override void Dispose(bool disposing)
             {
-                if (_timestamp == null)
+                if (disposing)
                 {
-                    region.Write(x, z, this.GetBuffer(), (int)this.Length);
-                }
-                else
-                {
-                    region.Write(x, z, this.GetBuffer(), (int)this.Length, (int)_timestamp);
+                    TryGetBuffer(out ArraySegment<byte> buffer);
+                    if (_timestamp == null)
+                    {
+                        region.Write(x, z, buffer.Array, (int)this.Length);
+                    }
+                    else
+                    {
+                        region.Write(x, z, buffer.Array, (int)this.Length, (int)_timestamp);
+                    }
                 }
             }
         }
@@ -612,7 +616,7 @@ namespace Substrate.Core
         {
             lock (this.fileLock)
             {
-                file.Close();
+                file.Dispose();
             }
         }
 
