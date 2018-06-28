@@ -97,7 +97,7 @@ namespace Substrate.Source.Nbt
         {
             PropertyDetails details = new PropertyDetails();
 
-            var attr = type.GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
+            var attr = type.GetTypeInfo().GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
             if (attr != null)
             {
                 details.TagType = attr.TagType;
@@ -107,9 +107,9 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                details.ListItemType = type.GetGenericArguments()[0];
+                details.ListItemType = type.GetGenericArguments[0];
                 var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;
@@ -117,14 +117,14 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
-                if (type.GetGenericArguments()[0] != typeof(int))
+                if (type.GenericTypeArguments[0] != typeof(int))
                 {
                     throw new InvalidOperationException("Dictionary-as-list is only supported with int key type");
                 }
 
-                details.ListItemType = type.GetGenericArguments()[1];
+                details.ListItemType = type.GetGenericArguments[1];
                 var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;
@@ -132,16 +132,18 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                type = type.GetGenericArguments()[0];
+                type = type.GenericTypeArguments[0];
                 details.SchemaOptions |= SchemaOptions.OPTIONAL;
             }
 
-            if (type.IsEnum)
+            if (type.GetTypeInfo().IsEnum)
             {
-                type = type.GetEnumUnderlyingType();
+
+                type = EnumType(type);
             }
+
 
             if (type == typeof(byte)) { details.TagType = TagType.TAG_BYTE; }
             else if (type == typeof(bool)) { details.TagType = TagType.TAG_BYTE; }
@@ -158,6 +160,23 @@ namespace Substrate.Source.Nbt
             else { details.TagType = TagType.TAG_COMPOUND; }
 
             return details;
+        }
+
+        private static Type EnumType(Type type)
+        {
+            switch (Convert.GetTypeCode(Activator.CreateInstance(type)))
+            {
+                case TypeCode.Byte:
+                    return typeof(byte);
+                case TypeCode.Int16:
+                    return typeof(short);
+                case TypeCode.Int32:
+                    return typeof(int);
+                case TypeCode.Int64:
+                    return typeof(long);
+                default:
+                    return typeof(object);
+            }
         }
 
         public static string FormatTree(SchemaNode root)
@@ -200,7 +219,7 @@ namespace Substrate.Source.Nbt
 
         public static object LoadCompound(object nbtObject, TagNodeCompound tree, SchemaNodeCompound schemaNode)
         {
-            var properties = nbtObject.GetType().GetProperties();
+            var properties = nbtObject.GetType().GetRuntimeProperties();
 
             foreach (var node in schemaNode)
             {
@@ -242,7 +261,7 @@ namespace Substrate.Source.Nbt
                 else
                 {
                     var baseType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                    var typeCode = Type.GetTypeCode(baseType);
+                    var typeCode = Convert.GetTypeCode(Activator.CreateInstance(baseType));
 
                     object propVal = null;
                     switch (typeCode)
@@ -275,7 +294,7 @@ namespace Substrate.Source.Nbt
                         break;
                     }
 
-                    if (baseType.IsEnum)
+                    if (baseType.GetTypeInfo().IsEnum)
                     {
                         propVal = Enum.ToObject(baseType, propVal);
                     }
@@ -289,16 +308,16 @@ namespace Substrate.Source.Nbt
 
         private static void LoadList(object subObject, PropertyInfo prop, TagNode treeValue, SchemaNodeList schemeNodeList)
         {
-            if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+            if (prop.PropertyType.GetTypeInfo().IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 var listNode = treeValue.ToTagList();
 
                 var listProp = (IList)subObject;
                 listProp.Clear();
 
-                var listItemType = prop.PropertyType.GetGenericArguments()[0];
+                var listItemType = prop.PropertyType.GenericTypeArguments[0];
 
-                var typeCode = Type.GetTypeCode(listItemType);
+                var typeCode = Convert.GetTypeCode(Activator.CreateInstance(listItemType));
                 switch (typeCode)
                 {
                 case TypeCode.Boolean:
@@ -361,7 +380,7 @@ namespace Substrate.Source.Nbt
 
                 // prop.SetValue(nbtObject, list.ToList(), null);
             }
-            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            else if (prop.PropertyType.GetTypeInfo().IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
                 var list = treeValue.ToTagList();
 
