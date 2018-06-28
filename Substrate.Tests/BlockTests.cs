@@ -21,7 +21,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void BlockTest_1_8_3_debug()
         {
-            NbtWorld world = NbtWorld.Open(@"..\..\Data\1_8_3-debug\");
+            NbtWorld world = NbtWorld.Open(@"..\..\..\Data\1_8_3-debug\");
             Assert.IsNotNull(world);
 
             for (int x = DebugWorld.MinX; x < DebugWorld.MaxX; x += 2)
@@ -42,7 +42,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void BlockTest_1_9_2_debug()
         {
-            NbtWorld world = NbtWorld.Open(@"..\..\Data\1_9_2-debug\");
+            NbtWorld world = NbtWorld.Open(@"..\..\..\Data\1_9_2-debug\");
             Assert.IsNotNull(world);
 
             bool dataError = false;
@@ -71,7 +71,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void BlockTest_1_12_2_debug()
         {
-            NbtWorld world = NbtWorld.Open(@"..\..\Data\1_12_2-debug\");
+            NbtWorld world = NbtWorld.Open(@"..\..\..\Data\1_12_2-debug\");
             Assert.IsNotNull(world);
 
             var sb = new StringBuilder();
