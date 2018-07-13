@@ -188,7 +188,7 @@ namespace Substrate
         /// <returns>The <see cref="ChunkCache"/> for the given dimension, or null if the dimension was not found.</returns>
         public ChunkCache GetChunkCache (int dim)
         {
-            return GetChunkCache(DimensionFromInt(dim));  
+            return GetChunkCache(DimensionFromInt(dim));
         }
 
         public ChunkCache GetChunkCache (string dim)
@@ -293,6 +293,10 @@ namespace Substrate
             }
 
             string path = IO.Path.Combine(Path, _PLAYER_DIR);
+            if (!IO.Directory.Exists(path))
+            {
+                path = IO.Path.Combine(Path, _PLAYERDATA_DIR);
+            }
 
             _playerMan = new PlayerManager(path);
             return _playerMan;
