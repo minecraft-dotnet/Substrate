@@ -58,8 +58,8 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScalar("id", TagType.TAG_SHORT),
-            new SchemaNodeScalar("Damage", TagType.TAG_SHORT),
+            new SchemaNodeScalar("id", TagType.TAG_STRING),
+            new SchemaNodeScalar("Damage", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Count", TagType.TAG_BYTE),
             new SchemaNodeCompound("tag", new SchemaNodeCompound("") {
                 new SchemaNodeList("ench", TagType.TAG_COMPOUND, Enchantment.Schema, SchemaOptions.OPTIONAL),
@@ -67,6 +67,7 @@ namespace Substrate
                 new SchemaNodeScalar("author", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
                 new SchemaNodeList("pages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
             }, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("Slot", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
         };
 
         protected TagNodeCompound _source;
@@ -113,7 +114,7 @@ namespace Substrate
         /// </summary>
         /// <remarks>The damage value may represent a generic data value for some items.</remarks>
         [TagNode(TagType = TagType.TAG_SHORT)]
-        public int Damage { get; set; }
+        public int? Damage { get; set; }
 
         /// <summary>
         /// Gets or sets the number of this item stacked together in an item slot.
@@ -205,7 +206,8 @@ namespace Substrate
             }
 
             Count = ctree["Count"].ToTagByte();
-            Damage = ctree["Damage"].ToTagShort();
+            Damage = ctree["Damage"]?.ToTagShort();
+            Slot = ctree["Slot"]?.ToTagByte();
 
             if (ctree.ContainsKey("tag"))
             {

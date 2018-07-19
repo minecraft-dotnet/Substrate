@@ -23,10 +23,10 @@ namespace Substrate.Source.Nbt
         {
             SchemaNodeCompound schema = new SchemaNodeCompound(enclosingName, enclosingOptions);
 
-            var properties = type.GetProperties();
+            var properties = type.GetRuntimeProperties();
             foreach (var property in properties)
             {
-                var untypedAttributes = property.GetCustomAttributes(typeof(TagNodeAttribute), false);
+                var untypedAttributes = property.GetCustomAttributes(typeof(TagNodeAttribute), false).ToArray();
 
                 if (untypedAttributes.Length > 0 && untypedAttributes[0] is TagNodeAttribute)
                 {
@@ -46,45 +46,45 @@ namespace Substrate.Source.Nbt
 
                     switch (tagType)
                     {
-                    case TagType.TAG_BYTE:
-                    case TagType.TAG_SHORT:
-                    case TagType.TAG_INT:
-                    case TagType.TAG_LONG:
-                    case TagType.TAG_FLOAT:
-                    case TagType.TAG_DOUBLE:
-                        schema.Add(new SchemaNodeScalar(name, tagType, schemaOptions));
-                        break;
+                        case TagType.TAG_BYTE:
+                        case TagType.TAG_SHORT:
+                        case TagType.TAG_INT:
+                        case TagType.TAG_LONG:
+                        case TagType.TAG_FLOAT:
+                        case TagType.TAG_DOUBLE:
+                            schema.Add(new SchemaNodeScalar(name, tagType, schemaOptions));
+                            break;
 
-                    case TagType.TAG_STRING:
-                        schema.Add(new SchemaNodeString(name, schemaOptions));
-                        break;
+                        case TagType.TAG_STRING:
+                            schema.Add(new SchemaNodeString(name, schemaOptions));
+                            break;
 
-                    case TagType.TAG_BYTE_ARRAY:
-                        schema.Add(new SchemaNodeByteArray(name, schemaOptions));
-                        break;
+                        case TagType.TAG_BYTE_ARRAY:
+                            schema.Add(new SchemaNodeByteArray(name, schemaOptions));
+                            break;
 
-                    case TagType.TAG_INT_ARRAY:
-                        schema.Add(new SchemaNodeIntArray(name, schemaOptions));
-                        break;
+                        case TagType.TAG_INT_ARRAY:
+                            schema.Add(new SchemaNodeIntArray(name, schemaOptions));
+                            break;
 
-                    case TagType.TAG_SHORT_ARRAY:
-                        schema.Add(new SchemaNodeShortArray(name, schemaOptions));
-                        break;
+                        case TagType.TAG_SHORT_ARRAY:
+                            schema.Add(new SchemaNodeShortArray(name, schemaOptions));
+                            break;
 
-                    case TagType.TAG_LIST:
-                        if (propertyInfo.ItemTagType == TagType.TAG_COMPOUND)
-                        {
-                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, FromClass(propertyInfo.ListType), schemaOptions));
-                        }
-                        else
-                        {
-                            schema.Add(new SchemaNodeList(name, propertyInfo.ItemTagType, schemaOptions));
-                        }
-                        break;
+                        case TagType.TAG_LIST:
+                            if (propertyInfo.ItemTagType == TagType.TAG_COMPOUND)
+                            {
+                                schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, FromClass(propertyInfo.ListType), schemaOptions));
+                            }
+                            else
+                            {
+                                schema.Add(new SchemaNodeList(name, propertyInfo.ItemTagType, schemaOptions));
+                            }
+                            break;
 
-                    case TagType.TAG_COMPOUND:
-                        schema.Add(FromClass(property.PropertyType, name, schemaOptions));
-                        break;
+                        case TagType.TAG_COMPOUND:
+                            schema.Add(FromClass(property.PropertyType, name, schemaOptions));
+                            break;
                     }
                 }
             }
@@ -96,7 +96,7 @@ namespace Substrate.Source.Nbt
         {
             PropertyDetails details = new PropertyDetails();
 
-            var attr = type.GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
+            var attr = type.GetTypeInfo().GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
             if (attr != null)
             {
                 details.TagType = attr.TagType;
@@ -104,9 +104,9 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                details.ListType = type.GetGenericArguments()[0];
+                details.ListType = type.GenericTypeArguments[0];
                 var subTagType = GetTagTypeForPropertyType(details.ListType);
 
                 details.TagType = TagType.TAG_LIST;
@@ -114,14 +114,14 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
-                if (type.GetGenericArguments()[0] != typeof(int))
+                if (type.GenericTypeArguments[0] != typeof(int))
                 {
                     throw new InvalidOperationException("Dictionary-as-list is only supported with int key type");
                 }
 
-                details.ListType = type.GetGenericArguments()[1];
+                details.ListType = type.GenericTypeArguments[1];
                 var subTagType = GetTagTypeForPropertyType(details.ListType);
 
                 details.TagType = TagType.TAG_LIST;
@@ -129,16 +129,18 @@ namespace Substrate.Source.Nbt
                 return details;
             }
 
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                type = type.GetGenericArguments()[0];
+                type = type.GenericTypeArguments[0];
                 details.SchemaOptions |= SchemaOptions.OPTIONAL;
             }
 
-            if (type.IsEnum)
+            if (type.GetTypeInfo().IsEnum)
             {
-                type = type.GetEnumUnderlyingType();
+
+                type = EnumType(type);
             }
+
 
             if (type == typeof(byte)) { details.TagType = TagType.TAG_BYTE; }
             else if (type == typeof(bool)) { details.TagType = TagType.TAG_BYTE; }
@@ -155,6 +157,23 @@ namespace Substrate.Source.Nbt
             else { details.TagType = TagType.TAG_COMPOUND; }
 
             return details;
+        }
+
+        private static Type EnumType(Type type)
+        {
+            switch (Convert.GetTypeCode(Activator.CreateInstance(type)))
+            {
+                case TypeCode.Byte:
+                    return typeof(byte);
+                case TypeCode.Int16:
+                    return typeof(short);
+                case TypeCode.Int32:
+                    return typeof(int);
+                case TypeCode.Int64:
+                    return typeof(long);
+                default:
+                    return typeof(object);
+            }
         }
 
         public static string FormatTree(SchemaNode root)
@@ -197,7 +216,7 @@ namespace Substrate.Source.Nbt
 
         public static object LoadCompound(object nbtObject, TagNodeCompound tree, SchemaNodeCompound schemaNode)
         {
-            var properties = nbtObject.GetType().GetProperties();
+            var properties = nbtObject.GetType().GetRuntimeProperties();
 
             foreach (var node in schemaNode)
             {
@@ -239,40 +258,40 @@ namespace Substrate.Source.Nbt
                 else
                 {
                     var baseType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                    var typeCode = Type.GetTypeCode(baseType);
+                    var typeCode = Convert.GetTypeCode(Activator.CreateInstance(baseType));
 
                     object propVal = null;
                     switch (typeCode)
                     {
-                    case TypeCode.Boolean:
-                        propVal = treeValue.ToTagByte().Data != 0 ? true : false;
-                        break;
-                    case TypeCode.Byte:
-                        propVal = treeValue.ToTagByte().Data;
-                        break;
-                    case TypeCode.Int16:
-                        propVal = treeValue.ToTagShort().Data;
-                        break;
-                    case TypeCode.Int32:
-                        propVal = treeValue.ToTagInt().Data;
-                        break;
-                    case TypeCode.Int64:
-                        propVal = treeValue.ToTagLong().Data;
-                        break;
-                    case TypeCode.String:
-                        propVal = treeValue.ToTagString().Data;
-                        break;
-                    case TypeCode.Single:
-                        propVal = treeValue.ToTagFloat().Data;
-                        break;
-                    case TypeCode.Double:
-                        propVal = treeValue.ToTagDouble().Data;
-                        break;
-                    default:
-                        break;
+                        case TypeCode.Boolean:
+                            propVal = treeValue.ToTagByte().Data != 0 ? true : false;
+                            break;
+                        case TypeCode.Byte:
+                            propVal = treeValue.ToTagByte().Data;
+                            break;
+                        case TypeCode.Int16:
+                            propVal = treeValue.ToTagShort().Data;
+                            break;
+                        case TypeCode.Int32:
+                            propVal = treeValue.ToTagInt().Data;
+                            break;
+                        case TypeCode.Int64:
+                            propVal = treeValue.ToTagLong().Data;
+                            break;
+                        case TypeCode.String:
+                            propVal = treeValue.ToTagString().Data;
+                            break;
+                        case TypeCode.Single:
+                            propVal = treeValue.ToTagFloat().Data;
+                            break;
+                        case TypeCode.Double:
+                            propVal = treeValue.ToTagDouble().Data;
+                            break;
+                        default:
+                            break;
                     }
 
-                    if (baseType.IsEnum)
+                    if (baseType.GetTypeInfo().IsEnum)
                     {
                         propVal = Enum.ToObject(baseType, propVal);
                     }
@@ -286,79 +305,79 @@ namespace Substrate.Source.Nbt
 
         private static void LoadList(object subObject, PropertyInfo prop, TagNode treeValue, SchemaNodeList schemeNodeList)
         {
-            if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+            if (prop.PropertyType.GetTypeInfo().IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
             {
                 var listNode = treeValue.ToTagList();
 
                 var listProp = (IList)subObject;
                 listProp.Clear();
 
-                var listItemType = prop.PropertyType.GetGenericArguments()[0];
+                var listItemType = prop.PropertyType.GenericTypeArguments[0];
 
-                var typeCode = Type.GetTypeCode(listItemType);
+                var typeCode = Convert.GetTypeCode(Activator.CreateInstance(listItemType));
                 switch (typeCode)
                 {
-                case TypeCode.Boolean:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagByte().Data != 0);
-                    }
-                    break;
-                case TypeCode.Byte:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagByte().Data);
-                    }
-                    break;
-                case TypeCode.Int16:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagShort().Data);
-                    }
-                    break;
-                case TypeCode.Int32:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagInt().Data);
-                    }
-                    break;
-                case TypeCode.Int64:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagLong().Data);
-                    }
-                    break;
-                case TypeCode.String:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagString().Data);
-                    }
-                    break;
-                case TypeCode.Single:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagFloat().Data);
-                    }
-                    break;
-                case TypeCode.Double:
-                    foreach (var n in listNode)
-                    {
-                        listProp.Add(n.ToTagDouble().Data);
-                    }
-                    break;
-                default:
-                    foreach (var n in listNode)
-                    {
-                        var itemObject = Activator.CreateInstance(listItemType);
-                        LoadCompound(itemObject, n as TagNodeCompound, schemeNodeList.ItemSchema as SchemaNodeCompound);
-                        listProp.Add(itemObject);
-                    }
-                    break;
+                    case TypeCode.Boolean:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagByte().Data != 0);
+                        }
+                        break;
+                    case TypeCode.Byte:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagByte().Data);
+                        }
+                        break;
+                    case TypeCode.Int16:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagShort().Data);
+                        }
+                        break;
+                    case TypeCode.Int32:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagInt().Data);
+                        }
+                        break;
+                    case TypeCode.Int64:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagLong().Data);
+                        }
+                        break;
+                    case TypeCode.String:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagString().Data);
+                        }
+                        break;
+                    case TypeCode.Single:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagFloat().Data);
+                        }
+                        break;
+                    case TypeCode.Double:
+                        foreach (var n in listNode)
+                        {
+                            listProp.Add(n.ToTagDouble().Data);
+                        }
+                        break;
+                    default:
+                        foreach (var n in listNode)
+                        {
+                            var itemObject = Activator.CreateInstance(listItemType);
+                            LoadCompound(itemObject, n as TagNodeCompound, schemeNodeList.ItemSchema as SchemaNodeCompound);
+                            listProp.Add(itemObject);
+                        }
+                        break;
                 }
 
                 // prop.SetValue(nbtObject, list.ToList(), null);
             }
-            else if (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            else if (prop.PropertyType.GetTypeInfo().IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
             {
                 var list = treeValue.ToTagList();
 

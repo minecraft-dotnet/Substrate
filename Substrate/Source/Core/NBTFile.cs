@@ -56,28 +56,28 @@ namespace Substrate.Core
             {
                 switch (compression)
                 {
-                case CompressionType.None:
-                    using (FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        long length = fstr.Seek(0, SeekOrigin.End);
-                        fstr.Seek(0, SeekOrigin.Begin);
+                    case CompressionType.None:
+                        using (FileStream fstr = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            long length = fstr.Seek(0, SeekOrigin.End);
+                            fstr.Seek(0, SeekOrigin.Begin);
 
-                        byte[] data = new byte[length];
-                        fstr.Read(data, 0, data.Length);
+                            byte[] data = new byte[length];
+                            fstr.Read(data, 0, data.Length);
 
-                        return new MemoryStream(data);
-                    }
-                case CompressionType.GZip:
-                    Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    return new GZipStream(stream1, CompressionMode.Decompress);
-                case CompressionType.Zlib:
-                    Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    return new ZlibStream(stream2, CompressionMode.Decompress);
-                case CompressionType.Deflate:
-                    Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    return new DeflateStream(stream3, CompressionMode.Decompress);
-                default:
-                    throw new ArgumentException("Invalid CompressionType specified", "compression");
+                            return new MemoryStream(data);
+                        }
+                    case CompressionType.GZip:
+                        Stream stream1 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new GZipStream(stream1, CompressionMode.Decompress);
+                    case CompressionType.Zlib:
+                        Stream stream2 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new ZlibStream(stream2, CompressionMode.Decompress);
+                    case CompressionType.Deflate:
+                        Stream stream3 = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        return new DeflateStream(stream3, CompressionMode.Decompress);
+                    default:
+                        throw new ArgumentException("Invalid CompressionType specified", "compression");
                 }
             }
             catch (Exception ex)
@@ -97,16 +97,16 @@ namespace Substrate.Core
             {
                 switch (compression)
                 {
-                case CompressionType.None:
-                    return new NBTBuffer(this);
-                case CompressionType.GZip:
-                    return new GZipStream(new NBTBuffer(this), CompressionMode.Compress);
-                case CompressionType.Zlib:
-                    return new ZlibStream(new NBTBuffer(this), CompressionMode.Compress);
-                case CompressionType.Deflate:
-                    return new DeflateStream(new NBTBuffer(this), CompressionMode.Compress);
-                default:
-                    throw new ArgumentException("Invalid CompressionType specified", "compression");
+                    case CompressionType.None:
+                        return new NBTBuffer(this);
+                    case CompressionType.GZip:
+                        return new GZipStream(new NBTBuffer(this), CompressionMode.Compress);
+                    case CompressionType.Zlib:
+                        return new ZlibStream(new NBTBuffer(this), CompressionMode.Compress);
+                    case CompressionType.Deflate:
+                        return new DeflateStream(new NBTBuffer(this), CompressionMode.Compress);
+                    default:
+                        throw new ArgumentException("Invalid CompressionType specified", "compression");
                 }
             }
             catch (Exception ex)
@@ -125,29 +125,35 @@ namespace Substrate.Core
                 this.file = c;
             }
 
-            public override void Close()
+            protected override void Dispose(bool disposing)
             {
-                try
+                if (disposing)
                 {
-                    using (Stream fstr = new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    try
                     {
-                        try
+                        using (Stream fstr = new FileStream(file._filename, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                         {
-                            fstr.Write(this.GetBuffer(), 0, (int)this.Length);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new NbtIOException("Failed to write out NBT data stream.", ex);
+                            try
+                            {
+                                long position = Position;
+                                Position = 0;
+                                WriteTo(fstr);
+                                Position = position;
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new NbtIOException("Failed to write out NBT data stream.", ex);
+                            }
                         }
                     }
-                }
-                catch (NbtIOException)
-                {
-                    throw;
-                }
-                catch (Exception ex)
-                {
-                    throw new NbtIOException("Failed to open NBT data stream for output.", ex);
+                    catch (NbtIOException)
+                    {
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new NbtIOException("Failed to open NBT data stream for output.", ex);
+                    }
                 }
             }
         }
