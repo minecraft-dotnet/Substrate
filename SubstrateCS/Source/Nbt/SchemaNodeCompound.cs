@@ -215,5 +215,42 @@ namespace Substrate.Nbt
 
             return list;
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            TagNodeCompound ctag = tag as TagNodeCompound;
+            if (ctag == null) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+
+            bool pass = true;
+
+            Dictionary<string, TagNode> _scratch = new Dictionary<string, TagNode>();
+
+            foreach (SchemaNode node in this) {
+                TagNode value;
+                ctag.TryGetValue(node.Name, out value);
+
+                if (value == null) {
+                    if ((node.Options & SchemaOptions.CREATE_ON_MISSING) == SchemaOptions.CREATE_ON_MISSING) {
+                        _scratch[node.Name] = node.BuildDefaultTree();
+                        continue;
+                    } else if ((node.Options & SchemaOptions.OPTIONAL) == SchemaOptions.OPTIONAL) {
+                        continue;
+                    }
+                }
+
+                pass = node.Verify(verifier, value) && pass;
+            }
+
+            foreach (KeyValuePair<string, TagNode> item in _scratch) {
+                ctag[item.Key] = item.Value;
+            }
+
+            _scratch.Clear();
+
+            return pass;
+        }
     }
 }
