@@ -136,7 +136,7 @@ namespace Substrate
         {
             new SchemaNodeCompound("Data")
             {
-                new SchemaNodeScaler("Time", TagType.TAG_LONG),
+                new SchemaNodeScaler("Time", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeScaler("LastPlayed", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeCompound("Player", Player.Schema, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("SpawnX", TagType.TAG_INT),
