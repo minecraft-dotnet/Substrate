@@ -184,6 +184,8 @@ namespace Substrate
         public const int CARPET = 171;
         public const int HARDENED_CLAY = 172;
         public const int COAL_BLOCK = 173;
+        public const int CONCRETE = 251;
+        public const int CONCRETE_POWDER = 252;
     }
 
     /// <summary>
@@ -729,6 +731,7 @@ namespace Substrate
         public static BlockInfoEx Dropper;
         public static BlockInfo StainedClay;
         public static BlockInfo StainedGlassPane;
+        public static BlockInfo AcaciaWood;
         public static BlockInfo HayBlock;
         public static BlockInfo Carpet;
         public static BlockInfo HardenedClay;
@@ -906,6 +909,7 @@ namespace Substrate
             Dropper = (BlockInfoEx)new BlockInfoEx(158, "Dropper").SetTick(10);
             StainedClay = new BlockInfo(159, "Stained Clay");
             StainedGlassPane = new BlockInfo(160, "Stained Glass Pane").SetOpacity(0);
+            AcaciaWood = new BlockInfo(162, "Acacia Wood");
             HayBlock = new BlockInfo(170, "Hay Block");
             Carpet = new BlockInfo(171, "Carpet").SetOpacity(0);
             HardenedClay = new BlockInfo(172, "Hardened Clay");
