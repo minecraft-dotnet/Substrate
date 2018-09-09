@@ -186,6 +186,7 @@ namespace Substrate
         public const int COAL_BLOCK = 173;
         public const int CONCRETE = 251;
         public const int CONCRETE_POWDER = 252;
+        public const int SEA_LANTERN = 169;
     }
 
     /// <summary>
