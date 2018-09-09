@@ -169,6 +169,12 @@ namespace Substrate
             }
         }
 
+        public override void SaveBlocks() {
+            foreach (KeyValuePair<string, RegionChunkManager> cm in _chunkMgrs) {
+                cm.Value.Save();
+            }
+        }
+
         /// <summary>
         /// Gets the <see cref="ChunkCache"/> currently managing chunks in the default dimension.
         /// </summary>
