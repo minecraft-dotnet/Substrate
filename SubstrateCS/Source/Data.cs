@@ -218,6 +218,16 @@ namespace Substrate
         SOUTH = 5,
     }
 
+    public enum StoneType {
+        STONE = 0,
+        GRANITE = 1,
+        POLISHED_GRANITE = 2,
+        DIORITE = 3,
+        POLISHED_DORITE = 4,
+        ANDESITE = 5,
+        POLISHED_ANDESITE = 6
+    }
+    
     public enum FurnaceOrientation
     {
         EAST = 2,

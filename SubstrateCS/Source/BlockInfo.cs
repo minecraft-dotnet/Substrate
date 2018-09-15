@@ -187,6 +187,8 @@ namespace Substrate
         public const int CONCRETE = 251;
         public const int CONCRETE_POWDER = 252;
         public const int SEA_LANTERN = 169;
+        public const int STANDING_BANNER = 176;
+        public const int WALL_BANNER = 177;
     }
 
     /// <summary>
@@ -737,6 +739,8 @@ namespace Substrate
         public static BlockInfo Carpet;
         public static BlockInfo HardenedClay;
         public static BlockInfo CoalBlock;
+        public static BlockInfoEx StandingBanner;
+        public static BlockInfoEx WallBanner;
 
         static BlockInfo ()
         {
@@ -915,6 +919,8 @@ namespace Substrate
             Carpet = new BlockInfo(171, "Carpet").SetOpacity(0);
             HardenedClay = new BlockInfo(172, "Hardened Clay");
             CoalBlock = new BlockInfo(173, "Block of Coal");
+            WallBanner = new BlockInfoEx(BlockType.WALL_BANNER, "Wall Banner");
+            StandingBanner = new BlockInfoEx(BlockType.STANDING_BANNER, "Standing Banner");
 
             for (int i = 0; i < MAX_BLOCKS; i++) {
                 if (_blockTable[i] == null) {
@@ -956,8 +962,8 @@ namespace Substrate
             Chest.SetTileEntity("Chest");
             Furnace.SetTileEntity("Furnace");
             BurningFurnace.SetTileEntity("Furnace");
-            SignPost.SetTileEntity("Sign");
-            WallSign.SetTileEntity("Sign");
+            SignPost.SetTileEntity("minecraft:sign");
+            WallSign.SetTileEntity("minecraft:sign");
             EnchantmentTable.SetTileEntity("EnchantTable");
             BrewingStand.SetTileEntity("Cauldron");
             EndPortal.SetTileEntity("Airportal");
@@ -967,6 +973,8 @@ namespace Substrate
             TrappedChest.SetTileEntity("Chest");
             Hopper.SetTileEntity("Hopper");
             Dropper.SetTileEntity("Dropper");
+            StandingBanner.SetTileEntity("minecraft:banner");
+            WallBanner.SetTileEntity("minecraft:banner");
 
             // Set Data Limits
 
