@@ -13,8 +13,8 @@ namespace Substrate.Source.Nbt
         public struct PropertyDetails
         {
             public TagType TagType;
-            public TagType ItemTagType;
-            public Type ListType;
+            public TagType ListItemTagType;
+            public Type ListItemType;
             public SchemaOptions SchemaOptions;
             public bool CustomType;
         }
@@ -26,12 +26,12 @@ namespace Substrate.Source.Nbt
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                var untypedAttributes = property.GetCustomAttributes(typeof(TagNodeAttribute), false);
+                var attribute = property.GetCustomAttributes(typeof(TagNodeAttribute), false)
+                    .Cast<TagNodeAttribute>()
+                    .SingleOrDefault();
 
-                if (untypedAttributes.Length > 0 && untypedAttributes[0] is TagNodeAttribute)
+                if (attribute != null)
                 {
-                    var attribute = (TagNodeAttribute)untypedAttributes[0];
-
                     var name = attribute.Name ?? property.Name;
 
                     var propertyInfo = GetTagTypeForPropertyType(property.PropertyType);
@@ -72,13 +72,14 @@ namespace Substrate.Source.Nbt
                         break;
 
                     case TagType.TAG_LIST:
-                        if (propertyInfo.ItemTagType == TagType.TAG_COMPOUND)
+                        if (propertyInfo.ListItemTagType == TagType.TAG_COMPOUND)
                         {
-                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, FromClass(propertyInfo.ListType), schemaOptions));
+                                var listItemSchema = FromClass(propertyInfo.ListItemType);
+                                schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, listItemSchema, schemaOptions));
                         }
                         else
                         {
-                            schema.Add(new SchemaNodeList(name, propertyInfo.ItemTagType, schemaOptions));
+                            schema.Add(new SchemaNodeList(name, propertyInfo.ListItemTagType, schemaOptions));
                         }
                         break;
 
@@ -100,17 +101,19 @@ namespace Substrate.Source.Nbt
             if (attr != null)
             {
                 details.TagType = attr.TagType;
+                details.ListItemTagType = attr.ListItemTagType;
+                details.ListItemType = attr.ListItemType;
                 details.CustomType = true;
                 return details;
             }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                details.ListType = type.GetGenericArguments()[0];
-                var subTagType = GetTagTypeForPropertyType(details.ListType);
+                details.ListItemType = type.GetGenericArguments()[0];
+                var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;
-                details.ItemTagType = subTagType.TagType;
+                details.ListItemTagType = subTagType.TagType;
                 return details;
             }
 
@@ -121,11 +124,11 @@ namespace Substrate.Source.Nbt
                     throw new InvalidOperationException("Dictionary-as-list is only supported with int key type");
                 }
 
-                details.ListType = type.GetGenericArguments()[1];
-                var subTagType = GetTagTypeForPropertyType(details.ListType);
+                details.ListItemType = type.GetGenericArguments()[1];
+                var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;
-                details.ItemTagType = subTagType.TagType;
+                details.ListItemTagType = subTagType.TagType;
                 return details;
             }
 
