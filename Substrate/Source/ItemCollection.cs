@@ -10,14 +10,13 @@ namespace Substrate
     /// Represents a collection of items, such as a chest or an inventory.
     /// </summary>
     /// <remarks>ItemCollections have a limited number of slots that depends on where they are used.</remarks>
-    public class ItemCollection : INbtObject<ItemCollection>, ICopyable<ItemCollection>
+    public class ItemCollection : INbtObject<ItemCollection>, INbtObject2, ICopyable<ItemCollection>
     {
         private static readonly SchemaNodeList _listSchema = new SchemaNodeList("", TagType.TAG_COMPOUND, Item.Schema);
 
         private static readonly SchemaNodeList Schema2 = new SchemaNodeList("", TagType.TAG_COMPOUND, SchemaBuilder.FromClass(typeof(Item)));
 
         private Dictionary<int, Item> _items;
-        private int _capacity;
 
         /// <summary>
         /// Constructs an <see cref="ItemCollection"/> with at most <paramref name="capacity"/> item slots.
@@ -28,27 +27,19 @@ namespace Substrate
         /// this case would refer to the highest equipment slot.</remarks>
         public ItemCollection(int capacity)
         {
-            _capacity = capacity;
+            Capacity = capacity;
             _items = new Dictionary<int, Item>();
         }
-
-        #region Properties
 
         /// <summary>
         /// Gets the capacity of the item collection.
         /// </summary>
-        public int Capacity
-        {
-            get { return _capacity; }
-        }
+        public int Capacity { get; private set; }
 
         /// <summary>
         /// Gets the current number of item slots actually used in the collection.
         /// </summary>
-        public int Count
-        {
-            get { return _items.Count; }
-        }
+        public int Count { get { return _items.Count; } }
 
         /// <summary>
         /// Gets or sets an item in a given item slot.
@@ -65,7 +56,7 @@ namespace Substrate
 
             set
             {
-                if (slot < 0 || slot >= _capacity)
+                if (slot < 0 || slot >= Capacity)
                 {
                     return;
                 }
@@ -80,8 +71,6 @@ namespace Substrate
         {
             get { return Item.Schema; }
         }
-
-        #endregion
 
         /// <summary>
         /// Checks if an item exists in the given item slot.
@@ -116,7 +105,7 @@ namespace Substrate
         /// <inheritdoc/>
         public ItemCollection Copy()
         {
-            ItemCollection ic = new ItemCollection(_capacity);
+            ItemCollection ic = new ItemCollection(Capacity);
             foreach (KeyValuePair<int, Item> item in _items)
             {
                 ic[item.Key] = item.Value.Copy();
@@ -179,5 +168,20 @@ namespace Substrate
         }
 
         #endregion
+
+        void INbtObject2.LoadTree(TagNode tree)
+        {
+            TagNodeList ltree = tree as TagNodeList;
+            if (ltree == null)
+            {
+                return;
+            }
+
+            foreach (TagNodeCompound item in ltree)
+            {
+                int slot = item["Slot"].ToTagByte();
+                _items[slot] = new Item().LoadTree(item);
+            }
+        }
     }
 }
