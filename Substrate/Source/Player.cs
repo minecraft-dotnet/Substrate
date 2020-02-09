@@ -161,7 +161,7 @@ namespace Substrate
         public int Dimension { get; set; }
 
         [TagNode]
-        public Dictionary<int, Item> Inventory { get; } = new Dictionary<int, Item>();
+        public ItemCollection Inventory { get; } = new ItemCollection(_CAPACITY);
 
         /// <summary>
         /// Gets or sets the name of the world that the player is currently within.
