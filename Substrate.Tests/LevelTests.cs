@@ -140,7 +140,7 @@ namespace Substrate.Tests
         }
 
         [TestMethod]
-        public void OpenTest_Climatic_Islands_survival()
+        public void LoadTreeTest_Climatic_Islands_survival()
         {
             if (!Directory.Exists(@"..\..\Data\Climatic Islands [ENG]\"))
             {
