@@ -98,7 +98,7 @@ namespace Substrate
             new SchemaNodeScalar("Dimension", TagType.TAG_INT),
             new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
             //new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, ItemCollection.Schema, SchemaOptions.OPTIONAL),
-            new SchemaNodeScalar("World", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+            new SchemaNodeString("World", SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Sleeping", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScalar("SleepTimer", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScalar("SpawnX", TagType.TAG_INT, SchemaOptions.OPTIONAL),

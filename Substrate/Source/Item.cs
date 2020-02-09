@@ -58,13 +58,14 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScalar("id", TagType.TAG_SHORT),
+            new SchemaNodeString("id"),
             new SchemaNodeScalar("Damage", TagType.TAG_SHORT),
             new SchemaNodeScalar("Count", TagType.TAG_BYTE),
+            new SchemaNodeScalar("Slot", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
             new SchemaNodeCompound("tag", new SchemaNodeCompound("") {
                 new SchemaNodeList("ench", TagType.TAG_COMPOUND, Enchantment.Schema, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("title", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("author", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeString("title", SchemaOptions.OPTIONAL),
+                new SchemaNodeString("author", SchemaOptions.OPTIONAL),
                 new SchemaNodeList("pages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
             }, SchemaOptions.OPTIONAL),
         };

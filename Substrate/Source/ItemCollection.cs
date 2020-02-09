@@ -10,6 +10,7 @@ namespace Substrate
     /// Represents a collection of items, such as a chest or an inventory.
     /// </summary>
     /// <remarks>ItemCollections have a limited number of slots that depends on where they are used.</remarks>
+    [TagNodeType(TagType.TAG_LIST, ListItemTagType = TagType.TAG_COMPOUND, ListItemType = typeof(Item))]
     public class ItemCollection : INbtObject<ItemCollection>, INbtObject2, ICopyable<ItemCollection>
     {
         private static readonly SchemaNodeList _listSchema = new SchemaNodeList("", TagType.TAG_COMPOUND, Item.Schema);
