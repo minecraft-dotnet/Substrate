@@ -98,7 +98,7 @@ namespace Substrate
             new SchemaNodeScalar("Dimension", TagType.TAG_INT),
             new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
             //new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, ItemCollection.Schema, SchemaOptions.OPTIONAL),
-            new SchemaNodeScalar("World", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+            new SchemaNodeString("World", SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Sleeping", TagType.TAG_BYTE, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScalar("SleepTimer", TagType.TAG_SHORT, SchemaOptions.CREATE_ON_MISSING),
             new SchemaNodeScalar("SpawnX", TagType.TAG_INT, SchemaOptions.OPTIONAL),
@@ -161,7 +161,7 @@ namespace Substrate
         public int Dimension { get; set; }
 
         [TagNode]
-        public Dictionary<int, Item> Inventory { get; } = new Dictionary<int, Item>();
+        public ItemCollection Inventory { get; } = new ItemCollection(_CAPACITY);
 
         /// <summary>
         /// Gets or sets the name of the world that the player is currently within.

@@ -115,6 +115,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
@@ -244,19 +247,6 @@
     <Compile Include="Source\Vector.cs" />
     <Compile Include="Source\Villages.cs" />
     <Compile Include="Source\World.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Crc32.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Deflate.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\DeflateStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\GZipStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Inflate.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\InfTree.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ParallelDeflateOutputStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Tree.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Zlib.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibBaseStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibCodec.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibConstants.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -291,10 +281,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Substrate.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Vendor\DotNetZip\Zlib\LICENSE.txt" />
+    <Folder Include="Source\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

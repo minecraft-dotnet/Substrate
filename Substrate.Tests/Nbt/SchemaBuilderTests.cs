@@ -25,6 +25,8 @@ namespace Substrate.Nbt.Tests
             Debug.WriteLine(formattedManual);
             Debug.WriteLine("Built:");
             Debug.WriteLine(formattedBuilt);
+
+            Assert.AreEqual(formattedManual, formattedBuilt);
         }
 
         [TestMethod]
@@ -43,8 +45,10 @@ namespace Substrate.Nbt.Tests
             Debug.WriteLine("Built:");
             Debug.WriteLine(formattedBuilt);
 
-            File.WriteAllText("Player.Manual.txt", formattedManual);
-            File.WriteAllText("Player.Built.txt", formattedBuilt);
+            Assert.AreEqual(formattedManual, formattedBuilt);
+
+            //File.WriteAllText("Player.Manual.txt", formattedManual);
+            //File.WriteAllText("Player.Built.txt", formattedBuilt);
         }
     }
 }
