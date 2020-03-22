@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using Substrate.Core;
 
@@ -196,11 +197,11 @@ namespace Substrate.Nbt
                     break;
 
                 case TagType.TAG_FLOAT:
-                    str.Append(tag.ToTagFloat().Data);
+                    str.Append(tag.ToTagFloat().Data.ToString(CultureInfo.InvariantCulture)));
                     break;
 
                 case TagType.TAG_DOUBLE:
-                    str.Append(tag.ToTagDouble().Data);
+                    str.Append(tag.ToTagDouble().Data.ToString(CultureInfo.InvariantCulture)));
                     break;
 
                 case TagType.TAG_BYTE_ARRAY:
