@@ -5,3 +5,5 @@
 SubstrateCS/Release/
 *.sdf
 *.user
+
+.vs/*
