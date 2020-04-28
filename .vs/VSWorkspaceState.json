@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Substrate",
+    "\\SubstrateCS",
+    "\\SubstrateCS\\Source",
+    "\\SubstrateCS\\Source\\Nbt",
+    "\\SubstrateCS\\Source\\TileEntities",
+    "\\Substrate\\Data"
+  ],
+  "SelectedNode": "\\Substrate\\Substrate.csproj",
+  "PreviewInSolutionExplorer": false
+}
