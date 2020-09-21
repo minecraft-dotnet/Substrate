@@ -197,11 +197,11 @@ namespace Substrate.Nbt
                     break;
 
                 case TagType.TAG_FLOAT:
-                    str.Append(tag.ToTagFloat().Data.ToString(CultureInfo.InvariantCulture)));
+                    str.Append(tag.ToTagFloat().Data.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case TagType.TAG_DOUBLE:
-                    str.Append(tag.ToTagDouble().Data.ToString(CultureInfo.InvariantCulture)));
+                    str.Append(tag.ToTagDouble().Data.ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case TagType.TAG_BYTE_ARRAY:
