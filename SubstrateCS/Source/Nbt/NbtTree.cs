@@ -269,10 +269,7 @@ namespace Substrate.Nbt
                 Array.Reverse(lenBytes);
             }
 
-            short len = BitConverter.ToInt16(lenBytes, 0);
-            if (len < 0) {
-                throw new NBTException(NBTException.MSG_READ_NEG);
-            }
+            ushort len = BitConverter.ToUInt16(lenBytes, 0);
 
             byte[] strBytes = new byte[len];
             _stream.Read(strBytes, 0, len);
@@ -574,7 +571,7 @@ namespace Substrate.Nbt
             System.Text.Encoding str = Encoding.UTF8;
             byte[] gzBytes = str.GetBytes(val.Data);
 
-            byte[] lenBytes = BitConverter.GetBytes((short)gzBytes.Length);
+            byte[] lenBytes = BitConverter.GetBytes((ushort)gzBytes.Length);
 
             if (BitConverter.IsLittleEndian) {
                 Array.Reverse(lenBytes);
