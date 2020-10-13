@@ -98,6 +98,23 @@ namespace Substrate
             set { _autoTileTick = value; }
         }
 
+        public int ChunkXLog {
+            get {
+                return chunkXLog;
+            }
+        }
+        public int ChunkYLog {
+            get {
+                return chunkYLog;
+            }
+        }
+
+        public int ChunkZLog {
+            get {
+                return chunkZLog;
+            }
+        }
+
         /// <summary>
         /// Constructs a new <see cref="BlockManager"/> instance on top of the given <see cref="IChunkManager"/>.
         /// </summary>

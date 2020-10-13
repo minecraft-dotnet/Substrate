@@ -77,5 +77,22 @@ namespace Substrate.Nbt
         {
             return new TagNodeByteArray(new byte[_length]);
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            TagNodeByteArray atag = tag as TagNodeByteArray;
+            if (atag == null) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (Length > 0 && atag.Length != Length) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
     }
 }

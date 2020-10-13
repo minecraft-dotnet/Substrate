@@ -19,7 +19,7 @@ namespace Substrate.TileEntities
 
         public static string TypeId
         {
-            get { return "Sign"; }
+            get { return "minecraft:sign"; }
         }
 
         private string _text1 = "";
@@ -30,30 +30,31 @@ namespace Substrate.TileEntities
         public string Text1
         {
             get { return _text1; }
-            set { _text1 = value.Length > 14 ? value.Substring(0, 14) : value; }
+            set { _text1 = value; }
         }
 
         public string Text2
         {
             get { return _text2; }
-            set { _text2 = value.Length > 14 ? value.Substring(0, 14) : value; }
+            set { _text2 = value; }
         }
 
         public string Text3
         {
             get { return _text3; }
-            set { _text3 = value.Length > 14 ? value.Substring(0, 14) : value; }
+            set { _text3 = value; }
         }
 
         public string Text4
         {
             get { return _text4; }
-            set { _text4 = value.Length > 14 ? value.Substring(0, 14) : value; }
+            set { _text4 = value; }
         }
 
         protected TileEntitySign (string id)
             : base(id)
         {
+            Text1 = Text2 = Text3 = Text4 = "{\"text\":\"\"}";
         }
 
         public TileEntitySign ()

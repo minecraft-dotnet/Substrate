@@ -861,7 +861,7 @@ namespace Substrate.Core
 
         private IBoundedLitBlockCollection OnResolveNeighbor (int relX, int relY, int relZ)
         {
-            if (ResolveNeighbor != null) {
+            if (ResolveNeighbor != null && relX >= 0 && relY >= 0 && relZ >= 0) {
                 IBoundedLitBlockCollection n = ResolveNeighbor(relX, relY, relZ);
 
                 if (n == null) {
