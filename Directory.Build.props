@@ -30,7 +30,7 @@
     <PackageProjectUrl>https://github.com/minecraft-dotnet/Substrate</PackageProjectUrl>
     <RepositoryUrl>https://github.com/minecraft-dotnet/Substrate.git</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
-    <PackageTags>minecraft level client world</PackageTags>
+    <PackageTags>minecraft level client world .net</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <AssemblyVersion>2.0.47.0</AssemblyVersion>
     <FileVersion>2.0.47.0</FileVersion>
