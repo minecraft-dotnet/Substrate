@@ -13,7 +13,7 @@ namespace Substrate
 
         protected override IRegion CreateRegionCore (int rx, int rz)
         {
-            return new AnvilRegion(this, _chunkCache, rx, rz);
+            return new AnvilRegion(this, ChunkCache_, rx, rz);
         }
 
         protected override RegionFile CreateRegionFileCore (int rx, int rz)

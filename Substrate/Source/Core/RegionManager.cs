@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +16,30 @@ namespace Substrate.Core
 
         private Dictionary<RegionKey, IRegion> _cache;
 
-        protected ChunkCache _chunkCache;
 
+/* Unmerged change from project 'Substrate (net45)'
+Before:
+        protected ChunkCache _chCache;
+After:
+        private ChunkCache chCache;
+*/
+
+/* Unmerged change from project 'Substrate (netcoreapp3.1)'
+Before:
+        protected ChunkCache _chCache;
+After:
+        private ChunkCache chCache;
+*/
+
+/* Unmerged change from project 'Substrate (net5.0)'
+Before:
+        protected ChunkCache _chCache;
+After:
+        private ChunkCache chCache;
+*/
+        private ChunkCache chCache;
+
+        protected ChunkCache ChunkCache_ { get => this.chCache; set => this.chCache =  value ; }
 
         protected abstract IRegion CreateRegionCore (int rx, int rz);
 
@@ -35,7 +57,7 @@ namespace Substrate.Core
         public RegionManager (string regionDir, ChunkCache cache)
         {
             _regionPath = regionDir;
-            _chunkCache = cache;
+            ChunkCache_ = cache;
             _cache = new Dictionary<RegionKey, IRegion>();
         }
 

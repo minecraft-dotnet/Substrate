@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Substrate.Core;
 using Substrate.Nbt;
@@ -70,7 +70,7 @@ namespace Substrate
             }, SchemaOptions.OPTIONAL),
         };
 
-        protected TagNodeCompound _source;
+        private TagNodeCompound source_;
 
         private List<Enchantment> _enchantments;
 
@@ -80,7 +80,7 @@ namespace Substrate
         public Item()
         {
             _enchantments = new List<Enchantment>();
-            _source = new TagNodeCompound();
+            Source = new TagNodeCompound();
         }
 
         /// <summary>
@@ -144,7 +144,8 @@ namespace Substrate
         /// </summary>
         public TagNodeCompound Source
         {
-            get { return _source; }
+            get => this.source_;
+            protected set => this.source_ = value;
         }
 
         /// <summary>
@@ -172,9 +173,9 @@ namespace Substrate
                 item._enchantments.Add(e.Copy());
             }
 
-            if (_source != null)
+            if (Source != null)
             {
-                item._source = _source.Copy() as TagNodeCompound;
+                item.Source = Source.Copy() as TagNodeCompound;
             }
 
             return item;
@@ -222,7 +223,7 @@ namespace Substrate
                 }
             }
 
-            _source = ctree.Copy() as TagNodeCompound;
+            Source = ctree.Copy() as TagNodeCompound;
 
             return this;
         }
@@ -257,17 +258,17 @@ namespace Substrate
                 TagNodeCompound tagtree = new TagNodeCompound();
                 tagtree["ench"] = enchList;
 
-                if (_source != null && _source.ContainsKey("tag"))
+                if (Source != null && Source.ContainsKey("tag"))
                 {
-                    tagtree.MergeFrom(_source["tag"].ToTagCompound());
+                    tagtree.MergeFrom(Source["tag"].ToTagCompound());
                 }
 
                 tree["tag"] = tagtree;
             }
 
-            if (_source != null)
+            if (Source != null)
             {
-                tree.MergeFrom(_source);
+                tree.MergeFrom(Source);
             }
 
             return tree;
