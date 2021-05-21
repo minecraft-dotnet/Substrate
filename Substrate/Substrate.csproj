@@ -2,7 +2,7 @@
 
   <!-- Labels correspond to VS 2019 UI-based editing "tab" group -->
   <PropertyGroup Label="Application">
-    <AssemblyName>Substrate.net40-client</AssemblyName>
+    <AssemblyName>Substrate</AssemblyName>
     <RootNamespace>Substrate</RootNamespace>
   </PropertyGroup>
 

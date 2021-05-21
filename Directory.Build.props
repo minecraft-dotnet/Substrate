@@ -17,14 +17,11 @@
     <NoWarn>1701;1702;1591</NoWarn>
     <OutputPath>publish\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Label="Build-Deterministic">
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
 
   <!-- requires PackageID, Product, and Authors - ensures versions incremented for all assemblies at once -->
   <PropertyGroup Label="Package">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.46-alpha</Version>
+    <Version>2.0.47-alpha</Version>
     <Company></Company>
     <Product>Substrate.Entities</Product>
     <Description>SDK for loading and modifying Minecraft worlds</Description>
@@ -35,8 +32,8 @@
     <RepositoryType>github</RepositoryType>
     <PackageTags>minecraft level client world</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <AssemblyVersion>2.0.46.0</AssemblyVersion>
-    <FileVersion>2.0.46.0</FileVersion>
+    <AssemblyVersion>2.0.47.0</AssemblyVersion>
+    <FileVersion>2.0.47.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup Label="Package-SourceLink">
     <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
