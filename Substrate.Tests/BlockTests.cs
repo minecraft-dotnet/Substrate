@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Substrate;
@@ -42,6 +42,7 @@ namespace Substrate.Tests
         [TestMethod]
         public void BlockTest_1_9_2_debug()
         {
+            
             NbtWorld world = NbtWorld.Open(@"..\..\Data\1_9_2-debug\");
             Assert.IsNotNull(world);
 

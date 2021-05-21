@@ -19,22 +19,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{D7504FC4
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		net40-client-Debug|Any CPU = net40-client-Debug|Any CPU
-		net40-client-Release|Any CPU = net40-client-Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.net40-client-Debug|Any CPU.ActiveCfg = net40-client-Debug|Any CPU
-		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.net40-client-Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
-		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.net40-client-Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
-		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.net40-client-Release|Any CPU.Build.0 = net40-client-Release|Any CPU
-		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Debug|Any CPU.ActiveCfg = net40-client-Debug|Any CPU
-		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
-		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
-		{7264A1C4-AB4A-4437-B252-7379B98B5509}.net40-client-Release|Any CPU.Build.0 = net40-client-Release|Any CPU
-		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Debug|Any CPU.ActiveCfg = net40-client-Debug|Any CPU
-		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
-		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
-		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.net40-client-Release|Any CPU.Build.0 = net40-client-Release|Any CPU
+		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D269AE0-C025-4647-BA9C-1DB2B84A4E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7264A1C4-AB4A-4437-B252-7379B98B5509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.Debug|Any CPU.ActiveCfg = net40-client-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.Debug|Any CPU.Build.0 = net40-client-Debug|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.Release|Any CPU.ActiveCfg = net40-client-Release|Any CPU
+		{5D875E2D-AD97-43DB-9180-DBA3F26DC569}.Release|Any CPU.Build.0 = net40-client-Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

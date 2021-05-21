@@ -9,6 +9,8 @@
 Substrate/obj/net35-Release/
 Substrate/obj/
 Substrate/bin/
+Substrate/publish/
+Substrate.Entities/publish/
 Examples/CPPCLI/BlockReplace/BlockReplace/Debug/
 Examples/CPPCLI/BlockReplace/Debug/
 Examples/CS/BlockReplace/bin/
