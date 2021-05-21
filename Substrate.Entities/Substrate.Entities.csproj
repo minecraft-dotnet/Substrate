@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package">
-    <PackageId>Substrate.Entities</PackageId>
+    <PackageId>minecraft-dotnet.Substrate.Entities</PackageId>
     <Product>Substrate.Entities</Product>
     <Authors>Justin Aquadro</Authors>
   </PropertyGroup>
