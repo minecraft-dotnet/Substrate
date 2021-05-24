@@ -1,0 +1,56 @@
+<Project>
+
+  <PropertyGroup Label="Application">
+    <!-- See https://docs.microsoft.com/en-us/dotnet/standard/frameworks for available targets -->
+    <TargetFrameworks>net40;net45;netcoreapp3.1;net5.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Build" Condition="'Debug'=='$(Configuration)'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Build" Condition="'Release'=='$(Configuration)'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Label="Build">
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <NoWarn>1701;1702;1591</NoWarn>
+    <OutputPath>publish\</OutputPath>
+  </PropertyGroup>
+
+  <!-- requires PackageID, Product, and Authors - ensures versions incremented for all assemblies at once -->
+  <PropertyGroup Label="Package">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.47-alpha</Version>
+    <Company></Company>
+    <Product>Substrate.Entities</Product>
+    <Description>SDK for loading and modifying Minecraft worlds</Description>
+    <Copyright>Copyright © Justin Aquadro</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/minecraft-dotnet/Substrate</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/minecraft-dotnet/Substrate.git</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>minecraft level client world .net</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyVersion>2.0.47.0</AssemblyVersion>
+    <FileVersion>2.0.47.0</FileVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Package-SourceLink">
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Recommended: Embed symbols containing Source Link in the main file (exe/dll) -->
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Label="Package-ReproducibleBuild" Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <!-- No settings from following tabs:  Signing, CodeAnalysis, Resource, Settings -->
+  <!-- See https://elanderson.net/2017/06/duplicate-system-reflection-assemblycompanyattribute-attribute/ -->
+
+  <ItemGroup Label="Package-SourceLink">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using Substrate.Core;
 using Substrate.Nbt;
@@ -24,7 +24,7 @@ namespace Substrate
         /// <inherits />
         public override string GetFilePath ()
         {
-            return System.IO.Path.Combine(_regionMan.GetRegionPath(), GetFileName());
+            return System.IO.Path.Combine(RegionMan.GetRegionPath(), GetFileName());
         }
 
         /// <summary>

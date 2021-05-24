@@ -50,6 +50,10 @@
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Substrate.Entities\Substrate.Entities.csproj">
+      <Project>{2d269ae0-c025-4647-ba9c-1db2b84a4e55}</Project>
+      <Name>Substrate.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Substrate\Substrate.csproj">
       <Project>{7264A1C4-AB4A-4437-B252-7379B98B5509}</Project>
       <Name>Substrate</Name>

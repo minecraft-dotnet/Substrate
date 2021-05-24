@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,7 +24,7 @@ namespace Substrate.Core
 
         private bool _disposed = false;
 
-        protected RegionManager _regionMan;
+        private RegionManager regionMan;
 
         private static Regex _namePattern = new Regex("r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mca$");
 
@@ -72,7 +72,7 @@ namespace Substrate.Core
         /// to chunks on their own.  This allows regions to easily pass off requests outside of their bounds, if necessary.</para></remarks>
         public Region(RegionManager rm, ChunkCache cache, int rx, int rz)
         {
-            _regionMan = rm;
+            this.RegionMan = rm;
             _cache = cache;
             _regionFile = new WeakReference(null);
             X = rx;
@@ -97,7 +97,7 @@ namespace Substrate.Core
         /// to chunks on their own.  This allows regions to easily pass off requests outside of their bounds, if necessary.</para></remarks>
         public Region(RegionManager rm, ChunkCache cache, string filename)
         {
-            _regionMan = rm;
+            this.RegionMan = rm;
             _cache = cache;
             _regionFile = new WeakReference(null);
 
@@ -105,7 +105,7 @@ namespace Substrate.Core
             X = x;
             Z = z;
 
-            if (!File.Exists(Path.Combine(_regionMan.GetRegionPath(), filename)))
+            if (!File.Exists(Path.Combine(this.RegionMan.GetRegionPath(), filename)))
             {
                 throw new FileNotFoundException();
             }
@@ -431,7 +431,7 @@ namespace Substrate.Core
 
             if (ChunkCount() == 0)
             {
-                _regionMan.DeleteRegion(X, Z);
+                this.RegionMan.DeleteRegion(X, Z);
                 _regionFile.Target = null;
             }
 
@@ -522,6 +522,8 @@ namespace Substrate.Core
             get { return true; }
         }
 
+        protected RegionManager RegionMan { get => this.regionMan; set => this.regionMan =  value ; }
+
         /// <inherits />
         public int GetChunkTimestamp(int lcx, int lcz)
         {
@@ -558,7 +560,7 @@ namespace Substrate.Core
 
         protected IRegion GetForeignRegion(int lcx, int lcz)
         {
-            return _regionMan.GetRegion(X + (lcx >> XLOG), Z + (lcz >> ZLOG));
+            return this.RegionMan.GetRegion(X + (lcx >> XLOG), Z + (lcz >> ZLOG));
         }
 
         protected int ForeignX(int lcx)
