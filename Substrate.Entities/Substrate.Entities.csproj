@@ -5,6 +5,7 @@
     <Version>2.0.0-alpha</Version>
     <Description>SDK for loading and modifying Minecraft worlds</Description>
     <Authors>Justin Aquadro</Authors>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

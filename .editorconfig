@@ -1,0 +1,31 @@
+
+[*]
+
+tab_width = 4
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+
+[*.cs]
+# Stops wasting a whole indent level on labels
+csharp_indent_labels = one_less_than_current
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = none
+
+
+
+
+### CLS Compliance ###
+
+# CS3001: Argument type is not CLS-compliant
+dotnet_diagnostic.CS3001.severity = none
+
+# CS3002: Return type is not CLS-compliant
+dotnet_diagnostic.CS3002.severity = none
+
+# CS3003: Type is not CLS-compliant
+dotnet_diagnostic.CS3003.severity = none
+
+# CS3008: Identifier is not CLS-compliant
+dotnet_diagnostic.CS3008.severity = none
