@@ -1,5 +1,4 @@
-﻿using System;
-using Substrate.Nbt;
+﻿using Substrate.Nbt;
 
 namespace Substrate
 {
@@ -7,9 +6,9 @@ namespace Substrate
     public class Vector3 : INbtObject2
     {
         public double X { get; set; }
-        
+
         public double Y { get; set; }
-        
+
         public double Z { get; set; }
 
         public TagNode BuildTree()

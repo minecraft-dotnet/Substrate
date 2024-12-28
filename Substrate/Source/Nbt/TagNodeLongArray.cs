@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     public sealed class TagNodeLongArray : TagNode
     {
@@ -12,7 +8,7 @@ namespace Substrate.Nbt
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeLongArray ToTagLongArray () 
+        public override TagNodeLongArray ToTagLongArray()
         {
             return this;
         }
@@ -21,9 +17,9 @@ namespace Substrate.Nbt
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_LONG_ARRAY tag type.</returns>
-        public override TagType GetTagType ()
+        public override TagType GetTagType()
         {
-            return TagType.TAG_LONG_ARRAY; 
+            return TagType.TAG_LONG_ARRAY;
         }
 
         /// <summary>
@@ -61,7 +57,7 @@ namespace Substrate.Nbt
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new long array node representing the same data.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
             long[] arr = new long[_data.Length];
             _data.CopyTo(arr, 0);
@@ -73,7 +69,7 @@ namespace Substrate.Nbt
         /// Gets a string representation of the node's data.
         /// </summary>
         /// <returns>String representation of the node's data.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
             return _data.ToString();
         }
@@ -104,7 +100,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An long array node.</param>
         /// <returns>A system long array set to the node's data.</returns>
-        public static implicit operator long[] (TagNodeLongArray i)
+        public static implicit operator long[](TagNodeLongArray i)
         {
             return i._data;
         }

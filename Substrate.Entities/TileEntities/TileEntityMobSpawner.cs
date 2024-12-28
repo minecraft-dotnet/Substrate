@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -13,9 +9,9 @@ namespace Substrate.TileEntities
             new SchemaNodeString("id", TypeId),
             new SchemaNodeScalar("EntityId", TagType.TAG_STRING),
             new SchemaNodeScalar("Delay", TagType.TAG_SHORT),
-			new SchemaNodeScalar("MaxSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
-			new SchemaNodeScalar("MinSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
-			new SchemaNodeScalar("SpawnCount", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("MaxSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("MinSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("SpawnCount", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("SpawnRange", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("MaxNearbyEnemies", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("RequiredPlayerRange", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
@@ -34,9 +30,9 @@ namespace Substrate.TileEntities
 
         private short _delay;
         private string _entityID;
-		private short? _maxDelay;
-		private short? _minDelay;
-		private short? _spawnCount;
+        private short? _maxDelay;
+        private short? _minDelay;
+        private short? _spawnCount;
         private short? _spawnRange;
         private short? _maxNearbyEnemies;
         private short? _requiredPlayerRange;
@@ -53,11 +49,11 @@ namespace Substrate.TileEntities
             set { _delay = (short)value; }
         }
 
-		public TagNodeCompound SpawnData
-		{
-			get { return _spawnData; }
-			set { _spawnData = value; }
-		}
+        public TagNodeCompound SpawnData
+        {
+            get { return _spawnData; }
+            set { _spawnData = value; }
+        }
 
         public string EntityID
         {
@@ -65,23 +61,23 @@ namespace Substrate.TileEntities
             set { _entityID = value; }
         }
 
-		public short MaxSpawnDelay
-		{
-			get { return _maxDelay ?? 0; }
-			set { _maxDelay = value; }
-		}
+        public short MaxSpawnDelay
+        {
+            get { return _maxDelay ?? 0; }
+            set { _maxDelay = value; }
+        }
 
-		public short MinSpawnDelay
-		{
-			get { return _minDelay ?? 0; }
-			set { _minDelay = value; }
-		}
+        public short MinSpawnDelay
+        {
+            get { return _minDelay ?? 0; }
+            set { _minDelay = value; }
+        }
 
-		public short SpawnCount
-		{
-			get { return _spawnCount ?? 0; }
-			set { _spawnCount = value; }
-		}
+        public short SpawnCount
+        {
+            get { return _spawnCount ?? 0; }
+            set { _spawnCount = value; }
+        }
 
         public short SpawnRange
         {
@@ -131,21 +127,22 @@ namespace Substrate.TileEntities
             set { _experienceRegenAmount = value; }
         }
 
-        protected TileEntityMobSpawner (string id)
+        protected TileEntityMobSpawner(string id)
             : base(id)
         {
         }
 
-        public TileEntityMobSpawner ()
+        public TileEntityMobSpawner()
             : this(TypeId)
         {
         }
 
-        public TileEntityMobSpawner (TileEntity te)
+        public TileEntityMobSpawner(TileEntity te)
             : base(te)
         {
             TileEntityMobSpawner tes = te as TileEntityMobSpawner;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _delay = tes._delay;
                 _entityID = tes._entityID;
                 _maxDelay = tes._maxDelay;
@@ -168,7 +165,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityMobSpawner(this);
         }
@@ -178,10 +175,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -217,18 +215,18 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["EntityId"] = new TagNodeString(_entityID);
             tree["Delay"] = new TagNodeShort(_delay);
 
             if (_maxDelay != null)
-    			tree["MaxSpawnDelay"] = new TagNodeShort(_maxDelay ?? 0);
+                tree["MaxSpawnDelay"] = new TagNodeShort(_maxDelay ?? 0);
             if (_minDelay != null)
-    			tree["MinSpawnDelay"] = new TagNodeShort(_minDelay ?? 0);
+                tree["MinSpawnDelay"] = new TagNodeShort(_minDelay ?? 0);
             if (_spawnCount != null)
-    			tree["SpawnCount"] = new TagNodeShort(_spawnCount ?? 0);
+                tree["SpawnCount"] = new TagNodeShort(_spawnCount ?? 0);
             if (_spawnRange != null)
                 tree["SpawnRange"] = new TagNodeShort(_spawnRange ?? 0);
             if (_maxNearbyEnemies != null)
@@ -252,7 +250,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, MobSpawnerSchema).Verify();
         }

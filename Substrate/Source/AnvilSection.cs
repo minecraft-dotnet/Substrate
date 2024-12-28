@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using Substrate.Nbt;
 using Substrate.Core;
+using Substrate.Nbt;
 
 namespace Substrate
 {
@@ -34,11 +33,11 @@ namespace Substrate
         private YZXNibbleArray _skyLight;
         private YZXNibbleArray _addBlocks;
 
-        private AnvilSection ()
+        private AnvilSection()
         {
         }
 
-        public AnvilSection (int y)
+        public AnvilSection(int y)
         {
             if (y < MIN_Y || y > MAX_Y)
                 throw new ArgumentOutOfRangeException();
@@ -47,7 +46,7 @@ namespace Substrate
             BuildNbtTree();
         }
 
-        public AnvilSection (TagNodeCompound tree)
+        public AnvilSection(TagNodeCompound tree)
         {
             LoadTree(tree);
         }
@@ -90,12 +89,12 @@ namespace Substrate
             get { return _addBlocks; }
         }
 
-        public bool CheckEmpty ()
+        public bool CheckEmpty()
         {
             return CheckBlocksEmpty() && CheckAddBlocksEmpty();
         }
 
-        private bool CheckBlocksEmpty ()
+        private bool CheckBlocksEmpty()
         {
             for (int i = 0; i < _blocks.Length; i++)
                 if (_blocks[i] != 0)
@@ -103,7 +102,7 @@ namespace Substrate
             return true;
         }
 
-        private bool CheckAddBlocksEmpty ()
+        private bool CheckAddBlocksEmpty()
         {
             if (_addBlocks != null)
                 for (int i = 0; i < _addBlocks.Length; i++)
@@ -114,10 +113,11 @@ namespace Substrate
 
         #region INbtObject<AnvilSection> Members
 
-        public AnvilSection LoadTree (TagNode tree)
+        public AnvilSection LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
@@ -137,19 +137,21 @@ namespace Substrate
             return this;
         }
 
-        public AnvilSection LoadTreeSafe (TagNode tree)
+        public AnvilSection LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
             return LoadTree(tree);
         }
 
-        public TagNode BuildTree ()
+        public TagNode BuildTree()
         {
             TagNodeCompound copy = new TagNodeCompound();
-            foreach (KeyValuePair<string, TagNode> node in _tree) {
+            foreach (KeyValuePair<string, TagNode> node in _tree)
+            {
                 copy.Add(node.Key, node.Value);
             }
 
@@ -159,7 +161,7 @@ namespace Substrate
             return copy;
         }
 
-        public bool ValidateTree (TagNode tree)
+        public bool ValidateTree(TagNode tree)
         {
             NbtVerifier v = new NbtVerifier(tree, SectionSchema);
             return v.Verify();
@@ -169,14 +171,14 @@ namespace Substrate
 
         #region ICopyable<AnvilSection> Members
 
-        public AnvilSection Copy ()
+        public AnvilSection Copy()
         {
             return new AnvilSection().LoadTree(_tree.Copy());
         }
 
         #endregion
 
-        private void BuildNbtTree ()
+        private void BuildNbtTree()
         {
             int elements3 = XDIM * YDIM * ZDIM;
 

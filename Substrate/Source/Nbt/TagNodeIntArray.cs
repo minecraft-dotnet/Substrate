@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     public sealed class TagNodeIntArray : TagNode
     {
@@ -98,7 +94,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">An int array node.</param>
         /// <returns>A system int array set to the node's data.</returns>
-        public static implicit operator int[] (TagNodeIntArray i)
+        public static implicit operator int[](TagNodeIntArray i)
         {
             return i.Data;
         }

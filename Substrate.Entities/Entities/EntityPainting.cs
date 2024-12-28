@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -67,21 +63,22 @@ namespace Substrate.Entities
             set { _zTile = value; }
         }
 
-        protected EntityPainting (string id)
+        protected EntityPainting(string id)
             : base(id)
         {
         }
 
-        public EntityPainting ()
+        public EntityPainting()
             : this(TypeId)
         {
         }
 
-        public EntityPainting (TypedEntity e)
+        public EntityPainting(TypedEntity e)
             : base(e)
         {
             EntityPainting e2 = e as EntityPainting;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _xTile = e2._xTile;
                 _yTile = e2._yTile;
                 _zTile = e2._zTile;
@@ -90,7 +87,7 @@ namespace Substrate.Entities
             }
         }
 
-        public override void MoveBy (int diffX, int diffY, int diffZ)
+        public override void MoveBy(int diffX, int diffY, int diffZ)
         {
             base.MoveBy(diffX, diffY, diffZ);
 
@@ -101,14 +98,15 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
-            _dir = (DirectionType) ctree["Dir"].ToTagByte().Data;
+            _dir = (DirectionType)ctree["Dir"].ToTagByte().Data;
             _motive = ctree["Motive"].ToTagString();
             _xTile = ctree["TileX"].ToTagInt();
             _yTile = ctree["TileY"].ToTagInt();
@@ -117,7 +115,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Dir"] = new TagNodeByte((byte)_dir);
@@ -129,7 +127,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, PaintingSchema).Verify();
         }
@@ -139,7 +137,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityPainting(this);
         }

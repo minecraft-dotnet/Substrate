@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// Defines methods for loading or extracting an NBT tree.

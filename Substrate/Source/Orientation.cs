@@ -1,5 +1,4 @@
-﻿using System;
-using Substrate.Nbt;
+﻿using Substrate.Nbt;
 
 namespace Substrate
 {

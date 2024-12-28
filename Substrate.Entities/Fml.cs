@@ -1,8 +1,5 @@
 ﻿using Substrate.Core;
 using Substrate.Nbt;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Substrate
 {

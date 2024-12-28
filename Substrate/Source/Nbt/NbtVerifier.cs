@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Substrate.Core;
 
 namespace Substrate.Nbt
 {
@@ -188,7 +187,8 @@ namespace Substrate.Nbt
             }
 
             SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
-            if (longarray != null) {
+            if (longarray != null)
+            {
                 return VerifyLongArray(tag, longarray);
             }
 
@@ -297,16 +297,20 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyLongArray (TagNode tag, SchemaNodeLongArray schema)
+        private bool VerifyLongArray(TagNode tag, SchemaNodeLongArray schema)
         {
             TagNodeLongArray atag = tag as TagNodeLongArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
+            if (atag == null)
+            {
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
+            if (schema.Length > 0 && atag.Length != schema.Length)
+            {
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                {
                     return false;
                 }
             }
@@ -314,7 +318,7 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyShortArray (TagNode tag, SchemaNodeShortArray schema)
+        private bool VerifyShortArray(TagNode tag, SchemaNodeShortArray schema)
         {
             TagNodeShortArray atag = tag as TagNodeShortArray;
             if (atag == null)
@@ -395,7 +399,7 @@ namespace Substrate.Nbt
 
             Dictionary<string, TagNode> _scratch = new Dictionary<string, TagNode>();
             var foundNames = new HashSet<string>();
-  
+
             foreach (SchemaNode node in schema)
             {
                 TagNode value;

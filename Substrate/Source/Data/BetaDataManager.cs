@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Substrate.Nbt;
 using System.IO;
 using Substrate.Core;
+using Substrate.Nbt;
 
 namespace Substrate.Data
 {
@@ -21,7 +20,7 @@ namespace Substrate.Data
 
         private MapManager _maps;
 
-        public BetaDataManager (NbtWorld world)
+        public BetaDataManager(NbtWorld world)
         {
             _world = world;
 
@@ -39,18 +38,20 @@ namespace Substrate.Data
             get { return _maps; }
         }
 
-        protected override IMapManager GetMapManager ()
+        protected override IMapManager GetMapManager()
         {
             return _maps;
         }
 
-        public override bool Save ()
+        public override bool Save()
         {
-            if (_world == null) {
+            if (_world == null)
+            {
                 return false;
             }
 
-            try {
+            try
+            {
                 string path = Path.Combine(_world.Path, _world.DataDirectory);
                 NBTFile nf = new NBTFile(Path.Combine(path, "idcounts.dat"));
 
@@ -68,7 +69,8 @@ namespace Substrate.Data
 
                 return true;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Exception lex = new Exception("Could not save idcounts.dat file.", ex);
                 lex.Data["DataManager"] = this;
                 throw lex;
@@ -77,10 +79,11 @@ namespace Substrate.Data
 
         #region INBTObject<DataManager>
 
-        public virtual BetaDataManager LoadTree (TagNode tree)
+        public virtual BetaDataManager LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
@@ -91,29 +94,31 @@ namespace Substrate.Data
             return this;
         }
 
-        public virtual BetaDataManager LoadTreeSafe (TagNode tree)
+        public virtual BetaDataManager LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
             return LoadTree(tree);
         }
 
-        public virtual TagNode BuildTree ()
+        public virtual TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
 
             tree["map"] = new TagNodeLong(_mapId);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 tree.MergeFrom(_source);
             }
 
             return tree;
         }
 
-        public virtual bool ValidateTree (TagNode tree)
+        public virtual bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }

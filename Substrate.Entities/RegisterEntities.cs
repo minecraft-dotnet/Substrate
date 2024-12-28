@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     internal static class RegisterEntities
     {

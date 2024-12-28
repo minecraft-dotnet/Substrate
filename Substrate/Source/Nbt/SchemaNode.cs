@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace Substrate.Nbt
 {
     /// <summary>
     /// A node in an NBT schema definition, used to define what values are considered valid for a given NBT node.
     /// </summary>
-    [DebuggerDisplay("Name = '{Name}', Type = {Type}, Options = {Options}")]  
+    [DebuggerDisplay("Name = '{Name}', Type = {Type}, Options = {Options}")]
     public abstract class SchemaNode
     {
         /// <summary>

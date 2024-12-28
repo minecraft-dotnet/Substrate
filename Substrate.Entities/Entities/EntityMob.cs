@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
+    using Substrate.Core;
     using Substrate.Nbt;
-using Substrate.Core;
 
     /// <summary>
     /// Encompasses data in the "ActiveEffects" compound attribute of mob entity types, used to specify potion effects
@@ -56,7 +52,7 @@ using Substrate.Core;
 
         #region ICopyable<ActiveEffects> Members
 
-        public ActiveEffects Copy ()
+        public ActiveEffects Copy()
         {
             ActiveEffects ae = new ActiveEffects();
             ae._amplifier = _amplifier;
@@ -128,29 +124,31 @@ using Substrate.Core;
             set { _activeEffects = value; }
         }
 
-        protected EntityMob (string id)
+        protected EntityMob(string id)
             : base(id)
         {
             _activeEffects = new ActiveEffects();
         }
 
-        public EntityMob ()
+        public EntityMob()
             : this(TypeId)
         {
         }
 
-        public EntityMob (TypedEntity e)
+        public EntityMob(TypedEntity e)
             : base(e)
         {
             EntityMob e2 = e as EntityMob;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _attackTime = e2._attackTime;
                 _deathTime = e2._deathTime;
                 _health = e2._health;
                 _hurtTime = e2._hurtTime;
                 _activeEffects = e2._activeEffects.Copy();
             }
-            else {
+            else
+            {
                 _activeEffects = new ActiveEffects();
             }
         }
@@ -158,10 +156,11 @@ using Substrate.Core;
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -170,7 +169,8 @@ using Substrate.Core;
             _health = ctree["Health"].ToTagShort();
             _hurtTime = ctree["HurtTime"].ToTagShort();
 
-            if (ctree.ContainsKey("ActiveEffects")) {
+            if (ctree.ContainsKey("ActiveEffects"))
+            {
                 TagNodeCompound ae = ctree["ActiveEffects"].ToTagCompound();
 
                 _activeEffects = new ActiveEffects();
@@ -182,7 +182,7 @@ using Substrate.Core;
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["AttackTime"] = new TagNodeShort(_attackTime);
@@ -190,7 +190,8 @@ using Substrate.Core;
             tree["Health"] = new TagNodeShort(_health);
             tree["HurtTime"] = new TagNodeShort(_hurtTime);
 
-            if (_activeEffects != null && _activeEffects.IsValid) {
+            if (_activeEffects != null && _activeEffects.IsValid)
+            {
                 TagNodeCompound ae = new TagNodeCompound();
                 ae["Id"] = new TagNodeByte((byte)_activeEffects.Id);
                 ae["Amplifier"] = new TagNodeByte((byte)_activeEffects.Amplifier);
@@ -202,7 +203,7 @@ using Substrate.Core;
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, MobSchema).Verify();
         }
@@ -212,7 +213,7 @@ using Substrate.Core;
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityMob(this);
         }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// A concrete <see cref="SchemaNode"/> representing a <see cref="TagNodeString"/>.

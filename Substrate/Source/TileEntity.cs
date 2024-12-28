@@ -1,5 +1,4 @@
-﻿using System;
-using Substrate.Core;
+﻿using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -73,7 +72,7 @@ namespace Substrate
         /// <summary>
         /// Constructs a blank <see cref="TileEntity"/>.
         /// </summary>
-        protected TileEntity ()
+        protected TileEntity()
         {
             _source = new TagNodeCompound();
         }
@@ -82,7 +81,7 @@ namespace Substrate
         /// Constructs a nonspecific <see cref="TileEntity"/> with a given ID.
         /// </summary>
         /// <param name="id">The id (name) of the Tile Entity.</param>
-        public TileEntity (string id)
+        public TileEntity(string id)
         {
             _id = id;
             _source = new TagNodeCompound();
@@ -92,14 +91,15 @@ namespace Substrate
         /// Constructs a <see cref="TileEntity"/> by copying an existing one.
         /// </summary>
         /// <param name="te">The <see cref="TileEntity"/> to copy.</param>
-        public TileEntity (TileEntity te)
+        public TileEntity(TileEntity te)
         {
             _id = te._id;
             _x = te._x;
             _y = te._y;
             _z = te._z;
 
-            if (te._source != null) {
+            if (te._source != null)
+            {
                 _source = te._source.Copy() as TagNodeCompound;
             }
         }
@@ -111,7 +111,7 @@ namespace Substrate
         /// <param name="y">The global Y-coordinate to test.</param>
         /// <param name="z">The global Z-coordinate to test.</param>
         /// <returns>Status indicating whether the Tile Entity is located at the specified global coordinates.</returns>
-        public bool LocatedAt (int x, int y, int z)
+        public bool LocatedAt(int x, int y, int z)
         {
             return _x == x && _y == y && _z == z;
         }
@@ -122,7 +122,7 @@ namespace Substrate
         /// <param name="diffX">The X-offset to move by, in blocks.</param>
         /// <param name="diffY">The Y-offset to move by, in blocks.</param>
         /// <param name="diffZ">The Z-offset to move by, in blocks.</param>
-        public virtual void MoveBy (int diffX, int diffY, int diffZ)
+        public virtual void MoveBy(int diffX, int diffY, int diffZ)
         {
             _x += diffX;
             _y += diffY;
@@ -136,7 +136,7 @@ namespace Substrate
         /// Creates a deep-copy of the <see cref="TileEntity"/> including any data defined in a subtype.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="TileEntity"/>.</returns>
-        public virtual TileEntity Copy ()
+        public virtual TileEntity Copy()
         {
             return new TileEntity(this);
         }
@@ -149,7 +149,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Tile Entity subtree.</param>
         /// <returns>A new <see cref="TileEntity"/> on success, or null if the tree was unparsable.</returns>
-        public static TileEntity FromTree (TagNode tree)
+        public static TileEntity FromTree(TagNode tree)
         {
             return new TileEntity().LoadTree(tree);
         }
@@ -159,7 +159,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Tile Entity subtree.</param>
         /// <returns>A new <see cref="TileEntity"/> on success, or null if the tree failed validation.</returns>
-        public static TileEntity FromTreeSafe (TagNode tree)
+        public static TileEntity FromTreeSafe(TagNode tree)
         {
             return new TileEntity().LoadTreeSafe(tree);
         }
@@ -180,10 +180,11 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Tile Entity subtree.</param>
         /// <returns>The <see cref="TileEntity"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public virtual TileEntity LoadTree (TagNode tree)
+        public virtual TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
@@ -202,9 +203,10 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Tile Entity subtree.</param>
         /// <returns>The <see cref="TileEntity"/> returns itself on success, or null if the tree failed validation.</returns>
-        public virtual TileEntity LoadTreeSafe (TagNode tree)
+        public virtual TileEntity LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -215,7 +217,7 @@ namespace Substrate
         /// Builds a Tile Entity subtree from the current data.
         /// </summary>
         /// <returns>The root node of a Tile Entity subtree representing the current data.</returns>
-        public virtual TagNode BuildTree ()
+        public virtual TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
             tree["id"] = new TagNodeString(_id);
@@ -223,7 +225,8 @@ namespace Substrate
             tree["y"] = new TagNodeInt(_y);
             tree["z"] = new TagNodeInt(_z);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 tree.MergeFrom(_source);
             }
 
@@ -235,7 +238,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Tile Entity subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public virtual bool ValidateTree (TagNode tree)
+        public virtual bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }

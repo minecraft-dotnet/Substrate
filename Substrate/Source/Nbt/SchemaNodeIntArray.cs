@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// A concrete <see cref="SchemaNode"/> representing a <see cref="TagNodeIntArray"/>.

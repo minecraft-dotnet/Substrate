@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -59,21 +55,22 @@ namespace Substrate.Entities
             set { _inGround = (byte)(value ? 1 : 0); }
         }
 
-        protected EntityFireball (string id)
+        protected EntityFireball(string id)
             : base(id)
         {
         }
 
-        public EntityFireball ()
+        public EntityFireball()
             : this(TypeId)
         {
         }
 
-        public EntityFireball (TypedEntity e)
+        public EntityFireball(TypedEntity e)
             : base(e)
         {
             EntityFireball e2 = e as EntityFireball;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _xTile = e2._xTile;
                 _yTile = e2._yTile;
                 _zTile = e2._zTile;
@@ -85,10 +82,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -101,7 +99,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["xTile"] = new TagNodeShort(_xTile);
@@ -113,7 +111,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, FireballSchema).Verify();
         }
@@ -123,7 +121,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityFireball(this);
         }

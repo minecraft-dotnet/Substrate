@@ -19,10 +19,11 @@ namespace Substrate
         /// </summary>
         /// <param name="type">The name that a concrete <see cref="TypedEntity"/> type was registered with.</param>
         /// <returns>A new instance of a concrete <see cref="TypedEntity"/> type, or null if no type was registered with the given name.</returns>
-        public static TypedEntity Create (string type)
+        public static TypedEntity Create(string type)
         {
             Type t;
-            if (!_registry.TryGetValue(type, out t)) {
+            if (!_registry.TryGetValue(type, out t))
+            {
                 return null;
             }
 
@@ -34,15 +35,17 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">A <see cref="TagNodeCompound"/> representing a single Entity, containing an 'id' field of the Entity's registered name.</param>
         /// <returns>A new instance of a concrete <see cref="TypedEntity"/> type, or null if no type was registered with the given name.</returns>
-        public static TypedEntity Create (TagNodeCompound tree)
+        public static TypedEntity Create(TagNodeCompound tree)
         {
             TagNode type;
-            if (!tree.TryGetValue("id", out type)) {
+            if (!tree.TryGetValue("id", out type))
+            {
                 return null;
             }
 
             Type t;
-            if (!_registry.TryGetValue(type.ToTagString(), out t)) {
+            if (!_registry.TryGetValue(type.ToTagString(), out t))
+            {
                 return null;
             }
 
@@ -56,10 +59,11 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">A <see cref="TagNodeCompound"/> representing a single Entity, containing an 'id' field.</param>
         /// <returns>A new instance of a <see cref="TypedEntity"/> object, or null if the entity is not typed.</returns>
-        public static TypedEntity CreateGeneric (TagNodeCompound tree)
+        public static TypedEntity CreateGeneric(TagNodeCompound tree)
         {
             TagNode type;
-            if (!tree.TryGetValue("id", out type)) {
+            if (!tree.TryGetValue("id", out type))
+            {
                 return null;
             }
 
@@ -73,10 +77,11 @@ namespace Substrate
         /// </summary>
         /// <param name="type">The name that a concrete <see cref="TypedEntity"/> type was registered with.</param>
         /// <returns>The <see cref="Type"/> of a concrete <see cref="TypedEntity"/> type, or null if no type was registered with the given name.</returns>
-        public static Type Lookup (string type)
+        public static Type Lookup(string type)
         {
             Type t;
-            if (!_registry.TryGetValue(type, out t)) {
+            if (!_registry.TryGetValue(type, out t))
+            {
                 return null;
             }
 
@@ -88,7 +93,7 @@ namespace Substrate
         /// </summary>
         /// <param name="id">The name to bind to a concrete <see cref="TypedEntity"/> type.</param>
         /// <param name="subtype">The <see cref="Type"/> of a concrete <see cref="TypedEntity"/> type.</param>
-        public static void Register (string id, Type subtype)
+        public static void Register(string id, Type subtype)
         {
             _registry[id] = subtype;
         }
@@ -98,9 +103,10 @@ namespace Substrate
         /// </summary>
         public static IEnumerable<KeyValuePair<string, Type>> RegisteredEntities
         {
-            get 
+            get
             {
-                foreach (KeyValuePair<string, Type> kvp in _registry) {
+                foreach (KeyValuePair<string, Type> kvp in _registry)
+                {
                     yield return kvp;
                 }
             }

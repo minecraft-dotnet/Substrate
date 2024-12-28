@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Core
+﻿namespace Substrate.Core
 {
     /// <summary>
     /// An interface of basic manipulations on an abstract data store for player data.

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Substrate.Core;
 using System.Text.RegularExpressions;
 
 namespace Substrate.Core
@@ -19,20 +18,20 @@ namespace Substrate.Core
         protected ChunkCache _chunkCache;
 
 
-        protected abstract IRegion CreateRegionCore (int rx, int rz);
+        protected abstract IRegion CreateRegionCore(int rx, int rz);
 
-        protected abstract RegionFile CreateRegionFileCore (int rx, int rz);
+        protected abstract RegionFile CreateRegionFileCore(int rx, int rz);
 
-        protected abstract void DeleteRegionCore (IRegion region);
+        protected abstract void DeleteRegionCore(IRegion region);
 
-        public abstract IRegion GetRegion (string filename);
+        public abstract IRegion GetRegion(string filename);
 
         /// <summary>
         /// Creates a new instance of a <see cref="RegionManager"/> for the given region directory and chunk cache.
         /// </summary>
         /// <param name="regionDir">The path to a directory containing region files.</param>
         /// <param name="cache">The shared chunk cache to hold chunk data in.</param>
-        public RegionManager (string regionDir, ChunkCache cache)
+        public RegionManager(string regionDir, ChunkCache cache)
         {
             _regionPath = regionDir;
             _chunkCache = cache;
@@ -40,39 +39,43 @@ namespace Substrate.Core
         }
 
         /// <inherits />
-        public IRegion GetRegion (int rx, int rz)
+        public IRegion GetRegion(int rx, int rz)
         {
             RegionKey k = new RegionKey(rx, rz);
             IRegion r;
 
-            try {
-                if (_cache.TryGetValue(k, out r) == false) {
+            try
+            {
+                if (_cache.TryGetValue(k, out r) == false)
+                {
                     r = CreateRegionCore(rx, rz);
                     _cache.Add(k, r);
                 }
                 return r;
             }
-            catch (FileNotFoundException) {
+            catch (FileNotFoundException)
+            {
                 _cache.Add(k, null);
                 return null;
             }
         }
 
         /// <inherits />
-        public bool RegionExists (int rx, int rz)
+        public bool RegionExists(int rx, int rz)
         {
             IRegion r = GetRegion(rx, rz);
             return r != null;
         }
 
         /// <inherits />
-        public IRegion CreateRegion (int rx, int rz)
+        public IRegion CreateRegion(int rx, int rz)
         {
             IRegion r = GetRegion(rx, rz);
-            if (r == null) {
-                string fp = "r." + rx + "." + rz + ".mca";
-                using (RegionFile rf = CreateRegionFileCore(rx, rz)) {
-                    
+            if (r == null)
+            {
+                using (RegionFile rf = CreateRegionFileCore(rx, rz))
+                {
+
                 }
 
                 r = CreateRegionCore(rx, rz);
@@ -88,17 +91,18 @@ namespace Substrate.Core
         /// Get the current region directory path.
         /// </summary>
         /// <returns>The path to the region directory.</returns>
-        public string GetRegionPath ()
+        public string GetRegionPath()
         {
             return _regionPath;
         }
 
         // XXX: Exceptions
         /// <inherits />
-        public bool DeleteRegion (int rx, int rz)
+        public bool DeleteRegion(int rx, int rz)
         {
             IRegion r = GetRegion(rx, rz);
-            if (r == null) {
+            if (r == null)
+            {
                 return false;
             }
 
@@ -107,11 +111,13 @@ namespace Substrate.Core
 
             DeleteRegionCore(r);
 
-            try {
+            try
+            {
                 File.Delete(r.GetFilePath());
             }
-            catch (Exception e) {
-                Console.WriteLine("NOTICE: " + e.Message);
+            catch (Exception e)
+            {
+                Console.WriteLine($"NOTICE: {e.Message}");
                 return false;
             }
 
@@ -124,7 +130,7 @@ namespace Substrate.Core
         /// Returns an enumerator that iterates over all of the regions in the underlying dimension.
         /// </summary>
         /// <returns>An enumerator instance.</returns>
-        public IEnumerator<IRegion> GetEnumerator ()
+        public IEnumerator<IRegion> GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -137,7 +143,7 @@ namespace Substrate.Core
         /// Returns an enumerator that iterates over all of the regions in the underlying dimension.
         /// </summary>
         /// <returns>An enumerator instance.</returns>
-        IEnumerator IEnumerable.GetEnumerator ()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -150,12 +156,13 @@ namespace Substrate.Core
             private List<IRegion> _regions;
             private int _pos;
 
-            public Enumerator (RegionManager rm)
+            public Enumerator(RegionManager rm)
             {
                 _regions = new List<IRegion>();
                 _pos = -1;
 
-                if (!Directory.Exists(rm.GetRegionPath())) {
+                if (!Directory.Exists(rm.GetRegionPath()))
+                {
                     throw new DirectoryNotFoundException();
                 }
 
@@ -164,29 +171,32 @@ namespace Substrate.Core
 
                 files.Sort(RegionSort);
 
-                foreach (string file in files) {
-                    try {
+                foreach (string file in files)
+                {
+                    try
+                    {
                         IRegion r = rm.GetRegion(file);
                         _regions.Add(r);
                     }
-                    catch (ArgumentException) {
+                    catch (ArgumentException)
+                    {
                         continue;
                     }
                 }
             }
 
-            public bool MoveNext ()
+            public bool MoveNext()
             {
                 _pos++;
                 return (_pos < _regions.Count);
             }
 
-            public void Reset ()
+            public void Reset()
             {
                 _pos = -1;
             }
 
-            void IDisposable.Dispose () { }
+            void IDisposable.Dispose() { }
 
             object IEnumerator.Current
             {
@@ -208,16 +218,18 @@ namespace Substrate.Core
             {
                 get
                 {
-                    try {
+                    try
+                    {
                         return _regions[_pos];
                     }
-                    catch (IndexOutOfRangeException) {
+                    catch (IndexOutOfRangeException)
+                    {
                         throw new InvalidOperationException();
                     }
                 }
             }
 
-            private int RegionSort (string A, string B)
+            private int RegionSort(string A, string B)
             {
                 Regex R = new Regex(".+r\\.(?<x>-?\\d+)\\.(?<y>-?\\d+)\\.(mca|mcr)", RegexOptions.None);
                 Match MC = R.Match(A);

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using Substrate.Core;
 using Substrate.Nbt;
 
@@ -113,7 +113,7 @@ namespace Substrate
         }
 
 
-        private AlphaChunk ()
+        private AlphaChunk()
         {
         }
 
@@ -123,7 +123,7 @@ namespace Substrate
         /// <param name="x">Global X-coordinate of the chunk.</param>
         /// <param name="z">Global Z-coordinate of the chunk.</param>
         /// <returns>A new Chunk object.</returns>
-        public static AlphaChunk Create (int x, int z)
+        public static AlphaChunk Create(int x, int z)
         {
             AlphaChunk c = new AlphaChunk();
 
@@ -139,7 +139,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">An NBT_Tree conforming to the chunk schema definition.</param>
         /// <returns>A new Chunk object wrapping an existing NBT_Tree.</returns>
-        public static AlphaChunk Create (NbtTree tree)
+        public static AlphaChunk Create(NbtTree tree)
         {
             AlphaChunk c = new AlphaChunk();
 
@@ -151,7 +151,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">An NBT_Tree conforming to the chunk schema definition.</param>
         /// <returns>A new Chunk object wrapping an existing NBT_Tree, or null on verification failure.</returns>
-        public static AlphaChunk CreateVerified (NbtTree tree)
+        public static AlphaChunk CreateVerified(NbtTree tree)
         {
             AlphaChunk c = new AlphaChunk();
 
@@ -163,7 +163,7 @@ namespace Substrate
         /// </summary>
         /// <param name="x">Global X-coordinate.</param>
         /// <param name="z">Global Z-coordinate.</param>
-        public void SetLocation (int x, int z)
+        public void SetLocation(int x, int z)
         {
             int diffx = (x - _cx) * XDIM;
             int diffz = (z - _cz) * ZDIM;
@@ -179,38 +179,46 @@ namespace Substrate
             // Update tile entity coordinates
 
             List<TileEntity> tileEntites = new List<TileEntity>();
-            foreach (TagNodeCompound tag in _tileEntities) {
+            foreach (TagNodeCompound tag in _tileEntities)
+            {
                 TileEntity te = TileEntityFactory.Create(tag);
-                if (te == null) {
+                if (te == null)
+                {
                     te = TileEntity.FromTreeSafe(tag);
                 }
 
-                if (te != null) {
+                if (te != null)
+                {
                     te.MoveBy(diffx, 0, diffz);
                     tileEntites.Add(te);
                 }
             }
 
             _tileEntities.Clear();
-            foreach (TileEntity te in tileEntites) {
+            foreach (TileEntity te in tileEntites)
+            {
                 _tileEntities.Add(te.BuildTree());
             }
 
             // Update tile tick coordinates
 
-            if (_tileTicks != null) {
+            if (_tileTicks != null)
+            {
                 List<TileTick> tileTicks = new List<TileTick>();
-                foreach (TagNodeCompound tag in _tileTicks) {
+                foreach (TagNodeCompound tag in _tileTicks)
+                {
                     TileTick tt = TileTick.FromTreeSafe(tag);
 
-                    if (tt != null) {
+                    if (tt != null)
+                    {
                         tt.MoveBy(diffx, 0, diffz);
                         tileTicks.Add(tt);
                     }
                 }
 
                 _tileTicks.Clear();
-                foreach (TileTick tt in tileTicks) {
+                foreach (TileTick tt in tileTicks)
+                {
                     _tileTicks.Add(tt.BuildTree());
                 }
             }
@@ -218,13 +226,15 @@ namespace Substrate
             // Update entity coordinates
 
             List<TypedEntity> entities = new List<TypedEntity>();
-            foreach (TypedEntity entity in _entityManager) {
+            foreach (TypedEntity entity in _entityManager)
+            {
                 entity.MoveBy(diffx, 0, diffz);
                 entities.Add(entity);
             }
 
             _entities.Clear();
-            foreach (TypedEntity entity in entities) {
+            foreach (TypedEntity entity in entities)
+            {
                 _entityManager.Add(entity);
             }
         }
@@ -234,9 +244,10 @@ namespace Substrate
         /// </summary>
         /// <param name="outStream">An open, writable output stream.</param>
         /// <returns>True if the data is written out to the stream.</returns>
-        public bool Save (Stream outStream)
+        public bool Save(Stream outStream)
         {
-            if (outStream == null || !outStream.CanWrite) {
+            if (outStream == null || !outStream.CanWrite)
+            {
                 return false;
             }
 
@@ -255,10 +266,11 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">Root node of an NBT tree.</param>
         /// <returns>A reference to the current Chunk, or null if the tree is unparsable.</returns>
-        public AlphaChunk LoadTree (TagNode tree)
+        public AlphaChunk LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null) {
+            if (ctree == null)
+            {
                 return null;
             }
 
@@ -281,17 +293,20 @@ namespace Substrate
                 _tileTicks = new TagNodeList(TagType.TAG_COMPOUND);
 
             // List-type patch up
-            if (_entities.Count == 0) {
+            if (_entities.Count == 0)
+            {
                 level["Entities"] = new TagNodeList(TagType.TAG_COMPOUND);
                 _entities = level["Entities"] as TagNodeList;
             }
 
-            if (_tileEntities.Count == 0) {
+            if (_tileEntities.Count == 0)
+            {
                 level["TileEntities"] = new TagNodeList(TagType.TAG_COMPOUND);
                 _tileEntities = level["TileEntities"] as TagNodeList;
             }
 
-            if (_tileTicks.Count == 0) {
+            if (_tileTicks.Count == 0)
+            {
                 level["TileTicks"] = new TagNodeList(TagType.TAG_COMPOUND);
                 _tileTicks = level["TileTicks"] as TagNodeList;
             }
@@ -310,9 +325,10 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">Root node of an NBT tree.</param>
         /// <returns>A reference to the current Chunk, or null if the tree does not conform to the chunk's NBT Schema definition.</returns>
-        public AlphaChunk LoadTreeSafe (TagNode tree)
+        public AlphaChunk LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -323,7 +339,7 @@ namespace Substrate
         /// Gets a valid NBT tree representing the Chunk.
         /// </summary>
         /// <returns>The root node of the Chunk's NBT tree.</returns>
-        public TagNode BuildTree ()
+        public TagNode BuildTree()
         {
             BuildConditional();
 
@@ -335,7 +351,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of the NBT tree to verify.</param>
         /// <returns>Status indicating if the tree represents a valid chunk.</returns>
-        public bool ValidateTree (TagNode tree)
+        public bool ValidateTree(TagNode tree)
         {
             NbtVerifier v = new NbtVerifier(tree, LevelSchema);
             return v.Verify();
@@ -350,7 +366,7 @@ namespace Substrate
         /// Creates a deep copy of the Chunk and its underlying NBT tree.
         /// </summary>
         /// <returns>A new Chunk with copied data.</returns>
-        public AlphaChunk Copy ()
+        public AlphaChunk Copy()
         {
             return AlphaChunk.Create(_tree.Copy());
         }
@@ -358,16 +374,17 @@ namespace Substrate
         #endregion
 
 
-        private void BuildConditional ()
+        private void BuildConditional()
         {
             TagNodeCompound level = _tree.Root["Level"] as TagNodeCompound;
-            if (_tileTicks != _blockManager.TileTicks && _blockManager.TileTicks.Count > 0) {
+            if (_tileTicks != _blockManager.TileTicks && _blockManager.TileTicks.Count > 0)
+            {
                 _tileTicks = _blockManager.TileTicks;
                 level["TileTicks"] = _tileTicks;
             }
         }
 
-        private void BuildNBTTree ()
+        private void BuildNBTTree()
         {
             int elements2 = XDIM * ZDIM;
             int elements3 = elements2 * YDIM;
@@ -409,7 +426,7 @@ namespace Substrate
             _entityManager = new EntityCollection(_entities);
         }
 
-        private int Timestamp ()
+        private int Timestamp()
         {
             DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return (int)((DateTime.UtcNow - epoch).Ticks / (10000L * 1000L));

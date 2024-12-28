@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -51,21 +47,22 @@ namespace Substrate.TileEntities
             set { _text4 = value.Length > 14 ? value.Substring(0, 14) : value; }
         }
 
-        protected TileEntitySign (string id)
+        protected TileEntitySign(string id)
             : base(id)
         {
         }
 
-        public TileEntitySign ()
+        public TileEntitySign()
             : this(TypeId)
         {
         }
 
-        public TileEntitySign (TileEntity te)
+        public TileEntitySign(TileEntity te)
             : base(te)
         {
             TileEntitySign tes = te as TileEntitySign;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _text1 = tes._text1;
                 _text2 = tes._text2;
                 _text3 = tes._text3;
@@ -76,7 +73,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntitySign(this);
         }
@@ -86,10 +83,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -101,7 +99,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Text1"] = new TagNodeString(_text1);
@@ -112,7 +110,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, SignSchema).Verify();
         }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// An NBT node representing a double-precision floating point tag type.

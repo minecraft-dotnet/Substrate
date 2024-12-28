@@ -5,7 +5,7 @@ namespace Substrate
 {
     public class AlphaBlockManager : BlockManager
     {
-        public AlphaBlockManager (IChunkManager cm)
+        public AlphaBlockManager(IChunkManager cm)
             : base(cm)
         {
             IChunk c = AlphaChunk.Create(0, 0);
@@ -24,7 +24,7 @@ namespace Substrate
 
     public class AnvilBlockManager : BlockManager
     {
-        public AnvilBlockManager (IChunkManager cm)
+        public AnvilBlockManager(IChunkManager cm)
             : base(cm)
         {
             IChunk c = AnvilChunk.Create(0, 0);
@@ -102,7 +102,7 @@ namespace Substrate
         /// Constructs a new <see cref="BlockManager"/> instance on top of the given <see cref="IChunkManager"/>.
         /// </summary>
         /// <param name="cm">An <see cref="IChunkManager"/> instance.</param>
-        public BlockManager (IChunkManager cm)
+        public BlockManager(IChunkManager cm)
         {
             chunkMan = cm;
         }
@@ -116,10 +116,11 @@ namespace Substrate
         /// <returns>A new <see cref="AlphaBlock"/> object representing context-independent data of a single block.</returns>
         /// <remarks>Context-independent data excludes data such as lighting.  <see cref="AlphaBlock"/> object actually contain a copy
         /// of the data they represent, so changes to the <see cref="AlphaBlock"/> will not affect this container, and vice-versa.</remarks>
-        public AlphaBlock GetBlock (int x, int y, int z)
+        public AlphaBlock GetBlock(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return null;
             }
 
@@ -136,10 +137,11 @@ namespace Substrate
         /// <remarks>Context-depdendent data includes all data associated with this block.  Since a <see cref="AlphaBlockRef"/> represents
         /// a view of a block within this container, any updates to data in the container will be reflected in the <see cref="AlphaBlockRef"/>,
         /// and vice-versa for updates to the <see cref="AlphaBlockRef"/>.</remarks>
-        public AlphaBlockRef GetBlockRef (int x, int y, int z)
+        public AlphaBlockRef GetBlockRef(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return new AlphaBlockRef();
             }
 
@@ -153,10 +155,11 @@ namespace Substrate
         /// <param name="y">Global Y-coordinate of a block.</param>
         /// <param name="z">Global Z-coordinate of a block.</param>
         /// <param name="block">A <see cref="AlphaBlock"/> object to copy block data from.</param>
-        public void SetBlock (int x, int y, int z, AlphaBlock block)
+        public void SetBlock(int x, int y, int z, AlphaBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -170,17 +173,18 @@ namespace Substrate
         /// <param name="y">Global Y-coordinate of a block.</param>
         /// <param name="z">Global Z-coordinate of a block.</param>
         /// <returns>A <see cref="ChunkRef"/> to a single chunk containing the given block.</returns>
-        public ChunkRef GetChunk (int x, int y, int z)
+        public ChunkRef GetChunk(int x, int y, int z)
         {
             x >>= chunkXLog;
             z >>= chunkZLog;
             return chunkMan.GetChunkRef(x, z);
         }
 
-        protected int Log2 (int x)
+        protected int Log2(int x)
         {
             int c = 0;
-            while (x > 1) {
+            while (x > 1)
+            {
                 x >>= 1;
                 c++;
             }
@@ -192,7 +196,7 @@ namespace Substrate
         /// out operations on some blocks.  Override this method in derrived
         /// classes to filter the entire BlockManager.
         /// </summary>
-        protected virtual bool Check (int x, int y, int z)
+        protected virtual bool Check(int x, int y, int z)
         {
             return (x >= MIN_X) && (x < MAX_X) &&
                 (y >= MIN_Y) && (y < MAX_Y) &&
@@ -201,21 +205,22 @@ namespace Substrate
 
         #region IBlockContainer Members
 
-        IBlock IBlockCollection.GetBlock (int x, int y, int z)
+        IBlock IBlockCollection.GetBlock(int x, int y, int z)
         {
             return GetBlock(x, y, z);
         }
 
-        IBlock IBlockCollection.GetBlockRef (int x, int y, int z)
+        IBlock IBlockCollection.GetBlockRef(int x, int y, int z)
         {
             return GetBlockRef(x, y, z);
         }
 
         /// <inheritdoc/>
-        public void SetBlock (int x, int y, int z, IBlock block)
+        public void SetBlock(int x, int y, int z, IBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -223,10 +228,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public BlockInfo GetInfo (int x, int y, int z)
+        public BlockInfo GetInfo(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return null;
             }
 
@@ -234,10 +240,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetID (int x, int y, int z)
+        public int GetID(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null)
+            {
                 return 0;
             }
 
@@ -245,10 +252,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetID (int x, int y, int z, int id)
+        public void SetID(int x, int y, int z, int id)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -272,21 +280,22 @@ namespace Substrate
 
         #region IDataBlockCollection Members
 
-        IDataBlock IDataBlockCollection.GetBlock (int x, int y, int z)
+        IDataBlock IDataBlockCollection.GetBlock(int x, int y, int z)
         {
             return GetBlock(x, y, z);
         }
 
-        IDataBlock IDataBlockCollection.GetBlockRef (int x, int y, int z)
+        IDataBlock IDataBlockCollection.GetBlockRef(int x, int y, int z)
         {
             return GetBlockRef(x, y, z);
         }
 
         /// <inheritdoc/>
-        public void SetBlock (int x, int y, int z, IDataBlock block)
+        public void SetBlock(int x, int y, int z, IDataBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -294,10 +303,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetData (int x, int y, int z)
+        public int GetData(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null)
+            {
                 return 0;
             }
 
@@ -305,10 +315,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetData (int x, int y, int z, int data)
+        public void SetData(int x, int y, int z, int data)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -320,21 +331,22 @@ namespace Substrate
 
         #region ILitBlockContainer Members
 
-        ILitBlock ILitBlockCollection.GetBlock (int x, int y, int z)
+        ILitBlock ILitBlockCollection.GetBlock(int x, int y, int z)
         {
             throw new NotImplementedException();
         }
 
-        ILitBlock ILitBlockCollection.GetBlockRef (int x, int y, int z)
+        ILitBlock ILitBlockCollection.GetBlockRef(int x, int y, int z)
         {
             return GetBlockRef(x, y, z);
         }
 
         /// <inheritdoc/>
-        public void SetBlock (int x, int y, int z, ILitBlock block)
+        public void SetBlock(int x, int y, int z, ILitBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -342,10 +354,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetBlockLight (int x, int y, int z)
+        public int GetBlockLight(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null)
+            {
                 return 0;
             }
 
@@ -353,10 +366,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetSkyLight (int x, int y, int z)
+        public int GetSkyLight(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null)
+            {
                 return 0;
             }
 
@@ -364,10 +378,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetBlockLight (int x, int y, int z, int light)
+        public void SetBlockLight(int x, int y, int z, int light)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -375,10 +390,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetSkyLight (int x, int y, int z, int light)
+        public void SetSkyLight(int x, int y, int z, int light)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -386,10 +402,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetHeight (int x, int z)
+        public int GetHeight(int x, int z)
         {
             cache = GetChunk(x, 0, z);
-            if (cache == null || !Check(x, 0, z)) {
+            if (cache == null || !Check(x, 0, z))
+            {
                 return 0;
             }
 
@@ -397,10 +414,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetHeight (int x, int z, int height)
+        public void SetHeight(int x, int z, int height)
         {
             cache = GetChunk(x, 0, z);
-            if (cache == null || !Check(x, 0, z)) {
+            if (cache == null || !Check(x, 0, z))
+            {
                 return;
             }
 
@@ -408,10 +426,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void UpdateBlockLight (int x, int y, int z)
+        public void UpdateBlockLight(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -419,10 +438,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void UpdateSkyLight (int x, int y, int z)
+        public void UpdateSkyLight(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -434,21 +454,22 @@ namespace Substrate
 
         #region IPropertyBlockContainer Members
 
-        IPropertyBlock IPropertyBlockCollection.GetBlock (int x, int y, int z)
+        IPropertyBlock IPropertyBlockCollection.GetBlock(int x, int y, int z)
         {
             return GetBlock(x, y, z);
         }
 
-        IPropertyBlock IPropertyBlockCollection.GetBlockRef (int x, int y, int z)
+        IPropertyBlock IPropertyBlockCollection.GetBlockRef(int x, int y, int z)
         {
             return GetBlockRef(x, y, z);
         }
 
         /// <inheritdoc/>
-        public void SetBlock (int x, int y, int z, IPropertyBlock block)
+        public void SetBlock(int x, int y, int z, IPropertyBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -456,10 +477,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public TileEntity GetTileEntity (int x, int y, int z)
+        public TileEntity GetTileEntity(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return null;
             }
 
@@ -467,10 +489,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetTileEntity (int x, int y, int z, TileEntity te)
+        public void SetTileEntity(int x, int y, int z, TileEntity te)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -478,10 +501,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void CreateTileEntity (int x, int y, int z)
+        public void CreateTileEntity(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -489,10 +513,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void ClearTileEntity (int x, int y, int z)
+        public void ClearTileEntity(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -504,21 +529,22 @@ namespace Substrate
 
         #region IActiveBlockContainer Members
 
-        IActiveBlock IActiveBlockCollection.GetBlock (int x, int y, int z)
+        IActiveBlock IActiveBlockCollection.GetBlock(int x, int y, int z)
         {
             return GetBlock(x, y, z);
         }
 
-        IActiveBlock IActiveBlockCollection.GetBlockRef (int x, int y, int z)
+        IActiveBlock IActiveBlockCollection.GetBlockRef(int x, int y, int z)
         {
             return GetBlockRef(x, y, z);
         }
 
         /// <inheritdoc/>
-        public void SetBlock (int x, int y, int z, IActiveBlock block)
+        public void SetBlock(int x, int y, int z, IActiveBlock block)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -526,10 +552,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public int GetTileTickValue (int x, int y, int z)
+        public int GetTileTickValue(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return 0;
             }
 
@@ -537,10 +564,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetTileTickValue (int x, int y, int z, int tickValue)
+        public void SetTileTickValue(int x, int y, int z, int tickValue)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -548,10 +576,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public TileTick GetTileTick (int x, int y, int z)
+        public TileTick GetTileTick(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return null;
             }
 
@@ -559,10 +588,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void SetTileTick (int x, int y, int z, TileTick te)
+        public void SetTileTick(int x, int y, int z, TileTick te)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -570,10 +600,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void CreateTileTick (int x, int y, int z)
+        public void CreateTileTick(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 
@@ -581,10 +612,11 @@ namespace Substrate
         }
 
         /// <inheritdoc/>
-        public void ClearTileTick (int x, int y, int z)
+        public void ClearTileTick(int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null || !Check(x, y, z)) {
+            if (cache == null || !Check(x, y, z))
+            {
                 return;
             }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Substrate.Core;
+﻿using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -356,7 +353,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Player subtree.</param>
         /// <returns>The <see cref="Player"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public virtual new Player LoadTree(TagNode tree)
+        public new virtual Player LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
             if (ctree == null || base.LoadTree(tree) == null)
@@ -463,7 +460,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Player subtree.</param>
         /// <returns>The <see cref="Player"/> returns itself on success, or null if the tree failed validation.</returns>
-        public virtual new Player LoadTreeSafe(TagNode tree)
+        public new virtual Player LoadTreeSafe(TagNode tree)
         {
             if (!ValidateTree(tree))
             {
@@ -477,7 +474,7 @@ namespace Substrate
         /// Builds a Player subtree from the current data.
         /// </summary>
         /// <returns>The root node of a Player subtree representing the current data.</returns>
-        public virtual new TagNode BuildTree()
+        public new virtual TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["AttackTime"] = new TagNodeShort(AttackTime);
@@ -559,7 +556,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Player subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public virtual new bool ValidateTree(TagNode tree)
+        public new virtual bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -573,7 +570,7 @@ namespace Substrate
         /// Creates a deep-copy of the <see cref="Player"/>.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="Player"/>.</returns>
-        public virtual new Player Copy()
+        public new virtual Player Copy()
         {
             return new Player(this);
         }

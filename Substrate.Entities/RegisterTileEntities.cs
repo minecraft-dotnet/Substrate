@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Substrate.TileEntities;
+﻿using Substrate.TileEntities;
 
 namespace Substrate.Entities
 {

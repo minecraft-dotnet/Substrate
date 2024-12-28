@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -18,17 +14,17 @@ namespace Substrate.Entities
             get { return "Ghast"; }
         }
 
-        protected EntityGhast (string id)
+        protected EntityGhast(string id)
             : base(id)
         {
         }
 
-        public EntityGhast ()
+        public EntityGhast()
             : this(TypeId)
         {
         }
 
-        public EntityGhast (TypedEntity e)
+        public EntityGhast(TypedEntity e)
             : base(e)
         {
         }
@@ -36,7 +32,7 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, GhastSchema).Verify();
         }
@@ -46,7 +42,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityGhast(this);
         }

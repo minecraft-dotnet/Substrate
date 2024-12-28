@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -341,14 +340,16 @@ namespace Substrate.Core
 
         public Stream GetChunkDataOutputStream(int x, int z)
         {
-            if (OutOfBounds(x, z)) return null;
+            if (OutOfBounds(x, z))
+                return null;
 
             return new ZlibStream(new ChunkBuffer(this, x, z), CompressionMode.Compress);
         }
 
         public Stream GetChunkDataOutputStream(int x, int z, int timestamp)
         {
-            if (OutOfBounds(x, z)) return null;
+            if (OutOfBounds(x, z))
+                return null;
 
             return new ZlibStream(new ChunkBuffer(this, x, z, timestamp), CompressionMode.Compress);
         }
@@ -448,8 +449,10 @@ namespace Substrate.Core
                             {
                                 if (runLength != 0)
                                 {
-                                    if (sectorFree[i]) runLength++;
-                                    else runLength = 0;
+                                    if (sectorFree[i])
+                                        runLength++;
+                                    else
+                                        runLength = 0;
                                 }
                                 else if (sectorFree[i])
                                 {

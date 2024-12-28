@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Core
+﻿namespace Substrate.Core
 {
     /// <summary>
     /// An interface that exposes an <see cref="ItemCollection"/> for the object.

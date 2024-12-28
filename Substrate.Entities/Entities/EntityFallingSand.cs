@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -27,21 +23,22 @@ namespace Substrate.Entities
             set { _tile = (byte)value; }
         }
 
-        protected EntityFallingSand (string id)
+        protected EntityFallingSand(string id)
             : base(id)
         {
         }
 
-        public EntityFallingSand ()
+        public EntityFallingSand()
             : this(TypeId)
         {
         }
 
-        public EntityFallingSand (TypedEntity e)
+        public EntityFallingSand(TypedEntity e)
             : base(e)
         {
             EntityFallingSand e2 = e as EntityFallingSand;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _tile = e2._tile;
             }
         }
@@ -49,10 +46,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -61,7 +59,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Tile"] = new TagNodeByte(_tile);
@@ -69,7 +67,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, FallingSandSchema).Verify();
         }
@@ -79,7 +77,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityFallingSand(this);
         }

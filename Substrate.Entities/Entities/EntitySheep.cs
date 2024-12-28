@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -35,21 +31,22 @@ namespace Substrate.Entities
             set { _color = (byte)value; }
         }
 
-        protected EntitySheep (string id)
+        protected EntitySheep(string id)
             : base(id)
         {
         }
 
-        public EntitySheep ()
+        public EntitySheep()
             : this(TypeId)
         {
         }
 
-        public EntitySheep (TypedEntity e)
+        public EntitySheep(TypedEntity e)
             : base(e)
         {
             EntitySheep e2 = e as EntitySheep;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _sheared = e2._sheared;
                 _color = e2._color;
             }
@@ -58,10 +55,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -71,7 +69,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Sheared"] = new TagNodeByte((byte)(_sheared ? 1 : 0));
@@ -80,7 +78,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, SheepSchema).Verify();
         }
@@ -90,7 +88,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntitySheep(this);
         }

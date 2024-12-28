@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -43,21 +39,22 @@ namespace Substrate.Entities
             set { _angry = value; }
         }
 
-        protected EntityWolf (string id)
+        protected EntityWolf(string id)
             : base(id)
         {
         }
 
-        public EntityWolf ()
+        public EntityWolf()
             : this(TypeId)
         {
         }
 
-        public EntityWolf (TypedEntity e)
+        public EntityWolf(TypedEntity e)
             : base(e)
         {
             EntityWolf e2 = e as EntityWolf;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _owner = e2._owner;
                 _sitting = e2._sitting;
                 _angry = e2._angry;
@@ -67,10 +64,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -81,7 +79,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Owner"] = new TagNodeString(_owner);
@@ -91,7 +89,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, WolfSchema).Verify();
         }
@@ -101,7 +99,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityWolf(this);
         }

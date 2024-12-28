@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.IO;
 using Substrate.Core;
 
 namespace Substrate
@@ -94,7 +92,8 @@ namespace Substrate
         {
             get
             {
-                if (_entities == null) {
+                if (_entities == null)
+                {
                     GetChunk();
                 }
                 return _entities;
@@ -126,7 +125,7 @@ namespace Substrate
         /// <summary>
         /// Forbid direct instantiation of ChunkRef objects
         /// </summary>
-        private ChunkRef ()
+        private ChunkRef()
         {
         }
 
@@ -137,9 +136,10 @@ namespace Substrate
         /// <param name="cx">Local X-coordinate of chunk within container.</param>
         /// <param name="cz">Local Z-coordinate of chunk within container.</param>
         /// <returns>ChunkRef representing a reference to a physical chunk at the specified location within the container.</returns>
-        public static ChunkRef Create (IChunkContainer container, int cx, int cz)
+        public static ChunkRef Create(IChunkContainer container, int cx, int cz)
         {
-            if (!container.ChunkExists(cx, cz)) {
+            if (!container.ChunkExists(cx, cz))
+            {
                 return null;
             }
 
@@ -160,7 +160,8 @@ namespace Substrate
             get { return GetChunk().IsTerrainPopulated; }
             set
             {
-                if (GetChunk().IsTerrainPopulated != value) {
+                if (GetChunk().IsTerrainPopulated != value)
+                {
                     GetChunk().IsTerrainPopulated = value;
                     _dirty = true;
                 }
@@ -172,10 +173,12 @@ namespace Substrate
         /// </summary>
         /// <param name="outStream">An open output stream.</param>
         /// <returns>A value indicating whether the chunk is no longer considered dirty.</returns>
-        public bool Save (Stream outStream)
+        public bool Save(Stream outStream)
         {
-            if (IsDirty) {
-                if (GetChunk().Save(outStream)) {
+            if (IsDirty)
+            {
+                if (GetChunk().Save(outStream))
+                {
                     IsDirty = false;
                     return true;
                 }
@@ -184,7 +187,7 @@ namespace Substrate
             return true;
         }
 
-        public void SetLocation (int x, int z)
+        public void SetLocation(int x, int z)
         {
             int relX = LocalX + (x - X);
             int relZ = LocalZ + (z - Z);
@@ -200,7 +203,7 @@ namespace Substrate
         /// Gets a ChunkRef to the chunk positioned immediately north (X - 1).
         /// </summary>
         /// <returns>ChunkRef to the northern neighboring chunk.</returns>
-        public ChunkRef GetNorthNeighbor ()
+        public ChunkRef GetNorthNeighbor()
         {
             return _container.GetChunkRef(_cx - 1, _cz);
         }
@@ -209,7 +212,7 @@ namespace Substrate
         /// Gets a ChunkRef to the chunk positioned immediately south (X + 1).
         /// </summary>
         /// <returns>ChunkRef to the southern neighboring chunk.</returns>
-        public ChunkRef GetSouthNeighbor ()
+        public ChunkRef GetSouthNeighbor()
         {
             return _container.GetChunkRef(_cx + 1, _cz);
         }
@@ -218,7 +221,7 @@ namespace Substrate
         /// Gets a ChunkRef to the chunk positioned immediatly east (Z - 1).
         /// </summary>
         /// <returns>ChunkRef to the eastern neighboring chunk.</returns>
-        public ChunkRef GetEastNeighbor ()
+        public ChunkRef GetEastNeighbor()
         {
             return _container.GetChunkRef(_cx, _cz - 1);
         }
@@ -227,7 +230,7 @@ namespace Substrate
         /// Gets a ChunkRef to the chunk positioned immedately west (Z + 1).
         /// </summary>
         /// <returns>ChunkRef to the western neighboring chunk.</returns>
-        public ChunkRef GetWestNeighbor ()
+        public ChunkRef GetWestNeighbor()
         {
             return _container.GetChunkRef(_cx, _cz + 1);
         }
@@ -243,7 +246,7 @@ namespace Substrate
         /// to modify them without intending to permanently store the changes.
         /// </remarks>
         /// <returns>The physical Chunk object underlying the ChunkRef</returns>
-        public IChunk GetChunkRef ()
+        public IChunk GetChunkRef()
         {
             IChunk chunk = GetChunk();
             _chunk = null;
@@ -260,7 +263,7 @@ namespace Substrate
         /// move a physical chunk between locations within a container (by taking the reference from another ChunkRef).
         /// </remarks>
         /// <param name="chunk">Physical Chunk to store into the location represented by this ChunkRef.</param>
-        public void SetChunkRef (IChunk chunk)
+        public void SetChunkRef(IChunk chunk)
         {
             _chunk = chunk;
             _chunk.SetLocation(X, Z);
@@ -271,9 +274,10 @@ namespace Substrate
         /// Gets an internal Chunk reference from cache or queries the container for it.
         /// </summary>
         /// <returns>The ChunkRef's underlying Chunk.</returns>
-        private IChunk GetChunk ()
+        private IChunk GetChunk()
         {
-            if (_chunk == null) {
+            if (_chunk == null)
+            {
                 _chunk = _container.GetChunk(_cx, _cz);
 
                 if (_chunk != null)
@@ -297,10 +301,11 @@ namespace Substrate
         /// <param name="rely">Relative offset from the Y-coordinate.</param>
         /// <param name="relz">Relative offset from the Z-coordinate.</param>
         /// <returns>Another ChunkRef's underlying block collection, or null if the ChunkRef cannot be found.</returns>
-        private AlphaBlockCollection ResolveNeighborHandler (int relx, int rely, int relz)
+        private AlphaBlockCollection ResolveNeighborHandler(int relx, int rely, int relz)
         {
             ChunkRef cr = _container.GetChunkRef(_cx + relx, _cz + relz);
-            if (cr != null) {
+            if (cr != null)
+            {
                 return cr.Blocks;
             }
 
@@ -314,7 +319,7 @@ namespace Substrate
         /// <param name="ly">Chunk-local Y-coordinate.</param>
         /// <param name="lz">Chunk-local Z-coordinate.</param>
         /// <returns>BlockKey containing the global block coordinates.</returns>
-        private BlockKey TranslateCoordinatesHandler (int lx, int ly, int lz)
+        private BlockKey TranslateCoordinatesHandler(int lx, int ly, int lz)
         {
             int x = X * _blocks.XDim + lx;
             int z = Z * _blocks.ZDim + lz;

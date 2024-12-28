@@ -20,10 +20,11 @@ namespace Substrate
         /// </summary>
         /// <param name="type">The name that a concrete <see cref="TileEntity"/> type was registered with.</param>
         /// <returns>A new instance of a concrete <see cref="TileEntity"/> type, or null if no type was registered with the given name.</returns>
-        public static TileEntity Create (string type)
+        public static TileEntity Create(string type)
         {
             Type t;
-            if (!_registry.TryGetValue(type, out t)) {
+            if (!_registry.TryGetValue(type, out t))
+            {
                 return null;
             }
 
@@ -63,11 +64,11 @@ namespace Substrate
 
             if (!_registry.TryGetValue(type, out t))
             {
-                t = typeof (TileEntity);
+                t = typeof(TileEntity);
             }
 
             TileEntity te = Activator.CreateInstance(t, true) as TileEntity;
-            
+
             return te.LoadTreeSafe(tree);
         }
 
@@ -76,10 +77,11 @@ namespace Substrate
         /// </summary>
         /// <param name="type">The name that a concrete <see cref="TileEntity"/> type was registered with.</param>
         /// <returns>The <see cref="Type"/> of a concrete <see cref="TileEntity"/> type, or null if no type was registered with the given name.</returns>
-        public static Type Lookup (string type)
+        public static Type Lookup(string type)
         {
             Type t;
-            if (!_registry.TryGetValue(type, out t)) {
+            if (!_registry.TryGetValue(type, out t))
+            {
                 return null;
             }
 
@@ -91,7 +93,7 @@ namespace Substrate
         /// </summary>
         /// <param name="id">The name to bind to a concrete <see cref="TileEntity"/> type.</param>
         /// <param name="subtype">The <see cref="Type"/> of a concrete <see cref="TileEntity"/> type.</param>
-        public static void Register (string id, Type subtype)
+        public static void Register(string id, Type subtype)
         {
             _registry[id] = subtype;
         }
@@ -103,7 +105,8 @@ namespace Substrate
         {
             get
             {
-                foreach (KeyValuePair<string, Type> kvp in _registry) {
+                foreach (KeyValuePair<string, Type> kvp in _registry)
+                {
                     yield return kvp;
                 }
             }
@@ -113,9 +116,9 @@ namespace Substrate
     /// <summary>
     /// An exception that is thrown when unknown TileEntity types are queried.
     /// </summary>
-    public class UnknownTileEntityException : Exception 
+    public class UnknownTileEntityException : Exception
     {
-        public UnknownTileEntityException (string message)
+        public UnknownTileEntityException(string message)
             : base(message)
         { }
     }

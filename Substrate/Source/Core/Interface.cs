@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Core
+﻿namespace Substrate.Core
 {
     /// <summary>
     /// Provides a virtual deep copy capability to implementors.

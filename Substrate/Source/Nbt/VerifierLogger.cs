@@ -1,5 +1,4 @@
-﻿using System;
-using Substrate.Core;
+using System;
 
 namespace Substrate.Nbt
 {
@@ -13,9 +12,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Data about the NBT node being verified.</param>
         /// <returns>A <see cref="TagEventCode"/> indicating whether event processing should pass, fail, or advance.</returns>
-        public static TagEventCode MissingTagHandler (TagEventArgs e)
+        public static TagEventCode MissingTagHandler(TagEventArgs e)
         {
-            Console.WriteLine("Missing Tag Error: '{0}'", e.TagName);
+            Console.WriteLine($"Missing Tag Error: '{e.TagName}'");
 
             return TagEventCode.NEXT;
         }
@@ -25,9 +24,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Data about the NBT node being verified.</param>
         /// <returns>A <see cref="TagEventCode"/> indicating whether event processing should pass, fail, or advance.</returns>
-        public static TagEventCode InvalidTagTypeHandler (TagEventArgs e)
+        public static TagEventCode InvalidTagTypeHandler(TagEventArgs e)
         {
-            Console.WriteLine("Invalid Tag Type Error: '{0}' has type '{1}', expected '{2}'", e.TagName, e.Tag.GetTagType(), e.Schema.ToString());
+            Console.WriteLine($"Invalid Tag Type Error: '{e.TagName}' has type '{e.Tag.GetTagType()}', expected '{e.Schema.ToString()}'");
 
             return TagEventCode.NEXT;
         }
@@ -37,9 +36,9 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="e">Data about the NBT node being verified.</param>
         /// <returns>A <see cref="TagEventCode"/> indicating whether event processing should pass, fail, or advance.</returns>
-        public static TagEventCode InvalidTagValueHandler (TagEventArgs e)
+        public static TagEventCode InvalidTagValueHandler(TagEventArgs e)
         {
-            Console.WriteLine("Invalid Tag Value Error: '{0}' of type '{1}' is set to invalid value '{2}'", e.TagName, e.Tag.GetTagType(), e.Tag.ToString());
+            Console.WriteLine($"Invalid Tag Value Error: '{e.TagName}' of type '{e.Tag.GetTagType()}' is set to invalid value '{e.Tag.ToString()}'");
 
             return TagEventCode.NEXT;
         }

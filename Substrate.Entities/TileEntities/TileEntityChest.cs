@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Substrate.Core;
+﻿using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate.TileEntities
@@ -13,7 +11,7 @@ namespace Substrate.TileEntities
             new SchemaNodeList("Items", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
         });
 
-        public static string TypeId 
+        public static string TypeId
         {
             get { return "Chest"; }
         }
@@ -22,32 +20,34 @@ namespace Substrate.TileEntities
 
         private ItemCollection _items;
 
-        protected TileEntityChest (string id)
+        protected TileEntityChest(string id)
             : base(id)
         {
             _items = new ItemCollection(_CAPACITY);
         }
 
-        public TileEntityChest ()
+        public TileEntityChest()
             : this(TypeId)
         {
         }
 
-        public TileEntityChest (TileEntity te)
+        public TileEntityChest(TileEntity te)
             : base(te)
         {
             TileEntityChest tec = te as TileEntityChest;
-            if (tec != null) {
+            if (tec != null)
+            {
                 _items = tec._items.Copy();
             }
-            else {
+            else
+            {
                 _items = new ItemCollection(_CAPACITY);
             }
         }
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityChest(this);
         }
@@ -67,10 +67,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -80,7 +81,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Items"] = _items.BuildTree();
@@ -88,7 +89,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, ChestSchema).Verify();
         }

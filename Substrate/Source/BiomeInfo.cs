@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate
+﻿namespace Substrate
 {
     public class BiomeType
     {
@@ -37,7 +33,7 @@ namespace Substrate
         public const int ColdBeach = 26;
         public const int BirchForest = 27;
         public const int BirchForestHills = 28;
-        public const int RoofedForest = 29;        
+        public const int RoofedForest = 29;
         public const int ColdTaiga = 30;
         public const int ColdTaigaHills = 31;
         public const int MegaTaiga = 32;
@@ -47,20 +43,20 @@ namespace Substrate
         public const int SavannaPlateau = 36;
         public const int Mesa = 37;
         public const int MesaPlateauF = 38;
-        public const int MesaPlateau = 39;        
+        public const int MesaPlateau = 39;
         public const int SunflowerPlains = 129;
         public const int DesertM = 130;
         public const int ExtremeHillsM = 131;
         public const int FlowerForest = 132;
         public const int TaigaM = 133;
-        public const int SwamplandM = 134;        
+        public const int SwamplandM = 134;
         public const int IcePlainsSpikes = 140;
-        public const int JungleM = 149;        
+        public const int JungleM = 149;
         public const int JungleEdgeM = 151;
         public const int BirchForestM = 155;
         public const int BirchForestHillsM = 156;
         public const int RoofedForestM = 157;
-        public const int ColdTaigaM = 158;        
+        public const int ColdTaigaM = 158;
         public const int MegaSpruceTaiga = 160;
         public const int RedwoodTaigaHillsM = 161;
         public const int ExtremeHillsPlusM = 162; // Extreme Hills+ M

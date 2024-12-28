@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -33,21 +29,22 @@ namespace Substrate.Entities
             get { return _type; }
         }
 
-        protected EntityMinecart (string id)
+        protected EntityMinecart(string id)
             : base(id)
         {
         }
 
-        public EntityMinecart ()
+        public EntityMinecart()
             : this(TypeId)
         {
         }
 
-        public EntityMinecart (TypedEntity e)
+        public EntityMinecart(TypedEntity e)
             : base(e)
         {
             EntityMinecart e2 = e as EntityMinecart;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _type = e2._type;
             }
         }
@@ -55,28 +52,30 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
             _type = (CartType)ctree["Type"].ToTagInt().Data;
 
-            switch (_type) {
-                case CartType.EMPTY:
-                    return this;
-                case CartType.CHEST:
-                    return new EntityMinecartChest().LoadTreeSafe(tree);
-                case CartType.FURNACE:
-                    return new EntityMinecartFurnace().LoadTreeSafe(tree);
-                default:
-                    return this;
+            switch (_type)
+            {
+            case CartType.EMPTY:
+                return this;
+            case CartType.CHEST:
+                return new EntityMinecartChest().LoadTreeSafe(tree);
+            case CartType.FURNACE:
+                return new EntityMinecartFurnace().LoadTreeSafe(tree);
+            default:
+                return this;
             }
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Type"] = new TagNodeInt((int)_type);
@@ -84,7 +83,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, MinecartSchema).Verify();
         }
@@ -94,7 +93,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityMinecart(this);
         }

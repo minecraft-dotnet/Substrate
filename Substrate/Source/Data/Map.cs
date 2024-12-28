@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using Substrate.Core;
 using Substrate.Nbt;
-using System.IO;
 
 namespace Substrate.Data
 {
@@ -43,7 +41,7 @@ namespace Substrate.Data
         /// <summary>
         /// Creates a new default <see cref="Map"/> object.
         /// </summary>
-        public Map ()
+        public Map()
         {
             _scale = 3;
             _dimension = 0;
@@ -57,7 +55,7 @@ namespace Substrate.Data
         /// Creates a new <see cref="Map"/> object with copied data.
         /// </summary>
         /// <param name="p">A <see cref="Map"/> to copy data from.</param>
-        protected Map (Map p)
+        protected Map(Map p)
         {
             _world = p._world;
             _id = p._id;
@@ -70,7 +68,8 @@ namespace Substrate.Data
             _z = p._z;
 
             _colors = new byte[_width * _height];
-            if (p._colors != null) {
+            if (p._colors != null)
+            {
                 p._colors.CopyTo(_colors, 0);
             }
         }
@@ -83,7 +82,8 @@ namespace Substrate.Data
             get { return _id; }
             set
             {
-                if (_id < 0 || _id >= 65536) {
+                if (_id < 0 || _id >= 65536)
+                {
                     throw new ArgumentOutOfRangeException("value", value, "Map Ids must be in the range [0, 65535].");
                 }
                 _id = value;
@@ -118,10 +118,12 @@ namespace Substrate.Data
             get { return _height; }
             set
             {
-                if (value <= 0) {
+                if (value <= 0)
+                {
                     throw new ArgumentOutOfRangeException("value", "Height must be a positive number");
                 }
-                if (_height != value) {
+                if (_height != value)
+                {
                     _height = (short)value;
                     _colors = new byte[_width * _height];
                 }
@@ -138,10 +140,12 @@ namespace Substrate.Data
             get { return _width; }
             set
             {
-                if (value <= 0) {
+                if (value <= 0)
+                {
                     throw new ArgumentOutOfRangeException("value", "Width must be a positive number");
                 }
-                if (_width != value) {
+                if (_width != value)
+                {
                     _width = (short)value;
                     _colors = new byte[_width * _height];
                 }
@@ -184,7 +188,8 @@ namespace Substrate.Data
         {
             get
             {
-                if (x < 0 || x >= _width || z < 0 || z >= _height) {
+                if (x < 0 || x >= _width || z < 0 || z >= _height)
+                {
                     throw new IndexOutOfRangeException();
                 }
                 return _colors[x + _width * z];
@@ -192,7 +197,8 @@ namespace Substrate.Data
 
             set
             {
-                if (x < 0 || x >= _width || z < 0 || z >= _height) {
+                if (x < 0 || x >= _width || z < 0 || z >= _height)
+                {
                     throw new IndexOutOfRangeException();
                 }
                 _colors[x + _width * z] = value;
@@ -205,13 +211,15 @@ namespace Substrate.Data
         /// </summary>
         /// <returns>True if the map was saved; false otherwise.</returns>
         /// <exception cref="Exception">Thrown when an error is encountered writing out the level.</exception>
-        public bool Save ()
+        public bool Save()
         {
-            if (_world == null) {
+            if (_world == null)
+            {
                 return false;
             }
 
-            try {
+            try
+            {
                 string path = Path.Combine(_world.Path, _world.DataDirectory);
                 NBTFile nf = new NBTFile(Path.Combine(path, "map_" + _id + ".dat"));
 
@@ -229,7 +237,8 @@ namespace Substrate.Data
 
                 return true;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Exception mex = new Exception("Could not save map file.", ex); // TODO: Exception Type
                 mex.Data["Map"] = this;
                 throw mex;
@@ -244,10 +253,11 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="tree">The root node of a Map subtree.</param>
         /// <returns>The <see cref="Map"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public virtual Map LoadTree (TagNode tree)
+        public virtual Map LoadTree(TagNode tree)
         {
             TagNodeCompound dtree = tree as TagNodeCompound;
-            if (dtree == null) {
+            if (dtree == null)
+            {
                 return null;
             }
 
@@ -272,16 +282,19 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="tree">The root node of a Map subtree.</param>
         /// <returns>The <see cref="Map"/> returns itself on success, or null if the tree failed validation.</returns>
-        public virtual Map LoadTreeSafe (TagNode tree)
+        public virtual Map LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
             Map map = LoadTree(tree);
 
-            if (map != null) {
-                if (map._colors.Length != map._width * map._height) {
+            if (map != null)
+            {
+                if (map._colors.Length != map._width * map._height)
+                {
                     throw new Exception("Unexpected length of colors byte array in Map"); // TODO: Expception Type
                 }
             }
@@ -293,7 +306,7 @@ namespace Substrate.Data
         /// Builds a Map subtree from the current data.
         /// </summary>
         /// <returns>The root node of a Map subtree representing the current data.</returns>
-        public virtual TagNode BuildTree ()
+        public virtual TagNode BuildTree()
         {
             TagNodeCompound data = new TagNodeCompound();
             data["scale"] = new TagNodeByte(_scale);
@@ -305,7 +318,8 @@ namespace Substrate.Data
 
             data["colors"] = new TagNodeByteArray(_colors);
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 data.MergeFrom(_source);
             }
 
@@ -320,7 +334,7 @@ namespace Substrate.Data
         /// </summary>
         /// <param name="tree">The root node of a Map subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public virtual bool ValidateTree (TagNode tree)
+        public virtual bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -334,7 +348,7 @@ namespace Substrate.Data
         /// Creates a deep-copy of the <see cref="Map"/>.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="Map"/>.</returns>
-        public virtual Map Copy ()
+        public virtual Map Copy()
         {
             return new Map(this);
         }

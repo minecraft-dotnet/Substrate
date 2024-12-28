@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -18,17 +14,17 @@ namespace Substrate.Entities
             get { return "Snowball"; }
         }
 
-        protected EntitySnowball (string id)
+        protected EntitySnowball(string id)
             : base(id)
         {
         }
 
-        public EntitySnowball ()
+        public EntitySnowball()
             : this(TypeId)
         {
         }
 
-        public EntitySnowball (TypedEntity e)
+        public EntitySnowball(TypedEntity e)
             : base(e)
         {
         }
@@ -36,7 +32,7 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, SnowballSchema).Verify();
         }
@@ -46,7 +42,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntitySnowball(this);
         }

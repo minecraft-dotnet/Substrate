@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// An NBT node representing an unsigned byte array tag type.
@@ -99,7 +97,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="b">A byte array node.</param>
         /// <returns>A system byte array set to the node's data.</returns>
-        public static implicit operator byte[] (TagNodeByteArray b)
+        public static implicit operator byte[](TagNodeByteArray b)
         {
             return b.Data;
         }

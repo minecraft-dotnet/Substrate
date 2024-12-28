@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Color = SixLabors.ImageSharp.PixelFormats.Bgra32;
 using Bitmap = SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Bgra32>;
+using Color = SixLabors.ImageSharp.PixelFormats.Bgra32;
 
 namespace Substrate.Data
 {

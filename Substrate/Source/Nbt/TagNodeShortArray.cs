@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     public sealed class TagNodeShortArray : TagNode
     {
@@ -98,7 +94,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="i">A short array node.</param>
         /// <returns>A system short array set to the node's data.</returns>
-        public static implicit operator short[] (TagNodeShortArray i)
+        public static implicit operator short[](TagNodeShortArray i)
         {
             return i.Data;
         }

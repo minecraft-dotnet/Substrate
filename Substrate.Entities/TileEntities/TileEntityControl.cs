@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -27,21 +23,22 @@ namespace Substrate.TileEntities
             set { _command = value; }
         }
 
-        protected TileEntityControl (string id)
+        protected TileEntityControl(string id)
             : base(id)
         {
         }
 
-        public TileEntityControl ()
+        public TileEntityControl()
             : this(TypeId)
         {
         }
 
-        public TileEntityControl (TileEntity te)
+        public TileEntityControl(TileEntity te)
             : base(te)
         {
             TileEntityControl tes = te as TileEntityControl;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _command = tes._command;
             }
         }
@@ -49,7 +46,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityControl(this);
         }
@@ -59,10 +56,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -71,7 +69,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Command"] = new TagNodeString(_command);
@@ -79,7 +77,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, ControlSchema).Verify();
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Nbt
+﻿namespace Substrate.Nbt
 {
     /// <summary>
     /// A concrete <see cref="SchemaNode"/> representing a <see cref="TagNodeLongArray"/>.
@@ -31,7 +27,7 @@ namespace Substrate.Nbt
         /// Constructs a new <see cref="SchemaNodeLongArray"/> representing a <see cref="TagNodeLongArray"/> named <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
-        public SchemaNodeLongArray (string name)
+        public SchemaNodeLongArray(string name)
             : base(name, TagType.TAG_LONG_ARRAY)
         {
             _length = 0;
@@ -42,7 +38,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeLongArray"/>.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
-        public SchemaNodeLongArray (string name, SchemaOptions options)
+        public SchemaNodeLongArray(string name, SchemaOptions options)
             : base(name, TagType.TAG_LONG_ARRAY, options)
         {
             _length = 0;
@@ -53,7 +49,7 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="name">The name of the corresponding <see cref="TagNodeIntArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
-        public SchemaNodeLongArray (string name, int length)
+        public SchemaNodeLongArray(string name, int length)
             : base(name, TagType.TAG_LONG_ARRAY)
         {
             _length = length;
@@ -65,7 +61,7 @@ namespace Substrate.Nbt
         /// <param name="name">The name of the corresponding <see cref="TagNodeLongArray"/>.</param>
         /// <param name="length">The expected length of corresponding byte array.</param>
         /// <param name="options">One or more option flags modifying the processing of this node.</param>
-        public SchemaNodeLongArray (string name, int length, SchemaOptions options)
+        public SchemaNodeLongArray(string name, int length, SchemaOptions options)
             : base(name, TagType.TAG_LONG_ARRAY, options)
         {
             _length = length;
@@ -75,7 +71,7 @@ namespace Substrate.Nbt
         /// Constructs a default <see cref="TagNodeLongArray"/> satisfying the constraints of this node.
         /// </summary>
         /// <returns>A <see cref="TagNodeString"/> with a sensible default value.</returns>
-        public override TagNode BuildDefaultTree ()
+        public override TagNode BuildDefaultTree()
         {
             return new TagNodeLongArray(new long[_length]);
         }

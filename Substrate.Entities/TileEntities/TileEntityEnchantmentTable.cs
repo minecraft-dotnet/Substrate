@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -18,17 +14,17 @@ namespace Substrate.TileEntities
             get { return "EnchantTable"; }
         }
 
-        protected TileEntityEnchantmentTable (string id)
+        protected TileEntityEnchantmentTable(string id)
             : base(id)
         {
         }
 
-        public TileEntityEnchantmentTable ()
+        public TileEntityEnchantmentTable()
             : this(TypeId)
         {
         }
 
-        public TileEntityEnchantmentTable (TileEntity te)
+        public TileEntityEnchantmentTable(TileEntity te)
             : base(te)
         {
         }
@@ -36,7 +32,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityEnchantmentTable(this);
         }
@@ -46,24 +42,25 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
 
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, EnchantTableSchema).Verify();
         }

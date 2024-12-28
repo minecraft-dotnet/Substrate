@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -18,17 +14,17 @@ namespace Substrate.Entities
             get { return "SmallFireball"; }
         }
 
-        protected EntitySmallFireball (string id)
+        protected EntitySmallFireball(string id)
             : base(id)
         {
         }
 
-        public EntitySmallFireball ()
+        public EntitySmallFireball()
             : this(TypeId)
         {
         }
 
-        public EntitySmallFireball (TypedEntity e)
+        public EntitySmallFireball(TypedEntity e)
             : base(e)
         {
         }
@@ -36,7 +32,7 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, SmallFireballSchema).Verify();
         }
@@ -46,7 +42,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntitySmallFireball(this);
         }

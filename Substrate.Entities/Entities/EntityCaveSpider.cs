@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -18,24 +14,24 @@ namespace Substrate.Entities
             get { return "CaveSpider"; }
         }
 
-        protected EntityCaveSpider (string id)
+        protected EntityCaveSpider(string id)
             : base(id)
         {
         }
 
-        public EntityCaveSpider ()
+        public EntityCaveSpider()
             : this(TypeId)
         {
         }
 
-        public EntityCaveSpider (TypedEntity e)
+        public EntityCaveSpider(TypedEntity e)
             : base(e)
         {
         }
 
         #region INBTObject<Entity> Members
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, CaveSpiderSchema).Verify();
         }
@@ -45,7 +41,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityCaveSpider(this);
         }

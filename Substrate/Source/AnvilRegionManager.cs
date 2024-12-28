@@ -6,34 +6,36 @@ namespace Substrate
 {
     public class AnvilRegionManager : RegionManager
     {
-        public AnvilRegionManager (string regionDir, ChunkCache cache)
+        public AnvilRegionManager(string regionDir, ChunkCache cache)
             : base(regionDir, cache)
         {
         }
 
-        protected override IRegion CreateRegionCore (int rx, int rz)
+        protected override IRegion CreateRegionCore(int rx, int rz)
         {
             return new AnvilRegion(this, _chunkCache, rx, rz);
         }
 
-        protected override RegionFile CreateRegionFileCore (int rx, int rz)
+        protected override RegionFile CreateRegionFileCore(int rx, int rz)
         {
             string fp = "r." + rx + "." + rz + ".mca";
             return new RegionFile(Path.Combine(GetRegionPath(), fp));
         }
 
-        protected override void DeleteRegionCore (IRegion region)
+        protected override void DeleteRegionCore(IRegion region)
         {
             AnvilRegion r = region as AnvilRegion;
-            if (r != null) {
+            if (r != null)
+            {
                 r.Dispose();
             }
         }
 
-        public override IRegion GetRegion (string filename)
+        public override IRegion GetRegion(string filename)
         {
             int rx, rz;
-            if (!AnvilRegion.ParseFileName(filename, out rx, out rz)) {
+            if (!AnvilRegion.ParseFileName(filename, out rx, out rz))
+            {
                 throw new ArgumentException("Malformed region file name: " + filename, "filename");
             }
 

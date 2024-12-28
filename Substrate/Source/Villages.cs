@@ -1,9 +1,6 @@
-﻿using Substrate.Core;
+﻿using System.Collections.Generic;
 using Substrate.Nbt;
 using Substrate.Source.Nbt;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Substrate
 {
@@ -160,7 +157,7 @@ namespace Substrate
             [TagNode]
             public int Z { get; set; }
         }
-        
+
         /// <summary>
         /// A player who has traded or harmed villagers.
         /// </summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -38,27 +34,28 @@ namespace Substrate.Entities
             set { _age = (short)value; }
         }
 
-        public Item Item 
+        public Item Item
         {
             get { return _item; }
             set { _item = value; }
         }
 
-        protected EntityItem (string id)
+        protected EntityItem(string id)
             : base(id)
         {
         }
 
-        public EntityItem ()
+        public EntityItem()
             : this(TypeId)
         {
         }
 
-        public EntityItem (TypedEntity e)
+        public EntityItem(TypedEntity e)
             : base(e)
         {
             EntityItem e2 = e as EntityItem;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _health = e2._health;
                 _age = e2._age;
                 _item = e2._item.Copy();
@@ -68,10 +65,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -83,7 +81,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Health"] = new TagNodeShort(_health);
@@ -93,7 +91,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, ItemSchema).Verify();
         }
@@ -103,7 +101,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityItem(this);
         }

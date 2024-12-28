@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Substrate.Nbt
@@ -15,17 +14,17 @@ namespace Substrate.Nbt
         /// Converts the node to itself.
         /// </summary>
         /// <returns>A reference to itself.</returns>
-        public override TagNodeCompound ToTagCompound () 
-        { 
-            return this; 
+        public override TagNodeCompound ToTagCompound()
+        {
+            return this;
         }
 
         /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_STRING tag type.</returns>
-        public override TagType GetTagType ()
-        { 
+        public override TagType GetTagType()
+        {
             return TagType.TAG_COMPOUND;
         }
 
@@ -40,7 +39,7 @@ namespace Substrate.Nbt
         /// <summary>
         /// Constructs a new empty compound node.
         /// </summary>
-        public TagNodeCompound ()
+        public TagNodeCompound()
         {
             _tags = new Dictionary<string, TagNode>();
         }
@@ -49,10 +48,12 @@ namespace Substrate.Nbt
         /// Copies all the elements of <paramref name="tree"/> into this <see cref="TagNodeCompound"/> if they do not already exist.
         /// </summary>
         /// <param name="tree">The source <see cref="TagNodeCompound"/> to copy elements from.</param>
-        public void MergeFrom (TagNodeCompound tree)
+        public void MergeFrom(TagNodeCompound tree)
         {
-            foreach (KeyValuePair<string, TagNode> node in tree) {
-                if (_tags.ContainsKey(node.Key)) {
+            foreach (KeyValuePair<string, TagNode> node in tree)
+            {
+                if (_tags.ContainsKey(node.Key))
+                {
                     continue;
                 }
 
@@ -64,10 +65,11 @@ namespace Substrate.Nbt
         /// Makes a deep copy of the node.
         /// </summary>
         /// <returns>A new compound node containing new subnodes representing the same data.</returns>
-        public override TagNode Copy ()
+        public override TagNode Copy()
         {
             TagNodeCompound list = new TagNodeCompound();
-            foreach (KeyValuePair<string, TagNode> item in _tags) {
+            foreach (KeyValuePair<string, TagNode> item in _tags)
+            {
                 list[item.Key] = item.Value.Copy();
             }
             return list;
@@ -77,7 +79,7 @@ namespace Substrate.Nbt
         /// Gets a string representation of the node's data.
         /// </summary>
         /// <returns>String representation of the node's data.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
             return _tags.ToString();
         }
@@ -91,7 +93,7 @@ namespace Substrate.Nbt
         /// <param name="value">The subnode to add.</param>
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
         /// <exception cref="ArgumentException">A subnode with the same key already exists in the set.</exception>
-        public void Add (string key, TagNode value)
+        public void Add(string key, TagNode value)
         {
             _tags.Add(key, value);
         }
@@ -102,7 +104,7 @@ namespace Substrate.Nbt
         /// <param name="key">The name of a subnode to check.</param>
         /// <returns>Status indicating whether a subnode with the specified name exists.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool ContainsKey (string key)
+        public bool ContainsKey(string key)
         {
             return _tags.ContainsKey(key);
         }
@@ -121,7 +123,7 @@ namespace Substrate.Nbt
         /// <param name="key">The name of the subnode to remove.</param>
         /// <returns>Status indicating whether a subnode was removed.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool Remove (string key)
+        public bool Remove(string key)
         {
             return _tags.Remove(key);
         }
@@ -133,7 +135,7 @@ namespace Substrate.Nbt
         /// <param name="value">When the function returns, contains the subnode assicated with the specified key.  If no subnode was found, contains a default value.</param>
         /// <returns>Status indicating whether a subnode was found.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-        public bool TryGetValue (string key, out TagNode value)
+        public bool TryGetValue(string key, out TagNode value)
         {
             return _tags.TryGetValue(key, out value);
         }
@@ -174,7 +176,7 @@ namespace Substrate.Nbt
         /// <param name="item">The <see cref="KeyValuePair{TKey, TVal}"/> structure representing the key and subnode to add to the set.</param>
         /// <exception cref="ArgumentNullException">The key of <paramref name="item"/> is null.</exception>
         /// <exception cref="ArgumentException">A subnode with the same key already exists in the set.</exception>
-        public void Add (KeyValuePair<string, TagNode> item)
+        public void Add(KeyValuePair<string, TagNode> item)
         {
             _tags.Add(item.Key, item.Value);
         }
@@ -182,7 +184,7 @@ namespace Substrate.Nbt
         /// <summary>
         /// Removes all of the subnodes from this node.
         /// </summary>
-        public void Clear ()
+        public void Clear()
         {
             _tags.Clear();
         }
@@ -192,10 +194,11 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="item">The <see cref="KeyValuePair{TKey, TValue}"/> structure representing the key and subnode to look for.</param>
         /// <returns>Status indicating if the subnode and key combination exists in the set.</returns>
-        public bool Contains (KeyValuePair<string, TagNode> item)
+        public bool Contains(KeyValuePair<string, TagNode> item)
         {
             TagNode value;
-            if (!_tags.TryGetValue(item.Key, out value)) {
+            if (!_tags.TryGetValue(item.Key, out value))
+            {
                 return false;
             }
             return value == item.Value;
@@ -209,19 +212,23 @@ namespace Substrate.Nbt
         /// <exception cref="ArgumentNullException"><paramref name="array"/> is null.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
         /// <exception cref="ArgumentException">The number of elements in the source <see cref="ICollection{T}"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
-        public void CopyTo (KeyValuePair<string, TagNode>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<string, TagNode>[] array, int arrayIndex)
         {
-            if (array == null) {
+            if (array == null)
+            {
                 throw new ArgumentNullException();
             }
-            if (arrayIndex < 0) {
+            if (arrayIndex < 0)
+            {
                 throw new ArgumentOutOfRangeException();
             }
-            if (array.Length - arrayIndex < _tags.Count) {
+            if (array.Length - arrayIndex < _tags.Count)
+            {
                 throw new ArgumentException();
             }
 
-            foreach (KeyValuePair<string, TagNode> item in _tags) {
+            foreach (KeyValuePair<string, TagNode> item in _tags)
+            {
                 array[arrayIndex] = item;
                 arrayIndex++;
             }
@@ -240,9 +247,10 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="item">The <see cref="KeyValuePair{TKey, TVal}"/> structure representing the key and value to remove from the set.</param>
         /// <returns>Status indicating whether a subnode was removed.</returns>
-        public bool Remove (KeyValuePair<string, TagNode> item)
+        public bool Remove(KeyValuePair<string, TagNode> item)
         {
-            if (Contains(item)) {
+            if (Contains(item))
+            {
                 _tags.Remove(item.Key);
                 return true;
             }
@@ -257,7 +265,7 @@ namespace Substrate.Nbt
         /// Returns an enumerator that iterates through all of the subnodes in the set.
         /// </summary>
         /// <returns>An enumerator for this node.</returns>
-        public IEnumerator<KeyValuePair<string, TagNode>> GetEnumerator ()
+        public IEnumerator<KeyValuePair<string, TagNode>> GetEnumerator()
         {
             return _tags.GetEnumerator();
         }
@@ -270,7 +278,7 @@ namespace Substrate.Nbt
         /// Returns an enumerator that iterates through all of the subnodes in the set.
         /// </summary>
         /// <returns>An enumerator for this node.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _tags.GetEnumerator();
         }

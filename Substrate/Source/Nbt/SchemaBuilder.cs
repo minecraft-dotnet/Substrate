@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,8 +41,10 @@ namespace Substrate.Source.Nbt
                         propertyInfo.TagType;
 
                     SchemaOptions schemaOptions = propertyInfo.SchemaOptions;
-                    if (attribute.Optional) { schemaOptions |= SchemaOptions.OPTIONAL; }
-                    if (attribute.CreateOnMissing) { schemaOptions |= SchemaOptions.CREATE_ON_MISSING; }
+                    if (attribute.Optional)
+                    { schemaOptions |= SchemaOptions.OPTIONAL; }
+                    if (attribute.CreateOnMissing)
+                    { schemaOptions |= SchemaOptions.CREATE_ON_MISSING; }
 
                     switch (tagType)
                     {
@@ -74,8 +76,8 @@ namespace Substrate.Source.Nbt
                     case TagType.TAG_LIST:
                         if (propertyInfo.ListItemTagType == TagType.TAG_COMPOUND)
                         {
-                                var listItemSchema = FromClass(propertyInfo.ListItemType);
-                                schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, listItemSchema, schemaOptions));
+                            var listItemSchema = FromClass(propertyInfo.ListItemType);
+                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, listItemSchema, schemaOptions));
                         }
                         else
                         {
@@ -145,19 +147,32 @@ namespace Substrate.Source.Nbt
             }
 
 
-            if (type == typeof(byte)) { details.TagType = TagType.TAG_BYTE; }
-            else if (type == typeof(bool)) { details.TagType = TagType.TAG_BYTE; }
-            else if (type == typeof(short)) { details.TagType = TagType.TAG_SHORT; }
-            else if (type == typeof(int)) { details.TagType = TagType.TAG_INT; }
-            else if (type == typeof(long)) { details.TagType = TagType.TAG_LONG; }
-            else if (type == typeof(float)) { details.TagType = TagType.TAG_FLOAT; }
-            else if (type == typeof(double)) { details.TagType = TagType.TAG_DOUBLE; }
-            else if (type == typeof(string)) { details.TagType = TagType.TAG_STRING; }
-            else if (type == typeof(List<byte>)) { details.TagType = TagType.TAG_BYTE_ARRAY; }
-            else if (type == typeof(List<int>)) { details.TagType = TagType.TAG_INT_ARRAY; }
-            else if (type == typeof(List<short>)) { details.TagType = TagType.TAG_SHORT_ARRAY; }
-            else if (type == typeof(List<long>)) { details.TagType = TagType.TAG_LONG_ARRAY; }
-            else { details.TagType = TagType.TAG_COMPOUND; }
+            if (type == typeof(byte))
+            { details.TagType = TagType.TAG_BYTE; }
+            else if (type == typeof(bool))
+            { details.TagType = TagType.TAG_BYTE; }
+            else if (type == typeof(short))
+            { details.TagType = TagType.TAG_SHORT; }
+            else if (type == typeof(int))
+            { details.TagType = TagType.TAG_INT; }
+            else if (type == typeof(long))
+            { details.TagType = TagType.TAG_LONG; }
+            else if (type == typeof(float))
+            { details.TagType = TagType.TAG_FLOAT; }
+            else if (type == typeof(double))
+            { details.TagType = TagType.TAG_DOUBLE; }
+            else if (type == typeof(string))
+            { details.TagType = TagType.TAG_STRING; }
+            else if (type == typeof(List<byte>))
+            { details.TagType = TagType.TAG_BYTE_ARRAY; }
+            else if (type == typeof(List<int>))
+            { details.TagType = TagType.TAG_INT_ARRAY; }
+            else if (type == typeof(List<short>))
+            { details.TagType = TagType.TAG_SHORT_ARRAY; }
+            else if (type == typeof(List<long>))
+            { details.TagType = TagType.TAG_LONG_ARRAY; }
+            else
+            { details.TagType = TagType.TAG_COMPOUND; }
 
             return details;
         }
@@ -166,16 +181,16 @@ namespace Substrate.Source.Nbt
         {
             switch (Convert.GetTypeCode(Activator.CreateInstance(type)))
             {
-                case TypeCode.Byte:
-                    return typeof(byte);
-                case TypeCode.Int16:
-                    return typeof(short);
-                case TypeCode.Int32:
-                    return typeof(int);
-                case TypeCode.Int64:
-                    return typeof(long);
-                default:
-                    return typeof(object);
+            case TypeCode.Byte:
+                return typeof(byte);
+            case TypeCode.Int16:
+                return typeof(short);
+            case TypeCode.Int32:
+                return typeof(int);
+            case TypeCode.Int64:
+                return typeof(long);
+            default:
+                return typeof(object);
             }
         }
 
@@ -225,7 +240,10 @@ namespace Substrate.Source.Nbt
             {
                 tree.TryGetValue(node.Name, out var treeValue);
 
-                if (treeValue == null) { continue; }
+                if (treeValue == null)
+                {
+                    continue;
+                }
 
                 var prop = properties.SingleOrDefault(p =>
                 {

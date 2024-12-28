@@ -144,7 +144,7 @@ namespace Substrate
         #region ICopyable<GameRules> Members
 
         /// <inheritdoc />
-        public GameRules Copy ()
+        public GameRules Copy()
         {
             GameRules gr = new GameRules();
             gr._commandBlockOutput = _commandBlockOutput;
@@ -264,22 +264,22 @@ namespace Substrate
                 new SchemaNodeScalar("BorderSizeLerpTime", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("BorderDamagePerBlock", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("clearWeatherTime", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-                new	SchemaNodeCompound("GameRules", SchemaOptions.OPTIONAL)
-			    {
-				    new	SchemaNodeScalar("commandBlockOutput", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("doFireTick", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("doMobLoot", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("doMobSpawning", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("doTileDrops", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("keepInventory", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("mobGriefing", TagType.TAG_STRING),
-				    new	SchemaNodeScalar("doDaylightCycle", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-				    new	SchemaNodeScalar("logAdminCommands", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-				    new	SchemaNodeScalar("naturalRegeneration", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-				    new	SchemaNodeScalar("randomTickSpeed", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-				    new	SchemaNodeScalar("sendCommandFeedback", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-				    new	SchemaNodeScalar("showDeathMessages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-			    },
+                new SchemaNodeCompound("GameRules", SchemaOptions.OPTIONAL)
+                {
+                    new SchemaNodeScalar("commandBlockOutput", TagType.TAG_STRING),
+                    new SchemaNodeScalar("doFireTick", TagType.TAG_STRING),
+                    new SchemaNodeScalar("doMobLoot", TagType.TAG_STRING),
+                    new SchemaNodeScalar("doMobSpawning", TagType.TAG_STRING),
+                    new SchemaNodeScalar("doTileDrops", TagType.TAG_STRING),
+                    new SchemaNodeScalar("keepInventory", TagType.TAG_STRING),
+                    new SchemaNodeScalar("mobGriefing", TagType.TAG_STRING),
+                    new SchemaNodeScalar("doDaylightCycle", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("logAdminCommands", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("naturalRegeneration", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("randomTickSpeed", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("sendCommandFeedback", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("showDeathMessages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                },
             },
         };
 
@@ -418,7 +418,8 @@ namespace Substrate
             set
             {
                 _name = value;
-                if (_player != null) {
+                if (_player != null)
+                {
                     _player.World = value;
                 }
             }
@@ -651,7 +652,7 @@ namespace Substrate
         /// Creates a new <see cref="Level"/> object with reasonable defaults tied to the given world.
         /// </summary>
         /// <param name="world">The world that the <see cref="Level"/> should be tied to.</param>
-        public Level (NbtWorld world)
+        public Level(NbtWorld world)
         {
             _world = world;
 
@@ -686,7 +687,7 @@ namespace Substrate
         /// Creates a copy of an existing <see cref="Level"/> object.
         /// </summary>
         /// <param name="p">The <see cref="Level"/> object to copy.</param>
-        protected Level (Level p)
+        protected Level(Level p)
         {
             _world = p._world;
 
@@ -731,11 +732,13 @@ namespace Substrate
             _borderDamagePerBlock = p._borderDamagePerBlock;
             _clearWeatherTime = p._clearWeatherTime;
 
-            if (p._player != null) {
+            if (p._player != null)
+            {
                 _player = p._player.Copy();
             }
 
-            if (p._source != null) {
+            if (p._source != null)
+            {
                 _source = p._source.Copy() as TagNodeCompound;
             }
         }
@@ -743,7 +746,7 @@ namespace Substrate
         /// <summary>
         /// Creates a default player entry for this world.
         /// </summary>
-        public void SetDefaultPlayer ()
+        public void SetDefaultPlayer()
         {
             _player = new Player();
             _player.World = _name;
@@ -758,13 +761,15 @@ namespace Substrate
         /// </summary>
         /// <returns>True if the level was saved; false otherwise.</returns>
         /// <exception cref="LevelIOException">Thrown when an error is encountered writing out the level.</exception>
-        public bool Save ()
+        public bool Save()
         {
-            if (_world == null) {
+            if (_world == null)
+            {
                 return false;
             }
 
-            try {
+            try
+            {
                 NBTFile nf = new NBTFile(Path.Combine(_world.Path, "level.dat"));
                 using (Stream zipstr = nf.GetDataOutputStream())
                 {
@@ -780,7 +785,8 @@ namespace Substrate
 
                 return true;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 LevelIOException lex = new LevelIOException("Could not save level file.", ex);
                 lex.Data["Level"] = this;
                 throw lex;
@@ -795,10 +801,11 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Level subtree.</param>
         /// <returns>The <see cref="Level"/> returns itself on success, or null if the tree was unparsable.</returns>
-        public virtual Level LoadTree (TagNode tree)
+        public virtual Level LoadTree(TagNode tree)
         {
             TagNodeCompound dtree = tree as TagNodeCompound;
-            if (dtree == null) {
+            if (dtree == null)
+            {
                 return null;
             }
 
@@ -820,7 +827,8 @@ namespace Substrate
             _time = ctree["Time"].ToTagLong();
             _lastPlayed = ctree["LastPlayed"].ToTagLong();
 
-            if (ctree.ContainsKey("Player")) {
+            if (ctree.ContainsKey("Player"))
+            {
                 _player = new Player().LoadTree(ctree["Player"]);
             }
 
@@ -831,53 +839,68 @@ namespace Substrate
             _sizeOnDisk = ctree["SizeOnDisk"].ToTagLong();
             _randomSeed = ctree["RandomSeed"].ToTagLong();
 
-            if (ctree.ContainsKey("version")) {
+            if (ctree.ContainsKey("version"))
+            {
                 _version = ctree["version"].ToTagInt();
             }
-            if (ctree.ContainsKey("LevelName")) {
+            if (ctree.ContainsKey("LevelName"))
+            {
                 _name = ctree["LevelName"].ToTagString();
             }
 
-            if (ctree.ContainsKey("generatorName")) {
+            if (ctree.ContainsKey("generatorName"))
+            {
                 _generator = ctree["generatorName"].ToTagString();
             }
 
-            if (ctree.ContainsKey("raining")) {
+            if (ctree.ContainsKey("raining"))
+            {
                 _raining = ctree["raining"].ToTagByte();
             }
-            if (ctree.ContainsKey("thundering")) {
+            if (ctree.ContainsKey("thundering"))
+            {
                 _thundering = ctree["thundering"].ToTagByte();
             }
-            if (ctree.ContainsKey("rainTime")) {
+            if (ctree.ContainsKey("rainTime"))
+            {
                 _rainTime = ctree["rainTime"].ToTagInt();
             }
-            if (ctree.ContainsKey("thunderTime")) {
+            if (ctree.ContainsKey("thunderTime"))
+            {
                 _thunderTime = ctree["thunderTime"].ToTagInt();
             }
 
-            if (ctree.ContainsKey("GameType")) {
+            if (ctree.ContainsKey("GameType"))
+            {
                 _gameType = ctree["GameType"].ToTagInt();
             }
-            if (ctree.ContainsKey("MapFeatures")) {
+            if (ctree.ContainsKey("MapFeatures"))
+            {
                 _mapFeatures = ctree["MapFeatures"].ToTagByte();
             }
-            if (ctree.ContainsKey("hardcore")) {
+            if (ctree.ContainsKey("hardcore"))
+            {
                 _hardcore = ctree["hardcore"].ToTagByte();
             }
 
-            if (ctree.ContainsKey("generatorVersion")) {
+            if (ctree.ContainsKey("generatorVersion"))
+            {
                 _generatorVersion = ctree["generatorVersion"].ToTagInt();
             }
-            if (ctree.ContainsKey("generatorOptions")) {
+            if (ctree.ContainsKey("generatorOptions"))
+            {
                 _generatorOptions = ctree["generatorOptions"].ToTagString();
             }
-            if (ctree.ContainsKey("allowCommands")) {
+            if (ctree.ContainsKey("allowCommands"))
+            {
                 _allowCommands = ctree["allowCommands"].ToTagByte();
             }
-            if (ctree.ContainsKey("initialized")) {
+            if (ctree.ContainsKey("initialized"))
+            {
                 _initialized = ctree["initialized"].ToTagByte();
             }
-            if (ctree.ContainsKey("DayTime")) {
+            if (ctree.ContainsKey("DayTime"))
+            {
                 _DayTime = ctree["DayTime"].ToTagLong();
             }
             if (ctree.ContainsKey("Difficulty"))
@@ -985,9 +1008,10 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Level subtree.</param>
         /// <returns>The <see cref="Level"/> returns itself on success, or null if the tree failed validation.</returns>
-        public virtual Level LoadTreeSafe (TagNode tree)
+        public virtual Level LoadTreeSafe(TagNode tree)
         {
-            if (!ValidateTree(tree)) {
+            if (!ValidateTree(tree))
+            {
                 return null;
             }
 
@@ -998,13 +1022,14 @@ namespace Substrate
         /// Builds a Level subtree from the current data.
         /// </summary>
         /// <returns>The root node of a Level subtree representing the current data.</returns>
-        public virtual TagNode BuildTree ()
+        public virtual TagNode BuildTree()
         {
             TagNodeCompound data = new TagNodeCompound();
             data["Time"] = new TagNodeLong(_time);
             data["LastPlayed"] = new TagNodeLong(_lastPlayed);
 
-            if (_player != null) {
+            if (_player != null)
+            {
                 data["Player"] = _player.BuildTree();
             }
 
@@ -1014,54 +1039,69 @@ namespace Substrate
             data["SizeOnDisk"] = new TagNodeLong(_sizeOnDisk);
             data["RandomSeed"] = new TagNodeLong(_randomSeed);
 
-            if (_version != null && _version != 0) {
+            if (_version != null && _version != 0)
+            {
                 data["version"] = new TagNodeInt(_version ?? 0);
             }
 
-            if (_name != null) {
+            if (_name != null)
+            {
                 data["LevelName"] = new TagNodeString(_name);
             }
 
-            if (_generator != null) {
+            if (_generator != null)
+            {
                 data["generatorName"] = new TagNodeString(_generator);
             }
 
-            if (_raining != null) {
+            if (_raining != null)
+            {
                 data["raining"] = new TagNodeByte(_raining ?? 0);
             }
-            if (_thundering != null) {
+            if (_thundering != null)
+            {
                 data["thundering"] = new TagNodeByte(_thundering ?? 0);
             }
-            if (_rainTime != null) {
+            if (_rainTime != null)
+            {
                 data["rainTime"] = new TagNodeInt(_rainTime ?? 0);
             }
-            if (_thunderTime != null) {
+            if (_thunderTime != null)
+            {
                 data["thunderTime"] = new TagNodeInt(_thunderTime ?? 0);
             }
 
-            if (_gameType != null) {
+            if (_gameType != null)
+            {
                 data["GameType"] = new TagNodeInt(_gameType ?? 0);
             }
-            if (_mapFeatures != null) {
+            if (_mapFeatures != null)
+            {
                 data["MapFeatures"] = new TagNodeByte(_mapFeatures ?? 0);
             }
-            if (_hardcore != null) {
+            if (_hardcore != null)
+            {
                 data["hardcore"] = new TagNodeByte(_hardcore ?? 0);
             }
 
-            if (_generatorOptions != null) {
+            if (_generatorOptions != null)
+            {
                 data["generatorOptions"] = new TagNodeString(_generatorOptions);
             }
-            if (_generatorVersion != null) {
+            if (_generatorVersion != null)
+            {
                 data["generatorVersion"] = new TagNodeInt(_generatorVersion ?? 0);
             }
-            if (_allowCommands != null) {
+            if (_allowCommands != null)
+            {
                 data["allowCommands"] = new TagNodeByte(_allowCommands ?? 0);
             }
-            if (_initialized != null) {
+            if (_initialized != null)
+            {
                 data["initialized"] = new TagNodeByte(_initialized ?? 0);
             }
-            if (_DayTime != null) {
+            if (_DayTime != null)
+            {
                 data["DayTime"] = new TagNodeLong(_DayTime ?? 0);
             }
 
@@ -1114,7 +1154,7 @@ namespace Substrate
             {
                 data["clearWeatherTime"] = new TagNodeInt(_clearWeatherTime ?? 0);
             }
-            
+
 
             TagNodeCompound gr = new TagNodeCompound();
             gr["commandBlockOutput"] = new TagNodeString(_gameRules.CommandBlockOutput ? "true" : "false");
@@ -1132,7 +1172,8 @@ namespace Substrate
             gr["showDeathMessages"] = new TagNodeString(_gameRules.ShowDeathMessages ? "true" : "false");
             data["GameRules"] = gr;
 
-            if (_source != null) {
+            if (_source != null)
+            {
                 data.MergeFrom(_source);
             }
 
@@ -1147,7 +1188,7 @@ namespace Substrate
         /// </summary>
         /// <param name="tree">The root node of a Level subtree.</param>
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
-        public virtual bool ValidateTree (TagNode tree)
+        public virtual bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, _schema).Verify();
         }
@@ -1161,7 +1202,7 @@ namespace Substrate
         /// Creates a deep-copy of the <see cref="Level"/>.
         /// </summary>
         /// <returns>A deep-copy of the <see cref="Level"/>, including a copy of the <see cref="Player"/>, if one is attached.</returns>
-        public virtual Level Copy ()
+        public virtual Level Copy()
         {
             return new Level(this);
         }

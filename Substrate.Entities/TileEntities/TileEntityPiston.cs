@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -61,21 +57,22 @@ namespace Substrate.TileEntities
             set { _progress = value; }
         }
 
-        protected TileEntityPiston (string id)
+        protected TileEntityPiston(string id)
             : base(id)
         {
         }
 
-        public TileEntityPiston ()
+        public TileEntityPiston()
             : this(TypeId)
         {
         }
 
-        public TileEntityPiston (TileEntity te)
+        public TileEntityPiston(TileEntity te)
             : base(te)
         {
             TileEntityPiston tes = te as TileEntityPiston;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _blockId = tes._blockId;
                 _blockData = tes._blockData;
                 _facing = tes._facing;
@@ -87,7 +84,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityPiston(this);
         }
@@ -97,10 +94,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -113,11 +111,12 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
 
-            if (_record != null) {
+            if (_record != null)
+            {
                 tree["blockId"] = new TagNodeInt(_blockId);
                 tree["blockData"] = new TagNodeInt(_blockData);
                 tree["facing"] = new TagNodeInt(_facing);
@@ -128,7 +127,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, PistonSchema).Verify();
         }

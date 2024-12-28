@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -27,21 +23,22 @@ namespace Substrate.TileEntities
             set { _record = value; }
         }
 
-        protected TileEntityRecordPlayer (string id)
+        protected TileEntityRecordPlayer(string id)
             : base(id)
         {
         }
 
-        public TileEntityRecordPlayer ()
+        public TileEntityRecordPlayer()
             : this(TypeId)
         {
         }
 
-        public TileEntityRecordPlayer (TileEntity te)
+        public TileEntityRecordPlayer(TileEntity te)
             : base(te)
         {
             TileEntityRecordPlayer tes = te as TileEntityRecordPlayer;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _record = tes._record;
             }
         }
@@ -49,7 +46,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityRecordPlayer(this);
         }
@@ -59,32 +56,35 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
-            if (ctree.ContainsKey("Record")) {
+            if (ctree.ContainsKey("Record"))
+            {
                 _record = ctree["Record"].ToTagInt();
             }
 
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
 
-            if (_record != null) {
+            if (_record != null)
+            {
                 tree["Record"] = new TagNodeInt((int)_record);
             }
 
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, RecordPlayerSchema).Verify();
         }

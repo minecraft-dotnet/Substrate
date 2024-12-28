@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -43,21 +39,22 @@ namespace Substrate.Entities
             set { _value = (short)value; }
         }
 
-        protected EntityXPOrb (string id)
+        protected EntityXPOrb(string id)
             : base(id)
         {
         }
 
-        public EntityXPOrb ()
+        public EntityXPOrb()
             : this(TypeId)
         {
         }
 
-        public EntityXPOrb (TypedEntity e)
+        public EntityXPOrb(TypedEntity e)
             : base(e)
         {
             EntityXPOrb e2 = e as EntityXPOrb;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _health = e2._health;
                 _age = e2._age;
                 _value = e2._value;
@@ -67,10 +64,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -81,7 +79,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Health"] = new TagNodeShort(_health);
@@ -91,7 +89,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, XPOrbSchema).Verify();
         }
@@ -101,7 +99,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityXPOrb(this);
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Substrate.Nbt;
+﻿using Substrate.Nbt;
 
 namespace Substrate.Entities
 {
@@ -28,21 +25,22 @@ namespace Substrate.Entities
             set { _inLove = value; }
         }
 
-        protected EntityAnimal (string id)
+        protected EntityAnimal(string id)
             : base(id)
         {
         }
 
-        public EntityAnimal ()
+        public EntityAnimal()
             : this(TypeId)
         {
         }
 
-        public EntityAnimal (TypedEntity e)
+        public EntityAnimal(TypedEntity e)
             : base(e)
         {
             EntityAnimal e2 = e as EntityAnimal;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _age = e2._age;
                 _inLove = e2._inLove;
             }
@@ -51,10 +49,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -64,7 +63,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Age"] = new TagNodeInt(_age);
@@ -73,7 +72,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, AnimalSchema).Verify();
         }
@@ -83,7 +82,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityAnimal(this);
         }

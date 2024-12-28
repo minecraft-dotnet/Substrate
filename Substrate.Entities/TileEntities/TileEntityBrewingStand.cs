@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Substrate.Core;
+﻿using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate.TileEntities
@@ -24,26 +22,28 @@ namespace Substrate.TileEntities
         private ItemCollection _items;
         private short _brewTime;
 
-        protected TileEntityBrewingStand (string id)
+        protected TileEntityBrewingStand(string id)
             : base(id)
         {
             _items = new ItemCollection(_CAPACITY);
         }
 
-        public TileEntityBrewingStand ()
+        public TileEntityBrewingStand()
             : this(TypeId)
         {
         }
 
-        public TileEntityBrewingStand (TileEntity te)
+        public TileEntityBrewingStand(TileEntity te)
             : base(te)
         {
             TileEntityBrewingStand tec = te as TileEntityBrewingStand;
-            if (tec != null) {
+            if (tec != null)
+            {
                 _items = tec._items.Copy();
                 _brewTime = tec._brewTime;
             }
-            else {
+            else
+            {
                 _items = new ItemCollection(_CAPACITY);
             }
         }
@@ -56,7 +56,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityBrewingStand(this);
         }
@@ -76,10 +76,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -91,7 +92,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Items"] = _items.BuildTree();
@@ -100,7 +101,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, BrewingStandSchema).Verify();
         }

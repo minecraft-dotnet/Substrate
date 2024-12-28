@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -27,21 +23,22 @@ namespace Substrate.Entities
             set { _powered = value; }
         }
 
-        protected EntityCreeper (string id)
+        protected EntityCreeper(string id)
             : base(id)
         {
         }
 
-        public EntityCreeper ()
+        public EntityCreeper()
             : this(TypeId)
         {
         }
 
-        public EntityCreeper (TypedEntity e)
+        public EntityCreeper(TypedEntity e)
             : base(e)
         {
             EntityCreeper e2 = e as EntityCreeper;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _powered = e2._powered;
             }
         }
@@ -49,32 +46,35 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
-            if (ctree.ContainsKey("powered")) {
+            if (ctree.ContainsKey("powered"))
+            {
                 _powered = ctree["powered"].ToTagByte() == 1;
             }
 
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
 
-            if (_powered != null) {
+            if (_powered != null)
+            {
                 tree["powered"] = new TagNodeByte((byte)((_powered ?? false) ? 1 : 0));
             }
 
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, CreeperSchema).Verify();
         }
@@ -84,7 +84,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityCreeper(this);
         }

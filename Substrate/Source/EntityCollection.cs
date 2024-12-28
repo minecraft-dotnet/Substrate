@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -21,7 +20,7 @@ namespace Substrate
         /// Creates a new <see cref="EntityCollection"/> around a <see cref="TagNodeList"/> containing Entity nodes.
         /// </summary>
         /// <param name="entities">A <see cref="TagNodeList"/> containing Entity nodes.</param>
-        public EntityCollection (TagNodeList entities)
+        public EntityCollection(TagNodeList entities)
         {
             _entities = entities;
         }
@@ -31,22 +30,26 @@ namespace Substrate
         /// </summary>
         /// <param name="id">The id (type) of entities that should be returned.</param>
         /// <returns>A list of <see cref="TypedEntity"/> objects matching the given id (type).</returns>
-        public List<TypedEntity> FindAll (string id)
+        public List<TypedEntity> FindAll(string id)
         {
             List<TypedEntity> set = new List<TypedEntity>();
 
-            foreach (TagNodeCompound ent in _entities) {
+            foreach (TagNodeCompound ent in _entities)
+            {
                 TagNode eid;
-                if (!ent.TryGetValue("id", out eid)) {
+                if (!ent.TryGetValue("id", out eid))
+                {
                     continue;
                 }
 
-                if (eid.ToTagString().Data != id) {
+                if (eid.ToTagString().Data != id)
+                {
                     continue;
                 }
 
                 TypedEntity obj = EntityFactory.Create(ent);
-                if (obj != null) {
+                if (obj != null)
+                {
                     set.Add(obj);
                 }
             }
@@ -59,17 +62,20 @@ namespace Substrate
         /// </summary>
         /// <param name="match">A <see cref="Predicate{T}"/> defining the matching condition.</param>
         /// <returns>A list of <see cref="TypedEntity"/> objects matching the given condition.</returns>
-        public List<TypedEntity> FindAll (Predicate<TypedEntity> match)
+        public List<TypedEntity> FindAll(Predicate<TypedEntity> match)
         {
             List<TypedEntity> set = new List<TypedEntity>();
 
-            foreach (TagNodeCompound ent in _entities) {
+            foreach (TagNodeCompound ent in _entities)
+            {
                 TypedEntity obj = EntityFactory.Create(ent);
-                if (obj == null) {
+                if (obj == null)
+                {
                     continue;
                 }
 
-                if (match(obj)) {
+                if (match(obj))
+                {
                     set.Add(obj);
                 }
             }
@@ -85,7 +91,7 @@ namespace Substrate
         /// is within acceptable range of the collection.  <see cref="EntityCollection"/> transparently back other objects such as 
         /// <see cref="Substrate.Core.IChunk"/> objects, which have a well-defined position in global space.  The <see cref="EntityCollection"/> itself has
         /// no concept of position and will not enforce constraints on the positions of <see cref="TypedEntity"/> objects being added.</remarks>
-        public void Add (TypedEntity ent)
+        public void Add(TypedEntity ent)
         {
             _entities.Add(ent.BuildTree());
             IsDirty = true;
@@ -96,27 +102,30 @@ namespace Substrate
         /// </summary>
         /// <param name="id">The id (type) of entities that should be removed.</param>
         /// <returns>A count of the number of entities that were removed.</returns>
-        public int RemoveAll (string id)
+        public int RemoveAll(string id)
         {
             int rem = _entities.RemoveAll(val =>
             {
                 TagNodeCompound cval = val as TagNodeCompound;
-                if (cval == null) {
+                if (cval == null)
+                {
                     return false;
                 }
 
                 TagNode sval;
-                if (!cval.TryGetValue("id", out sval)) {
+                if (!cval.TryGetValue("id", out sval))
+                {
                     return false;
                 }
 
                 return (sval.ToTagString().Data == id);
             });
 
-            if (rem > 0) {
+            if (rem > 0)
+            {
                 IsDirty = true;
             }
-            
+
             return rem;
         }
 
@@ -125,24 +134,27 @@ namespace Substrate
         /// </summary>
         /// <param name="match">A <see cref="Predicate{T}"/> defining the matching condition.</param>
         /// <returns>A count of the number of entities that were removed.</returns>
-        public int RemoveAll (Predicate<TypedEntity> match)
+        public int RemoveAll(Predicate<TypedEntity> match)
         {
             int rem = _entities.RemoveAll(val =>
             {
                 TagNodeCompound cval = val as TagNodeCompound;
-                if (cval == null) {
+                if (cval == null)
+                {
                     return false;
                 }
 
                 TypedEntity obj = EntityFactory.Create(cval);
-                if (obj == null) {
+                if (obj == null)
+                {
                     return false;
                 }
 
                 return match(obj);
             });
 
-            if (rem > 0) {
+            if (rem > 0)
+            {
                 IsDirty = true;
             }
 
@@ -155,7 +167,7 @@ namespace Substrate
         /// Returns an enumerator that iterates through all entities.
         /// </summary>
         /// <returns>An <see cref="Enumerator"/> for this object.</returns>
-        public IEnumerator<TypedEntity> GetEnumerator ()
+        public IEnumerator<TypedEntity> GetEnumerator()
         {
             return new Enumerator(_entities);
         }
@@ -168,7 +180,7 @@ namespace Substrate
         /// Returns an enumerator that iterates through all entities.
         /// </summary>
         /// <returns>An <see cref="Enumerator"/> for this object.</returns>
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return new Enumerator(_entities);
         }
@@ -185,7 +197,7 @@ namespace Substrate
             private bool _next;
             private TypedEntity _cur;
 
-            internal Enumerator (TagNodeList entities)
+            internal Enumerator(TagNodeList entities)
             {
                 _enum = entities.GetEnumerator();
                 _cur = null;
@@ -199,11 +211,12 @@ namespace Substrate
             /// </summary>
             public TypedEntity Current
             {
-                get 
+                get
                 {
-                    if (_next == false) {
+                    if (_next == false)
+                    {
                         throw new InvalidOperationException();
-                    } 
+                    }
                     return _cur;
                 }
             }
@@ -215,7 +228,7 @@ namespace Substrate
             /// <summary>
             /// Releases all resources used by the <see cref="Enumerator"/>.
             /// </summary>
-            public void Dispose () { }
+            public void Dispose() { }
 
             #endregion
 
@@ -233,9 +246,10 @@ namespace Substrate
             /// Advances the enumerator to the next <see cref="TypedEntity"/> in the <see cref="EntityCollection"/>.
             /// </summary>
             /// <returns>True if the enumerator was successfully advanced to the next position; false if the enumerator advanced past the end of the collection.</returns>
-            public bool MoveNext ()
+            public bool MoveNext()
             {
-                if (!_enum.MoveNext()) {
+                if (!_enum.MoveNext())
+                {
                     _next = false;
                     return false;
                 }
@@ -252,7 +266,7 @@ namespace Substrate
             /// <summary>
             /// Sets the enumerator to its initial position, which is before the first <see cref="TypedEntity"/> in the collection.
             /// </summary>
-            void System.Collections.IEnumerator.Reset ()
+            void System.Collections.IEnumerator.Reset()
             {
                 _cur = null;
                 _next = false;

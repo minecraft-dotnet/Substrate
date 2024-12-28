@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Substrate.Core;
-using Substrate.Nbt;
 using Substrate.Data;
+using Substrate.Nbt;
 
 //TODO: Exceptions (+ Alpha)
 
@@ -36,7 +36,7 @@ namespace Substrate
 
         private int _prefCacheSize = 256;
 
-        private AnvilWorld ()
+        private AnvilWorld()
         {
             _regionMgrs = new Dictionary<string, AnvilRegionManager>();
             _chunkMgrs = new Dictionary<string, RegionChunkManager>();
@@ -60,7 +60,7 @@ namespace Substrate
         /// <remarks>Get a <see cref="BlockManager"/> if you need to manage blocks as a global, unbounded matrix.  This abstracts away
         /// any higher-level organizational divisions.  If your task is going to be heavily performance-bound, consider getting a
         /// <see cref="RegionChunkManager"/> instead and working with blocks on a chunk-local level.</remarks>
-        public new BlockManager GetBlockManager ()
+        public new BlockManager GetBlockManager()
         {
             return GetBlockManagerVirt(Dimension.DEFAULT) as BlockManager;
         }
@@ -73,12 +73,12 @@ namespace Substrate
         /// <remarks>Get a <see cref="BlockManager"/> if you need to manage blocks as a global, unbounded matrix.  This abstracts away
         /// any higher-level organizational divisions.  If your task is going to be heavily performance-bound, consider getting a
         /// <see cref="RegionChunkManager"/> instead and working with blocks on a chunk-local level.</remarks>
-        public new BlockManager GetBlockManager (int dim)
+        public new BlockManager GetBlockManager(int dim)
         {
             return GetBlockManagerVirt(dim) as BlockManager;
         }
 
-        public new BlockManager GetBlockManager (string dim)
+        public new BlockManager GetBlockManager(string dim)
         {
             return GetBlockManagerVirt(dim) as BlockManager;
         }
@@ -88,7 +88,7 @@ namespace Substrate
         /// </summary>
         /// <returns>A <see cref="RegionChunkManager"/> tied to the default dimension in this world.</returns>
         /// <remarks>Get a <see cref="RegionChunkManager"/> if you you need to work with easily-digestible, bounded chunks of blocks.</remarks>
-        public new RegionChunkManager GetChunkManager ()
+        public new RegionChunkManager GetChunkManager()
         {
             return GetChunkManagerVirt(Dimension.DEFAULT) as RegionChunkManager;
         }
@@ -99,12 +99,12 @@ namespace Substrate
         /// <param name="dim">The id of the dimension to look up.</param>
         /// <returns>A <see cref="RegionChunkManager"/> tied to the given dimension in this world.</returns>
         /// <remarks>Get a <see cref="RegionChunkManager"/> if you you need to work with easily-digestible, bounded chunks of blocks.</remarks>
-        public new RegionChunkManager GetChunkManager (int dim)
+        public new RegionChunkManager GetChunkManager(int dim)
         {
             return GetChunkManagerVirt(dim) as RegionChunkManager;
         }
 
-        public new RegionChunkManager GetChunkManager (string dim)
+        public new RegionChunkManager GetChunkManager(string dim)
         {
             return GetChunkManagerVirt(dim) as RegionChunkManager;
         }
@@ -115,7 +115,7 @@ namespace Substrate
         /// <returns>A <see cref="RegionManager"/> tied to the defaul dimension in this world.</returns>
         /// <remarks>Regions are a higher-level unit of organization for blocks unique to worlds created in Beta 1.3 and beyond.
         /// Consider using the <see cref="RegionChunkManager"/> if you are interested in working with blocks.</remarks>
-        public AnvilRegionManager GetRegionManager ()
+        public AnvilRegionManager GetRegionManager()
         {
             return GetRegionManager(Dimension.DEFAULT);
         }
@@ -127,15 +127,16 @@ namespace Substrate
         /// <returns>A <see cref="RegionManager"/> tied to the given dimension in this world.</returns>
         /// <remarks>Regions are a higher-level unit of organization for blocks unique to worlds created in Beta 1.3 and beyond.
         /// Consider using the <see cref="RegionChunkManager"/> if you are interested in working with blocks.</remarks>
-        public AnvilRegionManager GetRegionManager (int dim)
+        public AnvilRegionManager GetRegionManager(int dim)
         {
             return GetRegionManager(DimensionFromInt(dim));
         }
 
-        public AnvilRegionManager GetRegionManager (string dim)
+        public AnvilRegionManager GetRegionManager(string dim)
         {
             AnvilRegionManager rm;
-            if (_regionMgrs.TryGetValue(dim, out rm)) {
+            if (_regionMgrs.TryGetValue(dim, out rm))
+            {
                 return rm;
             }
 
@@ -148,7 +149,7 @@ namespace Substrate
         /// </summary>
         /// <returns>A <see cref="PlayerManager"/> for this world.</returns>
         /// <remarks>To manage the player of a single-player world, get a <see cref="Level"/> object for the world instead.</remarks>
-        public new PlayerManager GetPlayerManager ()
+        public new PlayerManager GetPlayerManager()
         {
             return GetPlayerManagerVirt() as PlayerManager;
         }
@@ -157,17 +158,18 @@ namespace Substrate
         /// Gets a <see cref="BetaDataManager"/> for managing data resources, such as maps.
         /// </summary>
         /// <returns>A <see cref="BetaDataManager"/> for this world.</returns>
-        public new BetaDataManager GetDataManager ()
+        public new BetaDataManager GetDataManager()
         {
             return GetDataManagerVirt() as BetaDataManager;
         }
 
         /// <inherits />
-        public override void Save ()
+        public override void Save()
         {
             _level.Save();
 
-            foreach (KeyValuePair<string, RegionChunkManager> cm in _chunkMgrs) {
+            foreach (KeyValuePair<string, RegionChunkManager> cm in _chunkMgrs)
+            {
                 cm.Value.Save();
             }
         }
@@ -176,7 +178,7 @@ namespace Substrate
         /// Gets the <see cref="ChunkCache"/> currently managing chunks in the default dimension.
         /// </summary>
         /// <returns>The <see cref="ChunkCache"/> for the default dimension, or null if the dimension was not found.</returns>
-        public ChunkCache GetChunkCache ()
+        public ChunkCache GetChunkCache()
         {
             return GetChunkCache(Dimension.DEFAULT);
         }
@@ -186,14 +188,15 @@ namespace Substrate
         /// </summary>
         /// <param name="dim">The id of a dimension to look up.</param>
         /// <returns>The <see cref="ChunkCache"/> for the given dimension, or null if the dimension was not found.</returns>
-        public ChunkCache GetChunkCache (int dim)
+        public ChunkCache GetChunkCache(int dim)
         {
             return GetChunkCache(DimensionFromInt(dim));
         }
 
-        public ChunkCache GetChunkCache (string dim)
+        public ChunkCache GetChunkCache(string dim)
         {
-            if (_caches.ContainsKey(dim)) {
+            if (_caches.ContainsKey(dim))
+            {
                 return _caches[dim];
             }
             return null;
@@ -204,7 +207,7 @@ namespace Substrate
         /// </summary>
         /// <param name="path">The path to the directory containing the world's level.dat, or the path to level.dat itself.</param>
         /// <returns>A new <see cref="BetaWorld"/> object representing an existing world on disk.</returns>
-        public static new AnvilWorld Open (string path)
+        public static new AnvilWorld Open(string path)
         {
             return new AnvilWorld().OpenWorld(path) as AnvilWorld;
         }
@@ -215,7 +218,7 @@ namespace Substrate
         /// <param name="path">The path to the directory containing the world's level.dat, or the path to level.dat itself.</param>
         /// <param name="cacheSize">The preferred cache size in chunks for each opened dimension in this world.</param>
         /// <returns>A new <see cref="BetaWorld"/> object representing an existing world on disk.</returns>
-        public static AnvilWorld Open (string path, int cacheSize)
+        public static AnvilWorld Open(string path, int cacheSize)
         {
             AnvilWorld world = new AnvilWorld().OpenWorld(path);
             world._prefCacheSize = cacheSize;
@@ -230,7 +233,7 @@ namespace Substrate
         /// <returns>A new <see cref="BetaWorld"/> object representing a new world.</returns>
         /// <remarks>This method will attempt to create the specified directory immediately if it does not exist, but will not
         /// write out any world data unless it is explicitly saved at a later time.</remarks>
-        public static AnvilWorld Create (string path)
+        public static AnvilWorld Create(string path)
         {
             return new AnvilWorld().CreateWorld(path) as AnvilWorld;
         }
@@ -243,7 +246,7 @@ namespace Substrate
         /// <returns>A new <see cref="BetaWorld"/> object representing a new world.</returns>
         /// <remarks>This method will attempt to create the specified directory immediately if it does not exist, but will not
         /// write out any world data unless it is explicitly saved at a later time.</remarks>
-        public static AnvilWorld Create (string path, int cacheSize)
+        public static AnvilWorld Create(string path, int cacheSize)
         {
             AnvilWorld world = new AnvilWorld().CreateWorld(path);
             world._prefCacheSize = cacheSize;
@@ -252,7 +255,7 @@ namespace Substrate
         }
 
         /// <exclude/>
-        protected override IBlockManager GetBlockManagerVirt (int dim)
+        protected override IBlockManager GetBlockManagerVirt(int dim)
         {
             return GetBlockManagerVirt(DimensionFromInt(dim));
         }
@@ -260,7 +263,8 @@ namespace Substrate
         protected override IBlockManager GetBlockManagerVirt(string dim)
         {
             BlockManager rm;
-            if (_blockMgrs.TryGetValue(dim, out rm)) {
+            if (_blockMgrs.TryGetValue(dim, out rm))
+            {
                 return rm;
             }
 
@@ -269,15 +273,16 @@ namespace Substrate
         }
 
         /// <exclude/>
-        protected override IChunkManager GetChunkManagerVirt (int dim)
+        protected override IChunkManager GetChunkManagerVirt(int dim)
         {
             return GetChunkManagerVirt(DimensionFromInt(dim));
         }
 
-        protected override IChunkManager GetChunkManagerVirt (string dim)
+        protected override IChunkManager GetChunkManagerVirt(string dim)
         {
             RegionChunkManager rm;
-            if (_chunkMgrs.TryGetValue(dim, out rm)) {
+            if (_chunkMgrs.TryGetValue(dim, out rm))
+            {
                 return rm;
             }
 
@@ -286,9 +291,10 @@ namespace Substrate
         }
 
         /// <exclude/>
-        protected override IPlayerManager GetPlayerManagerVirt ()
+        protected override IPlayerManager GetPlayerManagerVirt()
         {
-            if (_playerMan != null) {
+            if (_playerMan != null)
+            {
                 return _playerMan;
             }
 
@@ -303,9 +309,10 @@ namespace Substrate
         }
 
         /// <exclude/>
-        protected override Data.DataManager GetDataManagerVirt ()
+        protected override Data.DataManager GetDataManagerVirt()
         {
-            if (_dataMan != null) {
+            if (_dataMan != null)
+            {
                 return _dataMan;
             }
 
@@ -313,7 +320,7 @@ namespace Substrate
             return _dataMan;
         }
 
-        private string DimensionFromInt (int dim)
+        private string DimensionFromInt(int dim)
         {
             if (dim == Dimension.DEFAULT)
                 return "";
@@ -321,18 +328,21 @@ namespace Substrate
                 return "DIM" + dim;
         }
 
-        private void OpenDimension (string dim)
+        private void OpenDimension(string dim)
         {
             string path = Path;
-            if (String.IsNullOrEmpty(dim)) {
+            if (String.IsNullOrEmpty(dim))
+            {
                 path = IO.Path.Combine(path, _REGION_DIR);
             }
-            else {
+            else
+            {
                 path = IO.Path.Combine(path, dim);
                 path = IO.Path.Combine(path, _REGION_DIR);
             }
 
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
             }
 
@@ -349,14 +359,17 @@ namespace Substrate
             _caches[dim] = cc;
         }
 
-        private AnvilWorld OpenWorld (string path)
+        private AnvilWorld OpenWorld(string path)
         {
-            if (!Directory.Exists(path)) {
-                if (File.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
+                if (File.Exists(path))
+                {
                     _levelFile = IO.Path.GetFileName(path);
                     path = IO.Path.GetDirectoryName(path);
                 }
-                else {
+                else
+                {
                     throw new DirectoryNotFoundException("Directory '" + path + "' not found");
                 }
             }
@@ -364,25 +377,29 @@ namespace Substrate
             Path = path;
 
             string ldat = IO.Path.Combine(path, _levelFile);
-            if (!File.Exists(ldat)) {
+            if (!File.Exists(ldat))
+            {
                 throw new FileNotFoundException("Data file '" + _levelFile + "' not found in '" + path + "'", ldat);
             }
 
-            if (!LoadLevel()) {
+            if (!LoadLevel())
+            {
                 throw new Exception("Failed to load '" + _levelFile + "'");
             }
 
             return this;
         }
 
-        private AnvilWorld CreateWorld (string path)
+        private AnvilWorld CreateWorld(string path)
         {
-            if (!Directory.Exists(path)) {
+            if (!Directory.Exists(path))
+            {
                 Directory.CreateDirectory(path);
             }
 
             string regpath = IO.Path.Combine(path, _REGION_DIR);
-            if (!Directory.Exists(regpath)) {
+            if (!Directory.Exists(regpath))
+            {
                 Directory.CreateDirectory(regpath);
             }
 
@@ -392,7 +409,7 @@ namespace Substrate
             return this;
         }
 
-        private bool LoadLevel ()
+        private bool LoadLevel()
         {
             NBTFile nf = new NBTFile(IO.Path.Combine(Path, _levelFile));
             NbtTree tree;
@@ -413,26 +430,31 @@ namespace Substrate
             return _level != null;
         }
 
-        internal static void OnResolveOpen (object sender, OpenWorldEventArgs e)
+        internal static void OnResolveOpen(object sender, OpenWorldEventArgs e)
         {
-            try {
+            try
+            {
                 AnvilWorld world = new AnvilWorld().OpenWorld(e.Path);
-                if (world == null) {
+                if (world == null)
+                {
                     return;
                 }
 
                 string regPath = IO.Path.Combine(e.Path, _REGION_DIR);
-                if (!Directory.Exists(regPath)) {
+                if (!Directory.Exists(regPath))
+                {
                     return;
                 }
 
-                if (world.Level.Version < 19133) {
+                if (world.Level.Version < 19133)
+                {
                     return;
                 }
 
                 e.AddHandler(Open);
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return;
             }
         }

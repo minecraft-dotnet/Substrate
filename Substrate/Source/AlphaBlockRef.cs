@@ -1,5 +1,4 @@
-﻿using System;
-using Substrate.Core;
+﻿using Substrate.Core;
 
 //TODO: Benchmark struct vs. class.  If no difference, prefer class.
 
@@ -29,7 +28,7 @@ namespace Substrate
         private readonly AlphaBlockCollection _collection;
         private readonly int _index;
 
-        internal AlphaBlockRef (AlphaBlockCollection collection, int index)
+        internal AlphaBlockRef(AlphaBlockCollection collection, int index)
         {
             _collection = collection;
             _index = index;
@@ -129,7 +128,7 @@ namespace Substrate
         /// Gets the Tile Entity record of the block if it has one.
         /// </summary>
         /// <returns>The <see cref="TileEntity"/> attached to this block, or null if the block type does not require a Tile Entity.</returns>
-        public TileEntity GetTileEntity ()
+        public TileEntity GetTileEntity()
         {
             return _collection.GetTileEntity(_index);
         }
@@ -138,7 +137,7 @@ namespace Substrate
         /// Sets a new Tile Entity record for the block.
         /// </summary>
         /// <param name="te">A Tile Entity record compatible with the block's type.</param>
-        public void SetTileEntity (TileEntity te)
+        public void SetTileEntity(TileEntity te)
         {
             _collection.SetTileEntity(_index, te);
         }
@@ -146,7 +145,7 @@ namespace Substrate
         /// <summary>
         /// Creates a default Tile Entity record appropriate for the block.
         /// </summary>
-        public void CreateTileEntity ()
+        public void CreateTileEntity()
         {
             _collection.CreateTileEntity(_index);
         }
@@ -154,7 +153,7 @@ namespace Substrate
         /// <summary>
         /// Removes any Tile Entity currently attached to the block.
         /// </summary>
-        public void ClearTileEntity ()
+        public void ClearTileEntity()
         {
             _collection.ClearTileEntity(_index);
         }
@@ -174,7 +173,7 @@ namespace Substrate
         /// Gets the <see cref="TileTick"/> record of the block if it has one.
         /// </summary>
         /// <returns>The <see cref="TileTick"/> attached to this block, or null if the block type does not require a Tile Entity.</returns>
-        public TileTick GetTileTick ()
+        public TileTick GetTileTick()
         {
             return _collection.GetTileTick(_index);
         }
@@ -183,7 +182,7 @@ namespace Substrate
         /// Sets a new <see cref="TileTick"/> record for the block.
         /// </summary>
         /// <param name="te">A <see cref="TileTick"/> record compatible with the block's type.</param>
-        public void SetTileTick (TileTick te)
+        public void SetTileTick(TileTick te)
         {
             _collection.SetTileTick(_index, te);
         }
@@ -191,7 +190,7 @@ namespace Substrate
         /// <summary>
         /// Creates a default <see cref="TileTick"/> record appropriate for the block.
         /// </summary>
-        public void CreateTileTick ()
+        public void CreateTileTick()
         {
             _collection.CreateTileTick(_index);
         }
@@ -199,7 +198,7 @@ namespace Substrate
         /// <summary>
         /// Removes any <see cref="TileTick"/> currently attached to the block.
         /// </summary>
-        public void ClearTileTick ()
+        public void ClearTileTick()
         {
             _collection.ClearTileTick(_index);
         }

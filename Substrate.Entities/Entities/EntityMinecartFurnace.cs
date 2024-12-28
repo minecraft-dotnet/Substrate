@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -42,21 +38,22 @@ namespace Substrate.Entities
             set { _fuel = (short)value; }
         }
 
-        protected EntityMinecartFurnace (string id)
+        protected EntityMinecartFurnace(string id)
             : base(id)
         {
         }
 
-        public EntityMinecartFurnace ()
+        public EntityMinecartFurnace()
             : base()
         {
         }
 
-        public EntityMinecartFurnace (TypedEntity e)
+        public EntityMinecartFurnace(TypedEntity e)
             : base(e)
         {
             EntityMinecartFurnace e2 = e as EntityMinecartFurnace;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _pushX = e2._pushX;
                 _pushZ = e2._pushZ;
                 _fuel = e2._fuel;
@@ -66,10 +63,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -80,7 +78,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["PushX"] = new TagNodeDouble(_pushX);
@@ -90,7 +88,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, MinecartFurnaceSchema).Verify();
         }
@@ -100,7 +98,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityMinecartFurnace(this);
         }

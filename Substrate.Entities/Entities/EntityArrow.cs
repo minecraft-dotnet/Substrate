@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -35,21 +31,22 @@ namespace Substrate.Entities
             set { _player = (byte)(value ? 1 : 0); }
         }
 
-        protected EntityArrow (string id)
+        protected EntityArrow(string id)
             : base(id)
         {
         }
 
-        public EntityArrow ()
+        public EntityArrow()
             : this(TypeId)
         {
         }
 
-        public EntityArrow (TypedEntity e)
+        public EntityArrow(TypedEntity e)
             : base(e)
         {
             EntityArrow e2 = e as EntityArrow;
-            if (e2 != null) {
+            if (e2 != null)
+            {
                 _inData = e2._inData;
                 _player = e2._player;
             }
@@ -58,10 +55,11 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override TypedEntity LoadTree (TagNode tree)
+        public override TypedEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -71,7 +69,7 @@ namespace Substrate.Entities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["inData"] = new TagNodeShort(_inData);
@@ -80,7 +78,7 @@ namespace Substrate.Entities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, ArrowSchema).Verify();
         }
@@ -90,7 +88,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityArrow(this);
         }

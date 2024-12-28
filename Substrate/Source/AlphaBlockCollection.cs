@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Substrate.Core;
 using Substrate.Nbt;
 
@@ -142,11 +141,11 @@ namespace Substrate
         {
             add
             {
-                _lightManager.ResolveNeighbor += delegate(int relx, int rely, int relz)
+                _lightManager.ResolveNeighbor += delegate (int relx, int rely, int relz)
                 {
                     return value(relx, rely, relz);
                 };
-                _fluidManager.ResolveNeighbor += delegate(int relx, int rely, int relz)
+                _fluidManager.ResolveNeighbor += delegate (int relx, int rely, int relz)
                 {
                     return value(relx, rely, relz);
                 };

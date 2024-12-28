@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Substrate.Core;
+﻿using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate.TileEntities
@@ -39,27 +37,29 @@ namespace Substrate.TileEntities
             set { _cookTime = (short)value; }
         }
 
-        protected TileEntityFurnace (string id)
+        protected TileEntityFurnace(string id)
             : base(id)
         {
             _items = new ItemCollection(_CAPACITY);
         }
 
-        public TileEntityFurnace ()
+        public TileEntityFurnace()
             : this(TypeId)
         {
         }
 
-        public TileEntityFurnace (TileEntity te)
+        public TileEntityFurnace(TileEntity te)
             : base(te)
         {
             TileEntityFurnace tec = te as TileEntityFurnace;
-            if (tec != null) {
+            if (tec != null)
+            {
                 _cookTime = tec._cookTime;
                 _burnTime = tec._burnTime;
                 _items = tec._items.Copy();
             }
-            else {
+            else
+            {
                 _items = new ItemCollection(_CAPACITY);
             }
         }
@@ -67,7 +67,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityFurnace(this);
         }
@@ -87,10 +87,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -103,7 +104,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["BurnTime"] = new TagNodeShort(_burnTime);
@@ -113,7 +114,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, FurnaceSchema).Verify();
         }

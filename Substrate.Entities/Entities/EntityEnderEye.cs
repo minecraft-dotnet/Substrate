@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.Entities
+﻿namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -18,17 +14,17 @@ namespace Substrate.Entities
             get { return "EyeOfEnderSignal"; }
         }
 
-        protected EntityEnderEye (string id)
+        protected EntityEnderEye(string id)
             : base(id)
         {
         }
 
-        public EntityEnderEye ()
+        public EntityEnderEye()
             : this(TypeId)
         {
         }
 
-        public EntityEnderEye (TypedEntity e)
+        public EntityEnderEye(TypedEntity e)
             : base(e)
         {
         }
@@ -36,7 +32,7 @@ namespace Substrate.Entities
 
         #region INBTObject<Entity> Members
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, EnderEyeSchema).Verify();
         }
@@ -46,7 +42,7 @@ namespace Substrate.Entities
 
         #region ICopyable<Entity> Members
 
-        public override TypedEntity Copy ()
+        public override TypedEntity Copy()
         {
             return new EntityEnderEye(this);
         }

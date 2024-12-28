@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Substrate.TileEntities
+﻿namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -43,21 +39,22 @@ namespace Substrate.TileEntities
             set { _secondary = value; }
         }
 
-        protected TileEntityBeacon (string id)
+        protected TileEntityBeacon(string id)
             : base(id)
         {
         }
 
-        public TileEntityBeacon ()
+        public TileEntityBeacon()
             : this(TypeId)
         {
         }
 
-        public TileEntityBeacon (TileEntity te)
+        public TileEntityBeacon(TileEntity te)
             : base(te)
         {
             TileEntityBeacon tes = te as TileEntityBeacon;
-            if (tes != null) {
+            if (tes != null)
+            {
                 _levels = tes._levels;
                 _primary = tes._primary;
                 _secondary = tes._secondary;
@@ -67,7 +64,7 @@ namespace Substrate.TileEntities
 
         #region ICopyable<TileEntity> Members
 
-        public override TileEntity Copy ()
+        public override TileEntity Copy()
         {
             return new TileEntityBeacon(this);
         }
@@ -77,10 +74,11 @@ namespace Substrate.TileEntities
 
         #region INBTObject<TileEntity> Members
 
-        public override TileEntity LoadTree (TagNode tree)
+        public override TileEntity LoadTree(TagNode tree)
         {
             TagNodeCompound ctree = tree as TagNodeCompound;
-            if (ctree == null || base.LoadTree(tree) == null) {
+            if (ctree == null || base.LoadTree(tree) == null)
+            {
                 return null;
             }
 
@@ -91,7 +89,7 @@ namespace Substrate.TileEntities
             return this;
         }
 
-        public override TagNode BuildTree ()
+        public override TagNode BuildTree()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
             tree["Levels"] = new TagNodeInt(_levels);
@@ -101,7 +99,7 @@ namespace Substrate.TileEntities
             return tree;
         }
 
-        public override bool ValidateTree (TagNode tree)
+        public override bool ValidateTree(TagNode tree)
         {
             return new NbtVerifier(tree, BeaconSchema).Verify();
         }
