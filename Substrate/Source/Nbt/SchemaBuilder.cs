@@ -109,7 +109,7 @@ namespace Substrate.Source.Nbt
 
             if (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                details.ListItemType = type.GetGenericArguments[0];
+                details.ListItemType = type.GenericTypeArguments[0];
                 var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;
@@ -124,7 +124,7 @@ namespace Substrate.Source.Nbt
                     throw new InvalidOperationException("Dictionary-as-list is only supported with int key type");
                 }
 
-                details.ListItemType = type.GetGenericArguments[1];
+                details.ListItemType = type.GenericTypeArguments[1];
                 var subTagType = GetTagTypeForPropertyType(details.ListItemType);
 
                 details.TagType = TagType.TAG_LIST;

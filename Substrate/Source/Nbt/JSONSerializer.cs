@@ -117,7 +117,7 @@ namespace Substrate.Nbt
                         SerializeByteArray(item as TagNodeByteArray, str, level);
                     }
                     else {
-                        SerializeScaler(item, str);
+                        SerializeScalar(item, str);
                     }
                 }
 
@@ -173,7 +173,7 @@ namespace Substrate.Nbt
             str.Append(" ]");
         }
 
-        private static void SerializeScaler (TagNode tag, StringBuilder str)
+        private static void SerializeScalar (TagNode tag, StringBuilder str)
         {
             switch (tag.GetTagType()) {
                 case TagType.TAG_STRING:
