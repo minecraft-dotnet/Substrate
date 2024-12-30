@@ -1,4 +1,4 @@
-﻿namespace Substrate.TileEntities
+namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -7,7 +7,7 @@
         public static readonly SchemaNodeCompound ControlSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScalar("Command", TagType.TAG_STRING),
+            new SchemaNodeString("Command"),
         });
 
         public static string TypeId

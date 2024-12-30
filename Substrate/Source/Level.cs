@@ -225,6 +225,43 @@ namespace Substrate
     /// </summary>
     public class Level : INbtObject<Level>, ICopyable<Level>
     {
+        private static SchemaNodeCompound _endNether = new SchemaNodeCompound()
+        {
+            new SchemaNodeString("type", SchemaOptions.OPTIONAL),
+            new SchemaNodeCompound("generator", SchemaOptions.OPTIONAL)
+            {
+                new SchemaNodeString("type", SchemaOptions.OPTIONAL),
+                //new SchemaNodeString("settings", SchemaOptions.OPTIONAL),
+                //new SchemaNodeCompound("biome_source", SchemaOptions.OPTIONAL)
+                //{
+                //    new SchemaNodeString("type", SchemaOptions.OPTIONAL),
+                //    new SchemaNodeString("preset", SchemaOptions.OPTIONAL),
+                //    new SchemaNodeCompound("options", SchemaOptions.OPTIONAL),
+                //},
+            }
+        };
+
+        private static SchemaNodeCompound _overworld = new SchemaNodeCompound()
+        {
+            new SchemaNodeString("type", SchemaOptions.OPTIONAL),
+            new SchemaNodeCompound("generator", SchemaOptions.OPTIONAL)
+            {
+                new SchemaNodeString("type", SchemaOptions.OPTIONAL),
+                //new SchemaNodeCompound("settings", SchemaOptions.OPTIONAL)
+                //{
+                //    new SchemaNodeList("layers", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
+                //    new SchemaNodeString("block", SchemaOptions.OPTIONAL),
+                //    new SchemaNodeScalar("height", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+
+                //    }, SchemaOptions.OPTIONAL),
+                //    new SchemaNodeList("structure_overrides", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                //    new SchemaNodeString("biome", SchemaOptions.OPTIONAL),
+                //    new SchemaNodeScalar("features", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                //    new SchemaNodeScalar("lakes", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                //},
+            }
+        };
+
         private static SchemaNodeCompound _schema = new SchemaNodeCompound()
         {
             new SchemaNodeCompound("Data")
@@ -236,10 +273,10 @@ namespace Substrate
                 new SchemaNodeScalar("SpawnY", TagType.TAG_INT),
                 new SchemaNodeScalar("SpawnZ", TagType.TAG_INT),
                 new SchemaNodeScalar("SizeOnDisk", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
-                new SchemaNodeScalar("RandomSeed", TagType.TAG_LONG),
+                new SchemaNodeScalar("RandomSeed", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("version", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("LevelName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("generatorName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeString("LevelName", SchemaOptions.OPTIONAL),
+                new SchemaNodeString("generatorName", SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("raining", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("thundering", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("rainTime", TagType.TAG_INT, SchemaOptions.OPTIONAL),
@@ -248,7 +285,7 @@ namespace Substrate
                 new SchemaNodeScalar("MapFeatures", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("hardcore", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("generatorVersion", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("generatorOptions", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeString("generatorOptions", SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("initialized", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("allowCommands", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("DayTime", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
@@ -264,21 +301,108 @@ namespace Substrate
                 new SchemaNodeScalar("BorderSizeLerpTime", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("BorderDamagePerBlock", TagType.TAG_DOUBLE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("clearWeatherTime", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeString("LevelName", SchemaOptions.OPTIONAL),
+
+                new SchemaNodeScalar("WanderingTraderSpawnChance", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeList("ServerBrands", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeCompound("WorldGenSettings", SchemaOptions.OPTIONAL) {
+                    new SchemaNodeScalar("bonus_chest", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("seed", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("generate_features", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                    new SchemaNodeCompound("dimensions", SchemaOptions.OPTIONAL) {
+                        new SchemaNodeCompound("minecraft:overworld", _overworld, SchemaOptions.OPTIONAL),
+                        new SchemaNodeCompound("minecraft:the_end", _endNether, SchemaOptions.OPTIONAL),
+                        new SchemaNodeCompound("minecraft:the_nether", _endNether, SchemaOptions.OPTIONAL),
+                    },
+                },
+                new SchemaNodeCompound("DragonFight", SchemaOptions.OPTIONAL) {
+                    new SchemaNodeIntArray("Gateways", SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("DragonKilled", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("PreviouslyKilled", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                    new SchemaNodeScalar("NeedsStateScanning", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+
+                },
+                new SchemaNodeScalar("WasModded", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("WanderingTraderSpawnDelay", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeCompound("CustomBossEvents", SchemaOptions.OPTIONAL) {
+                },
+                new SchemaNodeIntArray("WanderingTraderId", SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("SpawnAngle", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+                new SchemaNodeList("ScheduledEvents", TagType.TAG_COMPOUND, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("DataVersion", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeCompound("DataPacks", SchemaOptions.OPTIONAL) {
+                    new SchemaNodeList("Enabled", TagType.TAG_STRING),
+                    new SchemaNodeList("Disabled", TagType.TAG_STRING),
+                },
+
+                new SchemaNodeCompound("DimensionData", SchemaOptions.OPTIONAL) {
+                    new SchemaNodeCompound("1", SchemaOptions.OPTIONAL) {
+                        new SchemaNodeCompound("DragonFight", SchemaOptions.OPTIONAL) {
+                            new SchemaNodeList("Gateways", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                            new SchemaNodeScalar("DragonKilled", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                            new SchemaNodeScalar("PreviouslyKilled", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                        },
+                    },
+                },
+
                 new SchemaNodeCompound("GameRules", SchemaOptions.OPTIONAL)
                 {
-                    new SchemaNodeScalar("commandBlockOutput", TagType.TAG_STRING),
-                    new SchemaNodeScalar("doFireTick", TagType.TAG_STRING),
-                    new SchemaNodeScalar("doMobLoot", TagType.TAG_STRING),
-                    new SchemaNodeScalar("doMobSpawning", TagType.TAG_STRING),
-                    new SchemaNodeScalar("doTileDrops", TagType.TAG_STRING),
-                    new SchemaNodeScalar("keepInventory", TagType.TAG_STRING),
-                    new SchemaNodeScalar("mobGriefing", TagType.TAG_STRING),
-                    new SchemaNodeScalar("doDaylightCycle", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                    new SchemaNodeScalar("logAdminCommands", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                    new SchemaNodeScalar("naturalRegeneration", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                    new SchemaNodeScalar("randomTickSpeed", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                    new SchemaNodeScalar("sendCommandFeedback", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                    new SchemaNodeScalar("showDeathMessages", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("commandBlockOutput"),
+                    new SchemaNodeString("doFireTick"),
+                    new SchemaNodeString("doMobLoot"),
+                    new SchemaNodeString("doMobSpawning"),
+                    new SchemaNodeString("doTileDrops"),
+                    new SchemaNodeString("keepInventory"),
+                    new SchemaNodeString("mobGriefing"),
+                    new SchemaNodeString("doDaylightCycle", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("logAdminCommands", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("naturalRegeneration", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("randomTickSpeed", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("sendCommandFeedback", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("showDeathMessages", SchemaOptions.OPTIONAL),
+
+                    new SchemaNodeString("gameLoopFunction", SchemaOptions.OPTIONAL),
+
+                    new SchemaNodeString("doWardenSpawning", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("maxCommandChainLength", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("fireDamage", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("reducedDebugInfo", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("disableElytraMovementCheck", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("announceAdvancements", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("drowningDamage", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("forgiveDeadPlayers", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("maxEntityCramming", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("disableRaids", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doWeatherCycle", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("universalAnger", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("playersSleepingPercentage", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doInsomnia", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doImmediateRespawn", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("fallDamage", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doEntityDrops", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doLimitedCrafting", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("spawnRadius", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doTraderSpawning", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("freezeDamage", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("spectatorsGenerateChunks", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doPatrolSpawning", SchemaOptions.OPTIONAL),
+
+                    new SchemaNodeString("globalSoundEvents", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("tntExplosionDropDecay", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("enderPearlsVanishOnDeath", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("doVinesSpread", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("lavaSourceConversion", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("playersNetherPortalCreativeDelay", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("snowAccumulationHeight", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("blockExplosionDropDecay", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("playersNetherPortalDefaultDelay", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("waterSourceConversion", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("projectilesCanBreakBlocks", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("spawnChunkRadius", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("mobExplosionDropDecay", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("disablePlayerMovementCheck", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("commandModificationBlockLimit", SchemaOptions.OPTIONAL),
+                    new SchemaNodeString("maxCommandForkCount", SchemaOptions.OPTIONAL),
                 },
             },
         };
@@ -821,6 +945,7 @@ namespace Substrate
             _allowCommands = null;
             _initialized = null;
             _DayTime = null;
+            _randomSeed = 0;
 
             TagNodeCompound ctree = dtree["Data"].ToTagCompound();
 
@@ -837,7 +962,12 @@ namespace Substrate
             _spawnZ = ctree["SpawnZ"].ToTagInt();
 
             _sizeOnDisk = ctree["SizeOnDisk"].ToTagLong();
-            _randomSeed = ctree["RandomSeed"].ToTagLong();
+
+
+            if (ctree.TryGetValue("_randomSeed", out var seed))
+            {
+                _randomSeed = seed.ToTagLong();
+            }
 
             if (ctree.ContainsKey("version"))
             {

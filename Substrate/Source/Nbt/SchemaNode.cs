@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace Substrate.Nbt
 {
@@ -54,6 +54,11 @@ namespace Substrate.Nbt
         public virtual TagNode BuildDefaultTree()
         {
             return null;
+        }
+
+        public virtual bool CanConvertFrom(TagNode tag)
+        {
+            return false;
         }
     }
 }

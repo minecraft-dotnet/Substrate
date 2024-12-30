@@ -1,4 +1,4 @@
-﻿using Substrate.Core;
+using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -265,7 +265,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = Entity.Schema.MergeInto(new SchemaNodeCompound("")
         {
-            new SchemaNodeScalar("id", TagType.TAG_STRING),
+            new SchemaNodeString("id"),
         });
 
         private string _id;

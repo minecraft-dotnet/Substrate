@@ -1,4 +1,4 @@
-﻿namespace Substrate.TileEntities
+namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -7,7 +7,7 @@
         public static readonly SchemaNodeCompound MobSpawnerSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScalar("EntityId", TagType.TAG_STRING),
+            new SchemaNodeString("EntityId"),
             new SchemaNodeScalar("Delay", TagType.TAG_SHORT),
             new SchemaNodeScalar("MaxSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("MinSpawnDelay", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),

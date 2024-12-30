@@ -49,6 +49,8 @@ namespace Substrate.Nbt
         /// </summary>
         public SchemaNode Schema { get; private set; }
 
+        public string SchemaPath { get; private set; }
+
         /// <summary>
         /// Constructs a new event argument set.
         /// </summary>
@@ -64,12 +66,14 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="tagName">The expected name of a <see cref="TagNode"/>.</param>
         /// <param name="tag">The <see cref="TagNode"/> involved in this event.</param>
+        /// <param name="schemaPath">Path in the schema.</param>
         /// <param name="parent">The optional parent of tag.</param>
-        public TagEventArgs(string tagName, TagNode tag, TagNode parent = null)
+        public TagEventArgs(string tagName, TagNode tag, string schemaPath = null, TagNode parent = null)
             : base()
         {
-            Tag = tag;
             TagName = tagName;
+            Tag = tag;
+            SchemaPath = schemaPath;
             Parent = parent;
         }
 
@@ -78,11 +82,13 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="schema">The <see cref="SchemaNode"/> corresponding to the <see cref="TagNode"/> involved in this event.</param>
         /// <param name="tag">The <see cref="TagNode"/> involved in this event.</param>
-        public TagEventArgs(SchemaNode schema, TagNode tag)
+        /// <param name="schemaPath">Path in the schema.</param>
+        public TagEventArgs(SchemaNode schema, TagNode tag, string schemaPath = null)
             : base()
         {
             Tag = tag;
             Schema = schema;
+            SchemaPath = schemaPath;
         }
 
         /// <summary>
@@ -90,12 +96,16 @@ namespace Substrate.Nbt
         /// </summary>
         /// <param name="tagName">The unexpected name of a <see cref="TagNode"/>.</param>
         /// <param name="schema">The <see cref="SchemaNode"/> corresponding to the <see cref="TagNode"/> involved in this event.</param>
+        /// <param name="tag">The <see cref="TagNode"/> involved in this event.</param>
+        /// <param name="schemaPath">Path in the schema.</param>
         /// <param name="parent">The optional parent of tag.</param>
-        public TagEventArgs(string tagName, SchemaNode schema, TagNode parent = null)
+        public TagEventArgs(string tagName, SchemaNode schema, TagNode tag = null, string schemaPath = null, TagNode parent = null)
             : base()
         {
             TagName = tagName;
             Schema = schema;
+            Tag = tag;
+            SchemaPath = schemaPath;
             Parent = parent;
         }
     }
@@ -152,72 +162,78 @@ namespace Substrate.Nbt
         /// <returns>Status indicating whether the NBT tree is valid for the given schema.</returns>
         public virtual bool Verify()
         {
-            return Verify(null, _root, _schema);
+            return Verify(null, _root, _schema, "\\");
         }
 
-        private bool Verify(TagNode parent, TagNode tag, SchemaNode schema)
+        private bool Verify(TagNode parent, TagNode tag, SchemaNode schema, string schemaPath)
         {
             if (tag == null)
             {
-                return OnMissingTag(new TagEventArgs(schema.Name));
+                return OnMissingTag(new TagEventArgs($"{schemaPath}\\{schema.Name}", schema, schemaPath: schemaPath));
             }
 
             SchemaNodeScalar scalar = schema as SchemaNodeScalar;
             if (scalar != null)
             {
-                return VerifyScalar(tag, scalar);
+                return VerifyScalar(tag, scalar, schemaPath);
             }
 
             SchemaNodeString str = schema as SchemaNodeString;
             if (str != null)
             {
-                return VerifyString(tag, str);
+                return VerifyString(tag, str, schemaPath);
+            }
+
+            SchemaNodeResourceLocation res = schema as SchemaNodeResourceLocation;
+            if (res != null)
+            {
+                return VerifyResourceLocation(tag, res, schemaPath);
             }
 
             SchemaNodeByteArray array = schema as SchemaNodeByteArray;
             if (array != null)
             {
-                return VerifyArray(tag, array);
+                return VerifyArray(tag, array, schemaPath);
             }
 
             SchemaNodeIntArray intarray = schema as SchemaNodeIntArray;
             if (intarray != null)
             {
-                return VerifyIntArray(tag, intarray);
+                return VerifyIntArray(tag, intarray, schemaPath);
             }
 
             SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
             if (longarray != null)
             {
-                return VerifyLongArray(tag, longarray);
+                return VerifyLongArray(tag, longarray, schemaPath);
             }
 
             SchemaNodeShortArray shortarray = schema as SchemaNodeShortArray;
             if (shortarray != null)
             {
-                return VerifyShortArray(tag, shortarray);
+                return VerifyShortArray(tag, shortarray, schemaPath);
             }
 
             SchemaNodeList list = schema as SchemaNodeList;
             if (list != null)
             {
-                return VerifyList(tag, list);
+                return VerifyList(tag, list, schemaPath);
             }
 
             SchemaNodeCompound compound = schema as SchemaNodeCompound;
             if (compound != null)
             {
-                return VerifyCompound(tag, compound);
+                return VerifyCompound(tag, compound, schemaPath);
             }
 
-            return OnInvalidTagType(new TagEventArgs(schema.Name, tag, parent));
+            return OnInvalidTagType(new TagEventArgs(schema.Name, tag, schemaPath, parent));
         }
 
-        private bool VerifyScalar(TagNode tag, SchemaNodeScalar schema)
+        private bool VerifyScalar(TagNode tag, SchemaNodeScalar schema, string schemaPath)
         {
             if (!tag.IsCastableTo(schema.Type))
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema.Name, tag)))
+                if (!OnInvalidTagType(new TagEventArgs(schema.Name, schema, tag: tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -226,26 +242,26 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyString(TagNode tag, SchemaNodeString schema)
+        private bool VerifyString(TagNode tag, SchemaNodeString schema, string schemaPath)
         {
             TagNodeString stag = tag as TagNodeString;
             if (stag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && stag.Length > schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Value != null && stag.Data != schema.Value)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -254,20 +270,39 @@ namespace Substrate.Nbt
             return true;
         }
 
+        private bool VerifyResourceLocation(TagNode tag, SchemaNodeResourceLocation schema, string schemaPath)
+        {
+            
+            if (tag is TagNodeString stag)
+            {
+                return true;
+            }
+            else if (tag is TagNodeInt itag)
+            {
+                return true;
+            }
 
-        private bool VerifyArray(TagNode tag, SchemaNodeByteArray schema)
+            if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool VerifyArray(TagNode tag, SchemaNodeByteArray schema, string schemaPath)
         {
             TagNodeByteArray atag = tag as TagNodeByteArray;
             if (atag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && atag.Length != schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -276,19 +311,27 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyIntArray(TagNode tag, SchemaNodeIntArray schema)
+        private bool VerifyIntArray(TagNode tag, SchemaNodeIntArray schema, string schemaPath)
         {
             TagNodeIntArray atag = tag as TagNodeIntArray;
             if (atag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (tag is TagNodeList list)
+                {
+                    if (list.ValueType == TagType.TAG_INT)
+                    {
+                        return true;
+                    }
+                }
+
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && atag.Length != schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -297,19 +340,27 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyLongArray(TagNode tag, SchemaNodeLongArray schema)
+        private bool VerifyLongArray(TagNode tag, SchemaNodeLongArray schema, string schemaPath)
         {
             TagNodeLongArray atag = tag as TagNodeLongArray;
             if (atag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (tag is TagNodeList list)
+                {
+                    if (list.ValueType == TagType.TAG_LONG)
+                    {
+                        return true;
+                    }
+                }
+
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && atag.Length != schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -318,19 +369,27 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyShortArray(TagNode tag, SchemaNodeShortArray schema)
+        private bool VerifyShortArray(TagNode tag, SchemaNodeShortArray schema, string schemaPath)
         {
             TagNodeShortArray atag = tag as TagNodeShortArray;
             if (atag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (tag is TagNodeList list)
+                {
+                    if (list.ValueType == TagType.TAG_SHORT)
+                    {
+                        return true;
+                    }
+                }
+
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && atag.Length != schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -339,26 +398,26 @@ namespace Substrate.Nbt
             return true;
         }
 
-        private bool VerifyList(TagNode tag, SchemaNodeList schema)
+        private bool VerifyList(TagNode tag, SchemaNodeList schema, string schemaPath)
         {
             TagNodeList ltag = tag as TagNodeList;
             if (ltag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (ltag.Count > 0 && ltag.ValueType != schema.ItemType)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
             }
             if (schema.Length > 0 && ltag.Count != schema.Length)
             {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagValue(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -377,19 +436,19 @@ namespace Substrate.Nbt
             {
                 foreach (TagNode v in ltag)
                 {
-                    pass = Verify(tag, v, schema.ItemSchema) && pass;
+                    pass = Verify(tag, v, schema.ItemSchema, $"{schemaPath}[]") && pass;
                 }
             }
 
             return pass;
         }
 
-        private bool VerifyCompound(TagNode tag, SchemaNodeCompound schema)
+        private bool VerifyCompound(TagNode tag, SchemaNodeCompound schema, string schemaPath)
         {
             TagNodeCompound ctag = tag as TagNodeCompound;
             if (ctag == null)
             {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag)))
+                if (!OnInvalidTagType(new TagEventArgs(schema, tag, schemaPath: schemaPath)))
                 {
                     return false;
                 }
@@ -423,14 +482,14 @@ namespace Substrate.Nbt
                     }
                 }
 
-                pass = Verify(tag, value, node) && pass;
+                pass = Verify(tag, value, node, $"{schemaPath}\\{node.Name}") && pass;
             }
 
             foreach (var tagName in ctag.Keys)
             {
                 if (!foundNames.Contains(tagName.ToLower()))
                 {
-                    if (!OnUnexpectedTag(new TagEventArgs(tagName, schema, ctag)))
+                    if (!OnUnexpectedTag(new TagEventArgs(tagName, schema, schemaPath: schemaPath, parent: ctag)))
                     {
                         return false;
                     }

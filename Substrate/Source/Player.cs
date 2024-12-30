@@ -1,5 +1,7 @@
-﻿using Substrate.Core;
+﻿using System.Collections.Generic;
+using Substrate.Core;
 using Substrate.Nbt;
+using Substrate.Source.Core;
 
 namespace Substrate
 {
@@ -79,6 +81,60 @@ namespace Substrate
         Adventure = 2,
     }
 
+    public class Brain
+    {
+        [TagNode("memories")]
+        public Memories Memories { get; set; }
+    }
+
+    public class Memories
+    {
+    }
+
+    public class PlayerAttribute
+    {
+        [TagNode("id")]
+        public ResourceLocation ID { get; set; }
+
+        [TagNode("base")]
+        public double Base { get; set; }
+    }
+
+    public class RecipeBook
+    {
+        [TagNode("recipes")]
+        public List<string> Recipes { get; set; }
+        [TagNode("toBeDisplayed")]
+        public List<string> ToBeDisplayed { get; set; }
+        [TagNode("isFurnaceGuiOpen")]
+        public bool? IsFurnaceGuiOpen { get; set; }
+        [TagNode("isBlastingFurnaceFilteringCraftable")]
+        public bool? IsBlastingFurnaceFilteringCraftable { get; set; }
+        [TagNode("isSmokerGuiOpen")]
+        public bool? IsSmokerGuiOpen { get; set; }
+        [TagNode("isFilteringCraftable")]
+        public bool? IsFilteringCraftable { get; set; }
+        [TagNode("isGuiOpen")]
+        public bool IsGuiOpen { get; set; }
+        [TagNode("isFurnaceFilteringCraftable")]
+        public bool? IsFurnaceFilteringCraftable { get; set; }
+        [TagNode("isBlastingFurnaceGuiOpen")]
+        public bool? IsBlastingFurnaceGuiOpen { get; set; }
+        [TagNode("isSmokerFilteringCraftable")]
+        public bool? IsSmokerFilteringCraftable { get; set; }
+    }
+
+    public class WardenSpawnTracker
+    {
+        [TagNode("warning_level")]
+        public int WarningLevel { get; set; }
+        [TagNode("ticks_since_last_warning")]
+        public int TicksSinceLastWarning { get; set; }
+        [TagNode("cooldown_ticks")]
+        public int CooldownTicks { get; set; }
+    }
+
+
     /// <summary>
     /// Represents a Player from either single- or multi-player Minecraft.
     /// </summary>
@@ -92,7 +148,7 @@ namespace Substrate
             new SchemaNodeScalar("DeathTime", TagType.TAG_SHORT),
             new SchemaNodeScalar("Health", TagType.TAG_FLOAT),
             new SchemaNodeScalar("HurtTime", TagType.TAG_SHORT),
-            new SchemaNodeScalar("Dimension", TagType.TAG_INT),
+            new SchemaNodeResourceLocation("Dimension"),
             new SchemaNodeList("Inventory", TagType.TAG_COMPOUND, ItemCollection.ItemSchema),
             //new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, ItemCollection.Schema, SchemaOptions.OPTIONAL),
             new SchemaNodeString("World", SchemaOptions.OPTIONAL),
@@ -109,8 +165,9 @@ namespace Substrate
             new SchemaNodeScalar("XpLevel", TagType.TAG_INT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("XpTotal", TagType.TAG_INT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Score", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+
             new SchemaNodeScalar("playerGameType", TagType.TAG_INT, SchemaOptions.OPTIONAL),
-            new SchemaNodeCompound("abilities", new SchemaNodeCompound("") {
+            new SchemaNodeCompound("abilities", SchemaOptions.OPTIONAL) {
                 new SchemaNodeScalar("flying", TagType.TAG_BYTE),
                 new SchemaNodeScalar("instabuild", TagType.TAG_BYTE),
                 new SchemaNodeScalar("mayfly", TagType.TAG_BYTE),
@@ -118,7 +175,51 @@ namespace Substrate
                 new SchemaNodeScalar("mayBuild", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("walkSpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
                 new SchemaNodeScalar("flySpeed", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+            },
+
+            new SchemaNodeCompound("Brain", SchemaOptions.OPTIONAL) {
+                new SchemaNodeCompound("memories"),
+            },
+            new SchemaNodeScalar("HurtByTimestamp", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeList("attributes", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
+                new SchemaNodeResourceLocation("id"),
+                new SchemaNodeScalar("base", TagType.TAG_DOUBLE),
             }, SchemaOptions.OPTIONAL),
+
+            new SchemaNodeScalar("Invulnerable", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("FallFlying", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("noclip:clipping", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("PortalCooldown", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("AbsorptionAmount", TagType.TAG_FLOAT, SchemaOptions.OPTIONAL),
+
+            new SchemaNodeCompound("recipeBook", SchemaOptions.OPTIONAL) {
+                new SchemaNodeList("recipes", TagType.TAG_STRING) { },
+                new SchemaNodeList("toBeDisplayed", TagType.TAG_STRING) { },
+                new SchemaNodeScalar("isFurnaceGuiOpen", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isBlastingFurnaceFilteringCraftable", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isSmokerGuiOpen", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isFilteringCraftable", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isGuiOpen", TagType.TAG_BYTE),
+                new SchemaNodeScalar("isFurnaceFilteringCraftable", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isBlastingFurnaceGuiOpen", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+                new SchemaNodeScalar("isSmokerFilteringCraftable", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            },
+
+            new SchemaNodeScalar("XpSeed", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeIntArray("UUID", SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("seenCredits", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeCompound("warden_spawn_tracker", SchemaOptions.OPTIONAL) {
+                new SchemaNodeScalar("warning_level", TagType.TAG_INT),
+                new SchemaNodeScalar("ticks_since_last_warning", TagType.TAG_INT),
+                new SchemaNodeScalar("cooldown_ticks", TagType.TAG_INT),
+            },
+            new SchemaNodeScalar("DataVersion", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeList("EnderItems", TagType.TAG_COMPOUND, Item.Schema, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("SelectedItemSlot", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+
+            new SchemaNodeScalar("ignore_fall_damage_from_current_explosion", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("current_impulse_context_reset_grace_time", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+            new SchemaNodeScalar("spawn_extra_particles_on_fall", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
         });
 
         private const int _CAPACITY = 105;
@@ -155,7 +256,7 @@ namespace Substrate
         /// Gets or sets the dimension that the player is currently in.
         /// </summary>
         [TagNode]
-        public int Dimension { get; set; }
+        public ResourceLocation Dimension { get; set; }
 
         [TagNode]
         public ItemCollection Inventory { get; } = new ItemCollection(_CAPACITY);
@@ -272,6 +373,63 @@ namespace Substrate
         [TagNode("abilities", Optional = true)]
         public PlayerAbilities Abilities { get; private set; } = new PlayerAbilities();
 
+        [TagNode(Optional = true)]
+        public Brain Brain { get; set; }
+
+        [TagNode]
+        public int? HurtByTimestamp { get; set; }
+
+        [TagNode("attributes", Optional = true)]
+        public List<PlayerAttribute> Attributes { get; set; }
+
+        [TagNode]
+        public bool? Invulnerable { get; set; }
+
+        [TagNode]
+        public bool? FallFlying { get; set; }
+
+        [TagNode("noclip:clipping")]
+        public bool? Clipping { get; set; }
+
+        [TagNode]
+        public int? PortalCooldown { get; set; }
+
+        [TagNode]
+        public float? AbsorptionAmount { get; set; }
+
+        [TagNode("recipeBook", Optional = true)]
+        public RecipeBook RecipeBook { get; set; }
+
+        [TagNode]
+        public int? XpSeed { get; set; }
+
+        [TagNode(Optional = true)]
+        public int[] UUID { get; set; }
+
+        [TagNode("seenCredits")]
+        public bool? SeenCredits { get; set; }
+
+        [TagNode("warden_spawn_tracker", Optional = true)]
+        public WardenSpawnTracker WardenSpawnTracker { get; set; }
+
+        [TagNode]
+        public int? DataVersion { get; set; }
+
+        [TagNode(Optional = true)]
+        public ItemCollection EnderItems => _enderItems;
+
+        [TagNode]
+        public int? SelectedItemSlot { get; set; }
+
+        [TagNode("ignore_fall_damage_from_current_explosion")]
+        public bool? IgnoreFallDamageFromCurrentExplosion { get; set; }
+
+        [TagNode("current_impulse_context_reset_grace_time")]
+        public int? CurrentImpulseContextResetGraceTime { get; set; }
+
+        [TagNode("spawn_extra_particles_on_fall")]
+        public bool? SpawnExtraParticlesOnFall { get; set; }
+
         /// <summary>
         /// Creates a new <see cref="Player"/> object with reasonable default values.
         /// </summary>
@@ -366,7 +524,12 @@ namespace Substrate
             Health = ctree["Health"].ToTagFloat();
             HurtTime = ctree["HurtTime"].ToTagShort();
 
-            Dimension = ctree["Dimension"].ToTagInt();
+            if (ctree.TryGetValue("Dimention", out var dimention))
+            {
+                Dimension = new ResourceLocation(dimention.ToTagString());
+            }
+
+
             IsSleeping = ctree["Sleeping"].ToTagByte();
             SleepTimer = ctree["SleepTimer"].ToTagShort();
 
@@ -482,7 +645,7 @@ namespace Substrate
             tree["Health"] = new TagNodeFloat(Health);
             tree["HurtTime"] = new TagNodeShort(HurtTime);
 
-            tree["Dimension"] = new TagNodeInt(Dimension);
+            tree["Dimension"] = Dimension.BuildTree();
             tree["Sleeping"] = new TagNodeByte(IsSleeping);
             tree["SleepTimer"] = new TagNodeShort(SleepTimer);
 
@@ -589,10 +752,5 @@ namespace Substrate
         }
 
         #endregion
-
-        public ItemCollection EnderItems
-        {
-            get { return _enderItems; }
-        }
     }
 }

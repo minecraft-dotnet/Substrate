@@ -51,6 +51,15 @@
         }
 
         /// <summary>
+        /// Converts the node to a new string node.
+        /// </summary>
+        /// <returns>A string node representing the same data.</returns>
+        public override TagNodeString ToTagString()
+        {
+            return new TagNodeString(Data.ToString());
+        }
+
+        /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_SHORT tag type.</returns>
@@ -70,7 +79,8 @@
                 type == TagType.TAG_INT ||
                 type == TagType.TAG_LONG ||
                 type == TagType.TAG_FLOAT ||
-                type == TagType.TAG_DOUBLE);
+                type == TagType.TAG_DOUBLE ||
+                type == TagType.TAG_STRING);
         }
 
         /// <summary>

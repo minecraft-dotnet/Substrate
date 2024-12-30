@@ -1,4 +1,4 @@
-﻿namespace Substrate.TileEntities
+namespace Substrate.TileEntities
 {
     using Substrate.Nbt;
 
@@ -7,10 +7,10 @@
         public static readonly SchemaNodeCompound SignSchema = TileEntity.Schema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScalar("Text1", TagType.TAG_STRING),
-            new SchemaNodeScalar("Text2", TagType.TAG_STRING),
-            new SchemaNodeScalar("Text3", TagType.TAG_STRING),
-            new SchemaNodeScalar("Text4", TagType.TAG_STRING),
+            new SchemaNodeString ("Text1"),
+            new SchemaNodeString ("Text2"),
+            new SchemaNodeString ("Text3"),
+            new SchemaNodeString ("Text4"),
         });
 
         public static string TypeId

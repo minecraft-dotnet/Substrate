@@ -1,4 +1,4 @@
-﻿using Substrate.Core;
+using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -10,14 +10,14 @@ namespace Substrate
             new SchemaNodeList("ModeItemData", TagType.TAG_COMPOUND, new SchemaNodeCompound("") {
                 new SchemaNodeScalar("ItemId", TagType.TAG_INT),
                 new SchemaNodeScalar("ordinal", TagType.TAG_INT),
-                new SchemaNodeScalar("ItemType", TagType.TAG_STRING),
+                new SchemaNodeString ("ItemType"),
                 new SchemaNodeScalar("ModeId", TagType.TAG_STRING),
-                new SchemaNodeScalar("ForcedModId", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
-                new SchemaNodeScalar("ForcedName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
+                new SchemaNodeString("ForcedModId", SchemaOptions.OPTIONAL),
+                new SchemaNodeString("ForcedName", SchemaOptions.OPTIONAL),
                 }),
             new SchemaNodeList("ModList", TagType.TAG_COMPOUND, new SchemaNodeCompound("") {
-                new SchemaNodeScalar("ModId", TagType.TAG_STRING),
-                new SchemaNodeScalar("ModVersion", TagType.TAG_STRING),
+                new SchemaNodeString ("ModId"),
+                new SchemaNodeString ("ModVersion"),
                 }),
         };
 

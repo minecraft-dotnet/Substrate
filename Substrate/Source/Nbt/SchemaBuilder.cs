@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +17,7 @@ namespace Substrate.Source.Nbt
             public Type ListItemType;
             public SchemaOptions SchemaOptions;
             public bool CustomType;
+            public Type SchemaType;
         }
 
         public static SchemaNodeCompound FromClass(Type type, string enclosingName = null, SchemaOptions enclosingOptions = 0)
@@ -26,9 +27,7 @@ namespace Substrate.Source.Nbt
             var properties = type.GetProperties();
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttributes(typeof(TagNodeAttribute), false)
-                    .Cast<TagNodeAttribute>()
-                    .SingleOrDefault();
+                var attribute = property.GetCustomAttribute<TagNodeAttribute>(false);
 
                 if (attribute != null)
                 {
@@ -46,48 +45,56 @@ namespace Substrate.Source.Nbt
                     if (attribute.CreateOnMissing)
                     { schemaOptions |= SchemaOptions.CREATE_ON_MISSING; }
 
-                    switch (tagType)
+                    if (propertyInfo.SchemaType != null)
                     {
-                    case TagType.TAG_BYTE:
-                    case TagType.TAG_SHORT:
-                    case TagType.TAG_INT:
-                    case TagType.TAG_LONG:
-                    case TagType.TAG_FLOAT:
-                    case TagType.TAG_DOUBLE:
-                        schema.Add(new SchemaNodeScalar(name, tagType, schemaOptions));
-                        break;
-
-                    case TagType.TAG_STRING:
-                        schema.Add(new SchemaNodeString(name, schemaOptions));
-                        break;
-
-                    case TagType.TAG_BYTE_ARRAY:
-                        schema.Add(new SchemaNodeByteArray(name, schemaOptions));
-                        break;
-
-                    case TagType.TAG_INT_ARRAY:
-                        schema.Add(new SchemaNodeIntArray(name, schemaOptions));
-                        break;
-
-                    case TagType.TAG_SHORT_ARRAY:
-                        schema.Add(new SchemaNodeShortArray(name, schemaOptions));
-                        break;
-
-                    case TagType.TAG_LIST:
-                        if (propertyInfo.ListItemTagType == TagType.TAG_COMPOUND)
+                        var schemaNode = Activator.CreateInstance(propertyInfo.SchemaType, name, schemaOptions) as SchemaNode;
+                        schema.Add(schemaNode);
+                    }
+                    else
+                    {
+                        switch (tagType)
                         {
-                            var listItemSchema = FromClass(propertyInfo.ListItemType);
-                            schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, listItemSchema, schemaOptions));
-                        }
-                        else
-                        {
-                            schema.Add(new SchemaNodeList(name, propertyInfo.ListItemTagType, schemaOptions));
-                        }
-                        break;
+                        case TagType.TAG_BYTE:
+                        case TagType.TAG_SHORT:
+                        case TagType.TAG_INT:
+                        case TagType.TAG_LONG:
+                        case TagType.TAG_FLOAT:
+                        case TagType.TAG_DOUBLE:
+                            schema.Add(new SchemaNodeScalar(name, tagType, schemaOptions));
+                            break;
 
-                    case TagType.TAG_COMPOUND:
-                        schema.Add(FromClass(property.PropertyType, name, schemaOptions));
-                        break;
+                        case TagType.TAG_STRING:
+                            schema.Add(new SchemaNodeString(name, schemaOptions));
+                            break;
+
+                        case TagType.TAG_BYTE_ARRAY:
+                            schema.Add(new SchemaNodeByteArray(name, schemaOptions));
+                            break;
+
+                        case TagType.TAG_INT_ARRAY:
+                            schema.Add(new SchemaNodeIntArray(name, schemaOptions));
+                            break;
+
+                        case TagType.TAG_SHORT_ARRAY:
+                            schema.Add(new SchemaNodeShortArray(name, schemaOptions));
+                            break;
+
+                        case TagType.TAG_LIST:
+                            if (propertyInfo.ListItemTagType == TagType.TAG_COMPOUND)
+                            {
+                                var listItemSchema = FromClass(propertyInfo.ListItemType);
+                                schema.Add(new SchemaNodeList(name, TagType.TAG_COMPOUND, listItemSchema, schemaOptions));
+                            }
+                            else
+                            {
+                                schema.Add(new SchemaNodeList(name, propertyInfo.ListItemTagType, schemaOptions));
+                            }
+                            break;
+
+                        case TagType.TAG_COMPOUND:
+                            schema.Add(FromClass(property.PropertyType, name, schemaOptions));
+                            break;
+                        }
                     }
                 }
             }
@@ -99,13 +106,14 @@ namespace Substrate.Source.Nbt
         {
             PropertyDetails details = new PropertyDetails();
 
-            var attr = type.GetTypeInfo().GetCustomAttributes(typeof(TagNodeTypeAttribute), true).SingleOrDefault() as TagNodeTypeAttribute;
+            var attr = type.GetTypeInfo().GetCustomAttribute<TagNodeTypeAttribute>(true);
             if (attr != null)
             {
                 details.TagType = attr.TagType;
                 details.ListItemTagType = attr.ListItemTagType;
                 details.ListItemType = attr.ListItemType;
                 details.CustomType = true;
+                details.SchemaType = attr.SchemaType;
                 return details;
             }
 
@@ -146,40 +154,33 @@ namespace Substrate.Source.Nbt
                 type = EnumType(type);
             }
 
-
-            if (type == typeof(byte))
-            { details.TagType = TagType.TAG_BYTE; }
-            else if (type == typeof(bool))
-            { details.TagType = TagType.TAG_BYTE; }
-            else if (type == typeof(short))
-            { details.TagType = TagType.TAG_SHORT; }
-            else if (type == typeof(int))
-            { details.TagType = TagType.TAG_INT; }
-            else if (type == typeof(long))
-            { details.TagType = TagType.TAG_LONG; }
-            else if (type == typeof(float))
-            { details.TagType = TagType.TAG_FLOAT; }
-            else if (type == typeof(double))
-            { details.TagType = TagType.TAG_DOUBLE; }
-            else if (type == typeof(string))
-            { details.TagType = TagType.TAG_STRING; }
-            else if (type == typeof(List<byte>))
-            { details.TagType = TagType.TAG_BYTE_ARRAY; }
-            else if (type == typeof(List<int>))
-            { details.TagType = TagType.TAG_INT_ARRAY; }
-            else if (type == typeof(List<short>))
-            { details.TagType = TagType.TAG_SHORT_ARRAY; }
-            else if (type == typeof(List<long>))
-            { details.TagType = TagType.TAG_LONG_ARRAY; }
-            else
-            { details.TagType = TagType.TAG_COMPOUND; }
+            details.TagType = type switch
+            {
+                Type t when t == typeof(byte) => TagType.TAG_BYTE,
+                Type t when t == typeof(bool) => TagType.TAG_BYTE,
+                Type t when t == typeof(short) => TagType.TAG_SHORT,
+                Type t when t == typeof(int) => TagType.TAG_INT,
+                Type t when t == typeof(long) => TagType.TAG_LONG,
+                Type t when t == typeof(float) => TagType.TAG_FLOAT,
+                Type t when t == typeof(double) => TagType.TAG_DOUBLE,
+                Type t when t == typeof(string) => TagType.TAG_STRING,
+                Type t when t == typeof(List<byte>) => TagType.TAG_BYTE_ARRAY,
+                Type t when t == typeof(byte[]) => TagType.TAG_BYTE_ARRAY,
+                Type t when t == typeof(List<int>) => TagType.TAG_INT_ARRAY,
+                Type t when t == typeof(int[]) => TagType.TAG_INT_ARRAY,
+                Type t when t == typeof(List<short>) => TagType.TAG_SHORT_ARRAY,
+                Type t when t == typeof(short[]) => TagType.TAG_SHORT_ARRAY,
+                Type t when t == typeof(List<long>) => TagType.TAG_LONG_ARRAY,
+                Type t when t == typeof(long[]) => TagType.TAG_LONG_ARRAY,
+                _ => TagType.TAG_COMPOUND,
+            };
 
             return details;
         }
 
         private static Type EnumType(Type type)
         {
-            switch (Convert.GetTypeCode(Activator.CreateInstance(type)))
+            switch (Type.GetTypeCode(type))
             {
             case TypeCode.Byte:
                 return typeof(byte);
@@ -225,7 +226,7 @@ namespace Substrate.Source.Nbt
             {
                 var atree = node as SchemaNodeList;
 
-                if (atree.ItemType == TagType.TAG_COMPOUND)
+                if (atree.ItemType == TagType.TAG_COMPOUND && atree.ItemSchema != null)
                 {
                     FormatNode(atree.ItemSchema, builder, tablevel + 1);
                 }
@@ -279,7 +280,7 @@ namespace Substrate.Source.Nbt
                 else
                 {
                     var baseType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                    var typeCode = Convert.GetTypeCode(Activator.CreateInstance(baseType));
+                    var typeCode = Type.GetTypeCode(baseType);
 
                     object propVal = null;
                     switch (typeCode)
@@ -309,7 +310,8 @@ namespace Substrate.Source.Nbt
                         propVal = treeValue.ToTagDouble().Data;
                         break;
                     default:
-                        break;
+                        throw new NotImplementedException($"Unhandled type {typeCode}");
+
                     }
 
                     if (baseType.GetTypeInfo().IsEnum)
@@ -335,7 +337,7 @@ namespace Substrate.Source.Nbt
 
                 var listItemType = prop.PropertyType.GenericTypeArguments[0];
 
-                var typeCode = Convert.GetTypeCode(Activator.CreateInstance(listItemType));
+                var typeCode = Type.GetTypeCode(listItemType);
                 switch (typeCode)
                 {
                 case TypeCode.Boolean:

@@ -1,4 +1,4 @@
-﻿namespace Substrate.Entities
+namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -19,7 +19,7 @@
             new SchemaNodeScalar("TileX", TagType.TAG_INT),
             new SchemaNodeScalar("TileY", TagType.TAG_INT),
             new SchemaNodeScalar("TileZ", TagType.TAG_INT),
-            new SchemaNodeScalar("Motive", TagType.TAG_STRING),
+            new SchemaNodeString("Motive"),
         });
 
         public static string TypeId

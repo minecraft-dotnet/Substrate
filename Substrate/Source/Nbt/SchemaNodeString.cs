@@ -1,4 +1,4 @@
-﻿namespace Substrate.Nbt
+namespace Substrate.Nbt
 {
     /// <summary>
     /// A concrete <see cref="SchemaNode"/> representing a <see cref="TagNodeString"/>.
@@ -14,7 +14,7 @@
         /// Gets the expected value of a valid string.
         /// </summary>
         /// <remarks>A <see cref="TagNodeString"/> must be set to this value to be considered valid.</remarks>
-        public string Value { get; private set; } = "";
+        public string Value { get; private set; }
 
         /// <summary>
         /// Indicates whether there is a maximum-length constraint on strings in this node.
@@ -95,7 +95,7 @@
         /// <returns>A <see cref="TagNodeString"/> with a sensible default value.  If this node represents a particular string, the <see cref="TagNodeString"/> constructed will be set to that string.</returns>
         public override TagNode BuildDefaultTree()
         {
-            if (Value.Length > 0)
+            if (!string.IsNullOrEmpty(Value))
             {
                 return new TagNodeString(Value);
             }

@@ -15,12 +15,32 @@
         }
 
         /// <summary>
+        /// Converts the node to a new string node.
+        /// </summary>
+        /// <returns>A string node representing the same data.</returns>
+        public override TagNodeString ToTagString()
+        {
+            return new TagNodeString(Data.ToString());
+        }
+
+        /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_LONG tag type.</returns>
         public override TagType GetTagType()
         {
             return TagType.TAG_LONG;
+        }
+
+        /// <summary>
+        /// Checks if the node is castable to another node of a given tag type.
+        /// </summary>
+        /// <param name="type">An NBT tag type.</param>
+        /// <returns>Status indicating whether this object could be cast to a node type represented by the given tag type.</returns>
+        public override bool IsCastableTo(TagType type)
+        {
+            return (type == TagType.TAG_LONG ||
+                type == TagType.TAG_STRING);
         }
 
         /// <summary>

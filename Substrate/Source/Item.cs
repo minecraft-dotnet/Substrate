@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Substrate.Core;
 using Substrate.Nbt;
+using Substrate.Source.Core;
 
 namespace Substrate
 {
@@ -57,7 +58,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeString("id"),
+            new SchemaNodeResourceLocation("id"),
             new SchemaNodeScalar("Damage", TagType.TAG_SHORT, SchemaOptions.OPTIONAL),
             new SchemaNodeScalar("Count", TagType.TAG_BYTE),
             new SchemaNodeScalar("Slot", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
@@ -105,8 +106,8 @@ namespace Substrate
         /// <summary>
         /// Gets or sets the current type (id) of the item.
         /// </summary>
-        [TagNode("id", TagType = TagType.TAG_STRING)]
-        public string ID { get; set; }
+        [TagNode("id")]
+        public ResourceLocation ID { get; set; }
 
         /// <summary>
         /// Gets or sets the damage value of the item.
@@ -201,12 +202,22 @@ namespace Substrate
             }
             else
             {
-                ID = id.ToTagString();
+                ID = new ResourceLocation(id.ToTagString());
             }
 
             Count = ctree["Count"].ToTagByte();
-            Damage = ctree["Damage"]?.ToTagShort();
-            Slot = ctree["Slot"]?.ToTagByte();
+
+            Damage = null;
+            if (ctree.TryGetValue("Damage", out var damage))
+            {
+                Damage = damage.ToTagShort();
+            }
+
+            Slot = null;
+            if (ctree.TryGetValue("Slot", out var slot))
+            {
+                Slot = slot.ToTagByte();
+            }
 
             if (ctree.ContainsKey("tag"))
             {
@@ -242,7 +253,7 @@ namespace Substrate
         public TagNode BuildTree()
         {
             TagNodeCompound tree = new TagNodeCompound();
-            tree["id"] = new TagNodeString(ID);
+            tree["id"] = ID.BuildTree();
             tree["Count"] = new TagNodeByte((byte)Count);
             tree["Damage"] = new TagNodeShort((short)Damage);
 

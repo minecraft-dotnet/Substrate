@@ -1,42 +1,43 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup Label="PackageInfo">
-		<PackageId>minecraft-dotnet.Substrate</PackageId>
-		<Title>Substrate Minecraft library</Title>
-		<Description>SDK for loading and modifying Minecraft worlds</Description>
-		<Copyright>Copyright © 2011-2015 Justin Aquadro</Copyright>
-		<Authors>Justin Aquadro, Simon Stevenson</Authors>
-		<PackageTags>minecraft level client world</PackageTags>
-		<Version>2.0.0-alpha</Version>
-		<AssemblyVersion>2.0.0.0</AssemblyVersion>
-		<FileVersion>2.0.0.0</FileVersion>
-		<RepositoryUrl>https://github.com/minecraft-dotnet/Substrate</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/minecraft-dotnet/Substrate</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	</PropertyGroup>
+    <PropertyGroup Label="PackageInfo">
+        <PackageId>minecraft-dotnet.Substrate</PackageId>
+        <Title>Substrate Minecraft library</Title>
+        <Description>SDK for loading and modifying Minecraft worlds</Description>
+        <Copyright>Copyright © 2011-2015 Justin Aquadro</Copyright>
+        <Authors>Justin Aquadro, Simon Stevenson</Authors>
+        <PackageTags>minecraft level client world</PackageTags>
+        <Version>2.0.0-alpha</Version>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <FileVersion>2.0.0.0</FileVersion>
+        <RepositoryUrl>https://github.com/minecraft-dotnet/Substrate</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/minecraft-dotnet/Substrate</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<IncludeSymbols>True</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Deterministic>true</Deterministic>
-		<DebugType>portable</DebugType>
-	</PropertyGroup>
+    <PropertyGroup>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <IncludeSymbols>True</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Deterministic>true</Deterministic>
+        <DebugType>portable</DebugType>
+        <LangVersion>10.0</LangVersion>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="..\README.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
-		<PackageReference Include="NETStandard.Library" Version="2.0.3" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
+        <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
+    </ItemGroup>
 
 </Project>

@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>2.0.0-alpha</Version>
-    <Description>SDK for loading and modifying Minecraft worlds</Description>
-    <Authors>Justin Aquadro</Authors>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Version>2.0.0-alpha</Version>
+        <Description>SDK for loading and modifying Minecraft worlds</Description>
+        <Authors>Justin Aquadro</Authors>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <LangVersion>10.0</LangVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Substrate\Substrate.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Substrate\Substrate.csproj" />
+    </ItemGroup>
 
 </Project>

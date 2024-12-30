@@ -24,6 +24,15 @@
         }
 
         /// <summary>
+        /// Converts the node to a new string node.
+        /// </summary>
+        /// <returns>A string node representing the same data.</returns>
+        public override TagNodeString ToTagString()
+        {
+            return new TagNodeString(Data.ToString());
+        }
+
+        /// <summary>
         /// Gets the tag type of the node.
         /// </summary>
         /// <returns>The TAG_FLOAT tag type.</returns>
@@ -40,7 +49,8 @@
         public override bool IsCastableTo(TagType type)
         {
             return (type == TagType.TAG_FLOAT ||
-                type == TagType.TAG_DOUBLE);
+                type == TagType.TAG_DOUBLE ||
+                type == TagType.TAG_STRING);
         }
 
         /// <summary>

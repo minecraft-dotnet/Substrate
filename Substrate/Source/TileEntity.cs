@@ -1,4 +1,4 @@
-﻿using Substrate.Core;
+using Substrate.Core;
 using Substrate.Nbt;
 
 namespace Substrate
@@ -13,7 +13,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScalar("id", TagType.TAG_STRING),
+            new SchemaNodeString ("id"),
             new SchemaNodeScalar("x", TagType.TAG_INT),
             new SchemaNodeScalar("y", TagType.TAG_INT),
             new SchemaNodeScalar("z", TagType.TAG_INT),

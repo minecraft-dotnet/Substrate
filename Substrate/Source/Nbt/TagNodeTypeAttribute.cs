@@ -11,6 +11,11 @@ namespace Substrate.Nbt
 
         public Type ListItemType { get; set; }
 
+        /// <summary>
+        /// A custom schema type that will be used when building a schema tree.
+        /// </summary>
+        public Type SchemaType { get; set; }
+
         public TagNodeTypeAttribute(TagType tagType)
         {
             TagType = tagType;

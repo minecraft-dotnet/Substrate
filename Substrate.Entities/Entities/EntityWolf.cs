@@ -1,4 +1,4 @@
-﻿namespace Substrate.Entities
+namespace Substrate.Entities
 {
     using Substrate.Nbt;
 
@@ -7,7 +7,7 @@
         public static readonly SchemaNodeCompound WolfSchema = AnimalSchema.MergeInto(new SchemaNodeCompound("")
         {
             new SchemaNodeString("id", TypeId),
-            new SchemaNodeScalar("Owner", TagType.TAG_STRING),
+            new SchemaNodeString("Owner"),
             new SchemaNodeScalar("Sitting", TagType.TAG_BYTE),
             new SchemaNodeScalar("Angry", TagType.TAG_BYTE),
         });
