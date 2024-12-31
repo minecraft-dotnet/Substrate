@@ -7,7 +7,6 @@ using System.IO;
 using Substrate.Nbt;
 using Substrate.Core;
 using System.Diagnostics;
-using Substrate.Source.Nbt;
 
 namespace Substrate.Tests
 {

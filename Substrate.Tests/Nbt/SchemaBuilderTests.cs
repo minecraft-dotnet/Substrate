@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Substrate.Source.Nbt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System.IO;

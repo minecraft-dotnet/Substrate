@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Substrate.Nbt;
 using System.IO;
 using System.Diagnostics;
+using Substrate.World;
 
 namespace Substrate.Tests
 {
@@ -177,6 +178,8 @@ namespace Substrate.Tests
 
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\gothic german castle\");
             Assert.IsNotNull(world);
+
+            //TestUtils.TestWorld(world);
         }
     }
 }
