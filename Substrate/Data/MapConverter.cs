@@ -1,6 +1,4 @@
 ﻿using System;
-using Bitmap = SixLabors.ImageSharp.Image<SixLabors.ImageSharp.PixelFormats.Bgra32>;
-using Color = SixLabors.ImageSharp.PixelFormats.Bgra32;
 
 namespace Substrate.Data
 {
@@ -419,86 +417,63 @@ namespace Substrate.Data
         static MapConverter()
         {
             _defaultColorIndex = new Color[] {
-                FromArgb(0, 0, 0, 0),         // Unexplored
-                FromArgb(0, 0, 0, 0),
-                FromArgb(0, 0, 0, 0),
-                FromArgb(0, 0, 0, 0),
-                FromArgb(89, 125, 39),        // Grass
-                FromArgb(109, 153, 48),
-                FromArgb(127, 178, 56),
-                FromArgb(109, 153, 48),
-                FromArgb(174, 164, 115),      // Sand/Gravel
-                FromArgb(213, 201, 140),
-                FromArgb(247, 233, 163),
-                FromArgb(213, 201, 140),
-                FromArgb(117, 117, 117),      // Other
-                FromArgb(144, 144, 144),
-                FromArgb(167, 167, 167),
-                FromArgb(144, 144, 144),
-                FromArgb(180, 0, 0),          // Lava
-                FromArgb(220, 0, 0),
-                FromArgb(255, 0, 0),
-                FromArgb(220, 0, 0),
-                FromArgb(112, 112, 180),      // Ice
-                FromArgb(138, 138, 220),
-                FromArgb(160, 160, 255),
-                FromArgb(138, 138, 220),
-                FromArgb(117, 117, 117),      // Iron
-                FromArgb(144, 144, 144),
-                FromArgb(167, 167, 167),
-                FromArgb(144, 144, 144),
-                FromArgb(0, 87, 0),           // Leaves/Flowers
-                FromArgb(0, 106, 0),
-                FromArgb(0, 124, 0),
-                FromArgb(0, 106, 0),
-                FromArgb(180, 180, 180),      // Snow
-                FromArgb(220, 220, 220),
-                FromArgb(255, 255, 255),
-                FromArgb(220, 220, 220),
-                FromArgb(115, 118, 129),      // Clay
-                FromArgb(141, 144, 158),
-                FromArgb(164, 168, 184),
-                FromArgb(141, 144, 158),
-                FromArgb(129, 74, 33),        // Dirt
-                FromArgb(157, 91, 40),
-                FromArgb(183, 106, 47),
-                FromArgb(157, 91, 40),
-                FromArgb(79, 79, 79),         // Stone/Cobblestone/Ore
-                FromArgb(96, 96, 96),
-                FromArgb(112, 112, 112),
-                FromArgb(96, 96, 96),
-                FromArgb(45, 45, 180),        // Water
-                FromArgb(55, 55, 220),
-                FromArgb(64, 64, 255),
-                FromArgb(55, 55, 220),
-                FromArgb(73, 58, 35),         // Log/Tree/Wood
-                FromArgb(89, 71, 43),
-                FromArgb(104, 83, 50),
-                FromArgb(89, 71, 43),
+                new Color(0, 0, 0, 0),         // Unexplored
+                new Color(0, 0, 0, 0),
+                new Color(0, 0, 0, 0),
+                new Color(0, 0, 0, 0),
+                new Color(89, 125, 39),        // Grass
+                new Color(109, 153, 48),
+                new Color(127, 178, 56),
+                new Color(109, 153, 48),
+                new Color(174, 164, 115),      // Sand/Gravel
+                new Color(213, 201, 140),
+                new Color(247, 233, 163),
+                new Color(213, 201, 140),
+                new Color(117, 117, 117),      // Other
+                new Color(144, 144, 144),
+                new Color(167, 167, 167),
+                new Color(144, 144, 144),
+                new Color(180, 0, 0),          // Lava
+                new Color(220, 0, 0),
+                new Color(255, 0, 0),
+                new Color(220, 0, 0),
+                new Color(112, 112, 180),      // Ice
+                new Color(138, 138, 220),
+                new Color(160, 160, 255),
+                new Color(138, 138, 220),
+                new Color(117, 117, 117),      // Iron
+                new Color(144, 144, 144),
+                new Color(167, 167, 167),
+                new Color(144, 144, 144),
+                new Color(0, 87, 0),           // Leaves/Flowers
+                new Color(0, 106, 0),
+                new Color(0, 124, 0),
+                new Color(0, 106, 0),
+                new Color(180, 180, 180),      // Snow
+                new Color(220, 220, 220),
+                new Color(255, 255, 255),
+                new Color(220, 220, 220),
+                new Color(115, 118, 129),      // Clay
+                new Color(141, 144, 158),
+                new Color(164, 168, 184),
+                new Color(141, 144, 158),
+                new Color(129, 74, 33),        // Dirt
+                new Color(157, 91, 40),
+                new Color(183, 106, 47),
+                new Color(157, 91, 40),
+                new Color(79, 79, 79),         // Stone/Cobblestone/Ore
+                new Color(96, 96, 96),
+                new Color(112, 112, 112),
+                new Color(96, 96, 96),
+                new Color(45, 45, 180),        // Water
+                new Color(55, 55, 220),
+                new Color(64, 64, 255),
+                new Color(55, 55, 220),
+                new Color(73, 58, 35),         // Log/Tree/Wood
+                new Color(89, 71, 43),
+                new Color(104, 83, 50),
+                new Color(89, 71, 43),
             };
-        }
-
-        private static Color FromArgb(int red, int green, int blue) => FromArgb(255, red, green, blue);
-
-        private static Color FromArgb(int alpha, int red, int green, int blue)
-        {
-            if (alpha < 0 || alpha > 255)
-            {
-                throw new ArgumentException("alpha is less than 0 or greater than 255", nameof(alpha));
-            }
-            if (red < 0 || red > 255)
-            {
-                throw new ArgumentException("red is less than 0 or greater than 255", nameof(red));
-            }
-            if (green < 0 || green > 255)
-            {
-                throw new ArgumentException("green is less than 0 or greater than 255", nameof(green));
-            }
-            if (blue < 0 || blue > 255)
-            {
-                throw new ArgumentException("blue is less than 0 or greater than 255", nameof(blue));
-            }
-            return new Color((byte)red, (byte)green, (byte)blue, (byte)alpha);
         }
     }
 }

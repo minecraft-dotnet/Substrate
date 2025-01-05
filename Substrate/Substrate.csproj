@@ -37,7 +37,6 @@
     <ItemGroup>
         <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" />
         <PackageReference Include="NETStandard.Library" Version="2.0.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.9" />
     </ItemGroup>
 
 </Project>
