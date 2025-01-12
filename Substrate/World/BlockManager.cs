@@ -1,8 +1,7 @@
 ﻿using System;
 using Substrate.Core;
-using Substrate.World;
 
-namespace Substrate
+namespace Substrate.World
 {
     public class AlphaBlockManager : BlockManager
     {
@@ -28,7 +27,7 @@ namespace Substrate
         public AnvilBlockManager(IChunkManager cm)
             : base(cm)
         {
-            IChunk c = AnvilChunk.Create(0, 0);
+            IChunk c = AnvilChunk.Create(0, 0, (int)Core.DataVersion.Unknown);
 
             chunkXDim = c.Blocks.XDim;
             chunkYDim = c.Blocks.YDim;

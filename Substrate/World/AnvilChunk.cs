@@ -33,53 +33,11 @@ namespace Substrate.World
             new SchemaNodeScalar("DataVersion", TagType.TAG_INT, SchemaOptions.OPTIONAL),
         };
 
-        public static SchemaNodeCompound ChunkSchema = new SchemaNodeCompound()
-        {
-            new SchemaNodeCompound("Heightmaps") {
-            },
-            new SchemaNodeCompound("structures") {
-            },
-            new SchemaNodeList("block_entities", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-         
-            }),
-            new SchemaNodeList("block_ticks", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-         
-            }),
-            new SchemaNodeList("fluid_ticks", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-         
-            }),
-            new SchemaNodeList("PostProcessing", TagType.TAG_LIST,
-                new SchemaNodeList("", TagType.TAG_COMPOUND,
-                    new SchemaNodeCompound() {
-            })),
-            new SchemaNodeList("entities", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-         
-            }, SchemaOptions.OPTIONAL),
-            new SchemaNodeList("Lights", TagType.TAG_LIST,
-                new SchemaNodeList("", TagType.TAG_COMPOUND,
-                    new SchemaNodeCompound() {
-            }), SchemaOptions.OPTIONAL),
-            new SchemaNodeCompound("CarvingMasks", SchemaOptions.OPTIONAL) {
-
-            },
-            new SchemaNodeScalar("DataVersion", TagType.TAG_INT),
-            new SchemaNodeScalar("InhabitedTime", TagType.TAG_LONG),
-            new SchemaNodeScalar("isLightOn", TagType.TAG_BYTE, SchemaOptions.OPTIONAL),
-            new SchemaNodeScalar("LastUpdate", TagType.TAG_LONG),
-            new SchemaNodeString("Status"),
-            new SchemaNodeScalar("xPos", TagType.TAG_INT),
-            new SchemaNodeScalar("yPos", TagType.TAG_INT),
-            new SchemaNodeScalar("zPos", TagType.TAG_INT),
-        };
-
         private const int XDIM = 16;
         private const int YDIM = 256;
         private const int ZDIM = 16;
 
         private NbtTree _tree;
-
-        private int _cx;
-        private int _cz;
 
         private AnvilSection[] _sections;
 
@@ -105,15 +63,11 @@ namespace Substrate.World
             _sections = new AnvilSection[16];
         }
 
-        public int X
-        {
-            get { return _cx; }
-        }
+        public int X { get; private set; }
 
-        public int Z
-        {
-            get { return _cz; }
-        }
+        public int Z { get; private set; }
+
+        public int DataVersion { get; private set; }
 
         public AnvilSection[] Sections
         {
@@ -125,7 +79,7 @@ namespace Substrate.World
             get { return _blockManager; }
         }
 
-        public AnvilBiomeCollection Biomes
+        public IBiomeCollection Biomes
         {
             get { return _biomeManager; }
         }
@@ -146,12 +100,14 @@ namespace Substrate.World
             set { _tree.Root["Level"].ToTagCompound()["TerrainPopulated"].ToTagByte().Data = (byte)(value ? 1 : 0); }
         }
 
-        public static AnvilChunk Create(int x, int z)
+        public static AnvilChunk Create(int x, int z, int dataVersion)
         {
             AnvilChunk c = new AnvilChunk();
 
-            c._cx = x;
-            c._cz = z;
+            c.X = x;
+            c.Z = z;
+            c.DataVersion = dataVersion;
+
 
             c.BuildNBTTree();
             return c;
@@ -178,13 +134,13 @@ namespace Substrate.World
         /// <param name="z">Global Z-coordinate.</param>
         public virtual void SetLocation(int x, int z)
         {
-            int diffx = (x - _cx) * XDIM;
-            int diffz = (z - _cz) * ZDIM;
+            int diffx = (x - X) * XDIM;
+            int diffz = (z - Z) * ZDIM;
 
             // Update chunk position
 
-            _cx = x;
-            _cz = z;
+            X = x;
+            Z = z;
 
             _tree.Root["Level"].ToTagCompound()["xPos"].ToTagInt().Data = x;
             _tree.Root["Level"].ToTagCompound()["zPos"].ToTagInt().Data = z;
@@ -283,6 +239,20 @@ namespace Substrate.World
 
             TagNodeCompound level = _tree.Root["Level"] as TagNodeCompound;
 
+
+            if (_tree.Root.TryGetValue("DataVersion", out var dataVersion))
+            {
+                DataVersion = dataVersion.ToTagInt().Data;
+            }
+            else if (level.TryGetValue("DataVersion", out dataVersion))
+            {
+                DataVersion = dataVersion.ToTagInt().Data;
+            }
+            else
+            {
+                DataVersion = (int)Core.DataVersion.Unknown;
+            }
+
             TagNodeList sections = level["Sections"] as TagNodeList;
             foreach (TagNodeCompound section in sections)
             {
@@ -353,8 +323,8 @@ namespace Substrate.World
                 _tileTicks = level["TileTicks"] as TagNodeList;
             }
 
-            _cx = level["xPos"].ToTagInt();
-            _cz = level["zPos"].ToTagInt();
+            X = level["xPos"].ToTagInt();
+            Z = level["zPos"].ToTagInt();
 
             _blockManager = new AlphaBlockCollection(_blocks, _data, _blockLight, _skyLight, _heightMap, _tileEntities, _tileTicks);
             _entityManager = new EntityCollection(_entities);
@@ -406,18 +376,7 @@ namespace Substrate.World
         public bool ValidateTree(TagNode tree)
         {
             NbtVerifier v = new NbtVerifier(tree, LevelSchema);
-            if (v.Verify())
-            {
-                return true;
-            }
-
-            v = new NbtVerifier(tree, ChunkSchema);
-            if (v.Verify())
-            {
-                return true;
-            }
-
-            return false;
+            return v.Verify();
         }
 
         #endregion
@@ -493,8 +452,8 @@ namespace Substrate.World
             level.Add("TileEntities", _tileEntities);
             level.Add("TileTicks", _tileTicks);
             level.Add("LastUpdate", new TagNodeLong(Timestamp()));
-            level.Add("xPos", new TagNodeInt(_cx));
-            level.Add("zPos", new TagNodeInt(_cz));
+            level.Add("xPos", new TagNodeInt(X));
+            level.Add("zPos", new TagNodeInt(Z));
             level.Add("TerrainPopulated", new TagNodeByte());
 
             _tree = new NbtTree();

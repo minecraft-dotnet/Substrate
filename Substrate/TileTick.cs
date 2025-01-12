@@ -10,7 +10,7 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScalar("i", TagType.TAG_INT),
+            new SchemaNodeResourceLocation("i"),
             new SchemaNodeScalar("t", TagType.TAG_INT),
             new SchemaNodeScalar("x", TagType.TAG_INT),
             new SchemaNodeScalar("y", TagType.TAG_INT),

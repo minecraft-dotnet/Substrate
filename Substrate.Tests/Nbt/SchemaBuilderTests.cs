@@ -20,10 +20,10 @@ namespace Substrate.Nbt.Tests
 
             string formattedBuilt = SchemaBuilder.FormatTree(_schemaBuilt);
 
-            Debug.WriteLine("Manual:");
-            Debug.WriteLine(formattedManual);
-            Debug.WriteLine("Built:");
-            Debug.WriteLine(formattedBuilt);
+            Console.WriteLine("Manual:");
+            Console.WriteLine(formattedManual);
+            Console.WriteLine("Built:");
+            Console.WriteLine(formattedBuilt);
 
             Assert.AreEqual(formattedManual, formattedBuilt);
         }
@@ -39,10 +39,10 @@ namespace Substrate.Nbt.Tests
 
             string formattedBuilt = SchemaBuilder.FormatTree(_schemaBuilt);
 
-            Debug.WriteLine("Manual:");
-            Debug.WriteLine(formattedManual);
-            Debug.WriteLine("Built:");
-            Debug.WriteLine(formattedBuilt);
+            Console.WriteLine("Manual:");
+            Console.WriteLine(formattedManual);
+            Console.WriteLine("Built:");
+            Console.WriteLine(formattedBuilt);
 
             Assert.AreEqual(formattedManual, formattedBuilt);
 

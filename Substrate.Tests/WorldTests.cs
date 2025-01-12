@@ -15,41 +15,44 @@ namespace Substrate.Tests
         [TestInitialize]
         public void Initialize()
         {
+            Console.WriteLine("Initializing WorldTests");
             NbtVerifier.MissingTag += NbtVerifier_LogMissingTagEvent;
             NbtVerifier.UnexpectedTag += NbtVerifier_LogUnexpectedTagEvent;
             NbtVerifier.InvalidTagValue += NbtVerifier_LogInvalidTagValueEvent;
             NbtVerifier.InvalidTagType += NbtVerifier_LogInvalidTagTypeEvent;
         }
 
+        [TestCleanup]
         public void Cleanup()
         {
             NbtVerifier.MissingTag -= NbtVerifier_LogMissingTagEvent;
             NbtVerifier.UnexpectedTag -= NbtVerifier_LogUnexpectedTagEvent;
             NbtVerifier.InvalidTagValue -= NbtVerifier_LogInvalidTagValueEvent;
             NbtVerifier.InvalidTagType -= NbtVerifier_LogInvalidTagTypeEvent;
+            Console.WriteLine("Cleanup WorldTests");
         }
 
         private TagEventCode NbtVerifier_LogMissingTagEvent(TagEventArgs e)
         {
-            Debug.WriteLine($"Missing {e.TagName} in {e.Schema.Name} {e.SchemaPath}");
+            Console.WriteLine($"Missing {e.TagName} in {e.Schema.Name} {e.SchemaPath}");
             return TagEventCode.NEXT;
         }
 
         private TagEventCode NbtVerifier_LogUnexpectedTagEvent(TagEventArgs e)
         {
-            Debug.WriteLine($"Unexpected tag {e.TagName} for {e.Schema.Name} in {e.SchemaPath}");
+            Console.WriteLine($"Unexpected tag {e.TagName} for {e.Schema.Name} in {e.SchemaPath}");
             return TagEventCode.NEXT;
         }
 
         private TagEventCode NbtVerifier_LogInvalidTagValueEvent(TagEventArgs e)
         {
-            Debug.WriteLine($"Invalid value {e.Tag} for {e.Schema.Name} in {e.SchemaPath}");
+            Console.WriteLine($"Invalid value {e.Tag} for {e.Schema.Name} in {e.SchemaPath}");
             return TagEventCode.NEXT;
         }
 
         private TagEventCode NbtVerifier_LogInvalidTagTypeEvent(TagEventArgs e)
         {
-            Debug.WriteLine($"{e.Tag} invalid type {e.Tag.GetTagType()} in {e.Schema.Name} {e.SchemaPath}");
+            Console.WriteLine($"{e.Tag} invalid type {e.Tag.GetTagType()} in {e.Schema.Name} {e.SchemaPath}");
             return TagEventCode.NEXT;
         }
 
@@ -58,6 +61,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_6_4-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -65,6 +70,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_7_2-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -72,6 +79,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_7_10-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -79,6 +88,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_8_3-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -86,6 +97,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_8_3-debug\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -93,6 +106,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_8_7-debug\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -100,6 +115,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_8_7-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -107,6 +124,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_9_2-debug\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -121,6 +140,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_12_2-debug\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -128,6 +149,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_12_2-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -135,6 +158,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_21_4-debug\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -142,6 +167,8 @@ namespace Substrate.Tests
         {
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\1_21_4-survival\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -154,6 +181,8 @@ namespace Substrate.Tests
 
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\Colors of the Rainbow SURVIVAL\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -166,6 +195,8 @@ namespace Substrate.Tests
 
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\Climatic Islands [ENG]\");
             Assert.IsNotNull(world);
+
+            TestUtils.TestWorld(world);
         }
 
         [TestMethod]
@@ -179,6 +210,7 @@ namespace Substrate.Tests
             NbtWorld world = AnvilWorld.Open(@"..\..\..\Data\gothic german castle\");
             Assert.IsNotNull(world);
 
+            // looks like it has some bad sections
             //TestUtils.TestWorld(world);
         }
     }

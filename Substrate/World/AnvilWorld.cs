@@ -349,7 +349,7 @@ namespace Substrate.World
 
             ChunkCache cc = new ChunkCache(_prefCacheSize);
 
-            AnvilRegionManager rm = new AnvilRegionManager(path, cc);
+            AnvilRegionManager rm = new AnvilRegionManager(path, cc, Level.DataVersion);
             RegionChunkManager cm = new RegionChunkManager(rm, cc);
             BlockManager bm = new AnvilBlockManager(cm);
 
@@ -371,7 +371,7 @@ namespace Substrate.World
                 }
                 else
                 {
-                    throw new DirectoryNotFoundException("Directory '" + path + "' not found");
+                    throw new DirectoryNotFoundException($"Directory '{path}' not found");
                 }
             }
 
@@ -380,12 +380,12 @@ namespace Substrate.World
             string ldat = IO.Path.Combine(path, _levelFile);
             if (!File.Exists(ldat))
             {
-                throw new FileNotFoundException("Data file '" + _levelFile + "' not found in '" + path + "'", ldat);
+                throw new FileNotFoundException($"Data file '{_levelFile}' not found in '{path}'", ldat);
             }
 
             if (!LoadLevel())
             {
-                throw new Exception("Failed to load '" + _levelFile + "'");
+                throw new Exception($"Failed to load '{_levelFile}'");
             }
 
             return this;

@@ -31,7 +31,7 @@ namespace Substrate.Tests
                     var blockRef = world.GetBlockManager().GetBlockRef(x, DebugWorld.Y, z);
                     var blockInfo = BlockInfo.BlockTable[blockRef.ID];
 
-                    Debug.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
+                    Console.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
 
                     Assert.IsTrue(blockInfo.Registered, "Block ID {0} has not been registered", blockRef.ID);
                     Assert.IsTrue(blockInfo.TestData(blockRef.Data), "Data value '0x{0:X4}' not recognised for block '{1}' at {2},{3}", blockRef.Data, blockInfo.Name, x, z);
@@ -54,13 +54,13 @@ namespace Substrate.Tests
                     var blockRef = world.GetBlockManager().GetBlockRef(x, DebugWorld.Y, z);
                     var blockInfo = BlockInfo.BlockTable[blockRef.ID];
 
-                    Debug.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
+                    Console.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
 
                     Assert.IsTrue(blockInfo.Registered, "Block ID {0} has not been registered", blockRef.ID);
                     if (!blockInfo.TestData(blockRef.Data))
                     {
                         dataError = true;
-                        Debug.WriteLine("Data value '0x{0:X4}' not recognised for block '{1}' at {2},{3}", blockRef.Data, blockInfo.Name, x, z);
+                        Console.WriteLine("Data value '0x{0:X4}' not recognised for block '{1}' at {2},{3}", blockRef.Data, blockInfo.Name, x, z);
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace Substrate.Tests
                     var blockRef = world.GetBlockManager().GetBlockRef(x, DebugWorld.Y, z);
                     var blockInfo = BlockInfo.BlockTable[blockRef.ID];
 
-                    Debug.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
+                    Console.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
 
                     if (!blockInfo.Registered)
                     {

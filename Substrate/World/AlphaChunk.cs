@@ -82,7 +82,7 @@ namespace Substrate.World
             get { return _blockManager; }
         }
 
-        public AnvilBiomeCollection Biomes
+        public IBiomeCollection Biomes
         {
             get { return null; }
         }

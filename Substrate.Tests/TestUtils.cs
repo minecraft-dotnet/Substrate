@@ -17,7 +17,7 @@ namespace Substrate.Tests
             foreach (var chunk in chunkManager)
             {
                 Assert.IsNotNull(chunk);
-                Debug.WriteLine($"Loading Chunk: {chunk.X}, {chunk.Z}");
+                Console.WriteLine($"Loading Chunk: {chunk.X}, {chunk.Z}");
                 
                 var chunkRef = chunk.GetChunkRef();
                 Assert.IsNotNull(chunkRef);

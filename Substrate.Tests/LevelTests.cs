@@ -13,14 +13,14 @@ namespace Substrate.Tests
     [TestClass]
     public class LevelTests
     {
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
             NbtVerifier.UnexpectedTag += new VerifierEventHandler((TagEventArgs e) =>
             {
                 var fullName = e.Schema.Name + "." + e.TagName;
 
-                Trace.WriteLine($"UnexpectedTag {fullName}");
+                Console.WriteLine($"UnexpectedTag {fullName}");
 
                 return TagEventCode.NEXT;
             });

@@ -6,8 +6,6 @@ using Substrate.Nbt;
 
 namespace Substrate.Core
 {
-
-
     /// <summary>
     /// Represents a single region containing 32x32 chunks.
     /// </summary>
@@ -41,6 +39,8 @@ namespace Substrate.Core
 
         /// <inherit />
         public int Z { get; private set; }
+
+        public int DataVersion { get; private set; }
 
         /// <summary>
         /// Gets the length of the X-dimension of the region in chunks.

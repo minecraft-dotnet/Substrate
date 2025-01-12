@@ -17,6 +17,8 @@ namespace Substrate.Core
         /// </summary>
         int Z { get; }
 
+        int DataVersion { get; }
+
         /// <summary>
         /// Get the appropriate filename for this region.
         /// </summary>

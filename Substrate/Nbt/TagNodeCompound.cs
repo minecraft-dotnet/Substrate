@@ -140,6 +140,13 @@ namespace Substrate.Nbt
             return _tags.TryGetValue(key, out value);
         }
 
+        public bool TryGetValue<T>(string key, out T value) where T : TagNode
+        {
+            var ret = _tags.TryGetValue(key, out TagNode node);
+            value = node as T;
+            return ret;
+        }
+
         /// <summary>
         /// Gets a collection containing all the subnodes in this set.
         /// </summary>

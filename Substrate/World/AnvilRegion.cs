@@ -9,15 +9,18 @@ namespace Substrate.World
     {
         private static Regex _namePattern = new Regex("r\\.(-?[0-9]+)\\.(-?[0-9]+)\\.mca$");
 
-        public AnvilRegion(AnvilRegionManager rm, ChunkCache cache, int rx, int rz)
+        int _dataVersion;
+
+        public AnvilRegion(AnvilRegionManager rm, ChunkCache cache, int rx, int rz, int dataVersion)
             : base(rm, cache, rx, rz)
         {
+            _dataVersion = dataVersion;
         }
 
         /// <inherits />
         public override string GetFileName()
         {
-            return "r." + X + "." + Z + ".mca";
+            return $"r.{X}.{Z}.mca";
 
         }
 
@@ -73,11 +76,22 @@ namespace Substrate.World
 
         protected override IChunk CreateChunkCore(int cx, int cz)
         {
-            return AnvilChunk.Create(cx, cz);
+            if (_dataVersion >= (int)Substrate.Core.DataVersion.Java_v1_18)
+            {
+                return AnvilChunk2.Create(cx, cz, _dataVersion);
+            }
+            return AnvilChunk.Create(cx, cz, _dataVersion);
         }
 
         protected override IChunk CreateChunkVerifiedCore(NbtTree tree)
         {
+            if (tree.Root.TryGetValue("DataVersion", out var dataVersion))
+            {
+                if (dataVersion.ToTagInt().Data >= (int)Substrate.Core.DataVersion.Java_v1_18)
+                {
+                    return AnvilChunk2.CreateVerified(tree);
+                }
+            }
             return AnvilChunk.CreateVerified(tree);
         }
     }

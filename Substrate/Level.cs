@@ -453,6 +453,7 @@ namespace Substrate
         private long? _borderSizeLerpTime;
         private double? _borderDamagePerBlock;
         private int? _clearWeatherTime;
+        private int? _dataVersion;
 
 
         private GameRules _gameRules;
@@ -748,6 +749,12 @@ namespace Substrate
             set { _clearWeatherTime = value; }
         }
 
+        public int DataVersion
+        {
+            get { return _dataVersion ?? (int)Core.DataVersion.Unknown; }
+            set { _dataVersion = value; }
+        }
+
         /// <summary>
         /// Gets the level's game rules.
         /// </summary>
@@ -779,6 +786,7 @@ namespace Substrate
         public Level(NbtWorld world)
         {
             _world = world;
+            _dataVersion = (int)Core.DataVersion.Unknown;
 
             // Sane defaults
             _time = 0;
@@ -1080,6 +1088,11 @@ namespace Substrate
             if (ctree.ContainsKey("clearWeatherTime"))
             {
                 _clearWeatherTime = ctree["clearWeatherTime"].ToTagInt();
+            }
+
+            if (ctree.TryGetValue("DataVersion", out var dataVersion))
+            {
+                _dataVersion = dataVersion.ToTagInt();
             }
 
             if (ctree.ContainsKey("GameRules"))

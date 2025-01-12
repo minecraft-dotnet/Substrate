@@ -16,7 +16,7 @@ namespace Substrate
         private IChunk _chunk;
 
         private AlphaBlockCollection _blocks;
-        private AnvilBiomeCollection _biomes;
+        private IBiomeCollection _biomes;
         private EntityCollection _entities;
 
         private int _cx;
@@ -74,7 +74,7 @@ namespace Substrate
         /// <summary>
         /// Gets the collection of all blocks and their data stored in the chunk.
         /// </summary>
-        public AnvilBiomeCollection Biomes
+        public IBiomeCollection Biomes
         {
             get
             {
