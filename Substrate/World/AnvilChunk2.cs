@@ -52,7 +52,7 @@ namespace Substrate.World
             }),
             new SchemaNodeList("PostProcessing", TagType.TAG_LIST,
                 new SchemaNodeList("", TagType.TAG_SHORT)),
-            new SchemaNodeList("sections", TagType.TAG_COMPOUND, AnvilSection2.Section2Schema, SchemaOptions.OPTIONAL),
+            new SchemaNodeList("sections", TagType.TAG_COMPOUND, AnvilSection2.Schema, SchemaOptions.OPTIONAL),
             new SchemaNodeList("entities", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
          
             }, SchemaOptions.OPTIONAL),

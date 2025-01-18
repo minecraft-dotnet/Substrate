@@ -1,4 +1,6 @@
-﻿namespace Substrate.Core
+﻿#nullable enable
+
+namespace Substrate.Core
 {
     /// <summary>
     /// Provides a virtual deep copy capability to implementors.
@@ -10,6 +12,6 @@
         /// Performs a virtual deep copy of the object instance.
         /// </summary>
         /// <returns>An independent copy of the object instance.</returns>
-        T Copy();
+        T? Copy();
     }
 }

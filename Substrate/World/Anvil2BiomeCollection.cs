@@ -18,7 +18,7 @@ namespace Substrate.World
 
         public int GetBiome(int x, int z)
         {
-            return Biomes.PLAINS;
+            return BiomeType.Plains;
             //return _sections[z * _xdim + x].Y;
         }
 
