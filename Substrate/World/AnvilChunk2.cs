@@ -285,7 +285,7 @@ namespace Substrate.World
             TagNodeList sections = root["sections"] as TagNodeList;
             foreach (TagNodeCompound section in sections)
             {
-                AnvilSection2 anvilSection = new AnvilSection2(section);
+                AnvilSection2 anvilSection = new AnvilSection2(section, DataVersion);
                 if (anvilSection.Y < 0 || anvilSection.Y >= _sections.Length)
                     continue;
                 _sections[anvilSection.Y] = anvilSection;

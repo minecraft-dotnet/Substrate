@@ -34,8 +34,10 @@ namespace Substrate.World
 
         private TagNodeCompound _tree;
 
+        private int _dataVersion;
         private byte _y;
         private ConstantDataArray3 _blocks;
+        private IDataArray _blockIndices;
         private YZXNibbleArray _data;
         private ConstantDataArray3 _blockLightEmpty;
         private IDataArray3 _blockLight;
@@ -58,8 +60,9 @@ namespace Substrate.World
             BuildNbtTree();
         }
 
-        public AnvilSection2(TagNodeCompound tree)
+        public AnvilSection2(TagNodeCompound tree, int dataVersion)
         {
+            _dataVersion = dataVersion;
             LoadTree(tree);
         }
 
@@ -141,9 +144,27 @@ namespace Substrate.World
 
             _blocks = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
 
-            if (blockStates.TryGetValue<TagNodeByteArray>("SkyLight", out var blockStatesdata))
+            if (blockStates.TryGetValue("data", out var blockStatesdata))
             {
-                _data = new YZXNibbleArray(XDIM, YDIM, ZDIM, blockStatesdata);
+                if (_dataVersion >= (int)DataVersion.Java_v1_16)
+                {
+                    var dataArray = blockStatesdata.ToTagLongArray().Data;
+                    _blockIndices = new PackedIndexLongList(_blockStatesPallete.Count, dataArray);
+                }
+                else
+                {
+                    var dataArray = blockStatesdata.ToTagLongArray().Data;
+                    _blockIndices = new PackedIndexBitLongList(_blockStatesPallete.Count, dataArray);
+                }
+            }
+            else
+            {
+                _blockIndices = null;
+            }
+
+            if (blockStates.TryGetValue<TagNodeByteArray>("SkyLight", out var blockStatesSkylight))
+            {
+                _data = new YZXNibbleArray(XDIM, YDIM, ZDIM, blockStatesSkylight);
             }
             if (ctree.TryGetValue<TagNodeByteArray>("SkyLight", out var skylight))
             {
@@ -209,6 +230,7 @@ namespace Substrate.World
         private void BuildNbtTree()
         {
             _blocks = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
+            _blockIndices = null;
 
             TagNodeCompound tree = new TagNodeCompound
             {
