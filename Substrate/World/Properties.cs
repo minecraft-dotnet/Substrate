@@ -46,6 +46,8 @@ namespace Substrate.World
             new SchemaNodeString("power", SchemaOptions.OPTIONAL),
             new SchemaNodeString("natural", SchemaOptions.OPTIONAL),
             new SchemaNodeString("active", SchemaOptions.OPTIONAL),
+            new SchemaNodeString("lit", SchemaOptions.OPTIONAL),
+            new SchemaNodeString("layers", SchemaOptions.OPTIONAL),
             new SchemaNodeString("slot_0_occupied", SchemaOptions.OPTIONAL),
             new SchemaNodeString("slot_1_occupied", SchemaOptions.OPTIONAL),
             new SchemaNodeString("slot_2_occupied", SchemaOptions.OPTIONAL),

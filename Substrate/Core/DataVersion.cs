@@ -25,4 +25,16 @@ namespace Substrate.Core
     public static class VersionExtentions
     {
     }
+
+    public static class VersionUtils
+    {
+        /// <summary>
+        /// Checks for the version where packed indexes stopped being packed bitwise across long boundaries (1.16).
+        /// From 1.16 onwards, packed indexes are whole within a single long value.
+        /// </summary>
+        public static bool UsesWholeIndexes(int dataVersion)
+        {
+            return dataVersion >= (int)DataVersion.Java_v1_16;
+        }
+    }
 }

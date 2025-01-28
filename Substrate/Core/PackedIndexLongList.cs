@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Substrate.Core
 {
@@ -20,11 +19,11 @@ namespace Substrate.Core
 
         long[] _data;
 
-        public PackedIndexLongList(int indexCount, long[] data)
+        public PackedIndexLongList(int indexCount, long[] data, int minDataWidth = 1)
         {
-            Length = indexCount;
-            DataWidth = (int)Math.Log(indexCount - 1, 2) + 1;
+            DataWidth = Math.Max((int)Math.Ceiling(Math.Log(indexCount, 2)), minDataWidth);
             _indexesPerLong = BitsPerLong / DataWidth;
+            Length = _indexesPerLong * data.Length;
             _data = data;
         }
         public int this[int i]
@@ -34,18 +33,16 @@ namespace Substrate.Core
                 var index = GetDataIndex(i);
                 var offset = GetDataOffset(i);
                 var mask = (1 << DataWidth) - 1;
-                var shift = BitsPerLong - (offset + DataWidth);
 
-                return (int)((_data[index] >> shift) & mask);
+                return (int)((_data[index] >> offset) & mask);
             }
             set
             {
                 var index = GetDataIndex(i);
                 var offset = GetDataOffset(i);
                 var mask = (1 << DataWidth) - 1;
-                var shift = BitsPerLong - (offset + DataWidth);
 
-                _data[index] = (_data[index] & ~((long)mask << shift)) | ((long)(value & mask) << shift);
+                _data[index] = (_data[index] & ~((long)mask << offset)) | ((long)(value & mask) << offset);
             }
         }
 

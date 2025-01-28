@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Substrate.Core;
 using Substrate.Nbt;
 
@@ -36,7 +37,8 @@ namespace Substrate.World
 
         private int _dataVersion;
         private byte _y;
-        private ConstantDataArray3 _blocks;
+        private IDataArray3 _blocks;
+        private ConstantDataArray3 _blocksEmpty;
         private IDataArray _blockIndices;
         private YZXNibbleArray _data;
         private ConstantDataArray3 _blockLightEmpty;
@@ -79,13 +81,13 @@ namespace Substrate.World
             }
         }
 
-        public IDataArray3 Blocks => _blocks;
+        public IDataArray3 Blocks => _blocks??_blocksEmpty;
 
         public YZXNibbleArray Data => _data;
 
-        public IDataArray3 BlockLight => _blockLightEmpty ?? _blockLight;
+        public IDataArray3 BlockLight => _blockLight ?? _blockLightEmpty;
 
-        public IDataArray3 SkyLight => _skyLightEmpty ?? _skyLight;
+        public IDataArray3 SkyLight => _skyLight ?? _skyLightEmpty;
 
         public List<string> BiomePalette => _biomePalette;
 
@@ -142,14 +144,14 @@ namespace Substrate.World
                 _blockStatesPallete.Add((name, properties));
             }
 
-            _blocks = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
+            _blocksEmpty = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
 
             if (blockStates.TryGetValue("data", out var blockStatesdata))
             {
-                if (_dataVersion >= (int)DataVersion.Java_v1_16)
+                if (VersionUtils.UsesWholeIndexes(_dataVersion))
                 {
                     var dataArray = blockStatesdata.ToTagLongArray().Data;
-                    _blockIndices = new PackedIndexLongList(_blockStatesPallete.Count, dataArray);
+                    _blockIndices = new PackedIndexLongList(_blockStatesPallete.Count, dataArray, 4);
                 }
                 else
                 {
@@ -164,7 +166,7 @@ namespace Substrate.World
 
             if (blockStates.TryGetValue<TagNodeByteArray>("SkyLight", out var blockStatesSkylight))
             {
-                _data = new YZXNibbleArray(XDIM, YDIM, ZDIM, blockStatesSkylight);
+                _skyLight = new YZXNibbleArray(XDIM, YDIM, ZDIM, blockStatesSkylight);
             }
             if (ctree.TryGetValue<TagNodeByteArray>("SkyLight", out var skylight))
             {
@@ -186,7 +188,40 @@ namespace Substrate.World
 
             _tree = ctree;
 
+            if (_blockIndices != null)
+                _blocks = UnpackBlocks(_blockStatesPallete, _blockIndices);
+            else
+                _blocks = _blocksEmpty;
+
             return this;
+        }
+
+        private static IDataArray3 UnpackBlocks(List<(string, Properties)> blockPalette, IDataArray blockIndices)
+        {
+            var indices = blockIndices as PackedIndexLongList;
+
+            var blockIds = blockPalette.Select(x => BlockInfo.GetBlockByNameId(x.Item1)).ToArray();
+
+            int i = 0;
+            var buffer = new int[XDIM * YDIM * ZDIM];
+            for (int x = 0; x < XDIM; x++)
+            {
+                for (int z = 0; z < ZDIM; z++)
+                {
+                    for (int y = 0; y < YDIM; y++)
+                    {
+                        int index = indices[i];
+                        //if (blockIds[index] == null)
+                        //{
+                        //    Console.WriteLine($"Missing {blockPalette[index].Item1}");
+                        //}
+                        buffer[i] = blockIds[index]?.ID ?? 0;
+                        ++i;
+                    }
+                }
+            }
+
+            return new XZYIntArray3(XDIM, YDIM, ZDIM, buffer);
         }
 
         public AnvilSection2 LoadTreeSafe(TagNode tree)
@@ -229,7 +264,7 @@ namespace Substrate.World
 
         private void BuildNbtTree()
         {
-            _blocks = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
+            _blocksEmpty = new ConstantDataArray3(XDIM, YDIM, ZDIM, 0);
             _blockIndices = null;
 
             TagNodeCompound tree = new TagNodeCompound

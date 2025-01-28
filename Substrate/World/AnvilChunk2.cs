@@ -45,7 +45,13 @@ namespace Substrate.World
                 new SchemaNodeCompound("back_text", SchemaOptions.OPTIONAL),
             }),
             new SchemaNodeList("block_ticks", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
-         
+                new SchemaNodeScalar("x", TagType.TAG_INT),
+                new SchemaNodeScalar("y", TagType.TAG_INT),
+                new SchemaNodeScalar("z", TagType.TAG_INT),
+                new SchemaNodeScalar("p", TagType.TAG_INT),
+                new SchemaNodeScalar("t", TagType.TAG_INT),
+                new SchemaNodeString("i"),
+
             }),
             new SchemaNodeList("fluid_ticks", TagType.TAG_COMPOUND, new SchemaNodeCompound() {
          
