@@ -126,10 +126,29 @@ namespace Substrate
             int index = _blocks.GetIndex(x, y, z);
             BlockInfo blockInfo;
             ItemInfo itemInfo;
-            int id = BlockInfo.BlockNameTable.TryGetValue(name, out blockInfo)
-                ? blockInfo.ID
-                : (ItemInfo.StrTable.TryGetValue(name, out itemInfo) ? itemInfo.ID : 0);
-            PaletteBlock state = new PaletteBlock(name, properties == null ? null : properties.Copy() as TagNodeCompound, id, 0);
+            int id;
+            int data;
+            if (!BlockInfo.TryGetLegacyBlockState(
+                    name, properties, out id, out data)) {
+                if (!BlockInfo.TryGetLegacyDefaultBlockState(
+                        name, out id, out data)) {
+                    id = BlockInfo.BlockNameTable.TryGetValue(
+                            name, out blockInfo)
+                        ? blockInfo.ID
+                        : (ItemInfo.StrTable.TryGetValue(
+                                name, out itemInfo)
+                            ? itemInfo.ID
+                            : 0);
+                    data = 0;
+                }
+            }
+            PaletteBlock state = new PaletteBlock(
+                name,
+                properties == null
+                    ? null
+                    : properties.Copy() as TagNodeCompound,
+                id,
+                data);
             int paletteIndex = Array.IndexOf(_palette, state);
             if (paletteIndex < 0) {
                 PaletteBlock[] expanded = new PaletteBlock[_palette.Length + 1];
@@ -139,7 +158,7 @@ namespace Substrate
                 _palette = expanded;
             }
             _blocks[index] = id;
-            _data[index] = 0;
+            _data[index] = data;
             SetOriginalPaletteIndex(index, paletteIndex);
         }
 

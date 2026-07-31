@@ -281,6 +281,20 @@ namespace Substrate.Tests
             Assert.IsNull(modern.GetBlockProperty(
                 79, 64, 249, BlockProperties.Waterlogged));
 
+            modern.SetBlock(
+                80, 64, 249, AcquaticBlocks.BlueStainedGlassPane,
+                north: false,
+                east: false,
+                south: false,
+                west: false,
+                waterlogged: false);
+            Assert.AreEqual(
+                AcquaticBlocks.BlueStainedGlassPane,
+                modern.GetStringID(80, 64, 249));
+            Assert.AreEqual(BlockType.STAINED_GLASS_PANE,
+                modern.GetID(80, 64, 249));
+            Assert.AreEqual(11, modern.GetData(80, 64, 249));
+
             NbtWorld legacyWorld = NbtWorld.Open(@"..\..\Data\1_7_10-creative\");
             BlockManager legacy = legacyWorld.GetBlockManager() as BlockManager;
             Assert.IsNotNull(legacy);

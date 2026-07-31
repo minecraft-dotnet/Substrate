@@ -261,6 +261,7 @@ namespace Substrate
         private static readonly Dictionary<string, BlockInfo> _blockNameTable = new Dictionary<string, BlockInfo>();
         private static readonly Dictionary<int, LegacyBlockState> _legacyBlockStates = new Dictionary<int, LegacyBlockState>();
         private static readonly Dictionary<string, int> _legacyBlockIds = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _legacyDefaultBlockStateKeys = new Dictionary<string, int>();
         private static readonly Dictionary<string, int> _legacyBlockStateKeys = new Dictionary<string, int>();
         private static readonly Dictionary<int, string> _legacyDefaultBlockNames = new Dictionary<int, string>();
         private static int _nextNamedBlockId = MAX_BLOCKS - 1;
@@ -662,6 +663,8 @@ namespace Substrate
                             _legacyDefaultBlockNames[id] = name;
                         if (!_legacyBlockIds.ContainsKey(name))
                             _legacyBlockIds[name] = id;
+                        if (!_legacyDefaultBlockStateKeys.ContainsKey(name))
+                            _legacyDefaultBlockStateKeys[name] = key;
                     }
                 }
             }
@@ -697,6 +700,20 @@ namespace Substrate
         {
             int key;
             if (_legacyBlockStateKeys.TryGetValue(LegacyBlockStateKey(name, properties), out key)) {
+                id = key >> 4;
+                data = key & 15;
+                return true;
+            }
+            id = 0;
+            data = 0;
+            return false;
+        }
+
+        internal static bool TryGetLegacyDefaultBlockState (
+            string name, out int id, out int data)
+        {
+            int key;
+            if (_legacyDefaultBlockStateKeys.TryGetValue(name, out key)) {
                 id = key >> 4;
                 data = key & 15;
                 return true;
