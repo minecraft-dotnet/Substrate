@@ -574,6 +574,7 @@ namespace Substrate
         private static void RegisterModernBlocks()
         {
             LoadLegacyBlockStates();
+            RegisterRenamedBlockAliases();
             List<BlockInfo> blocks = new List<BlockInfo>();
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream("Substrate.Data.BlockRegistry-26.2.txt")) {
@@ -619,7 +620,23 @@ namespace Substrate
                     }
                 }
             }
+            BlockInfo shortGrass;
+            if (_blockNameTable.TryGetValue("minecraft:short_grass", out shortGrass))
+                _blockNameTable["minecraft:grass"] = shortGrass;
             ModernBlocks = blocks.AsReadOnly();
+        }
+
+        private static void RegisterRenamedBlockAliases()
+        {
+            int shortGrassKey;
+            if (_legacyBlockStateKeys.TryGetValue(
+                    "minecraft:short_grass", out shortGrassKey)) {
+                // minecraft:grass was the flattened name for short grass until
+                // Java 1.20.3.  It must not fall through to the pre-flattening
+                // item name for legacy ID 2 (grass_block).
+                _legacyBlockStateKeys["minecraft:grass"] = shortGrassKey;
+                _legacyBlockIds["minecraft:grass"] = shortGrassKey >> 4;
+            }
         }
 
         private static void LoadLegacyBlockStates()

@@ -241,9 +241,21 @@ namespace Substrate.Tests
         {
             foreach (KeyValuePair<string, ItemInfo> item in ItemInfo.StrTable) {
                 BlockInfo block;
+                if (item.Key == "minecraft:grass")
+                    continue;
                 if (item.Value.ID < 256 && BlockInfo.BlockNameTable.TryGetValue(item.Key, out block))
                     Assert.AreEqual(item.Value.ID, block.ID, item.Key);
             }
+
+            BlockInfo oldNameShortGrass = BlockInfo.BlockNameTable["minecraft:grass"];
+            Assert.AreEqual(BlockInfo.TallGrass.ID, oldNameShortGrass.ID);
+            Assert.AreEqual(BlockState.NONSOLID, oldNameShortGrass.State);
+            int grassId;
+            int grassData;
+            BlockInfo.GetLegacyBlockState(
+                "minecraft:grass", out grassId, out grassData);
+            Assert.AreEqual(BlockInfo.TallGrass.ID, grassId);
+            Assert.AreEqual(1, grassData);
 
             Assert.AreEqual(BlockType.WOOD_PLANK, BlockInfo.BlockNameTable["minecraft:oak_planks"].ID);
             Assert.AreEqual(BlockType.WOOD_PLANK, BlockInfo.BlockNameTable["minecraft:spruce_planks"].ID);

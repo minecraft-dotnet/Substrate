@@ -27,6 +27,23 @@ namespace Substrate.Tests
         }
 
         [TestMethod]
+        public void TallGrassHeight2()
+        {
+            NbtWorld world = NbtWorld.Open(@"C:\Users\dino_\AppData\Roaming\.minecraft\saves\Duwamish_Small5_262 - Copy");
+            var bm = world.GetBlockManager() as AnvilBlockManager;
+            var height = bm.GetHeight(1929, 435);
+            var block = bm.GetBlock(1929, 111, 435);
+            Assert.AreEqual("minecraft:grass", bm.GetStringID(1929, 111, 435));
+            Assert.AreEqual(BlockInfo.TallGrass.ID, block.ID);
+            Assert.AreEqual(1, block.Data);
+            Assert.AreEqual(BlockState.NONSOLID, block.Info.State);
+            Assert.AreEqual(111, height);
+            height = bm.GetHeight(1938, 152);
+            Assert.AreEqual(111, height);
+        }
+
+
+        [TestMethod]
         public void OpenTest_262_missing_heightmaps()
         {
             NbtWorld world = NbtWorld.Open(@"..\..\Data\26_2-missing-heightmaps\");
