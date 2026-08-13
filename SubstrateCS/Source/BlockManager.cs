@@ -573,7 +573,7 @@ namespace Substrate
         public int GetID (int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null || !Check(x, y, z)) {
                 return 0;
             }
 
@@ -707,7 +707,7 @@ namespace Substrate
         public int GetData (int x, int y, int z)
         {
             cache = GetChunk(x, y, z);
-            if (cache == null) {
+            if (cache == null || !Check(x, y, z)) {
                 return 0;
             }
 
