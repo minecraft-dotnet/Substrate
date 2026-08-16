@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Substrate.Nbt;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 
 namespace Substrate
 {
@@ -180,10 +183,20 @@ namespace Substrate
         public const int DROPPER = 158;
         public const int STAINED_CLAY = 159;
         public const int STAINED_GLASS_PANE = 160;
+        public const int ACACIA_WOOD_STAIRS = 163;
+        public const int DARK_OAK_WOOD_STAIRS = 164;
         public const int HAY_BLOCK = 170;
         public const int CARPET = 171;
         public const int HARDENED_CLAY = 172;
         public const int COAL_BLOCK = 173;
+        public const int DOUBLE_PLANT = 175;
+        public const int CONCRETE = 251;
+        public const int CONCRETE_POWDER = 252;
+        public const int SEA_LANTERN = 169;
+        public const int STANDING_BANNER = 176;
+        public const int WALL_BANNER = 177;
+        public const int PURPUR = 201;
+        public const int PURPUR_STAIRS = 203;
     }
 
     /// <summary>
@@ -244,6 +257,20 @@ namespace Substrate
         private static readonly BlockInfo[] _blockTable;
         private static readonly int[] _opacityTable;
         private static readonly int[] _luminanceTable;
+
+        private static readonly Dictionary<string, BlockInfo> _blockNameTable = new Dictionary<string, BlockInfo>();
+        private static readonly Dictionary<int, LegacyBlockState> _legacyBlockStates = new Dictionary<int, LegacyBlockState>();
+        private static readonly Dictionary<string, int> _legacyBlockIds = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _legacyDefaultBlockStateKeys = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _legacyBlockStateKeys = new Dictionary<string, int>();
+        private static readonly Dictionary<int, string> _legacyDefaultBlockNames = new Dictionary<int, string>();
+        private static int _nextNamedBlockId = MAX_BLOCKS - 1;
+
+        private struct LegacyBlockState
+        {
+            public string Name;
+            public TagNodeCompound Properties;
+        }
 
         private class CacheTableArray<T> : ICacheTable<T>
         {
@@ -310,6 +337,7 @@ namespace Substrate
 
         private int _id = 0;
         private string _name = "";
+        private string _strId;
         private int _tick = 0;
         private int _opacity = MAX_OPACITY;
         private int _luminance = MIN_LUMINANCE;
@@ -333,6 +361,25 @@ namespace Substrate
             get { return _blockTableCache; }
         }
 
+        public static Dictionary<string, BlockInfo> BlockNameTable {
+            get {
+                return _blockNameTable;
+            }
+        }
+
+        /// <summary>
+        /// Gets all block types introduced by Minecraft Java Edition 1.13 (Update Aquatic).
+        /// </summary>
+        public static IList<BlockInfo> AquaticBlocks { get; private set; }
+
+        /// <summary>
+        /// Gets every vanilla block type available through Minecraft Java Edition 26.2.
+        /// </summary>
+        public static IList<BlockInfo> ModernBlocks { get; private set; }
+
+        /// <summary>The Minecraft version used to generate <see cref="ModernBlocks"/>.</summary>
+        public const string ModernBlockRegistryVersion = "26.2";
+
         /// <summary>
         /// Gets the lookup table for id-to-opacity values.
         /// </summary>
@@ -355,6 +402,12 @@ namespace Substrate
         public int ID
         {
             get { return _id; }
+        }
+
+        public string StrID {
+            get {
+                return _strId;
+            }
         }
 
         /// <summary>
@@ -442,12 +495,312 @@ namespace Substrate
         /// <param name="id">The id of the block.</param>
         /// <param name="name">The name of the block.</param>
         /// <remarks>All user-constructed <see cref="BlockInfo"/> objects are registered automatically.</remarks>
-        public BlockInfo (int id, string name)
+        public BlockInfo (int id, string name, string strId = null)
         {
             _id = id;
             _name = name;
             _blockTable[_id] = this;
             _registered = true;
+            _strId = strId;
+            if (strId != null) {
+                Debug.Assert(!_blockNameTable.ContainsKey(strId));
+                _blockNameTable[strId] = this;
+            }
+        }
+
+        private static BlockInfo RegisterNamedBlock(string stringId, string name)
+        {
+            if (_nextNamedBlockId < 256)
+                throw new InvalidOperationException("The internal block ID table is too small for the modern block registry.");
+            return new BlockInfo(_nextNamedBlockId--, name, stringId);
+        }
+
+        private static BlockInfo RegisterTransparentNamedBlock(string stringId, string name)
+        {
+            return RegisterNamedBlock(stringId, name).SetOpacity(0);
+        }
+
+        private static void RegisterAquaticBlocks()
+        {
+            List<BlockInfo> blocks = new List<BlockInfo>();
+
+            string[] solidBlocks = {
+                "blue_ice", "carved_pumpkin", "dried_kelp_block",
+                "oak_wood", "spruce_wood", "birch_wood", "jungle_wood", "acacia_wood", "dark_oak_wood",
+                "stripped_oak_log", "stripped_spruce_log", "stripped_birch_log", "stripped_jungle_log",
+                "stripped_acacia_log", "stripped_dark_oak_log",
+                "stripped_oak_wood", "stripped_spruce_wood", "stripped_birch_wood", "stripped_jungle_wood",
+                "stripped_acacia_wood", "stripped_dark_oak_wood",
+                "tube_coral_block", "brain_coral_block", "bubble_coral_block", "fire_coral_block", "horn_coral_block",
+                "dead_tube_coral_block", "dead_brain_coral_block", "dead_bubble_coral_block",
+                "dead_fire_coral_block", "dead_horn_coral_block"
+            };
+            foreach (string id in solidBlocks)
+                blocks.Add(RegisterNamedBlock("minecraft:" + id, DisplayName(id)));
+
+            string[] partialBlocks = {
+                "prismarine_slab", "prismarine_stairs", "prismarine_brick_slab", "prismarine_brick_stairs",
+                "dark_prismarine_slab", "dark_prismarine_stairs", "petrified_oak_slab",
+                "acacia_trapdoor", "birch_trapdoor", "dark_oak_trapdoor", "jungle_trapdoor", "spruce_trapdoor"
+            };
+            foreach (string id in partialBlocks)
+                blocks.Add(RegisterTransparentNamedBlock("minecraft:" + id, DisplayName(id)));
+
+            string[] nonSolidBlocks = {
+                "cave_air", "void_air", "kelp", "kelp_plant", "seagrass", "tall_seagrass", "turtle_egg",
+                "tube_coral", "brain_coral", "bubble_coral", "fire_coral", "horn_coral",
+                "tube_coral_fan", "brain_coral_fan", "bubble_coral_fan", "fire_coral_fan", "horn_coral_fan",
+                "dead_tube_coral_fan", "dead_brain_coral_fan", "dead_bubble_coral_fan",
+                "dead_fire_coral_fan", "dead_horn_coral_fan",
+                "tube_coral_wall_fan", "brain_coral_wall_fan", "bubble_coral_wall_fan",
+                "fire_coral_wall_fan", "horn_coral_wall_fan",
+                "dead_tube_coral_wall_fan", "dead_brain_coral_wall_fan", "dead_bubble_coral_wall_fan",
+                "dead_fire_coral_wall_fan", "dead_horn_coral_wall_fan",
+                "acacia_button", "birch_button", "dark_oak_button", "jungle_button", "spruce_button",
+                "acacia_pressure_plate", "birch_pressure_plate", "dark_oak_pressure_plate",
+                "jungle_pressure_plate", "spruce_pressure_plate"
+            };
+            foreach (string id in nonSolidBlocks)
+                blocks.Add(RegisterTransparentNamedBlock("minecraft:" + id, DisplayName(id)).SetState(BlockState.NONSOLID));
+
+            blocks.Add(RegisterTransparentNamedBlock("minecraft:bubble_column", "Bubble Column").SetState(BlockState.FLUID));
+            blocks.Add(RegisterTransparentNamedBlock("minecraft:conduit", "Conduit").SetLuminance(MAX_LUMINANCE));
+            blocks.Add(RegisterTransparentNamedBlock("minecraft:sea_pickle", "Sea Pickle")
+                .SetState(BlockState.NONSOLID).SetLuminance(6));
+
+            AquaticBlocks = blocks.AsReadOnly();
+        }
+
+        private static void RegisterModernBlocks()
+        {
+            LoadLegacyBlockStates();
+            RegisterRenamedBlockAliases();
+            List<BlockInfo> blocks = new List<BlockInfo>();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream("Substrate.Data.BlockRegistry-26.2.txt")) {
+                if (stream == null)
+                    throw new InvalidOperationException("The embedded Minecraft 26.2 block registry is missing.");
+
+                using (StreamReader reader = new StreamReader(stream)) {
+                    string stringId;
+                    while ((stringId = reader.ReadLine()) != null) {
+                        stringId = stringId.Trim();
+                        if (stringId.Length == 0) continue;
+
+                        BlockInfo info;
+                        if (!_blockNameTable.TryGetValue(stringId, out info)) {
+                            ItemInfo legacyItem;
+                            int legacyId;
+                            if (ItemInfo.StrTable.TryGetValue(stringId, out legacyItem)
+                                    && legacyItem.ID >= 0 && legacyItem.ID < 256)
+                                legacyId = legacyItem.ID;
+                            else if (!_legacyBlockIds.TryGetValue(stringId, out legacyId))
+                                legacyId = -1;
+                            if (legacyId >= 0) {
+                                info = _blockTable[legacyId];
+                                if (info == null) {
+                                    int separator = stringId.IndexOf(':');
+                                    string path = separator < 0 ? stringId : stringId.Substring(separator + 1);
+                                    info = new BlockInfo(legacyId, DisplayName(path), stringId);
+                                }
+                                string defaultName;
+                                if (info._strId == null
+                                        && (!_legacyDefaultBlockNames.TryGetValue(legacyId, out defaultName)
+                                            || defaultName == stringId))
+                                    info._strId = stringId;
+                                _blockNameTable[stringId] = info;
+                            }
+                            else {
+                                int separator = stringId.IndexOf(':');
+                                string path = separator < 0 ? stringId : stringId.Substring(separator + 1);
+                                info = RegisterNamedBlock(stringId, DisplayName(path));
+                            }
+                        }
+                        blocks.Add(info);
+                    }
+                }
+            }
+            BlockInfo shortGrass;
+            if (_blockNameTable.TryGetValue("minecraft:short_grass", out shortGrass))
+                _blockNameTable["minecraft:grass"] = shortGrass;
+            ModernBlocks = blocks.AsReadOnly();
+        }
+
+        private static void RegisterRenamedBlockAliases()
+        {
+            int shortGrassKey;
+            if (_legacyBlockStateKeys.TryGetValue(
+                    "minecraft:short_grass", out shortGrassKey)) {
+                // minecraft:grass was the flattened name for short grass until
+                // Java 1.20.3.  It must not fall through to the pre-flattening
+                // item name for legacy ID 2 (grass_block).
+                _legacyBlockStateKeys["minecraft:grass"] = shortGrassKey;
+                _legacyBlockIds["minecraft:grass"] = shortGrassKey >> 4;
+            }
+        }
+
+        private static void LoadLegacyBlockStates()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream("Substrate.Data.LegacyBlockStates.txt")) {
+                if (stream == null)
+                    throw new InvalidOperationException("The embedded legacy block-state registry is missing.");
+
+                using (StreamReader reader = new StreamReader(stream)) {
+                    string line;
+                    while ((line = reader.ReadLine()) != null) {
+                        int separator = line.IndexOf('|');
+                        int dataSeparator = line.IndexOf(':');
+                        if (separator <= dataSeparator || dataSeparator <= 0) continue;
+
+                        int id;
+                        int data;
+                        if (!Int32.TryParse(line.Substring(0, dataSeparator), out id)
+                                || !Int32.TryParse(line.Substring(dataSeparator + 1, separator - dataSeparator - 1), out data))
+                            continue;
+
+                        string stateText = line.Substring(separator + 1);
+                        int propertiesStart = stateText.IndexOf('[');
+                        string name = propertiesStart < 0 ? stateText : stateText.Substring(0, propertiesStart);
+                        TagNodeCompound properties = null;
+                        if (propertiesStart >= 0 && stateText.EndsWith("]")) {
+                            properties = new TagNodeCompound();
+                            string propertyText = stateText.Substring(propertiesStart + 1, stateText.Length - propertiesStart - 2);
+                            foreach (string pair in propertyText.Split(',')) {
+                                int equals = pair.IndexOf('=');
+                                if (equals > 0)
+                                    properties[pair.Substring(0, equals)] = new TagNodeString(pair.Substring(equals + 1));
+                            }
+                        }
+
+                        int key = (id << 4) | (data & 15);
+                        _legacyBlockStates[key] = new LegacyBlockState { Name = name, Properties = properties };
+                        _legacyBlockStateKeys[LegacyBlockStateKey(name, properties)] = key;
+                        if (data == 0 && !_legacyDefaultBlockNames.ContainsKey(id))
+                            _legacyDefaultBlockNames[id] = name;
+                        if (!_legacyBlockIds.ContainsKey(name))
+                            _legacyBlockIds[name] = id;
+                        if (!_legacyDefaultBlockStateKeys.ContainsKey(name))
+                            _legacyDefaultBlockStateKeys[name] = key;
+                    }
+                }
+            }
+        }
+
+        internal static bool TryGetLegacyBlockState(int id, int data, out string name, out TagNodeCompound properties)
+        {
+            LegacyBlockState state;
+            if (_legacyBlockStates.TryGetValue((id << 4) | (data & 15), out state)) {
+                name = state.Name;
+                properties = state.Properties == null ? null : state.Properties.Copy() as TagNodeCompound;
+                return true;
+            }
+            name = null;
+            properties = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Converts a legacy numeric block ID and metadata value to its
+        /// complete Aquatic block name and property set.
+        /// </summary>
+        public static void GetModernBlockState (
+            int id, int data, out string name, out TagNodeCompound properties)
+        {
+            if (!TryGetLegacyBlockState(id, data, out name, out properties))
+                throw new ArgumentException(
+                    "Legacy block state " + id + ":" + data
+                    + " has no Aquatic representation.");
+        }
+
+        internal static bool TryGetLegacyBlockState(string name, TagNodeCompound properties, out int id, out int data)
+        {
+            int key;
+            if (_legacyBlockStateKeys.TryGetValue(LegacyBlockStateKey(name, properties), out key)) {
+                id = key >> 4;
+                data = key & 15;
+                return true;
+            }
+            id = 0;
+            data = 0;
+            return false;
+        }
+
+        internal static bool TryGetLegacyDefaultBlockState (
+            string name, out int id, out int data)
+        {
+            int key;
+            if (_legacyDefaultBlockStateKeys.TryGetValue(name, out key)) {
+                id = key >> 4;
+                data = key & 15;
+                return true;
+            }
+            id = 0;
+            data = 0;
+            return false;
+        }
+
+        /// <summary>
+        /// Converts a namespaced block name to its pre-Aquatic numeric ID and
+        /// metadata value.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="name"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the block has no exact pre-Aquatic representation.
+        /// </exception>
+        public static void GetLegacyBlockState(
+            string name, out int id, out int data)
+        {
+            GetLegacyBlockState(name, null, out id, out data);
+        }
+
+        /// <summary>
+        /// Converts a namespaced block state to its pre-Aquatic numeric ID and
+        /// metadata value.
+        /// </summary>
+        /// <param name="properties">
+        /// Block-state properties required to distinguish states such as log
+        /// axis and door orientation. May be null for blocks without properties.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="name"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the block state has no exact pre-Aquatic representation.
+        /// </exception>
+        public static void GetLegacyBlockState(
+            string name, TagNodeCompound properties, out int id, out int data)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            if (!TryGetLegacyBlockState(name, properties, out id, out data))
+                throw new ArgumentException(
+                    "Block state '" + LegacyBlockStateKey(name, properties)
+                    + "' has no pre-Aquatic ID and data representation.",
+                    "name");
+        }
+
+        private static string LegacyBlockStateKey(string name, TagNodeCompound properties)
+        {
+            if (properties == null || properties.Count == 0) return name;
+            List<string> values = new List<string>();
+            foreach (KeyValuePair<string, TagNode> property in properties) {
+                TagNodeString value = property.Value as TagNodeString;
+                if (value != null) values.Add(property.Key + "=" + value.Data);
+            }
+            values.Sort(StringComparer.Ordinal);
+            return name + "[" + String.Join(",", values.ToArray()) + "]";
+        }
+
+        private static string DisplayName(string id)
+        {
+            string[] words = id.Split('_');
+            for (int i = 0; i < words.Length; i++)
+                if (words[i].Length > 0)
+                    words[i] = Char.ToUpperInvariant(words[i][0]) + words[i].Substring(1);
+            return String.Join(" ", words);
         }
 
         /// <summary>
@@ -729,10 +1082,14 @@ namespace Substrate
         public static BlockInfoEx Dropper;
         public static BlockInfo StainedClay;
         public static BlockInfo StainedGlassPane;
+        public static BlockInfo AcaciaWood;
         public static BlockInfo HayBlock;
         public static BlockInfo Carpet;
         public static BlockInfo HardenedClay;
         public static BlockInfo CoalBlock;
+        public static BlockInfo DoublePlant;
+        public static BlockInfoEx StandingBanner;
+        public static BlockInfoEx WallBanner;
 
         static BlockInfo ()
         {
@@ -744,7 +1101,7 @@ namespace Substrate
             _opacityTableCache = new CacheTableArray<int>(_opacityTable);
             _luminanceTableCache = new CacheTableArray<int>(_luminanceTable);
 
-            Air = new BlockInfo(0, "Air").SetOpacity(0).SetState(BlockState.NONSOLID);
+            Air = new BlockInfo(0, "Air", "minecraft:air").SetOpacity(0).SetState(BlockState.NONSOLID);
             Stone = new BlockInfo(1, "Stone");
             Grass = new BlockInfo(2, "Grass").SetTick(10);
             Dirt = new BlockInfo(3, "Dirt");
@@ -906,10 +1263,18 @@ namespace Substrate
             Dropper = (BlockInfoEx)new BlockInfoEx(158, "Dropper").SetTick(10);
             StainedClay = new BlockInfo(159, "Stained Clay");
             StainedGlassPane = new BlockInfo(160, "Stained Glass Pane").SetOpacity(0);
+            AcaciaWood = new BlockInfo(162, "Acacia Wood");
             HayBlock = new BlockInfo(170, "Hay Block");
             Carpet = new BlockInfo(171, "Carpet").SetOpacity(0);
             HardenedClay = new BlockInfo(172, "Hardened Clay");
             CoalBlock = new BlockInfo(173, "Block of Coal");
+            DoublePlant = new BlockInfo(BlockType.DOUBLE_PLANT, "Double Plant")
+                .SetOpacity(0).SetState(BlockState.NONSOLID).SetTick(10);
+            WallBanner = new BlockInfoEx(BlockType.WALL_BANNER, "Wall Banner");
+            StandingBanner = new BlockInfoEx(BlockType.STANDING_BANNER, "Standing Banner");
+
+            RegisterAquaticBlocks();
+            RegisterModernBlocks();
 
             for (int i = 0; i < MAX_BLOCKS; i++) {
                 if (_blockTable[i] == null) {
@@ -951,8 +1316,8 @@ namespace Substrate
             Chest.SetTileEntity("Chest");
             Furnace.SetTileEntity("Furnace");
             BurningFurnace.SetTileEntity("Furnace");
-            SignPost.SetTileEntity("Sign");
-            WallSign.SetTileEntity("Sign");
+            SignPost.SetTileEntity("minecraft:sign");
+            WallSign.SetTileEntity("minecraft:sign");
             EnchantmentTable.SetTileEntity("EnchantTable");
             BrewingStand.SetTileEntity("Cauldron");
             EndPortal.SetTileEntity("Airportal");
@@ -962,6 +1327,8 @@ namespace Substrate
             TrappedChest.SetTileEntity("Chest");
             Hopper.SetTileEntity("Hopper");
             Dropper.SetTileEntity("Dropper");
+            StandingBanner.SetTileEntity("minecraft:banner");
+            WallBanner.SetTileEntity("minecraft:banner");
 
             // Set Data Limits
 

@@ -18,7 +18,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'net40-client-Debug|AnyCPU'">
     <AssemblyName>Substrate.Tests.net40-client</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <!--<TargetFrameworkProfile>Client</TargetFrameworkProfile>-->
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -105,12 +105,16 @@
     <Compile Include="LevelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockTests.cs" />
+    <Compile Include="TileEntityBannerTests.cs" />
+    <Compile Include="TileTickTests.cs" />
+    <Compile Include="AnvilTests.cs" />
     <Compile Include="WorldTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SubstrateCS\Substrate %28NET4%29.csproj">
       <Project>{7264a1c4-ab4a-4437-b252-7379b98b5509}</Project>
       <Name>Substrate %28NET4%29</Name>
+      <AdditionalProperties>Configuration=Debug</AdditionalProperties>
     </ProjectReference>
   </ItemGroup>
   <Choose>

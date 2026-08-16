@@ -76,6 +76,13 @@ namespace Substrate
 
         protected override IChunk CreateChunkVerifiedCore (NbtTree tree)
         {
+            TagNode dataVersion;
+            if (tree.Root.ToTagCompound().TryGetValue("DataVersion", out dataVersion) &&
+                dataVersion.ToTagInt() != null &&
+                dataVersion.ToTagInt().Data >= 1628) {
+                return AquaticChunk.CreateVerified(tree);
+            }
+            
             return AnvilChunk.CreateVerified(tree);
         }
     }

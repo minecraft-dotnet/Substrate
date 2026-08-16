@@ -17,6 +17,9 @@ namespace Substrate
     public class AnvilWorld : NbtWorld
     {
         private const string _REGION_DIR = "region";
+        private const string _DIMENSIONS_DIR = "dimensions";
+        private const string _MINECRAFT_NAMESPACE = "minecraft";
+        private const string _OVERWORLD_DIMENSION = "overworld";
         private const string _PLAYER_DIR = "players";
         private string _levelFile = "level.dat";
 
@@ -164,6 +167,12 @@ namespace Substrate
         {
             _level.Save();
 
+            foreach (KeyValuePair<string, RegionChunkManager> cm in _chunkMgrs) {
+                cm.Value.Save();
+            }
+        }
+
+        public override void SaveBlocks() {
             foreach (KeyValuePair<string, RegionChunkManager> cm in _chunkMgrs) {
                 cm.Value.Save();
             }
@@ -318,7 +327,7 @@ namespace Substrate
         {
             string path = Path;
             if (String.IsNullOrEmpty(dim)) {
-                path = IO.Path.Combine(path, _REGION_DIR);
+                path = GetOverworldRegionPath();
             }
             else {
                 path = IO.Path.Combine(path, dim);
@@ -340,6 +349,36 @@ namespace Substrate
             _blockMgrs[dim] = bm;
 
             _caches[dim] = cc;
+        }
+
+        private string GetOverworldRegionPath ()
+        {
+            string legacyPath = IO.Path.Combine(Path, _REGION_DIR);
+            string dimensionPath = IO.Path.Combine(
+                IO.Path.Combine(IO.Path.Combine(Path, _DIMENSIONS_DIR), _MINECRAFT_NAMESPACE),
+                _OVERWORLD_DIMENSION);
+            dimensionPath = IO.Path.Combine(dimensionPath, _REGION_DIR);
+
+            bool legacyExists = Directory.Exists(legacyPath);
+            bool dimensionExists = Directory.Exists(dimensionPath);
+            if (!dimensionExists)
+                return legacyPath;
+            if (!legacyExists)
+                return dimensionPath;
+
+            bool legacyHasRegions = HasRegionFiles(legacyPath);
+            bool dimensionHasRegions = HasRegionFiles(dimensionPath);
+            if (dimensionHasRegions && !legacyHasRegions)
+                return dimensionPath;
+
+            // Preserve the traditional location when both locations are equally
+            // plausible. This avoids silently migrating or splitting old worlds.
+            return legacyPath;
+        }
+
+        private static bool HasRegionFiles (string path)
+        {
+            return Directory.GetFiles(path, "r.*.*.mca").Length != 0;
         }
 
         private AnvilWorld OpenWorld (string path)
@@ -414,8 +453,12 @@ namespace Substrate
                     return;
                 }
 
-                string regPath = IO.Path.Combine(e.Path, _REGION_DIR);
-                if (!Directory.Exists(regPath)) {
+                string legacyPath = IO.Path.Combine(world.Path, _REGION_DIR);
+                string dimensionPath = IO.Path.Combine(
+                    IO.Path.Combine(IO.Path.Combine(world.Path, _DIMENSIONS_DIR), _MINECRAFT_NAMESPACE),
+                    _OVERWORLD_DIMENSION);
+                dimensionPath = IO.Path.Combine(dimensionPath, _REGION_DIR);
+                if (!Directory.Exists(legacyPath) && !Directory.Exists(dimensionPath)) {
                     return;
                 }
 

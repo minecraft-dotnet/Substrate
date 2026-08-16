@@ -13,14 +13,15 @@ namespace Substrate
     {
         private static readonly SchemaNodeCompound _schema = new SchemaNodeCompound("")
         {
-            new SchemaNodeScaler("i", TagType.TAG_INT),
             new SchemaNodeScaler("t", TagType.TAG_INT),
             new SchemaNodeScaler("x", TagType.TAG_INT),
             new SchemaNodeScaler("y", TagType.TAG_INT),
             new SchemaNodeScaler("z", TagType.TAG_INT),
+            new SchemaNodeScaler("p", TagType.TAG_INT, SchemaOptions.OPTIONAL),
         };
 
         private int _blockId;
+        private string _stringId;
         private int _ticks;
         private int _x;
         private int _y;
@@ -42,6 +43,7 @@ namespace Substrate
         public TileTick (TileTick tt)
         {
             _blockId = tt._blockId;
+            _stringId = tt._stringId;
             _ticks = tt._ticks;
             _x = tt._x;
             _y = tt._y;
@@ -58,7 +60,18 @@ namespace Substrate
         public int ID
         {
             get { return _blockId; }
-            set { _blockId = value; }
+            set {
+                _blockId = value;
+                _stringId = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the namespaced block identifier when the source used the string form.
+        /// </summary>
+        public string StringID
+        {
+            get { return _stringId; }
         }
 
         /// <summary>
@@ -164,7 +177,28 @@ namespace Substrate
                 return null;
             }
 
-            _blockId = ctree["i"].ToTagInt();
+            TagNode idNode;
+            if (!ctree.TryGetValue("i", out idNode)) {
+                return null;
+            }
+
+            if (idNode.GetTagType() == TagType.TAG_STRING) {
+                _stringId = idNode.ToTagString().Data;
+
+                ItemInfo info;
+                if (!ItemInfo.StrTable.TryGetValue(_stringId, out info)) {
+                    return null;
+                }
+                _blockId = info.ID;
+            }
+            else if (idNode.IsCastableTo(TagType.TAG_INT)) {
+                _blockId = idNode.ToTagInt();
+                _stringId = null;
+            }
+            else {
+                return null;
+            }
+
             _ticks = ctree["t"].ToTagInt();
             _x = ctree["x"].ToTagInt();
             _y = ctree["y"].ToTagInt();
@@ -196,7 +230,9 @@ namespace Substrate
         public TagNode BuildTree ()
         {
             TagNodeCompound tree = new TagNodeCompound();
-            tree["i"] = new TagNodeInt(_blockId);
+            tree["i"] = _stringId == null
+                ? (TagNode)new TagNodeInt(_blockId)
+                : new TagNodeString(_stringId);
             tree["t"] = new TagNodeInt(_ticks);
             tree["x"] = new TagNodeInt(_x);
             tree["y"] = new TagNodeInt(_y);
@@ -216,6 +252,17 @@ namespace Substrate
         /// <returns>Status indicating whether the tree was valid against the internal schema.</returns>
         public bool ValidateTree (TagNode tree)
         {
+            TagNodeCompound ctree = tree as TagNodeCompound;
+            TagNode idNode;
+            if (ctree == null || !ctree.TryGetValue("i", out idNode)) {
+                return false;
+            }
+
+            if (idNode.GetTagType() != TagType.TAG_STRING
+                && !idNode.IsCastableTo(TagType.TAG_INT)) {
+                return false;
+            }
+
             return new NbtVerifier(tree, _schema).Verify();
         }
 

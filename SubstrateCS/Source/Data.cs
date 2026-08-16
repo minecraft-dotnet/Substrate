@@ -12,6 +12,7 @@ namespace Substrate
         OAK = 0,
         SPRUCE = 1,
         BIRCH = 2,
+        JUNGLE = 3,
     }
 
     public enum LeafType
@@ -217,6 +218,16 @@ namespace Substrate
         SOUTH = 5,
     }
 
+    public enum StoneType {
+        STONE = 0,
+        GRANITE = 1,
+        POLISHED_GRANITE = 2,
+        DIORITE = 3,
+        POLISHED_DORITE = 4,
+        ANDESITE = 5,
+        POLISHED_ANDESITE = 6
+    }
+    
     public enum FurnaceOrientation
     {
         EAST = 2,
@@ -247,6 +258,8 @@ namespace Substrate
         COBBLESTONE = 3,
         BRICK = 4,
         STONE_BRICK = 5,
+        NETHER_BRICK = 6,
+        QUARTZ = 7
     }
 
     [Flags]
@@ -343,6 +356,7 @@ namespace Substrate
         NORMAL = 0,
         MOSSY = 1,
         CRACKED = 2,
+        CHISELED = 3,
     }
 
     public enum HugeMushroomType

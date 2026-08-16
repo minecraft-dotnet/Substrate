@@ -112,5 +112,26 @@ namespace Substrate.Nbt
 
             return new TagNodeString();
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            TagNodeString stag = tag as TagNodeString;
+            if (stag == null) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (Length > 0 && stag.Length > Length) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (Value != null && stag.Data != Value) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

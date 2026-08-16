@@ -71,5 +71,16 @@ namespace Substrate.Nbt
 
             return null;
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            if (!tag.IsCastableTo(Type)) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(Name, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
     }
 }

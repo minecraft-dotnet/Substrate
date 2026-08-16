@@ -14,8 +14,8 @@ namespace Substrate
         private const int REGION_XLEN = 32;
         private const int REGION_ZLEN = 32;
 
-        private const int REGION_XLOG = 5;
-        private const int REGION_ZLOG = 5;
+        public const int REGION_XLOG = 5;
+        public const int REGION_ZLOG = 5;
 
         private const int REGION_XMASK = 0x1F;
         private const int REGION_ZMASK = 0x1F;

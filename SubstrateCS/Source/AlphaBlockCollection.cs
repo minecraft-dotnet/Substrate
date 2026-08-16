@@ -393,6 +393,17 @@ namespace Substrate
             _dirty = true;
         }
 
+        /// <summary>
+        /// Sets a legacy numeric block ID and its metadata as one operation.
+        /// Palette-backed chunks translate the pair to the corresponding
+        /// namespaced block state when they are saved.
+        /// </summary>
+        public void SetID (int x, int y, int z, int id, int data)
+        {
+            SetID(x, y, z, id);
+            SetData(x, y, z, data);
+        }
+
         internal void SetID (int index, int id)
         {
             int x, y, z;

@@ -56,6 +56,24 @@ namespace Substrate.Core
         void SetID (int x, int y, int z, int id);
 
         /// <summary>
+        /// Gets a block's id (type) from an unbounded block container.
+        /// </summary>
+        /// <param name="x">The global X-coordinate of a block.</param>
+        /// <param name="y">The global Y-coordinate of a block.</param>
+        /// <param name="z">The global Z-coordinate of a block.</param>
+        /// <returns>The block id (type) from the block container at the given coordinates.</returns>
+        string GetStringID(int x, int y, int z);
+
+        /// <summary>
+        /// Sets a block's id (type) within an unbounded block container.
+        /// </summary>
+        /// <param name="x">The global X-coordinate of a block.</param>
+        /// <param name="y">The global Y-coordinate of a block.</param>
+        /// <param name="z">The global Z-coordinate of a block.</param>
+        /// <param name="id">The id (type) to assign to a block at the given coordinates.</param>
+        void SetStringID(int x, int y, int z, string id);
+
+        /// <summary>
         /// Gets info and attributes on a block's type within an unbounded block container.
         /// </summary>
         /// <param name="x">The global X-coordinate of a block.</param>

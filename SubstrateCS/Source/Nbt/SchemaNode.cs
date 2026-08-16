@@ -56,5 +56,9 @@ namespace Substrate.Nbt
         {
             return null;
         }
+
+        public virtual bool Verify(NbtVerifier verifier, TagNode tag) {
+            return verifier.OnInvalidTagType(new TagEventArgs(Name, tag));
+        }
     }
 }

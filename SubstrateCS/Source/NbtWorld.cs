@@ -151,6 +151,10 @@ namespace Substrate
         /// </summary>
         public abstract void Save ();
 
+        public virtual void SaveBlocks() {
+            Save();
+        }
+
         /// <summary>
         /// Raised when <see cref="Open"/> is called, used to find a concrete <see cref="NbtWorld"/> type that can open the world.
         /// </summary>

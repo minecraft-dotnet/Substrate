@@ -13,6 +13,8 @@ namespace Substrate.Core
 
         private const int VERSION_GZIP = 1;
         private const int VERSION_DEFLATE = 2;
+        private const int VERSION_NONE = 3;
+        private const int EXTERNAL_STREAM_FLAG = 0x80;
 
         private const int SECTOR_BYTES = 4096;
         private const int SECTOR_INTS = SECTOR_BYTES / 4;
@@ -271,17 +273,23 @@ namespace Substrate.Core
                     }
 
                     byte version = (byte)file.ReadByte();
-                    if (version == VERSION_GZIP) {
-                        byte[] data = new byte[length - 1];
+                    bool external = (version & EXTERNAL_STREAM_FLAG) != 0;
+                    version = (byte)(version & ~EXTERNAL_STREAM_FLAG);
+                    byte[] data;
+                    if (external) {
+                        string externalPath = GetExternalChunkPath(x, z);
+                        if (!File.Exists(externalPath)) return null;
+                        data = File.ReadAllBytes(externalPath);
+                    } else {
+                        data = new byte[length - 1];
                         file.Read(data, 0, data.Length);
+                    }
+                    if (version == VERSION_GZIP) {
                         Stream ret = new GZipStream(new MemoryStream(data), CompressionMode.Decompress);
 
                         return ret;
                     }
                     else if (version == VERSION_DEFLATE) {
-                        byte[] data = new byte[length - 1];
-                        file.Read(data, 0, data.Length);
-
                         Stream ret = new ZlibStream(new MemoryStream(data), CompressionMode.Decompress, true);
                         return ret;
 
@@ -293,7 +301,7 @@ namespace Substrate.Core
 
                         sinkZ.Seek(0, SeekOrigin.Begin);
                         return sinkZ;*/
-                    }
+                    } else if (version == VERSION_NONE) return new MemoryStream(data, false);
 
                     Debugln("READ", x, z, "unknown version " + version);
                     return null;
@@ -373,8 +381,9 @@ namespace Substrate.Core
                 int sectorsAllocated = offset & 0xFF;
                 int sectorsNeeded = (length + CHUNK_HEADER_SIZE) / SectorBytes + 1;
 
-                // maximum chunk size is 1MB
+                // Oversized chunks use the external .mcc stream format.
                 if (sectorsNeeded >= 256) {
+                    WriteExternal(x, z, data, length, timestamp);
                     return;
                 }
 
@@ -441,10 +450,37 @@ namespace Substrate.Core
                     }
                 }
                 SetTimestamp(x, z, timestamp);
+                string externalPath = GetExternalChunkPath(x, z);
+                if (File.Exists(externalPath)) File.Delete(externalPath);
             }
             catch (IOException e) {
                 Console.WriteLine(e.StackTrace);
             }
+        }
+
+        private void WriteExternal(int x, int z, byte[] data, int length, int timestamp)
+        {
+            // Allocate the single region sector containing the external-stream marker.
+            Write(x, z, new byte[0], 0, timestamp);
+            int sectorNumber = GetOffset(x, z) >> 8;
+            lock (fileLock) {
+                file.Seek(sectorNumber * SectorBytes, SeekOrigin.Begin);
+                byte[] lengthBytes = BitConverter.GetBytes(1);
+                if (BitConverter.IsLittleEndian) Array.Reverse(lengthBytes);
+                file.Write(lengthBytes, 0, lengthBytes.Length);
+                file.WriteByte(VERSION_DEFLATE | EXTERNAL_STREAM_FLAG);
+            }
+            byte[] externalData = new byte[length];
+            Array.Copy(data, externalData, length);
+            File.WriteAllBytes(GetExternalChunkPath(x, z), externalData);
+        }
+
+        private string GetExternalChunkPath(int x, int z)
+        {
+            RegionKey region = parseCoordinatesFromName();
+            int globalX = region.X * 32 + x;
+            int globalZ = region.Z * 32 + z;
+            return Path.Combine(Path.GetDirectoryName(fileName), "c." + globalX + "." + globalZ + ".mcc");
         }
 
         /* write a chunk data to the region file at specified sector number */
