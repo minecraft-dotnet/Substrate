@@ -168,5 +168,41 @@ namespace Substrate.Nbt
 
             return list;
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            TagNodeList ltag = tag as TagNodeList;
+            if (ltag == null) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (ltag.Count > 0 && ltag.ValueType != Type) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (Length > 0 && ltag.Count != Length) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+
+            // Patch up empty lists
+            //if (schema.Length == 0) {
+            //    tag = new NBT_List(schema.Type);
+            //}
+
+            bool pass = true;
+
+            // If a subschema is set, test all items in list against it
+
+            if (SubSchema != null) {
+                foreach (TagNode v in ltag) {
+                    pass = SubSchema.Verify(verifier, v) && pass;
+                }
+            }
+
+            return pass;
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Ionic.Zlib;
 using Substrate.Core;
 
 namespace Substrate.Data

@@ -68,7 +68,7 @@ namespace Substrate.Nbt
         }
 
         /// <summary>
-        /// Constructs a new event argument set.
+        /// Constructs a    event argument set.
         /// </summary>
         /// <param name="tagName">The expected name of a <see cref="TagNode"/>.</param>
         public TagEventArgs (string tagName)
@@ -158,225 +158,7 @@ namespace Substrate.Nbt
                 return OnMissingTag(new TagEventArgs(schema.Name));
             }
 
-            SchemaNodeScaler scaler = schema as SchemaNodeScaler;
-            if (scaler != null) {
-                return VerifyScaler(tag, scaler);
-            }
-
-            SchemaNodeString str = schema as SchemaNodeString;
-            if (str != null) {
-                return VerifyString(tag, str);
-            }
-
-            SchemaNodeArray array = schema as SchemaNodeArray;
-            if (array != null) {
-                return VerifyArray(tag, array);
-            }
-
-            SchemaNodeIntArray intarray = schema as SchemaNodeIntArray;
-            if (intarray != null) {
-                return VerifyIntArray(tag, intarray);
-            }
-
-            SchemaNodeLongArray longarray = schema as SchemaNodeLongArray;
-            if (longarray != null) {
-                return VerifyLongArray(tag, longarray);
-            }
-
-            SchemaNodeShortArray shortarray = schema as SchemaNodeShortArray;
-            if (shortarray != null) {
-                return VerifyShortArray(tag, shortarray);
-            }
-
-            SchemaNodeList list = schema as SchemaNodeList;
-            if (list != null) {
-                return VerifyList(tag, list);
-            }
-
-            SchemaNodeCompound compound = schema as SchemaNodeCompound;
-            if (compound != null) {
-                return VerifyCompound(tag, compound);
-            }
-
-            return OnInvalidTagType(new TagEventArgs(schema.Name, tag));
-        }
-
-        private bool VerifyScaler (TagNode tag, SchemaNodeScaler schema)
-        {
-            if (!tag.IsCastableTo(schema.Type)) {
-                if (!OnInvalidTagType(new TagEventArgs(schema.Name, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerifyString (TagNode tag, SchemaNodeString schema)
-        {
-            TagNodeString stag = tag as TagNodeString;
-            if (stag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && stag.Length > schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Value != null && stag.Data != schema.Value) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-
-        private bool VerifyArray (TagNode tag, SchemaNodeArray schema)
-        {
-            TagNodeByteArray atag = tag as TagNodeByteArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerifyIntArray (TagNode tag, SchemaNodeIntArray schema)
-        {
-            TagNodeIntArray atag = tag as TagNodeIntArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerifyLongArray (TagNode tag, SchemaNodeLongArray schema)
-        {
-            TagNodeLongArray atag = tag as TagNodeLongArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerifyShortArray (TagNode tag, SchemaNodeShortArray schema)
-        {
-            TagNodeShortArray atag = tag as TagNodeShortArray;
-            if (atag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && atag.Length != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerifyList (TagNode tag, SchemaNodeList schema)
-        {
-            TagNodeList ltag = tag as TagNodeList;
-            if (ltag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (ltag.Count > 0 && ltag.ValueType != schema.Type) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-            if (schema.Length > 0 && ltag.Count != schema.Length) {
-                if (!OnInvalidTagValue(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            // Patch up empty lists
-            //if (schema.Length == 0) {
-            //    tag = new NBT_List(schema.Type);
-            //}
-
-            bool pass = true;
-
-            // If a subschema is set, test all items in list against it
-
-            if (schema.SubSchema != null) {
-                foreach (TagNode v in ltag) {
-                    pass = Verify(tag, v, schema.SubSchema) && pass;
-                }
-            }
-
-            return pass;
-        }
-
-        private bool VerifyCompound (TagNode tag, SchemaNodeCompound schema)
-        {
-            TagNodeCompound ctag = tag as TagNodeCompound;
-            if (ctag == null) {
-                if (!OnInvalidTagType(new TagEventArgs(schema, tag))) {
-                    return false;
-                }
-            }
-
-            bool pass = true;
-
-            Dictionary<string, TagNode> _scratch = new Dictionary<string,TagNode>();
-  
-            foreach (SchemaNode node in schema) {
-                TagNode value;
-                ctag.TryGetValue(node.Name, out value);
-
-                if (value == null) {
-                    if ((node.Options & SchemaOptions.CREATE_ON_MISSING) == SchemaOptions.CREATE_ON_MISSING) {
-                        _scratch[node.Name] = node.BuildDefaultTree();
-                        continue;
-                    }
-                    else if ((node.Options & SchemaOptions.OPTIONAL) == SchemaOptions.OPTIONAL) {
-                        continue;
-                    }
-                }
-
-                pass = Verify(tag, value, node) && pass;
-            }
-
-            foreach (KeyValuePair<string, TagNode> item in _scratch) {
-                ctag[item.Key] = item.Value;
-            }
-
-            _scratch.Clear();
-
-            return pass;
+            return schema.Verify(this, tag);
         }
 
         #region Event Handlers
@@ -387,66 +169,66 @@ namespace Substrate.Nbt
         /// <param name="e">Arguments for this event.</param>
         /// <returns>Status indicating whether this event can be ignored.</returns>
         protected virtual bool OnMissingTag (TagEventArgs e)
-        {
-            if (MissingTag != null) {
-                foreach (VerifierEventHandler func in MissingTag.GetInvocationList()) {
-                    TagEventCode code = func(e);
-                    switch (code) {
-                        case TagEventCode.FAIL:
-                            return false;
-                        case TagEventCode.PASS:
-                            return true;
+            {
+                if (MissingTag != null) {
+                    foreach (VerifierEventHandler func in MissingTag.GetInvocationList()) {
+                        TagEventCode code = func(e);
+                        switch (code) {
+                            case TagEventCode.FAIL:
+                                return false;
+                            case TagEventCode.PASS:
+                                return true;
+                        }
                     }
                 }
+
+                return false;
             }
 
-            return false;
-        }
-
-        /// <summary>
-        /// Processes registered events for <see cref="InvalidTagType"/> whenever an expected <see cref="TagNode"/> is of the wrong type and cannot be cast.
-        /// </summary>
-        /// <param name="e">Arguments for this event.</param>
-        /// <returns>Status indicating whether this event can be ignored.</returns>
-        protected virtual bool OnInvalidTagType (TagEventArgs e)
-        {
-            if (InvalidTagType != null) {
-                foreach (VerifierEventHandler func in InvalidTagType.GetInvocationList()) {
-                    TagEventCode code = func(e);
-                    switch (code) {
-                        case TagEventCode.FAIL:
-                            return false;
-                        case TagEventCode.PASS:
-                            return true;
+            /// <summary>
+            /// Processes registered events for <see cref="InvalidTagType"/> whenever an expected <see cref="TagNode"/> is of the wrong type and cannot be cast.
+            /// </summary>
+            /// <param name="e">Arguments for this event.</param>
+            /// <returns>Status indicating whether this event can be ignored.</returns>
+            public virtual bool OnInvalidTagType (TagEventArgs e)
+            {
+                if (InvalidTagType != null) {
+                    foreach (VerifierEventHandler func in InvalidTagType.GetInvocationList()) {
+                        TagEventCode code = func(e);
+                        switch (code) {
+                            case TagEventCode.FAIL:
+                                return false;
+                            case TagEventCode.PASS:
+                                return true;
+                        }
                     }
                 }
+
+                return false;
             }
 
-            return false;
-        }
-
-        /// <summary>
-        /// Processes registered events for <see cref="InvalidTagValue"/> whenever an expected <see cref="TagNode"/> has a value that violates the schema.
-        /// </summary>
-        /// <param name="e">Arguments for this event.</param>
-        /// <returns>Status indicating whether this event can be ignored.</returns>
-        protected virtual bool OnInvalidTagValue (TagEventArgs e)
-        {
-            if (InvalidTagValue != null) {
-                foreach (VerifierEventHandler func in InvalidTagValue.GetInvocationList()) {
-                    TagEventCode code = func(e);
-                    switch (code) {
-                        case TagEventCode.FAIL:
-                            return false;
-                        case TagEventCode.PASS:
-                            return true;
+            /// <summary>
+            /// Processes registered events for <see cref="InvalidTagValue"/> whenever an expected <see cref="TagNode"/> has a value that violates the schema.
+            /// </summary>
+            /// <param name="e">Arguments for this event.</param>
+            /// <returns>Status indicating whether this event can be ignored.</returns>
+            public virtual bool OnInvalidTagValue (TagEventArgs e)
+            {
+                if (InvalidTagValue != null) {
+                    foreach (VerifierEventHandler func in InvalidTagValue.GetInvocationList()) {
+                        TagEventCode code = func(e);
+                        switch (code) {
+                            case TagEventCode.FAIL:
+                                return false;
+                            case TagEventCode.PASS:
+                                return true;
+                        }
                     }
                 }
+
+                return false;
             }
 
-            return false;
+#endregion
         }
-
-        #endregion
     }
-}

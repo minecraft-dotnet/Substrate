@@ -11,7 +11,7 @@ namespace Substrate
     /// <remarks>An <see cref="AlphaBlockCollection"/> is a wrapper around existing pieces of data.  Although it
     /// holds references to data, it does not "own" the data in the same way that a <see cref="IChunk"/> does.  An
     /// <see cref="AlphaBlockCollection"/> simply overlays a higher-level interface on top of existing data.</remarks>
-    public class AlphaBlockCollection : IBoundedAlphaBlockCollection, IBoundedActiveBlockCollection
+    public class AlphaBlockCollection : IBoundedAlphaBlockCollection, IBoundedActiveBlockCollection, ILocalHeightMap
     {
         private readonly int _xdim;
         private readonly int _ydim;
@@ -36,6 +36,7 @@ namespace Substrate
         private bool _autoLight = true;
         private bool _autoFluid = false;
         private bool _autoTick = false;
+        private int _minimumY;
 
         public delegate AlphaBlockCollection NeighborLookupHandler (int relx, int rely, int relz);
 
@@ -101,6 +102,20 @@ namespace Substrate
             IDataArray2 heightMap,
             TagNodeList tileEntities,
             TagNodeList tileTicks)
+            : this(blocks, data, blockLight, skyLight, heightMap,
+                tileEntities, tileTicks, 0)
+        {
+        }
+
+        internal AlphaBlockCollection (
+            IDataArray3 blocks,
+            IDataArray3 data,
+            IDataArray3 blockLight,
+            IDataArray3 skyLight,
+            IDataArray2 heightMap,
+            TagNodeList tileEntities,
+            TagNodeList tileTicks,
+            int minimumY)
         {
             _blocks = blocks;
             _data = data;
@@ -109,6 +124,7 @@ namespace Substrate
             _heightMap = heightMap;
             _tileEntities = tileEntities;
             _tileTicks = tileTicks;
+            _minimumY = minimumY;
 
             if (_tileTicks == null)
                 _tileTicks = new TagNodeList(TagType.TAG_COMPOUND);
@@ -393,6 +409,17 @@ namespace Substrate
             _dirty = true;
         }
 
+        /// <summary>
+        /// Sets a legacy numeric block ID and its metadata as one operation.
+        /// Palette-backed chunks translate the pair to the corresponding
+        /// namespaced block state when they are saved.
+        /// </summary>
+        public void SetID (int x, int y, int z, int id, int data)
+        {
+            SetID(x, y, z, id);
+            SetData(x, y, z, data);
+        }
+
         internal void SetID (int index, int id)
         {
             int x, y, z;
@@ -572,6 +599,16 @@ namespace Substrate
         public void SetHeight (int x, int z, int height)
         {
             _heightMap[x, z] = (byte)height;
+        }
+
+        int ILocalHeightMap.GetLocalHeight (int x, int z)
+        {
+            return _heightMap[x, z] - _minimumY;
+        }
+
+        void ILocalHeightMap.SetLocalHeight (int x, int z, int height)
+        {
+            _heightMap[x, z] = height + _minimumY;
         }
 
         /// <inheritdoc/>

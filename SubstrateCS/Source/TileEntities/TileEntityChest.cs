@@ -22,6 +22,9 @@ namespace Substrate.TileEntities
 
         private ItemCollection _items;
 
+        /// <summary>Use component-era block entity and item-stack tags.</summary>
+        public bool UseModernFormat { get; set; }
+
         protected TileEntityChest (string id)
             : base(id)
         {
@@ -83,7 +86,12 @@ namespace Substrate.TileEntities
         public override TagNode BuildTree ()
         {
             TagNodeCompound tree = base.BuildTree() as TagNodeCompound;
-            tree["Items"] = _items.BuildTree();
+            tree["Items"] = UseModernFormat ? _items.BuildModernTree() : _items.BuildTree();
+            if (UseModernFormat) {
+                tree["id"] = new TagNodeString("minecraft:chest");
+                tree["components"] = new TagNodeCompound();
+                tree["keepPacked"] = new TagNodeByte(0);
+            }
 
             return tree;
         }

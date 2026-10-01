@@ -79,5 +79,22 @@ namespace Substrate.Nbt
         {
             return new TagNodeShortArray(new short[_length]);
         }
+
+        public override bool Verify(NbtVerifier verifier, TagNode tag) {
+            TagNodeShortArray atag = tag as TagNodeShortArray;
+            if (atag == null) {
+                if (!verifier.OnInvalidTagType(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+            if (Length > 0 && atag.Length != Length) {
+                if (!verifier.OnInvalidTagValue(new TagEventArgs(this, tag))) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
     }
 }

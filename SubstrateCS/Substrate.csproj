@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Substrate</RootNamespace>
+    <AssemblyName>Substrate</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Examples\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Source\Data\BlockRegistry-26.3.txt" />
+    <None Remove="Source\Data\LegacyBlockStates.txt" />
+    <EmbeddedResource Include="Source\Data\BlockRegistry-26.3.txt">
+      <LogicalName>Substrate.Data.BlockRegistry-26.3.txt</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\Data\LegacyBlockStates.txt">
+      <LogicalName>Substrate.Data.LegacyBlockStates.txt</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

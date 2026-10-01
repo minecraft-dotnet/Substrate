@@ -33,8 +33,8 @@ namespace Substrate.Tests
 
                     Debug.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
 
-                    Assert.IsTrue(blockInfo.Registered, "Block ID {0} has not been registered", blockRef.ID);
-                    Assert.IsTrue(blockInfo.TestData(blockRef.Data), "Data value '0x{0:X4}' not recognised for block '{1}' at {2},{3}", blockRef.Data, blockInfo.Name, x, z);
+                    Assert.IsTrue(blockInfo.Registered, $"Block ID {blockRef.ID} has not been registered");
+                    Assert.IsTrue(blockInfo.TestData(blockRef.Data), $"Data value '0x{blockRef.Data:X4}' not recognised for block '{blockInfo.Name}' at {x},{z}");
                 }
             }
         }
@@ -56,7 +56,7 @@ namespace Substrate.Tests
 
                     Debug.WriteLine(string.Format("ID:{0} ({1}), Data:{2}", blockRef.ID, blockInfo.Name, blockRef.Data));
 
-                    Assert.IsTrue(blockInfo.Registered, "Block ID {0} has not been registered", blockRef.ID);
+                    Assert.IsTrue(blockInfo.Registered, $"Block ID {blockRef.ID} has not been registered");
                     if (!blockInfo.TestData(blockRef.Data))
                     {
                         dataError = true;

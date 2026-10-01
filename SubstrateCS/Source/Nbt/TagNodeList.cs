@@ -232,6 +232,9 @@ namespace Substrate.Nbt
         /// <exception cref="ArgumentException">Thrown when a subnode being added has the wrong tag type.</exception>
         public void Add (TagNode item)
         {
+            if (_type == TagType.TAG_END && _items.Count == 0) {
+                _type = item.GetTagType();
+            }
             if (item.GetTagType() != _type) {
                 throw new ArgumentException("The tag type of item is invalid for this node");
             }

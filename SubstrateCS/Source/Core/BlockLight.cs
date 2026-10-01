@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace Substrate.Core
 {
+    internal interface ILocalHeightMap
+    {
+        int GetLocalHeight (int x, int z);
+        void SetLocalHeight (int x, int z, int height);
+    }
+
     public class BlockLight
     {
         private struct LightRecord
@@ -97,7 +103,7 @@ namespace Substrate.Core
             BlockInfo info = _blockset.GetInfo(lx, ly, lz);
             int h = Math.Min(ly + 1, _ydim - 1);
 
-            int height = _blockset.GetHeight(lx, lz);
+            int height = GetLocalHeight(_blockset, lx, lz);
             if (h < height) {
                 return;
             }
@@ -106,14 +112,14 @@ namespace Substrate.Core
                 for (int i = ly - 1; i >= 0; i--) {
                     BlockInfo info2 = _blockset.GetInfo(lx, i, lz);
                     if (info2.ObscuresLight) {
-                        _blockset.SetHeight(lx, lz, Math.Min(i + 1, _ydim - 1));
+                        SetLocalHeight(_blockset, lx, lz, Math.Min(i + 1, _ydim - 1));
                         break;
                     }
                 }
                 UpdateBlockSkyLight(lx, h, lz);
             }
             else if (h > height && info.ObscuresLight) {
-                _blockset.SetHeight(lx, lz, h);
+                SetLocalHeight(_blockset, lx, lz, h);
                 UpdateBlockSkyLight(lx, h, lz);
             }
         }
@@ -182,7 +188,7 @@ namespace Substrate.Core
                     for (int y = ydim - 1; y >= 0; y--) {
                         BlockInfo info = _blockset.GetInfo(x, y, z);
                         if (info.ObscuresLight) {
-                            _blockset.SetHeight(x, z, Math.Min(y + 1, ydim - 1));
+                            SetLocalHeight(_blockset, x, z, Math.Min(y + 1, ydim - 1));
                             break;
                         }
                     }
@@ -424,7 +430,7 @@ namespace Substrate.Core
 
                 int light = BlockInfo.MIN_LUMINANCE;
 
-                if (cc.GetHeight(x, z) <= y) {
+                if (GetLocalHeight(cc, x, z) <= y) {
                     light = BlockInfo.MAX_LUMINANCE;
                 }
                 else {
@@ -678,7 +684,7 @@ namespace Substrate.Core
             }
         }
 
-
+        /*
         private IBoundedLitBlockCollection LocalChunk (int lx, int ly, int lz)
         {
             if (ly < 0 || ly >= _ydim) {
@@ -713,6 +719,7 @@ namespace Substrate.Core
                 return _blockset;
             }
         }
+        */
 
         private int NeighborLight (IBoundedLitBlockCollection[,] chunkMap, int x, int y, int z)
         {
@@ -773,7 +780,7 @@ namespace Substrate.Core
 
             return (info.Opacity > 0) ? light : light - 1;
         }
-
+        /*
         private int NeighborHeight (int x, int z)
         {
             IBoundedLitBlockCollection src = LocalChunk(x, 0, z);
@@ -786,7 +793,7 @@ namespace Substrate.Core
 
             return src.GetHeight(x, z);
         }
-
+        */
 
         private void TestBlockLight (IBoundedLitBlockCollection chunk, int x1, int y1, int z1, int x2, int y2, int z2)
         {
@@ -849,7 +856,7 @@ namespace Substrate.Core
                         int xx = xoff + x;
                         for (int z = 0; z < zdim; z++) {
                             int zz = zoff + z;
-                            map[xx, zz] = chunkMap[xi, zi].GetHeight(x, z);
+                            map[xx, zz] = GetLocalHeight(chunkMap[xi, zi], x, z);
                         }
                     }
                 }
@@ -858,10 +865,29 @@ namespace Substrate.Core
             return map;
         }
 
+        private static int GetLocalHeight(
+                IBoundedLitBlockCollection blocks, int x, int z)
+        {
+            ILocalHeightMap local = blocks as ILocalHeightMap;
+            return local == null
+                ? blocks.GetHeight(x, z)
+                : local.GetLocalHeight(x, z);
+        }
+
+        private static void SetLocalHeight(
+                IBoundedLitBlockCollection blocks, int x, int z, int height)
+        {
+            ILocalHeightMap local = blocks as ILocalHeightMap;
+            if (local == null)
+                blocks.SetHeight(x, z, height);
+            else
+                local.SetLocalHeight(x, z, height);
+        }
+
 
         private IBoundedLitBlockCollection OnResolveNeighbor (int relX, int relY, int relZ)
         {
-            if (ResolveNeighbor != null) {
+            if (ResolveNeighbor != null && relX >= 0 && relY >= 0 && relZ >= 0) {
                 IBoundedLitBlockCollection n = ResolveNeighbor(relX, relY, relZ);
 
                 if (n == null) {

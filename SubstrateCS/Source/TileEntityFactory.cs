@@ -124,7 +124,9 @@ namespace Substrate
             _registry[TileEntityPiston.TypeId] = typeof(TileEntityPiston);
             _registry[TileEntityRecordPlayer.TypeId] = typeof(TileEntityRecordPlayer);
             _registry[TileEntitySign.TypeId] = typeof(TileEntitySign);
+            _registry[TileEntitySign.HangingTypeId] = typeof(TileEntitySign);
             _registry[TileEntityTrap.TypeId] = typeof(TileEntityTrap);
+            _registry[TileEntityBanner.TypeId] = typeof(TileEntityBanner);
         }
     }
 

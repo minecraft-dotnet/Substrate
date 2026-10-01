@@ -136,14 +136,14 @@ namespace Substrate
         {
             new SchemaNodeCompound("Data")
             {
-                new SchemaNodeScaler("Time", TagType.TAG_LONG),
+                new SchemaNodeScaler("Time", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeScaler("LastPlayed", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
                 new SchemaNodeCompound("Player", Player.Schema, SchemaOptions.OPTIONAL),
-                new SchemaNodeScaler("SpawnX", TagType.TAG_INT),
-                new SchemaNodeScaler("SpawnY", TagType.TAG_INT),
-                new SchemaNodeScaler("SpawnZ", TagType.TAG_INT),
-                new SchemaNodeScaler("SizeOnDisk", TagType.TAG_LONG, SchemaOptions.CREATE_ON_MISSING),
-                new SchemaNodeScaler("RandomSeed", TagType.TAG_LONG),
+                new SchemaNodeScaler("SpawnX", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("SpawnY", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("SpawnZ", TagType.TAG_INT, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("SizeOnDisk", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
+                new SchemaNodeScaler("RandomSeed", TagType.TAG_LONG, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("version", TagType.TAG_INT, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("LevelName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
                 new SchemaNodeScaler("generatorName", TagType.TAG_STRING, SchemaOptions.OPTIONAL),
@@ -610,12 +610,31 @@ namespace Substrate
                 _player = new Player().LoadTree(ctree["Player"]);
             }
 
-            _spawnX = ctree["SpawnX"].ToTagInt();
-            _spawnY = ctree["SpawnY"].ToTagInt();
-            _spawnZ = ctree["SpawnZ"].ToTagInt();
+            if (ctree.ContainsKey("SpawnX"))
+                _spawnX = ctree["SpawnX"].ToTagInt();
+            if (ctree.ContainsKey("SpawnY"))
+                _spawnY = ctree["SpawnY"].ToTagInt();
+            if (ctree.ContainsKey("SpawnZ"))
+                _spawnZ = ctree["SpawnZ"].ToTagInt();
 
-            _sizeOnDisk = ctree["SizeOnDisk"].ToTagLong();
-            _randomSeed = ctree["RandomSeed"].ToTagLong();
+            TagNode modernSpawn;
+            if (ctree.TryGetValue("spawn", out modernSpawn)) {
+                TagNodeCompound spawn = modernSpawn as TagNodeCompound;
+                TagNode positionNode;
+                if (spawn != null && spawn.TryGetValue("pos", out positionNode)) {
+                    TagNodeIntArray position = positionNode as TagNodeIntArray;
+                    if (position != null && position.Data.Length >= 3) {
+                        _spawnX = position.Data[0];
+                        _spawnY = position.Data[1];
+                        _spawnZ = position.Data[2];
+                    }
+                }
+            }
+
+            if (ctree.ContainsKey("SizeOnDisk"))
+                _sizeOnDisk = ctree["SizeOnDisk"].ToTagLong();
+            if (ctree.ContainsKey("RandomSeed"))
+                _randomSeed = ctree["RandomSeed"].ToTagLong();
 
             if (ctree.ContainsKey("version")) {
                 _version = ctree["version"].ToTagInt();

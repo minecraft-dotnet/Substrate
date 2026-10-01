@@ -168,6 +168,18 @@ namespace Substrate
             return list;
         }
 
+        /// <summary>Builds an inventory using current Java item-stack tags.</summary>
+        public TagNode BuildModernTree ()
+        {
+            TagNodeList list = new TagNodeList(TagType.TAG_COMPOUND);
+            foreach (KeyValuePair<int, Item> item in _items) {
+                TagNodeCompound itemtree = item.Value.BuildModernTree() as TagNodeCompound;
+                itemtree["Slot"] = new TagNodeByte((byte)item.Key);
+                list.Add(itemtree);
+            }
+            return list;
+        }
+
         /// <inheritdoc/>
         public bool ValidateTree (TagNode tree)
         {

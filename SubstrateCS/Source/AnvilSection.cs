@@ -114,8 +114,7 @@ namespace Substrate
 
         #region INbtObject<AnvilSection> Members
 
-        public AnvilSection LoadTree (TagNode tree)
-        {
+        public AnvilSection LoadTree(TagNode tree) {
             TagNodeCompound ctree = tree as TagNodeCompound;
             if (ctree == null) {
                 return null;

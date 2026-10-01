@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using Substrate.Core;
+using Substrate.Nbt;
 
 namespace Substrate
 {
@@ -17,7 +18,7 @@ namespace Substrate
         private IChunk _chunk;
 
         private AlphaBlockCollection _blocks;
-        private AnvilBiomeCollection _biomes;
+        //private AnvilBiomeCollection _biomes;
         private EntityCollection _entities;
 
         private int _cx;
@@ -72,9 +73,43 @@ namespace Substrate
             }
         }
 
+        /// <summary>Gets the lowest world Y coordinate represented by this chunk.</summary>
+        public int MinimumY
+        {
+            get
+            {
+                AquaticChunk aquatic = GetChunk() as AquaticChunk;
+                return aquatic == null ? 0 : aquatic.MinimumY;
+            }
+        }
+
+        /// <summary>Gets a copy of the modern block-state properties at local X/Z and world Y coordinates.</summary>
+        public TagNodeCompound GetBlockProperties (int x, int y, int z)
+        {
+            AquaticChunk aquatic = GetChunk() as AquaticChunk;
+            return aquatic == null ? null : aquatic.GetBlockProperties(x, y, z);
+        }
+
+        /// <summary>Gets the namespaced block name at local X/Z and world Y coordinates.</summary>
+        public string GetBlockName (int x, int y, int z)
+        {
+            AquaticChunk aquatic = GetChunk() as AquaticChunk;
+            return aquatic == null ? null : aquatic.GetBlockName(x, y, z);
+        }
+
+        /// <summary>Sets a namespaced block state at local X/Z and world Y coordinates.</summary>
+        public bool SetBlockState (int x, int y, int z, string name, TagNodeCompound properties)
+        {
+            AquaticChunk aquatic = GetChunk() as AquaticChunk;
+            if (aquatic == null) return false;
+            aquatic.SetBlockState(x, y, z, name, properties);
+            return true;
+        }
+
         /// <summary>
         /// Gets the collection of all blocks and their data stored in the chunk.
         /// </summary>
+        /*
         public AnvilBiomeCollection Biomes
         {
             get
@@ -85,7 +120,7 @@ namespace Substrate
                 }
                 return _biomes;
             }
-        }
+        }*/
 
         /// <summary>
         /// Gets the collection of all entities stored in the chunk.
@@ -288,7 +323,7 @@ namespace Substrate
                 if (_chunk != null)
                 {
                     _blocks = _chunk.Blocks;
-                    _biomes = _chunk.Biomes;
+                    //_biomes = _chunk.Biomes;
                     _entities = _chunk.Entities;
 
                     // Set callback functions in the underlying block collection
@@ -326,9 +361,11 @@ namespace Substrate
         private BlockKey TranslateCoordinatesHandler (int lx, int ly, int lz)
         {
             int x = X * _blocks.XDim + lx;
+            AquaticChunk aquaticChunk = _chunk as AquaticChunk;
+            int y = ly + (aquaticChunk == null ? 0 : aquaticChunk.MinimumY);
             int z = Z * _blocks.ZDim + lz;
 
-            return new BlockKey(x, ly, z);
+            return new BlockKey(x, y, z);
         }
     }
 }
